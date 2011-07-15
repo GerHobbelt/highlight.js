@@ -629,3 +629,5 @@ var hljs = new function() {
     return result;
   }
 }();
+if (typeof module !== "undefined" && typeof module.exports !== "undefined")
+  module.exports = hljs;

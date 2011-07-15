@@ -126,13 +126,16 @@ def build(root, compress, languages):
     files = [os.path.join(src_path, 'highlight.js')] + \
             language_filenames(src_path, languages)
     f = open(os.path.join(src_path, 'highlight.pack.js'), 'w')
+    full = open(os.path.join(src_path, 'highlight.full.js'), 'w')
     for file in files:
         print file
         content = open(file).read()
+        full.write(content)
         if compress:
             content = compress_content(tools_path, content)
         f.write(content)
     f.close()
+    full.close()
 
 if __name__ == '__main__':
     parser = optparse.OptionParser()
