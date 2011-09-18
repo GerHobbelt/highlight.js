@@ -2,7 +2,7 @@
   "author": "Ivan Sagalaev, Greg Allen (@jgaui)",
   "name": "highlight.js",
   "description": "A node clone of highlight.js syntax highlighter library",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "repository": {
     "type": "git",
     "url": "git://github.com/jgallen23/highlight.js.git"
