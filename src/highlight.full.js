@@ -515,14 +515,13 @@ var hljs = new function() {
       block.innerHTML = result.value;
     }
     block.className = class_name;
-    block.dataset = {};
-    block.dataset.result = {
+    block.result = {
       language: language,
       kw: result.keyword_count,
       re: result.relevance
     };
     if (result.second_best) {
-      block.dataset.second_best = {
+      block.second_best = {
         language: result.second_best.language,
         kw: result.second_best.keyword_count,
         re: result.second_best.relevance
@@ -1252,7 +1251,6 @@ hljs.LANGUAGES.axapta  = {
 /*
 Language: Bash
 Author: vah <vahtenberg@gmail.com>
-Category: common
 */
 
 hljs.LANGUAGES.bash = function(){
@@ -1296,11 +1294,6 @@ hljs.LANGUAGES.bash = function(){
           relevance: 10
         },
         hljs.HASH_COMMENT_MODE,
-        {
-          className: 'comment',
-          begin: '\\/\\/', end: '$',
-          illegal: '.'
-        },
         hljs.C_NUMBER_MODE,
         STRING,
         VAR1,
@@ -1337,7 +1330,6 @@ hljs.LANGUAGES.cmake = {
 };
 /*
 Language: C++
-Category: common
 */
 
 hljs.LANGUAGES.cpp = function(){
@@ -1371,7 +1363,7 @@ hljs.LANGUAGES.cpp = function(){
   var STL_CONTAINER = {
     className: 'stl_container',
     begin: '\\b(deque|list|queue|stack|vector|map|set|bitset|multiset|multimap|unordered_map|unordered_set|unordered_multiset|unordered_multimap|array)\\s*<', end: '>',
-    keywords: CPP_KEYWORDS['built_in'],
+    keywords: CPP_KEYWORDS,
     relevance: 10
   };
   STL_CONTAINER.contains = [STL_CONTAINER];
@@ -1401,7 +1393,6 @@ hljs.LANGUAGES.cpp = function(){
 /*
 Language: C#
 Author: Jason Diamond <jason@diamond.name>
-Category: common
 */
 
 hljs.LANGUAGES.cs  = {
@@ -1442,7 +1433,6 @@ hljs.LANGUAGES.cs  = {
 };
 /*
 Language: CSS
-Category: common
 */
 
 hljs.LANGUAGES.css = function() {
@@ -1478,9 +1468,9 @@ hljs.LANGUAGES.css = function() {
         },
         {
           className: 'at_rule',
-          begin: '@font-face',
+          begin: '@(font-face|page)',
           lexems: '[a-z-]+',
-          keywords: {'font-face': 1}
+          keywords: {'font-face': 1, 'page': 1}
         },
         {
           className: 'at_rule',
@@ -1616,7 +1606,6 @@ hljs.LANGUAGES.delphi = function(){
 Language: Diff
 Description: Unified and context diff
 Author: Vasily Polovnyov <vast@whiteants.net>
-Category: common
 */
 
 hljs.LANGUAGES.diff = {
@@ -1679,7 +1668,6 @@ hljs.LANGUAGES.diff = {
 };
 /*
 Language: HTML, XML
-Category: common
 */
 
 hljs.LANGUAGES.xml = function(){
@@ -1727,7 +1715,8 @@ hljs.LANGUAGES.xml = function(){
         {
           className: 'doctype',
           begin: '<!DOCTYPE', end: '>',
-          relevance: 10
+          relevance: 10,
+          contains: [{begin: '\\[', end: '\\]'}]
         },
         {
           className: 'comment',
@@ -2229,23 +2218,27 @@ Author: Jeremy Hull <sourdrums@gmail.com>
 hljs.LANGUAGES.haskell = function(){
   var LABEL = {
     className: 'label',
-    begin: '\\b[A-Z][\\w\\\']*',
+    begin: '\\b[A-Z][\\w\']*',
     relevance: 0
   };
   var CONTAINER = {
     className: 'container',
     begin: '\\(', end: '\\)',
     contains: [
-      {className: 'label', begin: '\\b[A-Z][\\w\\(\\)\\.\\\']*'},
-      {className: 'title', begin: '[_a-z][\\w\\\']*'}
+      {className: 'label', begin: '\\b[A-Z][\\w\\(\\)\\.\']*'},
+      {className: 'title', begin: '[_a-z][\\w\']*'}
     ]
   };
 
   return {
     defaultMode: {
       keywords: {
-        'keyword': {'let': 1,'in': 1,'if': 1,'then': 1,'else': 1,'case': 1,'of': 1,'where': 1,'do': 1,'module': 1,'import': 1, 'hiding': 1,'qualified': 1,'type': 1,'data': 1,'newtype': 1,'deriving': 1,'class': 1,'instance': 1,'null': 1,'not': 1,'as': 1},
-        'built_in': {'Bool': 1,'True': 1,'False': 1,'Int': 1,'Char': 1,'Maybe': 1,'Nothing': 1,'String': 1}
+        'keyword': {
+          'let': 1, 'in': 1, 'if': 1, 'then': 1, 'else': 1, 'case': 1, 'of': 1,
+          'where': 1, 'do': 1, 'module': 1, 'import': 1, 'hiding': 1,
+          'qualified': 1, 'type': 1, 'data': 1, 'newtype': 1, 'deriving': 1,
+          'class': 1, 'instance': 1, 'null': 1, 'not': 1, 'as': 1
+        }
       },
       contains: [
         {
@@ -2256,7 +2249,12 @@ hljs.LANGUAGES.haskell = function(){
           className: 'comment',
           begin: '{-', end: '-}'
         },
-        hljs.APOS_STRING_MODE,
+        {
+          className: 'string',
+          begin: '\\s+\'', end: '\'',
+          contains: [hljs.BACKSLASH_ESCAPE],
+          relevance: 0
+        },
         hljs.QUOTE_STRING_MODE,
         {
           className: 'import',
@@ -2283,7 +2281,7 @@ hljs.LANGUAGES.haskell = function(){
         },
         LABEL,
         {
-          className: 'title', begin: '^[_a-z][\\w\\\']*'
+          className: 'title', begin: '^[_a-z][\\w\']*'
         }
       ]
     }
@@ -2291,7 +2289,6 @@ hljs.LANGUAGES.haskell = function(){
 }();
 /*
 Language: Ini
-Category: common
 */
 
 hljs.LANGUAGES.ini = {
@@ -2325,7 +2322,6 @@ hljs.LANGUAGES.ini = {
 /*
 Language: Java
 Author: Vsevolod Solovyov <vsevolod.solovyov@gmail.com>
-Category: common
 */
 
 hljs.LANGUAGES.java  = {
@@ -2370,7 +2366,6 @@ hljs.LANGUAGES.java  = {
 };
 /*
 Language: Javascript
-Category: common
 */
 
 hljs.LANGUAGES.javascript = {
@@ -2997,7 +2992,6 @@ hljs.LANGUAGES.parser3 = function() {
 /*
 Language: Perl
 Author: Peter Leonov <gojpeg@yandex.ru>
-Category: common
 */
 
 hljs.LANGUAGES.perl = function(){
@@ -3017,13 +3011,22 @@ hljs.LANGUAGES.perl = function(){
     begin: '[\\$\\%\\@\\*](\\^\\w\\b|#\\w+(\\:\\:\\w+)*|[^\\s\\w{]|{\\w+}|\\w+(\\:\\:\\w*)*)'
   };
   var STRING_CONTAINS = [hljs.BACKSLASH_ESCAPE, SUBST, VAR1, VAR2];
+  var METHOD = {
+    begin: '->',
+    contains: [
+      {begin: hljs.IDENT_RE},
+      {begin: '{', end: '}'}
+    ]
+  };
   var PERL_DEFAULT_CONTAINS = [
+    VAR1, VAR2,
     hljs.HASH_COMMENT_MODE,
     {
       className: 'comment',
       begin: '^(__END__|__DATA__)', end: '\\n$',
       relevance: 5
     },
+    METHOD,
     {
       className: 'string',
       begin: 'q[qwxr]?\\s*\\(', end: '\\)',
@@ -3109,7 +3112,6 @@ hljs.LANGUAGES.perl = function(){
       keywords: {'sub':1},
       relevance: 5
     },
-    VAR1, VAR2,
     {
       className: 'operator',
       begin: '-\\w\\b',
@@ -3121,6 +3123,7 @@ hljs.LANGUAGES.perl = function(){
     }
   ];
   SUBST.contains = PERL_DEFAULT_CONTAINS;
+  METHOD.contains[1].contains = PERL_DEFAULT_CONTAINS;
 
   return {
     defaultMode: {
@@ -3132,7 +3135,6 @@ hljs.LANGUAGES.perl = function(){
 /*
 Language: PHP
 Author: Victor Karamzin <Victor.Karamzin@enterra-inc.com>
-Category: common
 */
 
 hljs.LANGUAGES.php = {
@@ -3236,29 +3238,28 @@ hljs.LANGUAGES.profile = {
 };
 /*
 Language: Python
-Category: common
 */
 
 hljs.LANGUAGES.python = function() {
   var STR1 = {
     className: 'string',
-    begin: 'u?r?\'\'\'', end: '\'\'\'',
+    begin: '(u|b)?r?\'\'\'', end: '\'\'\'',
     relevance: 10
   };
   var STR2 = {
     className: 'string',
-    begin: 'u?r?"""', end: '"""',
+    begin: '(u|b)?r?"""', end: '"""',
     relevance: 10
   };
   var STR3 = {
     className: 'string',
-    begin: '(u|r|ur)\'', end: '\'',
+    begin: '(u|r|ur|b|br)\'', end: '\'',
     contains: [hljs.BACKSLASH_ESCAPE],
     relevance: 10
   };
   var STR4 = {
     className: 'string',
-    begin: '(u|r|ur)"', end: '"',
+    begin: '(u|r|ur|b|br)"', end: '"',
     contains: [hljs.BACKSLASH_ESCAPE],
     relevance: 10
   };
@@ -3540,7 +3541,6 @@ hljs.LANGUAGES.rsl  = {
 Language: Ruby
 Author: Anton Kovalyov <anton@kovalyov.net>
 Contributors: Peter Leonov <gojpeg@yandex.ru>, Vasily Polovnyov <vast@whiteants.net>, Loren Segal <lsegal@soen.ca>
-Category: common
 */
 
 hljs.LANGUAGES.ruby = function(){
@@ -3857,7 +3857,6 @@ hljs.LANGUAGES.smalltalk = function() {
 }();
 /*
 Language: SQL
-Category: common
 */
 
 hljs.LANGUAGES.sql = {
