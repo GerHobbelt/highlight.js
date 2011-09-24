@@ -1,7 +1,6 @@
 /*
 Language: Bash
 Author: vah <vahtenberg@gmail.com>
-Category: common
 */
 
 hljs.LANGUAGES.bash = function(){
@@ -45,11 +44,6 @@ hljs.LANGUAGES.bash = function(){
           relevance: 10
         },
         hljs.HASH_COMMENT_MODE,
-        {
-          className: 'comment',
-          begin: '\\/\\/', end: '$',
-          illegal: '.'
-        },
         hljs.C_NUMBER_MODE,
         STRING,
         VAR1,

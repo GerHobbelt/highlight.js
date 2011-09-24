@@ -1,6 +1,5 @@
 /*
 Language: HTML, XML
-Category: common
 */
 
 hljs.LANGUAGES.xml = function(){
@@ -48,7 +47,8 @@ hljs.LANGUAGES.xml = function(){
         {
           className: 'doctype',
           begin: '<!DOCTYPE', end: '>',
-          relevance: 10
+          relevance: 10,
+          contains: [{begin: '\\[', end: '\\]'}]
         },
         {
           className: 'comment',
