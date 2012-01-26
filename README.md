@@ -1,6 +1,6 @@
 # Highlight.js
 
-Highlight.js is a node.js fork of (highlight.js)[https://github.com/isagalaev/highlight.js] for the browser.
+Highlight.js is a node.js fork of [highlight.js](https://github.com/isagalaev/highlight.js) for the browser.
 
 ##Install
 
