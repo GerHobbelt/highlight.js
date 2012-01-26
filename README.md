@@ -24,4 +24,4 @@ Highlight.js is a node.js fork of (highlight.js)[https://github.com/isagalaev/hi
 
 ##Example Output:
 
-<span class="keyword">var</span> test = <span class="string">'asdf'</span>
+&lt;span class="keyword"&gt;var&lt;/span&gt; test = &lt;span class="string"&gt;'asdf'&lt;/span&gt;
