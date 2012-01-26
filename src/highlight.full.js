@@ -67,7 +67,7 @@ var hljs = new function() {
           offset += node.childNodes[i].nodeValue.length;
         else if (node.childNodes[i].nodeName == 'BR')
           offset += 1
-        else {
+        else if (node.childNodes[i].nodeType == 1) {
           result.push({
             event: 'start',
             offset: offset,
@@ -123,8 +123,8 @@ var hljs = new function() {
       for (var i = 0; i < node.attributes.length; i++) {
         var attribute = node.attributes[i];
         result += ' ' + attribute.nodeName.toLowerCase();
-        if (attribute.nodeValue != undefined && attribute.nodeValue != false && attribute.nodeValue != null) {
-          result += '="' + escape(attribute.nodeValue) + '"';
+        if (attribute.value != undefined && attribute.value != false && attribute.value != null) {
+          result += '="' + escape(attribute.value) + '"';
         }
       }
       return result + '>';
@@ -631,69 +631,527 @@ var hljs = new function() {
 if (typeof module !== "undefined" && typeof module.exports !== "undefined")
   module.exports = hljs;
 /*
-Language: 1C
-Author: Yuri Ivanov <ivanov@supersoft.ru>
-Contributors: Sergey Baranov <segyrn@yandex.ru>
+Language: SQL
 */
 
-hljs.LANGUAGES['1c'] = function(){
-  var IDENT_RE_RU = '[a-zA-Zа-яА-Я][a-zA-Z0-9_а-яА-Я]*';
-  var OneS_KEYWORDS = {'возврат':1,'дата':1,'для':1,'если':1,'и':1,'или':1,'иначе':1,'иначеесли':1,'исключение':1,'конецесли':1,'конецпопытки':1,'конецпроцедуры':1,'конецфункции':1,'конеццикла':1,'константа':1,'не':1,'перейти':1,'перем':1,'перечисление':1,'по':1,'пока':1,'попытка':1,'прервать':1,'продолжить':1,'процедура':1,'строка':1,'тогда':1,'фс':1,'функция':1,'цикл':1,'число':1,'экспорт':1};
-  var OneS_BUILT_IN = {'ansitooem':1,'oemtoansi':1,'ввестивидсубконто':1,'ввестидату':1,'ввестизначение':1,'ввестиперечисление':1,'ввестипериод':1,'ввестиплансчетов':1,'ввестистроку':1,'ввестичисло':1,'вопрос':1,'восстановитьзначение':1,'врег':1,'выбранныйплансчетов':1,'вызватьисключение':1,'датагод':1,'датамесяц':1,'датачисло':1,'добавитьмесяц':1,'завершитьработусистемы':1,'заголовоксистемы':1,'записьжурналарегистрации':1,'запуститьприложение':1,'зафиксироватьтранзакцию':1,'значениевстроку':1,'значениевстрокувнутр':1,'значениевфайл':1,'значениеизстроки':1,'значениеизстрокивнутр':1,'значениеизфайла':1,'имякомпьютера':1,'имяпользователя':1,'каталогвременныхфайлов':1,'каталогиб':1,'каталогпользователя':1,'каталогпрограммы':1,'кодсимв':1,'командасистемы':1,'конгода':1,'конецпериодаби':1,'конецрассчитанногопериодаби':1,'конецстандартногоинтервала':1,'конквартала':1,'конмесяца':1,'коннедели':1,'лев':1,'лог':1,'лог10':1,'макс':1,'максимальноеколичествосубконто':1,'мин':1,'монопольныйрежим':1,'названиеинтерфейса':1,'названиенабораправ':1,'назначитьвид':1,'назначитьсчет':1,'найти':1,'найтипомеченныенаудаление':1,'найтиссылки':1,'началопериодаби':1,'началостандартногоинтервала':1,'начатьтранзакцию':1,'начгода':1,'начквартала':1,'начмесяца':1,'начнедели':1,'номерднягода':1,'номерднянедели':1,'номернеделигода':1,'нрег':1,'обработкаожидания':1,'окр':1,'описаниеошибки':1,'основнойжурналрасчетов':1,'основнойплансчетов':1,'основнойязык':1,'открытьформу':1,'открытьформумодально':1,'отменитьтранзакцию':1,'очиститьокносообщений':1,'периодстр':1,'полноеимяпользователя':1,'получитьвремята':1,'получитьдатута':1,'получитьдокументта':1,'получитьзначенияотбора':1,'получитьпозициюта':1,'получитьпустоезначение':1,'получитьта':1,'прав':1,'праводоступа':1,'предупреждение':1,'префиксавтонумерации':1,'пустаястрока':1,'пустоезначение':1,'рабочаядаттьпустоезначение':1,'получитьта':1,'прав':1,'праводоступа':1,'предупреждение':1,'префиксавтонумерации':1,'пустаястрока':1,'пустоезначение':1,'рабочаядата':1,'разделительстраниц':1,'разделительстрок':1,'разм':1,'разобратьпозициюдокумента':1,'рассчитатьрегистрына':1,'рассчитатьрегистрыпо':1,'сигнал':1,'симв':1,'символтабуляции':1,'создатьобъект':1,'сокрл':1,'сокрлп':1,'сокрп':1,' сообщить':1,'состояние':1,'сохранитьзначение':1,'сред':1,'статусвозврата':1,'стрдлина':1,'стрзаменить':1,'стрколичествострок':1,'стрполучитьстроку':1,' стрчисловхождений':1,'сформироватьпозициюдокумента':1,'счетпокоду':1,'текущаядата':1,'текущеевремя':1,'типзначения':1,'типзначениястр':1,'удалитьобъекты':1,'установитьтана':1,'установитьтапо':1,'фиксшаблон':1,'формат':1,'цел':1,'шаблон':1};
-  var DQUOTE =  {className: 'dquote',  begin: '""'};
-  var STR_START = {
-      className: 'string',
-      begin: '"', end: '"|$',
-      contains: [DQUOTE],
-      relevance: 0
-    };
-  var STR_CONT = {
-    className: 'string',
-    begin: '\\|', end: '"|$',
-    contains: [DQUOTE]
-  };
+hljs.LANGUAGES.sql = {
+  case_insensitive: true,
+  defaultMode: {
+    illegal: '[^\\s]',
+    contains: [
+      {
+        className: 'operator',
+        begin: '(begin|start|commit|rollback|savepoint|lock|alter|create|drop|rename|call|delete|do|handler|insert|load|replace|select|truncate|update|set|show|pragma|grant)\\b', end: ';|$',
+        keywords: {
+          'keyword': {
+            'all': 1, 'partial': 1, 'global': 1, 'month': 1,
+            'current_timestamp': 1, 'using': 1, 'go': 1, 'revoke': 1,
+            'smallint': 1, 'indicator': 1, 'end-exec': 1, 'disconnect': 1,
+            'zone': 1, 'with': 1, 'character': 1, 'assertion': 1, 'to': 1,
+            'add': 1, 'current_user': 1, 'usage': 1, 'input': 1, 'local': 1,
+            'alter': 1, 'match': 1, 'collate': 1, 'real': 1, 'then': 1,
+            'rollback': 1, 'get': 1, 'read': 1, 'timestamp': 1,
+            'session_user': 1, 'not': 1, 'integer': 1, 'bit': 1, 'unique': 1,
+            'day': 1, 'minute': 1, 'desc': 1, 'insert': 1, 'execute': 1,
+            'like': 1, 'ilike': 2, 'level': 1, 'decimal': 1, 'drop': 1,
+            'continue': 1, 'isolation': 1, 'found': 1, 'where': 1,
+            'constraints': 1, 'domain': 1, 'right': 1, 'national': 1, 'some': 1,
+            'module': 1, 'transaction': 1, 'relative': 1, 'second': 1,
+            'connect': 1, 'escape': 1, 'close': 1, 'system_user': 1, 'for': 1,
+            'deferred': 1, 'section': 1, 'cast': 1, 'current': 1, 'sqlstate': 1,
+            'allocate': 1, 'intersect': 1, 'deallocate': 1, 'numeric': 1,
+            'public': 1, 'preserve': 1, 'full': 1, 'goto': 1, 'initially': 1,
+            'asc': 1, 'no': 1, 'key': 1, 'output': 1, 'collation': 1, 'group': 1,
+            'by': 1, 'union': 1, 'session': 1, 'both': 1, 'last': 1,
+            'language': 1, 'constraint': 1, 'column': 1, 'of': 1, 'space': 1,
+            'foreign': 1, 'deferrable': 1, 'prior': 1, 'connection': 1,
+            'unknown': 1, 'action': 1, 'commit': 1, 'view': 1, 'or': 1,
+            'first': 1, 'into': 1, 'float': 1, 'year': 1, 'primary': 1,
+            'cascaded': 1, 'except': 1, 'restrict': 1, 'set': 1, 'references': 1,
+            'names': 1, 'table': 1, 'outer': 1, 'open': 1, 'select': 1,
+            'size': 1, 'are': 1, 'rows': 1, 'from': 1, 'prepare': 1,
+            'distinct': 1, 'leading': 1, 'create': 1, 'only': 1, 'next': 1,
+            'inner': 1, 'authorization': 1, 'schema': 1, 'corresponding': 1,
+            'option': 1, 'declare': 1, 'precision': 1, 'immediate': 1, 'else': 1,
+            'timezone_minute': 1, 'external': 1, 'varying': 1, 'translation': 1,
+            'true': 1, 'case': 1, 'exception': 1, 'join': 1, 'hour': 1,
+            'default': 1, 'double': 1, 'scroll': 1, 'value': 1, 'cursor': 1,
+            'descriptor': 1, 'values': 1, 'dec': 1, 'fetch': 1, 'procedure': 1,
+            'delete': 1, 'and': 1, 'false': 1, 'int': 1, 'is': 1, 'describe': 1,
+            'char': 1, 'as': 1, 'at': 1, 'in': 1, 'varchar': 1, 'null': 1,
+            'trailing': 1, 'any': 1, 'absolute': 1, 'current_time': 1, 'end': 1,
+            'grant': 1, 'privileges': 1, 'when': 1, 'cross': 1, 'check': 1,
+            'write': 1, 'current_date': 1, 'pad': 1, 'begin': 1, 'temporary': 1,
+            'exec': 1, 'time': 1, 'update': 1, 'catalog': 1, 'user': 1, 'sql': 1,
+            'date': 1, 'on': 1, 'identity': 1, 'timezone_hour': 1, 'natural': 1,
+            'whenever': 1, 'interval': 1, 'work': 1, 'order': 1, 'cascade': 1,
+            'diagnostics': 1, 'nchar': 1, 'having': 1, 'left': 1, 'call': 1,
+            'do': 1, 'handler': 1, 'load': 1, 'replace': 1, 'truncate': 1,
+            'start': 1, 'lock': 1, 'show': 1, 'pragma': 1},
+          'aggregate': {'count': 1, 'sum': 1, 'min': 1, 'max': 1, 'avg': 1}
+        },
+        contains: [
+          {
+            className: 'string',
+            begin: '\'', end: '\'',
+            contains: [hljs.BACKSLASH_ESCAPE, {begin: '\'\''}],
+            relevance: 0
+          },
+          {
+            className: 'string',
+            begin: '"', end: '"',
+            contains: [hljs.BACKSLASH_ESCAPE, {begin: '""'}],
+            relevance: 0
+          },
+          {
+            className: 'string',
+            begin: '`', end: '`',
+            contains: [hljs.BACKSLASH_ESCAPE]
+          },
+          hljs.C_NUMBER_MODE,
+          {begin: '\\n'}
+        ]
+      },
+      hljs.C_BLOCK_COMMENT_MODE,
+      {
+        className: 'comment',
+        begin: '--', end: '$'
+      }
+    ]
+  }
+};
+/*
+Language: HTML, XML
+*/
 
+hljs.LANGUAGES.xml = function(){
+  var XML_IDENT_RE = '[A-Za-z0-9\\._:-]+';
+  var TAG_INTERNALS = {
+    endsWithParent: true,
+    contains: [
+      {
+        className: 'attribute',
+        begin: XML_IDENT_RE,
+        relevance: 0
+      },
+      {
+        begin: '="', returnBegin: true, end: '"',
+        contains: [{
+            className: 'value',
+            begin: '"', endsWithParent: true
+        }]
+      },
+      {
+        begin: '=\'', returnBegin: true, end: '\'',
+        contains: [{
+          className: 'value',
+          begin: '\'', endsWithParent: true
+        }]
+      },
+      {
+        begin: '=',
+        contains: [{
+          className: 'value',
+          begin: '[^\\s/>]+'
+        }]
+      }
+    ]
+  };
   return {
     case_insensitive: true,
     defaultMode: {
-      lexems: IDENT_RE_RU,
-      keywords: {'keyword':OneS_KEYWORDS,'built_in':OneS_BUILT_IN},
       contains: [
-        hljs.C_LINE_COMMENT_MODE,
-        hljs.NUMBER_MODE,
-        STR_START, STR_CONT,
+        {
+          className: 'pi',
+          begin: '<\\?', end: '\\?>',
+          relevance: 10
+        },
+        {
+          className: 'doctype',
+          begin: '<!DOCTYPE', end: '>',
+          relevance: 10,
+          contains: [{begin: '\\[', end: '\\]'}]
+        },
+        {
+          className: 'comment',
+          begin: '<!--', end: '-->',
+          relevance: 10
+        },
+        {
+          className: 'cdata',
+          begin: '<\\!\\[CDATA\\[', end: '\\]\\]>',
+          relevance: 10
+        },
+        {
+          className: 'tag',
+          begin: '<style', end: '>',
+          keywords: {'title': {'style': 1}},
+          contains: [TAG_INTERNALS],
+          starts: {
+            className: 'css',
+            end: '</style>', returnEnd: true,
+            subLanguage: 'css'
+          }
+        },
+        {
+          className: 'tag',
+          begin: '<script', end: '>',
+          keywords: {'title': {'script': 1}},
+          contains: [TAG_INTERNALS],
+          starts: {
+            className: 'javascript',
+            end: '</script>', returnEnd: true,
+            subLanguage: 'javascript'
+          }
+        },
+        {
+          className: 'vbscript',
+          begin: '<%', end: '%>',
+          subLanguage: 'vbscript'
+        },
+        {
+          className: 'tag',
+          begin: '</?', end: '/?>',
+          contains: [
+            {
+              className: 'title', begin: '[^ />]+'
+            },
+            TAG_INTERNALS
+          ]
+        }
+      ]
+    }
+  };
+}();
+/*
+Language: Parser3
+Requires: xml.js
+Author: Oleg Volchkov <oleg@volchkov.net>
+*/
+
+hljs.LANGUAGES.parser3 = function() {
+  var COMMENTED_BLOCK = {
+    begin: '{', end: '}'
+  };
+  COMMENTED_BLOCK.contains = [COMMENTED_BLOCK];
+
+  return {
+    defaultMode: {
+      subLanguage: 'html',
+      contains: [
+        {
+          className: 'comment',
+          begin: '^#', end: '$'
+        },
+        {
+          className: 'comment',
+          contains: [COMMENTED_BLOCK],
+          begin: '\\^rem{', end: '}',
+          relevance: 10
+        },
+        {
+          className: 'preprocessor',
+          begin: '^@(?:BASE|USE|CLASS|OPTIONS)$',
+          relevance: 10
+        },
+        {
+          className: 'title',
+          begin: '@[\\w\\-]+\\[[\\w^;\\-]*\\](?:\\[[\\w^;\\-]*\\])?(?:.*)$'
+        },
+        {
+          className: 'variable',
+          begin: '\\$\\{?[\\w\\-\\.\\:]+\\}?'
+        },
+        {
+          className: 'keyword',
+          begin: '\\^[\\w\\-\\.\\:]+'
+        },
+        {
+          className: 'number',
+          begin: '\\^#[0-9a-fA-F]+'
+        },
+        hljs.C_NUMBER_MODE
+      ]
+    }
+  };
+}();
+/*
+Language: MEL
+Description: Maya Embedded Language
+Author: Shuen-Huei Guan <drake.guan@gmail.com>
+*/
+
+hljs.LANGUAGES.mel = {
+  defaultMode: {
+    keywords: {
+      'int': 1, 'float': 1, 'string': 1, 'float': 1, 'vector': 1, 'matrix': 1,
+      'if': 1, 'else': 1, 'switch': 1, 'case': 1, 'default': 1, 'while': 1, 'do': 1, 'for': 1, 'in': 1, 'break': 1, 'continue': 1,
+      'exists': 1, 'objExists': 1, 'attributeExists': 1,
+      'global': 1, 'proc': 1, 'return': 1,
+      'error': 1, 'warning': 1, 'trace': 1, 'catch': 1,
+      'about': 1, 'abs': 1, 'addAttr': 1, 'addAttributeEditorNodeHelp': 1, 'addDynamic': 1, 'addNewShelfTab': 1, 'addPP': 1, 'addPanelCategory': 1, 'addPrefixToName': 1, 'advanceToNextDrivenKey': 1, 'affectedNet': 1, 'affects': 1, 'aimConstraint': 1, 'air': 1, 'alias': 1, 'aliasAttr': 1, 'align': 1, 'alignCtx': 1, 'alignCurve': 1, 'alignSurface': 1, 'allViewFit': 1, 'ambientLight': 1, 'angle': 1, 'angleBetween': 1, 'animCone': 1, 'animCurveEditor': 1, 'animDisplay': 1, 'animView': 1, 'annotate': 1, 'appendStringArray': 1, 'applicationName': 1, 'applyAttrPreset': 1, 'applyTake': 1, 'arcLenDimContext': 1, 'arcLengthDimension': 1, 'arclen': 1, 'arrayMapper': 1, 'art3dPaintCtx': 1, 'artAttrCtx': 1, 'artAttrPaintVertexCtx': 1, 'artAttrSkinPaintCtx': 1, 'artAttrTool': 1, 'artBuildPaintMenu': 1, 'artFluidAttrCtx': 1, 'artPuttyCtx': 1, 'artSelectCtx': 1, 'artSetPaintCtx': 1, 'artUserPaintCtx': 1, 'assignCommand': 1, 'assignInputDevice': 1, 'assignViewportFactories': 1, 'attachCurve': 1, 'attachDeviceAttr': 1, 'attachSurface': 1, 'attrColorSliderGrp': 1, 'attrCompatibility': 1, 'attrControlGrp': 1, 'attrEnumOptionMenu': 1, 'attrEnumOptionMenuGrp': 1, 'attrFieldGrp': 1, 'attrFieldSliderGrp': 1, 'attrNavigationControlGrp': 1, 'attrPresetEditWin': 1, 'attributeExists': 1, 'attributeInfo': 1, 'attributeMenu': 1, 'attributeQuery': 1, 'autoKeyframe': 1, 'autoPlace': 1, 'bakeClip': 1, 'bakeFluidShading': 1, 'bakePartialHistory': 1, 'bakeResults': 1, 'bakeSimulation': 1, 'basename': 1, 'basenameEx': 1, 'batchRender': 1, 'bessel': 1, 'bevel': 1, 'bevelPlus': 1, 'binMembership': 1, 'bindSkin': 1, 'blend2': 1, 'blendShape': 1, 'blendShapeEditor': 1, 'blendShapePanel': 1, 'blendTwoAttr': 1, 'blindDataType': 1, 'boneLattice': 1, 'boundary': 1, 'boxDollyCtx': 1, 'boxZoomCtx': 1, 'bufferCurve': 1, 'buildBookmarkMenu': 1, 'buildKeyframeMenu': 1, 'button': 1, 'buttonManip': 1, 'CBG': 1, 'cacheFile': 1, 'cacheFileCombine': 1, 'cacheFileMerge': 1, 'cacheFileTrack': 1, 'camera': 1, 'cameraView': 1, 'canCreateManip': 1, 'canvas': 1, 'capitalizeString': 1, 'catch': 1, 'catchQuiet': 1, 'ceil': 1, 'changeSubdivComponentDisplayLevel': 1, 'changeSubdivRegion': 1, 'channelBox': 1, 'character': 1, 'characterMap': 1, 'characterOutlineEditor': 1, 'characterize': 1, 'chdir': 1, 'checkBox': 1, 'checkBoxGrp': 1, 'checkDefaultRenderGlobals': 1, 'choice': 1, 'circle': 1, 'circularFillet': 1, 'clamp': 1, 'clear': 1, 'clearCache': 1, 'clip': 1, 'clipEditor': 1, 'clipEditorCurrentTimeCtx': 1, 'clipSchedule': 1, 'clipSchedulerOutliner': 1, 'clipTrimBefore': 1, 'closeCurve': 1, 'closeSurface': 1, 'cluster': 1, 'cmdFileOutput': 1, 'cmdScrollFieldExecuter': 1, 'cmdScrollFieldReporter': 1, 'cmdShell': 1, 'coarsenSubdivSelectionList': 1, 'collision': 1, 'color': 1, 'colorAtPoint': 1, 'colorEditor': 1, 'colorIndex': 1, 'colorIndexSliderGrp': 1, 'colorSliderButtonGrp': 1, 'colorSliderGrp': 1, 'columnLayout': 1, 'commandEcho': 1, 'commandLine': 1, 'commandPort': 1, 'compactHairSystem': 1, 'componentEditor': 1, 'compositingInterop': 1, 'computePolysetVolume': 1, 'condition': 1, 'cone': 1, 'confirmDialog': 1, 'connectAttr': 1, 'connectControl': 1, 'connectDynamic': 1, 'connectJoint': 1, 'connectionInfo': 1, 'constrain': 1, 'constrainValue': 1, 'constructionHistory': 1, 'container': 1, 'containsMultibyte': 1, 'contextInfo': 1, 'control': 1, 'convertFromOldLayers': 1, 'convertIffToPsd': 1, 'convertLightmap': 1, 'convertSolidTx': 1, 'convertTessellation': 1, 'convertUnit': 1, 'copyArray': 1, 'copyFlexor': 1, 'copyKey': 1, 'copySkinWeights': 1, 'cos': 1, 'cpButton': 1, 'cpCache': 1, 'cpClothSet': 1, 'cpCollision': 1, 'cpConstraint': 1, 'cpConvClothToMesh': 1, 'cpForces': 1, 'cpGetSolverAttr': 1, 'cpPanel': 1, 'cpProperty': 1, 'cpRigidCollisionFilter': 1, 'cpSeam': 1, 'cpSetEdit': 1, 'cpSetSolverAttr': 1, 'cpSolver': 1, 'cpSolverTypes': 1, 'cpTool': 1, 'cpUpdateClothUVs': 1, 'createDisplayLayer': 1, 'createDrawCtx': 1, 'createEditor': 1, 'createLayeredPsdFile': 1, 'createMotionField': 1, 'createNewShelf': 1, 'createNode': 1, 'createRenderLayer': 1, 'createSubdivRegion': 1, 'cross': 1, 'crossProduct': 1, 'ctxAbort': 1, 'ctxCompletion': 1, 'ctxEditMode': 1, 'ctxTraverse': 1, 'currentCtx': 1, 'currentTime': 1, 'currentTimeCtx': 1, 'currentUnit': 1, 'currentUnit': 1, 'curve': 1, 'curveAddPtCtx': 1, 'curveCVCtx': 1, 'curveEPCtx': 1, 'curveEditorCtx': 1, 'curveIntersect': 1, 'curveMoveEPCtx': 1, 'curveOnSurface': 1, 'curveSketchCtx': 1, 'cutKey': 1, 'cycleCheck': 1, 'cylinder': 1, 'dagPose': 1, 'date': 1, 'defaultLightListCheckBox': 1, 'defaultNavigation': 1, 'defineDataServer': 1, 'defineVirtualDevice': 1, 'deformer': 1, 'deg_to_rad': 1, 'delete': 1, 'deleteAttr': 1, 'deleteShadingGroupsAndMaterials': 1, 'deleteShelfTab': 1, 'deleteUI': 1, 'deleteUnusedBrushes': 1, 'delrandstr': 1, 'detachCurve': 1, 'detachDeviceAttr': 1, 'detachSurface': 1, 'deviceEditor': 1, 'devicePanel': 1, 'dgInfo': 1, 'dgdirty': 1, 'dgeval': 1, 'dgtimer': 1, 'dimWhen': 1, 'directKeyCtx': 1, 'directionalLight': 1, 'dirmap': 1, 'dirname': 1, 'disable': 1, 'disconnectAttr': 1, 'disconnectJoint': 1, 'diskCache': 1, 'displacementToPoly': 1, 'displayAffected': 1, 'displayColor': 1, 'displayCull': 1, 'displayLevelOfDetail': 1, 'displayPref': 1, 'displayRGBColor': 1, 'displaySmoothness': 1, 'displayStats': 1, 'displayString': 1, 'displaySurface': 1, 'distanceDimContext': 1, 'distanceDimension': 1, 'doBlur': 1, 'dolly': 1, 'dollyCtx': 1, 'dopeSheetEditor': 1, 'dot': 1, 'dotProduct': 1, 'doubleProfileBirailSurface': 1, 'drag': 1, 'dragAttrContext': 1, 'draggerContext': 1, 'dropoffLocator': 1, 'duplicate': 1, 'duplicateCurve': 1, 'duplicateSurface': 1, 'dynCache': 1, 'dynControl': 1, 'dynExport': 1, 'dynExpression': 1, 'dynGlobals': 1, 'dynPaintEditor': 1, 'dynParticleCtx': 1, 'dynPref': 1, 'dynRelEdPanel': 1, 'dynRelEditor': 1, 'dynamicLoad': 1, 'editAttrLimits': 1, 'editDisplayLayerGlobals': 1, 'editDisplayLayerMembers': 1, 'editRenderLayerAdjustment': 1, 'editRenderLayerGlobals': 1, 'editRenderLayerMembers': 1, 'editor': 1, 'editorTemplate': 1, 'effector': 1, 'emit': 1, 'emitter': 1, 'enableDevice': 1, 'encodeString': 1, 'endString': 1, 'endsWith': 1, 'env': 1, 'equivalent': 1, 'equivalentTol': 1, 'erf': 1, 'error': 1, 'eval': 1, 'eval': 1, 'evalDeferred': 1, 'evalEcho': 1, 'event': 1, 'exactWorldBoundingBox': 1, 'exclusiveLightCheckBox': 1, 'exec': 1, 'executeForEachObject': 1, 'exists': 1, 'exp': 1, 'expression': 1, 'expressionEditorListen': 1, 'extendCurve': 1, 'extendSurface': 1, 'extrude': 1, 'fcheck': 1, 'fclose': 1, 'feof': 1, 'fflush': 1, 'fgetline': 1, 'fgetword': 1, 'file': 1, 'fileBrowserDialog': 1, 'fileDialog': 1, 'fileExtension': 1, 'fileInfo': 1, 'filetest': 1, 'filletCurve': 1, 'filter': 1, 'filterCurve': 1, 'filterExpand': 1, 'filterStudioImport': 1, 'findAllIntersections': 1, 'findAnimCurves': 1, 'findKeyframe': 1, 'findMenuItem': 1, 'findRelatedSkinCluster': 1, 'finder': 1, 'firstParentOf': 1, 'fitBspline': 1, 'flexor': 1, 'floatEq': 1, 'floatField': 1, 'floatFieldGrp': 1, 'floatScrollBar': 1, 'floatSlider': 1, 'floatSlider2': 1, 'floatSliderButtonGrp': 1, 'floatSliderGrp': 1, 'floor': 1, 'flow': 1, 'fluidCacheInfo': 1, 'fluidEmitter': 1, 'fluidVoxelInfo': 1, 'flushUndo': 1, 'fmod': 1, 'fontDialog': 1, 'fopen': 1, 'formLayout': 1, 'format': 1, 'fprint': 1, 'frameLayout': 1, 'fread': 1, 'freeFormFillet': 1, 'frewind': 1, 'fromNativePath': 1, 'fwrite': 1, 'gamma': 1, 'gauss': 1, 'geometryConstraint': 1, 'getApplicationVersionAsFloat': 1, 'getAttr': 1, 'getClassification': 1, 'getDefaultBrush': 1, 'getFileList': 1, 'getFluidAttr': 1, 'getInputDeviceRange': 1, 'getMayaPanelTypes': 1, 'getModifiers': 1, 'getPanel': 1, 'getParticleAttr': 1, 'getPluginResource': 1, 'getenv': 1, 'getpid': 1, 'glRender': 1, 'glRenderEditor': 1, 'globalStitch': 1, 'gmatch': 1, 'goal': 1, 'gotoBindPose': 1, 'grabColor': 1, 'gradientControl': 1, 'gradientControlNoAttr': 1, 'graphDollyCtx': 1, 'graphSelectContext': 1, 'graphTrackCtx': 1, 'gravity': 1, 'grid': 1, 'gridLayout': 1, 'group': 1, 'groupObjectsByName': 1, 'HfAddAttractorToAS': 1, 'HfAssignAS': 1, 'HfBuildEqualMap': 1, 'HfBuildFurFiles': 1, 'HfBuildFurImages': 1, 'HfCancelAFR': 1, 'HfConnectASToHF': 1, 'HfCreateAttractor': 1, 'HfDeleteAS': 1, 'HfEditAS': 1, 'HfPerformCreateAS': 1, 'HfRemoveAttractorFromAS': 1, 'HfSelectAttached': 1, 'HfSelectAttractors': 1, 'HfUnAssignAS': 1, 'hardenPointCurve': 1, 'hardware': 1, 'hardwareRenderPanel': 1, 'headsUpDisplay': 1, 'headsUpMessage': 1, 'help': 1, 'helpLine': 1, 'hermite': 1, 'hide': 1, 'hilite': 1, 'hitTest': 1, 'hotBox': 1, 'hotkey': 1, 'hotkeyCheck': 1, 'hsv_to_rgb': 1, 'hudButton': 1, 'hudSlider': 1, 'hudSliderButton': 1, 'hwReflectionMap': 1, 'hwRender': 1, 'hwRenderLoad': 1, 'hyperGraph': 1, 'hyperPanel': 1, 'hyperShade': 1, 'hypot': 1, 'iconTextButton': 1, 'iconTextCheckBox': 1, 'iconTextRadioButton': 1, 'iconTextRadioCollection': 1, 'iconTextScrollList': 1, 'iconTextStaticLabel': 1, 'ikHandle': 1, 'ikHandleCtx': 1, 'ikHandleDisplayScale': 1, 'ikSolver': 1, 'ikSplineHandleCtx': 1, 'ikSystem': 1, 'ikSystemInfo': 1, 'ikfkDisplayMethod': 1, 'illustratorCurves': 1, 'image': 1, 'imfPlugins': 1, 'inheritTransform': 1, 'insertJoint': 1, 'insertJointCtx': 1, 'insertKeyCtx': 1, 'insertKnotCurve': 1, 'insertKnotSurface': 1, 'instance': 1, 'instanceable': 1, 'instancer': 1, 'intField': 1, 'intFieldGrp': 1, 'intScrollBar': 1, 'intSlider': 1, 'intSliderGrp': 1, 'interToUI': 1, 'internalVar': 1, 'intersect': 1, 'iprEngine': 1, 'isAnimCurve': 1, 'isConnected': 1, 'isDirty': 1, 'isParentOf': 1, 'isSameObject': 1, 'isTrue': 1, 'isValidObjectName': 1, 'isValidString': 1, 'isValidUiName': 1, 'isolateSelect': 1, 'itemFilter': 1, 'itemFilterAttr': 1, 'itemFilterRender': 1, 'itemFilterType': 1, 'joint': 1, 'jointCluster': 1, 'jointCtx': 1, 'jointDisplayScale': 1, 'jointLattice': 1, 'keyTangent': 1, 'keyframe': 1, 'keyframeOutliner': 1, 'keyframeRegionCurrentTimeCtx': 1, 'keyframeRegionDirectKeyCtx': 1, 'keyframeRegionDollyCtx': 1, 'keyframeRegionInsertKeyCtx': 1, 'keyframeRegionMoveKeyCtx': 1, 'keyframeRegionScaleKeyCtx': 1, 'keyframeRegionSelectKeyCtx': 1, 'keyframeRegionSetKeyCtx': 1, 'keyframeRegionTrackCtx': 1, 'keyframeStats': 1, 'lassoContext': 1, 'lattice': 1, 'latticeDeformKeyCtx': 1, 'launch': 1, 'launchImageEditor': 1, 'layerButton': 1, 'layeredShaderPort': 1, 'layeredTexturePort': 1, 'layout': 1, 'layoutDialog': 1, 'lightList': 1, 'lightListEditor': 1, 'lightListPanel': 1, 'lightlink': 1, 'lineIntersection': 1, 'linearPrecision': 1, 'linstep': 1, 'listAnimatable': 1, 'listAttr': 1, 'listCameras': 1, 'listConnections': 1, 'listDeviceAttachments': 1, 'listHistory': 1, 'listInputDeviceAxes': 1, 'listInputDeviceButtons': 1, 'listInputDevices': 1, 'listMenuAnnotation': 1, 'listNodeTypes': 1, 'listPanelCategories': 1, 'listRelatives': 1, 'listSets': 1, 'listTransforms': 1, 'listUnselected': 1, 'listerEditor': 1, 'loadFluid': 1, 'loadNewShelf': 1, 'loadPlugin': 1, 'loadPluginLanguageResources': 1, 'loadPrefObjects': 1, 'localizedPanelLabel': 1, 'lockNode': 1, 'loft': 1, 'log': 1, 'longNameOf': 1, 'lookThru': 1, 'ls': 1, 'lsThroughFilter': 1, 'lsType': 1, 'lsUI': 1, 'Mayatomr': 1, 'mag': 1, 'makeIdentity': 1, 'makeLive': 1, 'makePaintable': 1, 'makeRoll': 1, 'makeSingleSurface': 1, 'makeTubeOn': 1, 'makebot': 1, 'manipMoveContext': 1, 'manipMoveLimitsCtx': 1, 'manipOptions': 1, 'manipRotateContext': 1, 'manipRotateLimitsCtx': 1, 'manipScaleContext': 1, 'manipScaleLimitsCtx': 1, 'marker': 1, 'match': 1, 'max': 1, 'memory': 1, 'menu': 1, 'menuBarLayout': 1, 'menuEditor': 1, 'menuItem': 1, 'menuItemToShelf': 1, 'menuSet': 1, 'menuSetPref': 1, 'messageLine': 1, 'min': 1, 'minimizeApp': 1, 'mirrorJoint': 1, 'modelCurrentTimeCtx': 1, 'modelEditor': 1, 'modelPanel': 1, 'mouse': 1, 'movIn': 1, 'movOut': 1, 'move': 1, 'moveIKtoFK': 1, 'moveKeyCtx': 1, 'moveVertexAlongDirection': 1, 'multiProfileBirailSurface': 1, 'mute': 1, 'nParticle': 1, 'nameCommand': 1, 'nameField': 1, 'namespace': 1, 'namespaceInfo': 1, 'newPanelItems': 1, 'newton': 1, 'nodeCast': 1, 'nodeIconButton': 1, 'nodeOutliner': 1, 'nodePreset': 1, 'nodeType': 1, 'noise': 1, 'nonLinear': 1, 'normalConstraint': 1, 'normalize': 1, 'nurbsBoolean': 1, 'nurbsCopyUVSet': 1, 'nurbsCube': 1, 'nurbsEditUV': 1, 'nurbsPlane': 1, 'nurbsSelect': 1, 'nurbsSquare': 1, 'nurbsToPoly': 1, 'nurbsToPolygonsPref': 1, 'nurbsToSubdiv': 1, 'nurbsToSubdivPref': 1, 'nurbsUVSet': 1, 'nurbsViewDirectionVector': 1, 'objExists': 1, 'objectCenter': 1, 'objectLayer': 1, 'objectType': 1, 'objectTypeUI': 1, 'obsoleteProc': 1, 'oceanNurbsPreviewPlane': 1, 'offsetCurve': 1, 'offsetCurveOnSurface': 1, 'offsetSurface': 1, 'openGLExtension': 1, 'openMayaPref': 1, 'optionMenu': 1, 'optionMenuGrp': 1, 'optionVar': 1, 'orbit': 1, 'orbitCtx': 1, 'orientConstraint': 1, 'outlinerEditor': 1, 'outlinerPanel': 1, 'overrideModifier': 1, 'paintEffectsDisplay': 1, 'pairBlend': 1, 'palettePort': 1, 'paneLayout': 1, 'panel': 1, 'panelConfiguration': 1, 'panelHistory': 1, 'paramDimContext': 1, 'paramDimension': 1, 'paramLocator': 1, 'parent': 1, 'parentConstraint': 1, 'particle': 1, 'particleExists': 1, 'particleInstancer': 1, 'particleRenderInfo': 1, 'partition': 1, 'pasteKey': 1, 'pathAnimation': 1, 'pause': 1, 'pclose': 1, 'percent': 1, 'performanceOptions': 1, 'pfxstrokes': 1, 'pickWalk': 1, 'picture': 1, 'pixelMove': 1, 'planarSrf': 1, 'plane': 1, 'play': 1, 'playbackOptions': 1, 'playblast': 1, 'plugAttr': 1, 'plugNode': 1, 'pluginInfo': 1, 'pluginResourceUtil': 1, 'pointConstraint': 1, 'pointCurveConstraint': 1, 'pointLight': 1, 'pointMatrixMult': 1, 'pointOnCurve': 1, 'pointOnSurface': 1, 'pointPosition': 1, 'poleVectorConstraint': 1, 'polyAppend': 1, 'polyAppendFacetCtx': 1, 'polyAppendVertex': 1, 'polyAutoProjection': 1, 'polyAverageNormal': 1, 'polyAverageVertex': 1, 'polyBevel': 1, 'polyBlendColor': 1, 'polyBlindData': 1, 'polyBoolOp': 1, 'polyBridgeEdge': 1, 'polyCacheMonitor': 1, 'polyCheck': 1, 'polyChipOff': 1, 'polyClipboard': 1, 'polyCloseBorder': 1, 'polyCollapseEdge': 1, 'polyCollapseFacet': 1, 'polyColorBlindData': 1, 'polyColorDel': 1, 'polyColorPerVertex': 1, 'polyColorSet': 1, 'polyCompare': 1, 'polyCone': 1, 'polyCopyUV': 1, 'polyCrease': 1, 'polyCreaseCtx': 1, 'polyCreateFacet': 1, 'polyCreateFacetCtx': 1, 'polyCube': 1, 'polyCut': 1, 'polyCutCtx': 1, 'polyCylinder': 1, 'polyCylindricalProjection': 1, 'polyDelEdge': 1, 'polyDelFacet': 1, 'polyDelVertex': 1, 'polyDuplicateAndConnect': 1, 'polyDuplicateEdge': 1, 'polyEditUV': 1, 'polyEditUVShell': 1, 'polyEvaluate': 1, 'polyExtrudeEdge': 1, 'polyExtrudeFacet': 1, 'polyExtrudeVertex': 1, 'polyFlipEdge': 1, 'polyFlipUV': 1, 'polyForceUV': 1, 'polyGeoSampler': 1, 'polyHelix': 1, 'polyInfo': 1, 'polyInstallAction': 1, 'polyLayoutUV': 1, 'polyListComponentConversion': 1, 'polyMapCut': 1, 'polyMapDel': 1, 'polyMapSew': 1, 'polyMapSewMove': 1, 'polyMergeEdge': 1, 'polyMergeEdgeCtx': 1, 'polyMergeFacet': 1, 'polyMergeFacetCtx': 1, 'polyMergeUV': 1, 'polyMergeVertex': 1, 'polyMirrorFace': 1, 'polyMoveEdge': 1, 'polyMoveFacet': 1, 'polyMoveFacetUV': 1, 'polyMoveUV': 1, 'polyMoveVertex': 1, 'polyNormal': 1, 'polyNormalPerVertex': 1, 'polyNormalizeUV': 1, 'polyOptUvs': 1, 'polyOptions': 1, 'polyOutput': 1, 'polyPipe': 1, 'polyPlanarProjection': 1, 'polyPlane': 1, 'polyPlatonicSolid': 1, 'polyPoke': 1, 'polyPrimitive': 1, 'polyPrism': 1, 'polyProjection': 1, 'polyPyramid': 1, 'polyQuad': 1, 'polyQueryBlindData': 1, 'polyReduce': 1, 'polySelect': 1, 'polySelectConstraint': 1, 'polySelectConstraintMonitor': 1, 'polySelectCtx': 1, 'polySelectEditCtx': 1, 'polySeparate': 1, 'polySetToFaceNormal': 1, 'polySewEdge': 1, 'polyShortestPathCtx': 1, 'polySmooth': 1, 'polySoftEdge': 1, 'polySphere': 1, 'polySphericalProjection': 1, 'polySplit': 1, 'polySplitCtx': 1, 'polySplitEdge': 1, 'polySplitRing': 1, 'polySplitVertex': 1, 'polyStraightenUVBorder': 1, 'polySubdivideEdge': 1, 'polySubdivideFacet': 1, 'polyToSubdiv': 1, 'polyTorus': 1, 'polyTransfer': 1, 'polyTriangulate': 1, 'polyUVSet': 1, 'polyUnite': 1, 'polyWedgeFace': 1, 'popen': 1, 'popupMenu': 1, 'pose': 1, 'pow': 1, 'preloadRefEd': 1, 'print': 1, 'progressBar': 1, 'progressWindow': 1, 'projFileViewer': 1, 'projectCurve': 1, 'projectTangent': 1, 'projectionContext': 1, 'projectionManip': 1, 'promptDialog': 1, 'propModCtx': 1, 'propMove': 1, 'psdChannelOutliner': 1, 'psdEditTextureFile': 1, 'psdExport': 1, 'psdTextureFile': 1, 'putenv': 1, 'pwd': 1, 'python': 1, 'querySubdiv': 1, 'quit': 1, 'rad_to_deg': 1, 'radial': 1, 'radioButton': 1, 'radioButtonGrp': 1, 'radioCollection': 1, 'radioMenuItemCollection': 1, 'rampColorPort': 1, 'rand': 1, 'randomizeFollicles': 1, 'randstate': 1, 'rangeControl': 1, 'readTake': 1, 'rebuildCurve': 1, 'rebuildSurface': 1, 'recordAttr': 1, 'recordDevice': 1, 'redo': 1, 'reference': 1, 'referenceEdit': 1, 'referenceQuery': 1, 'refineSubdivSelectionList': 1, 'refresh': 1, 'refreshAE': 1, 'registerPluginResource': 1, 'rehash': 1, 'reloadImage': 1, 'removeJoint': 1, 'removeMultiInstance': 1, 'removePanelCategory': 1, 'rename': 1, 'renameAttr': 1, 'renameSelectionList': 1, 'renameUI': 1, 'render': 1, 'renderGlobalsNode': 1, 'renderInfo': 1, 'renderLayerButton': 1, 'renderLayerParent': 1, 'renderLayerPostProcess': 1, 'renderLayerUnparent': 1, 'renderManip': 1, 'renderPartition': 1, 'renderQualityNode': 1, 'renderSettings': 1, 'renderThumbnailUpdate': 1, 'renderWindowEditor': 1, 'renderWindowSelectContext': 1, 'renderer': 1, 'reorder': 1, 'reorderDeformers': 1, 'requires': 1, 'reroot': 1, 'resampleFluid': 1, 'resetAE': 1, 'resetPfxToPolyCamera': 1, 'resetTool': 1, 'resolutionNode': 1, 'retarget': 1, 'reverseCurve': 1, 'reverseSurface': 1, 'revolve': 1, 'rgb_to_hsv': 1, 'rigidBody': 1, 'rigidSolver': 1, 'roll': 1, 'rollCtx': 1, 'rootOf': 1, 'rot': 1, 'rotate': 1, 'rotationInterpolation': 1, 'roundConstantRadius': 1, 'rowColumnLayout': 1, 'rowLayout': 1, 'runTimeCommand': 1, 'runup': 1, 'sampleImage': 1, 'saveAllShelves': 1, 'saveAttrPreset': 1, 'saveFluid': 1, 'saveImage': 1, 'saveInitialState': 1, 'saveMenu': 1, 'savePrefObjects': 1, 'savePrefs': 1, 'saveShelf': 1, 'saveToolSettings': 1, 'scale': 1, 'scaleBrushBrightness': 1, 'scaleComponents': 1, 'scaleConstraint': 1, 'scaleKey': 1, 'scaleKeyCtx': 1, 'sceneEditor': 1, 'sceneUIReplacement': 1, 'scmh': 1, 'scriptCtx': 1, 'scriptEditorInfo': 1, 'scriptJob': 1, 'scriptNode': 1, 'scriptTable': 1, 'scriptToShelf': 1, 'scriptedPanel': 1, 'scriptedPanelType': 1, 'scrollField': 1, 'scrollLayout': 1, 'sculpt': 1, 'searchPathArray': 1, 'seed': 1, 'selLoadSettings': 1, 'select': 1, 'selectContext': 1, 'selectCurveCV': 1, 'selectKey': 1, 'selectKeyCtx': 1, 'selectKeyframeRegionCtx': 1, 'selectMode': 1, 'selectPref': 1, 'selectPriority': 1, 'selectType': 1, 'selectedNodes': 1, 'selectionConnection': 1, 'separator': 1, 'setAttr': 1, 'setAttrEnumResource': 1, 'setAttrMapping': 1, 'setAttrNiceNameResource': 1, 'setConstraintRestPosition': 1, 'setDefaultShadingGroup': 1, 'setDrivenKeyframe': 1, 'setDynamic': 1, 'setEditCtx': 1, 'setEditor': 1, 'setFluidAttr': 1, 'setFocus': 1, 'setInfinity': 1, 'setInputDeviceMapping': 1, 'setKeyCtx': 1, 'setKeyPath': 1, 'setKeyframe': 1, 'setKeyframeBlendshapeTargetWts': 1, 'setMenuMode': 1, 'setNodeNiceNameResource': 1, 'setNodeTypeFlag': 1, 'setParent': 1, 'setParticleAttr': 1, 'setPfxToPolyCamera': 1, 'setPluginResource': 1, 'setProject': 1, 'setStampDensity': 1, 'setStartupMessage': 1, 'setState': 1, 'setToolTo': 1, 'setUITemplate': 1, 'setXformManip': 1, 'sets': 1, 'shadingConnection': 1, 'shadingGeometryRelCtx': 1, 'shadingLightRelCtx': 1, 'shadingNetworkCompare': 1, 'shadingNode': 1, 'shapeCompare': 1, 'shelfButton': 1, 'shelfLayout': 1, 'shelfTabLayout': 1, 'shellField': 1, 'shortNameOf': 1, 'showHelp': 1, 'showHidden': 1, 'showManipCtx': 1, 'showSelectionInTitle': 1, 'showShadingGroupAttrEditor': 1, 'showWindow': 1, 'sign': 1, 'simplify': 1, 'sin': 1, 'singleProfileBirailSurface': 1, 'size': 1, 'sizeBytes': 1, 'skinCluster': 1, 'skinPercent': 1, 'smoothCurve': 1, 'smoothTangentSurface': 1, 'smoothstep': 1, 'snap2to2': 1, 'snapKey': 1, 'snapMode': 1, 'snapTogetherCtx': 1, 'snapshot': 1, 'soft': 1, 'softMod': 1, 'softModCtx': 1, 'sort': 1, 'sound': 1, 'soundControl': 1, 'source': 1, 'spaceLocator': 1, 'sphere': 1, 'sphrand': 1, 'spotLight': 1, 'spotLightPreviewPort': 1, 'spreadSheetEditor': 1, 'spring': 1, 'sqrt': 1, 'squareSurface': 1, 'srtContext': 1, 'stackTrace': 1, 'startString': 1, 'startsWith': 1, 'stitchAndExplodeShell': 1, 'stitchSurface': 1, 'stitchSurfacePoints': 1, 'strcmp': 1, 'stringArrayCatenate': 1, 'stringArrayContains': 1, 'stringArrayCount': 1, 'stringArrayInsertAtIndex': 1, 'stringArrayIntersector': 1, 'stringArrayRemove': 1, 'stringArrayRemoveAtIndex': 1, 'stringArrayRemoveDuplicates': 1, 'stringArrayRemoveExact': 1, 'stringArrayToString': 1, 'stringToStringArray': 1, 'strip': 1, 'stripPrefixFromName': 1, 'stroke': 1, 'subdAutoProjection': 1, 'subdCleanTopology': 1, 'subdCollapse': 1, 'subdDuplicateAndConnect': 1, 'subdEditUV': 1, 'subdListComponentConversion': 1, 'subdMapCut': 1, 'subdMapSewMove': 1, 'subdMatchTopology': 1, 'subdMirror': 1, 'subdToBlind': 1, 'subdToPoly': 1, 'subdTransferUVsToCache': 1, 'subdiv': 1, 'subdivCrease': 1, 'subdivDisplaySmoothness': 1, 'substitute': 1, 'substituteAllString': 1, 'substituteGeometry': 1, 'substring': 1, 'surface': 1, 'surfaceSampler': 1, 'surfaceShaderList': 1, 'swatchDisplayPort': 1, 'switchTable': 1, 'symbolButton': 1, 'symbolCheckBox': 1, 'sysFile': 1, 'system': 1, 'tabLayout': 1, 'tan': 1, 'tangentConstraint': 1, 'texLatticeDeformContext': 1, 'texManipContext': 1, 'texMoveContext': 1, 'texMoveUVShellContext': 1, 'texRotateContext': 1, 'texScaleContext': 1, 'texSelectContext': 1, 'texSelectShortestPathCtx': 1, 'texSmudgeUVContext': 1, 'texWinToolCtx': 1, 'text': 1, 'textCurves': 1, 'textField': 1, 'textFieldButtonGrp': 1, 'textFieldGrp': 1, 'textManip': 1, 'textScrollList': 1, 'textToShelf': 1, 'textureDisplacePlane': 1, 'textureHairColor': 1, 'texturePlacementContext': 1, 'textureWindow': 1, 'threadCount': 1, 'threePointArcCtx': 1, 'timeControl': 1, 'timePort': 1, 'timerX': 1, 'toNativePath': 1, 'toggle': 1, 'toggleAxis': 1, 'toggleWindowVisibility': 1, 'tokenize': 1, 'tokenizeList': 1, 'tolerance': 1, 'tolower': 1, 'toolButton': 1, 'toolCollection': 1, 'toolDropped': 1, 'toolHasOptions': 1, 'toolPropertyWindow': 1, 'torus': 1, 'toupper': 1, 'trace': 1, 'track': 1, 'trackCtx': 1, 'transferAttributes': 1, 'transformCompare': 1, 'transformLimits': 1, 'translator': 1, 'trim': 1, 'trunc': 1, 'truncateFluidCache': 1, 'truncateHairCache': 1, 'tumble': 1, 'tumbleCtx': 1, 'turbulence': 1, 'twoPointArcCtx': 1, 'uiRes': 1, 'uiTemplate': 1, 'unassignInputDevice': 1, 'undo': 1, 'undoInfo': 1, 'ungroup': 1, 'uniform': 1, 'unit': 1, 'unloadPlugin': 1, 'untangleUV': 1, 'untitledFileName': 1, 'untrim': 1, 'upAxis': 1, 'updateAE': 1, 'userCtx': 1, 'uvLink': 1, 'uvSnapshot': 1, 'validateShelfName': 1, 'vectorize': 1, 'view2dToolCtx': 1, 'viewCamera': 1, 'viewClipPlane': 1, 'viewFit': 1, 'viewHeadOn': 1, 'viewLookAt': 1, 'viewManip': 1, 'viewPlace': 1, 'viewSet': 1, 'visor': 1, 'volumeAxis': 1, 'vortex': 1, 'waitCursor': 1, 'warning': 1, 'webBrowser': 1, 'webBrowserPrefs': 1, 'whatIs': 1, 'window': 1, 'windowPref': 1, 'wire': 1, 'wireContext': 1, 'workspace': 1, 'wrinkle': 1, 'wrinkleContext': 1, 'writeTake': 1, 'xbmLangPathList': 1, 'xform': 1
+    },
+    illegal: '</',
+    contains: [
+      hljs.C_NUMBER_MODE,
+      hljs.APOS_STRING_MODE,
+      hljs.QUOTE_STRING_MODE,
+      {
+        className: 'string',
+        begin: '`', end: '`',
+        contains: [hljs.BACKSLASH_ESCAPE]
+      },
+      {
+        className: 'variable',
+        begin: '\\$\\d',
+        relevance: 5
+      },
+      {
+        className: 'variable',
+        begin: '[\\$\\%\\@\\*](\\^\\w\\b|#\\w+|[^\\s\\w{]|{\\w+}|\\w+)'
+      },
+      hljs.C_LINE_COMMENT_MODE,
+      hljs.C_BLOCK_COMMENT_MODE
+    ]
+  }
+};
+/*
+Language: Python
+*/
+
+hljs.LANGUAGES.python = function() {
+  var STR1 = {
+    className: 'string',
+    begin: '(u|b)?r?\'\'\'', end: '\'\'\'',
+    relevance: 10
+  };
+  var STR2 = {
+    className: 'string',
+    begin: '(u|b)?r?"""', end: '"""',
+    relevance: 10
+  };
+  var STR3 = {
+    className: 'string',
+    begin: '(u|r|ur|b|br)\'', end: '\'',
+    contains: [hljs.BACKSLASH_ESCAPE],
+    relevance: 10
+  };
+  var STR4 = {
+    className: 'string',
+    begin: '(u|r|ur|b|br)"', end: '"',
+    contains: [hljs.BACKSLASH_ESCAPE],
+    relevance: 10
+  };
+  var TITLE = {
+    className: 'title', begin: hljs.UNDERSCORE_IDENT_RE
+  };
+  var PARAMS = {
+    className: 'params',
+    begin: '\\(', end: '\\)',
+    contains: [STR1, STR2, STR3, STR4, hljs.APOS_STRING_MODE, hljs.QUOTE_STRING_MODE]
+  };
+
+  return {
+    defaultMode: {
+      keywords: {
+        'keyword': {'and': 1, 'elif': 1, 'is': 1, 'global': 1, 'as': 1, 'in': 1, 'if': 1, 'from': 1, 'raise': 1, 'for': 1, 'except': 1, 'finally': 1, 'print': 1, 'import': 1, 'pass': 1, 'return': 1, 'exec': 1, 'else': 1, 'break': 1, 'not': 1, 'with': 1, 'class': 1, 'assert': 1, 'yield': 1, 'try': 1, 'while': 1, 'continue': 1, 'del': 1, 'or': 1, 'def': 1, 'lambda': 1, 'nonlocal': 10},
+        'built_in': {'None': 1, 'True': 1, 'False': 1, 'Ellipsis': 1, 'NotImplemented': 1}
+      },
+      illegal: '(</|->|\\?)',
+      contains: [
+        hljs.HASH_COMMENT_MODE,
+        STR1, STR2, STR3, STR4, hljs.APOS_STRING_MODE, hljs.QUOTE_STRING_MODE,
         {
           className: 'function',
-          begin: '(процедура|функция)', end: '$',
-          lexems: IDENT_RE_RU,
-          keywords: {'процедура': 1, 'экспорт': 1, 'функция': 1},
-          contains: [
-            {className: 'title', begin: IDENT_RE_RU},
-            {
-              className: 'tail',
-              endsWithParent: true,
-              contains: [
-                {
-                  className: 'params',
-                  begin: '\\(', end: '\\)',
-                  lexems: IDENT_RE_RU,
-                  keywords: {'знач':1},
-                  contains: [STR_START, STR_CONT]
-                },
-                {
-                  className: 'export',
-                  begin: 'экспорт', endsWithParent: true,
-                  lexems: IDENT_RE_RU,
-                  keywords: {'экспорт': 1},
-                  contains: [hljs.C_LINE_COMMENT_MODE]
-                }
-              ]
-            },
-            hljs.C_LINE_COMMENT_MODE
-          ]
+          begin: '\\bdef ', end: ':',
+          illegal: '$',
+          keywords: {'def': 1},
+          contains: [TITLE, PARAMS],
+          relevance: 10
         },
-        {className: 'preprocessor', begin: '#', end: '$'},
-        {className: 'date', begin: '\'\\d{2}\\.\\d{2}\\.(\\d{2}|\\d{4})\''}
+        {
+          className: 'class',
+          begin: '\\bclass ', end: ':',
+          illegal: '[${]',
+          keywords: {'class': 1},
+          contains: [TITLE, PARAMS],
+          relevance: 10
+        },
+        hljs.C_NUMBER_MODE,
+        {
+          className: 'decorator',
+          begin: '@', end: '$'
+        }
+      ]
+    }
+  };
+}();
+/*
+Language: PHP
+Author: Victor Karamzin <Victor.Karamzin@enterra-inc.com>
+*/
+
+hljs.LANGUAGES.php = {
+  case_insensitive: true,
+  defaultMode: {
+    keywords: {
+      'and': 1, 'include_once': 1, 'list': 1, 'abstract': 1, 'global': 1,
+      'private': 1, 'echo': 1, 'interface': 1, 'as': 1, 'static': 1,
+      'endswitch': 1, 'array': 1, 'null': 1, 'if': 1, 'endwhile': 1, 'or': 1,
+      'const': 1, 'for': 1, 'endforeach': 1, 'self': 1, 'var': 1, 'while': 1,
+      'isset': 1, 'public': 1, 'protected': 1, 'exit': 1, 'foreach': 1,
+      'throw': 1, 'elseif': 1, 'extends': 1, 'include': 1, '__FILE__': 1,
+      'empty': 1, 'require_once': 1, 'function': 1, 'do': 1, 'xor': 1,
+      'return': 1, 'implements': 1, 'parent': 1, 'clone': 1, 'use': 1,
+      '__CLASS__': 1, '__LINE__': 1, 'else': 1, 'break': 1, 'print': 1,
+      'eval': 1, 'new': 1, 'catch': 1, '__METHOD__': 1, 'class': 1, 'case': 1,
+      'exception': 1, 'php_user_filter': 1, 'default': 1, 'die': 1,
+      'require': 1, '__FUNCTION__': 1, 'enddeclare': 1, 'final': 1, 'try': 1,
+      'this': 1, 'switch': 1, 'continue': 1, 'endfor': 1, 'endif': 1,
+      'declare': 1, 'unset': 1, 'true': 1, 'false': 1, 'namespace': 1
+    },
+    contains: [
+      hljs.C_LINE_COMMENT_MODE,
+      hljs.HASH_COMMENT_MODE,
+      {
+        className: 'comment',
+        begin: '/\\*', end: '\\*/',
+        contains: [{
+            className: 'phpdoc',
+            begin: '\\s@[A-Za-z]+',
+            relevance: 10
+        }]
+      },
+      hljs.C_NUMBER_MODE,
+      hljs.inherit(hljs.APOS_STRING_MODE, {illegal: null}),
+      hljs.inherit(hljs.QUOTE_STRING_MODE, {illegal: null}),
+      {
+        className: 'variable',
+        begin: '\\$[a-zA-Z_\x7f-\xff][a-zA-Z0-9_\x7f-\xff]*'
+      },
+      {
+        className: 'preprocessor',
+        begin: '<\\?php',
+        relevance: 10
+      },
+      {
+        className: 'preprocessor',
+        begin: '\\?>'
+      }
+    ]
+  }
+};
+/*
+Language: Javascript
+*/
+
+hljs.LANGUAGES.javascript = {
+  defaultMode: {
+    keywords: {
+      'keyword': {'in': 1, 'if': 1, 'for': 1, 'while': 1, 'finally': 1, 'var': 1, 'new': 1, 'function': 1, 'do': 1, 'return': 1, 'void': 1, 'else': 1, 'break': 1, 'catch': 1, 'instanceof': 1, 'with': 1, 'throw': 1, 'case': 1, 'default': 1, 'try': 1, 'this': 1, 'switch': 1, 'continue': 1, 'typeof': 1, 'delete': 1},
+      'literal': {'true': 1, 'false': 1, 'null': 1}
+    },
+    contains: [
+      hljs.APOS_STRING_MODE,
+      hljs.QUOTE_STRING_MODE,
+      hljs.C_LINE_COMMENT_MODE,
+      hljs.C_BLOCK_COMMENT_MODE,
+      hljs.C_NUMBER_MODE,
+      { // regexp container
+        begin: '(' + hljs.RE_STARTERS_RE + '|case|return|throw)\\s*',
+        keywords: {'return': 1, 'throw': 1, 'case': 1},
+        contains: [
+          hljs.C_LINE_COMMENT_MODE,
+          hljs.C_BLOCK_COMMENT_MODE,
+          {
+            className: 'regexp',
+            begin: '/', end: '/[gim]*',
+            contains: [{begin: '\\\\/'}]
+          }
+        ],
+        relevance: 0
+      },
+      {
+        className: 'function',
+        begin: '\\bfunction\\b', end: '{',
+        keywords: {'function': 1},
+        contains: [
+          {
+            className: 'title', begin: '[A-Za-z$_][0-9A-Za-z$_]*'
+          },
+          {
+            className: 'params',
+            begin: '\\(', end: '\\)',
+            contains: [
+              hljs.APOS_STRING_MODE,
+              hljs.QUOTE_STRING_MODE,
+              hljs.C_LINE_COMMENT_MODE,
+              hljs.C_BLOCK_COMMENT_MODE
+            ]
+          }
+        ]
+      }
+    ]
+  }
+};
+/*
+Language: C++
+*/
+
+hljs.LANGUAGES.cpp = function(){
+  var CPP_KEYWORDS = {
+    'keyword': {
+      'false': 1, 'int': 1, 'float': 1, 'while': 1, 'private': 1, 'char': 1,
+      'catch': 1, 'export': 1, 'virtual': 1, 'operator': 2, 'sizeof': 2,
+      'dynamic_cast': 2, 'typedef': 2, 'const_cast': 2, 'const': 1,
+      'struct': 1, 'for': 1, 'static_cast': 2, 'union': 1, 'namespace': 1,
+      'unsigned': 1, 'long': 1, 'throw': 1, 'volatile': 2, 'static': 1,
+      'protected': 1, 'bool': 1, 'template': 1, 'mutable': 1, 'if': 1,
+      'public': 1, 'friend': 2, 'do': 1, 'return': 1, 'goto': 1, 'auto': 1,
+      'void': 2, 'enum': 1, 'else': 1, 'break': 1, 'new': 1, 'extern': 1,
+      'using': 1, 'true': 1, 'class': 1, 'asm': 1, 'case': 1, 'typeid': 1,
+      'short': 1, 'reinterpret_cast': 2, 'default': 1, 'double': 1,
+      'register': 1, 'explicit': 1, 'signed': 1, 'typename': 1, 'try': 1,
+      'this': 1, 'switch': 1, 'continue': 1, 'wchar_t': 1, 'inline': 1,
+      'delete': 1, 'alignof': 1, 'char16_t': 1, 'char32_t': 1, 'constexpr': 1,
+      'decltype': 1, 'noexcept': 1, 'nullptr': 1, 'static_assert': 1,
+      'thread_local': 1
+    },
+    'built_in': {
+      'std': 1, 'string': 1, 'cin': 1, 'cout': 1, 'cerr': 1, 'clog': 1,
+      'stringstream': 1, 'istringstream': 1, 'ostringstream': 1, 'auto_ptr': 1,
+      'deque': 1, 'list': 1, 'queue': 1, 'stack': 1, 'vector': 1, 'map': 1,
+      'set': 1, 'bitset': 1, 'multiset': 1, 'multimap': 1, 'unordered_set': 1,
+      'unordered_map': 1, 'unordered_multiset': 1, 'unordered_multimap': 1,
+      'array': 1, 'shared_ptr': 1
+    }
+  };
+  var STL_CONTAINER = {
+    className: 'stl_container',
+    begin: '\\b(deque|list|queue|stack|vector|map|set|bitset|multiset|multimap|unordered_map|unordered_set|unordered_multiset|unordered_multimap|array)\\s*<', end: '>',
+    keywords: CPP_KEYWORDS,
+    relevance: 10
+  };
+  STL_CONTAINER.contains = [STL_CONTAINER];
+  return {
+    defaultMode: {
+      keywords: CPP_KEYWORDS,
+      illegal: '</',
+      contains: [
+        hljs.C_LINE_COMMENT_MODE,
+        hljs.C_BLOCK_COMMENT_MODE,
+        hljs.QUOTE_STRING_MODE,
+        {
+          className: 'string',
+          begin: '\'', end: '[^\\\\]\'',
+          illegal: '[^\\\\][^\']'
+        },
+        hljs.C_NUMBER_MODE,
+        {
+          className: 'preprocessor',
+          begin: '#', end: '$'
+        },
+        STL_CONTAINER
       ]
     }
   };
@@ -1131,402 +1589,62 @@ hljs.LANGUAGES.apache = function(){
   };
 }();
 /*
-Language: AVR Assembler
-Author: Vladimir Ermakov <vooon341@gmail.com>
+Language: TeX
+Author: Vladimir Moskva <vladmos@gmail.com>
+Website: http://fulc.ru/
 */
 
-hljs.LANGUAGES.avrasm =
-{
-  case_insensitive: true,
-  defaultMode: {
-    keywords: {
-        'keyword': {
-          /* mnemonic */
-          'adc': 1,  'add': 1 , 'adiw': 1 , 'and': 1 , 'andi': 1 , 'asr': 1 , 'bclr': 1 , 'bld': 1 , 'brbc': 1 , 'brbs': 1 , 'brcc': 1 ,
-          'brcs': 1, 'break': 1, 'breq': 1, 'brge': 1, 'brhc': 1, 'brhs': 1, 'brid': 1, 'brie': 1, 'brlo': 1, 'brlt': 1, 'brmi': 1,
-          'brne': 1, 'brpl': 1, 'brsh': 1, 'brtc': 1, 'brts': 1, 'brvc': 1, 'brvs': 1, 'bset': 1, 'bst': 1, 'call': 1, 'cbi': 1,
-          'cbr': 1, 'clc': 1, 'clh': 1, 'cli': 1, 'cln': 1, 'clr': 1, 'cls': 1, 'clt': 1, 'clv': 1, 'clz': 1, 'com': 1, 'cp': 1,
-          'cpc': 1, 'cpi': 1, 'cpse': 1, 'dec': 1, 'eicall': 1, 'eijmp': 1, 'elpm': 1, 'eor': 1, 'fmul': 1, 'fmuls': 1, 'fmulsu': 1,
-          'icall': 1, 'ijmp': 1, 'in': 1, 'inc': 1, 'jmp': 1, 'ld': 1, 'ldd': 1, 'ldi': 1, 'lds': 1, 'lpm': 1, 'lsl': 1, 'lsr': 1,
-          'mov': 1, 'movw': 1, 'mul': 1, 'muls': 1, 'mulsu': 1, 'neg': 1, 'nop': 1, 'or': 1, 'ori': 1, 'out': 1, 'pop': 1, 'push': 1,
-          'rcall': 1, 'ret': 1, 'reti': 1, 'rjmp': 1, 'rol': 1, 'ror': 1, 'sbc': 1, 'sbr': 1, 'sbrc': 1, 'sbrs': 1, 'sec': 1, 'seh': 1,
-          'sbi': 1, 'sbci': 1, 'sbic': 1, 'sbis': 1, 'sbiw': 1, 'sei': 1, 'sen': 1, 'ser': 1, 'ses': 1, 'set': 1, 'sev': 1, 'sez': 1,
-          'sleep': 1, 'spm': 1, 'st': 1, 'std': 1, 'sts': 1, 'sub': 1, 'subi': 1, 'swap': 1, 'tst': 1, 'wdr': 1
-        },
-        'built_in': {
-          /* general purpose registers */
-          'r0': 1, 'r1': 1, 'r2': 1, 'r3': 1, 'r4': 1, 'r5': 1, 'r6': 1, 'r7': 1, 'r8': 1, 'r9': 1, 'r10': 1, 'r11': 1, 'r12': 1,
-          'r13': 1, 'r14': 1, 'r15': 1, 'r16': 1, 'r17': 1, 'r18': 1, 'r19': 1,  'r20': 1, 'r21': 1, 'r22': 1, 'r23': 1, 'r24': 1,
-          'r25': 1, 'r26': 1, 'r27': 1, 'r28': 1, 'r29': 1, 'r30': 1, 'r31': 1,
-          'x': 1 /* R27:R26 */, 'xh': 1 /* R27 */, 'xl': 1 /* R26 */,
-          'y': 1 /* R29:R28 */, 'yh': 1 /* R29 */, 'yl': 1 /* R28 */,
-          'z': 1 /* R31:R30 */, 'zh': 1 /* R31 */, 'zl': 1 /* R30 */,
-          /* IO Registers (ATMega128) */
-          'ucsr1c': 1, 'udr1': 1, 'ucsr1a': 1, 'ucsr1b': 1, 'ubrr1l': 1, 'ubrr1h': 1, 'ucsr0c': 1, 'ubrr0h': 1, 'tccr3c': 1,
-          'tccr3a': 1, 'tccr3b': 1, 'tcnt3h': 1, 'tcnt3l': 1, 'ocr3ah': 1, 'ocr3al': 1, 'ocr3bh': 1, 'ocr3bl': 1, 'ocr3ch': 1,
-          'ocr3cl': 1, 'icr3h': 1, 'icr3l': 1, 'etimsk': 1, 'etifr': 1, 'tccr1c': 1, 'ocr1ch': 1, 'ocr1cl': 1, 'twcr': 1,
-          'twdr': 1, 'twar': 1, 'twsr': 1, 'twbr': 1, 'osccal': 1, 'xmcra': 1, 'xmcrb': 1, 'eicra': 1, 'spmcsr': 1, 'spmcr': 1,
-          'portg': 1, 'ddrg': 1, 'ping': 1, 'portf': 1, 'ddrf': 1, 'sreg': 1, 'sph': 1, 'spl': 1, 'xdiv': 1, 'rampz': 1,
-          'eicrb': 1, 'eimsk': 1, 'gimsk': 1, 'gicr': 1, 'eifr': 1, 'gifr': 1, 'timsk': 1, 'tifr': 1, 'mcucr': 1,
-          'mcucsr': 1, 'tccr0': 1, 'tcnt0': 1, 'ocr0': 1, 'assr': 1, 'tccr1a': 1, 'tccr1b': 1, 'tcnt1h': 1, 'tcnt1l': 1,
-          'ocr1ah': 1, 'ocr1al': 1, 'ocr1bh': 1, 'ocr1bl': 1, 'icr1h': 1, 'icr1l': 1, 'tccr2': 1, 'tcnt2': 1, 'ocr2': 1,
-          'ocdr': 1, 'wdtcr': 1, 'sfior': 1, 'eearh': 1, 'eearl': 1, 'eedr': 1, 'eecr': 1, 'porta': 1, 'ddra': 1, 'pina': 1,
-          'portb': 1, 'ddrb': 1, 'pinb': 1, 'portc': 1, 'ddrc': 1, 'pinc': 1, 'portd': 1, 'ddrd': 1, 'pind': 1, 'spdr': 1,
-          'spsr': 1, 'spcr': 1, 'udr0': 1, 'ucsr0a': 1, 'ucsr0b': 1, 'ubrr0l': 1, 'acsr': 1, 'admux': 1, 'adcsr': 1, 'adch': 1,
-          'adcl': 1, 'porte': 1, 'ddre': 1, 'pine': 1, 'pinf': 1
-        }
-    },
-    contains: [
-      hljs.C_BLOCK_COMMENT_MODE,
-      {className: 'comment', begin: ';',  end: '$'},
-      hljs.C_NUMBER_MODE,
-      /*{  // Hex: 0x00, $00;  Oct: 0o00;  Bin: 0b00000000;  Dec: 0
-        // пока что-то не получается :(, буду использовать сишную моду.
-        className: 'number',
-        begin: '((0[xX]|\$)[A-Fa-f0-9]+|0[oO][0-7]+|0[bB][0-1]+|\\d+)'
-      }*/
-      hljs.QUOTE_STRING_MODE,
-      {
-        className: 'string',
-        begin: '\'', end: '[^\\\\]\'',
-        illegal: '[^\\\\][^\']'
-      },
-      {className: 'label',  begin: '^[A-Za-z0-9_.$]+:'},
-      {className: 'preprocessor', begin: '#', end: '$'},
-      {  // директивы «.include» «.macro» и т.д.
-        className: 'preprocessor',
-        begin: '\\.[a-zA-Z]+'
-      },
-      {  // подстановка в «.macro»
-        className: 'localvars',
-        begin: '@[0-9]+'
-      }
-    ]
-  }
-};
-
-/*
-Language: Axapta
-Author: Dmitri Roudakov <dmitri@roudakov.ru>
-*/
-
-hljs.LANGUAGES.axapta  = {
-  defaultMode: {
-    keywords: {'false': 1, 'int': 1, 'abstract': 1, 'private': 1, 'char': 1, 'interface': 1, 'boolean': 1, 'static': 1, 'null': 1, 'if': 1, 'for': 1, 'true': 1, 'while': 1, 'long': 1, 'throw': 1,  'finally': 1, 'protected': 1, 'extends': 1, 'final': 1, 'implements': 1, 'return': 1, 'void': 1, 'enum': 1, 'else': 1, 'break': 1, 'new': 1, 'catch': 1, 'byte': 1, 'super': 1, 'class': 1, 'case': 1, 'short': 1, 'default': 1, 'double': 1, 'public': 1, 'try': 1, 'this': 1, 'switch': 1, 'continue': 1,
-    'reverse':1, 'firstfast':1,'firstonly':1,'forupdate':1,'nofetch':1, 'sum':1, 'avg':1, 'minof':1, 'maxof':1, 'count':1, 'order':1, 'group':1, 'by':1, 'asc':1, 'desc':1, 'index':1, 'hint':1, 'like':1,
-    'dispaly':1, 'edit':1, 'client':1, 'server':1, 'ttsbegin':1, 'ttscommit':1,
-    'str':1, 'real':1, 'date':1, 'container':1, 'anytype':1, 'common':1, 'div':1,'mod':1
-    },
-    contains: [
-      hljs.C_LINE_COMMENT_MODE,
-      hljs.C_BLOCK_COMMENT_MODE,
-      hljs.APOS_STRING_MODE,
-      hljs.QUOTE_STRING_MODE,
-      hljs.C_NUMBER_MODE,
-      {
-        className: 'preprocessor',
-        begin: '#', end: '$'
-      },
-      {
-        className: 'class',
-        begin: '(class |interface )', end: '{',
-        illegal: ':',
-        keywords: {'class': 1, 'interface': 1},
-        contains: [
-          {
-            className: 'inheritance',
-            begin: '(implements|extends)',
-            keywords: {'extends': 1, 'implements': 1},
-            relevance: 10
-          },
-          {
-            className: 'title',
-            begin: hljs.UNDERSCORE_IDENT_RE
-          }
-        ]
-      }
-    ]
-  }
-};
-/*
-Language: Bash
-Author: vah <vahtenberg@gmail.com>
-*/
-
-hljs.LANGUAGES.bash = function(){
-  var BASH_LITERAL = {'true' : 1, 'false' : 1};
-  var VAR1 = {
-    className: 'variable',
-    begin: '\\$([a-zA-Z0-9_]+)\\b'
-  };
-  var VAR2 = {
-    className: 'variable',
-    begin: '\\$\\{(([^}])|(\\\\}))+\\}',
-    contains: [hljs.C_NUMBER_MODE]
-  };
-  var STRING = {
-    className: 'string',
-    begin: '"', end: '"',
-    illegal: '\\n',
-    contains: [hljs.BACKSLASH_ESCAPE, VAR1, VAR2],
-    relevance: 0
-  };
-  var TEST_CONDITION = {
-    className: 'test_condition',
-    begin: '', end: '',
-    contains: [STRING, VAR1, VAR2, hljs.C_NUMBER_MODE],
-    keywords: {
-      'literal': BASH_LITERAL
-    },
-    relevance: 0
-  };
-
-  return {
-    defaultMode: {
-      keywords: {
-        'keyword': {'if' : 1, 'then' : 1, 'else' : 1, 'fi' : 1, 'for' : 1, 'break' : 1, 'continue' : 1, 'while' : 1, 'in' : 1, 'do' : 1, 'done' : 1, 'echo' : 1, 'exit' : 1, 'return' : 1, 'set' : 1, 'declare' : 1},
-        'literal': BASH_LITERAL
-      },
-      contains: [
-        {
-          className: 'shebang',
-          begin: '(#!\\/bin\\/bash)|(#!\\/bin\\/sh)',
-          relevance: 10
-        },
-        hljs.HASH_COMMENT_MODE,
-        hljs.C_NUMBER_MODE,
-        STRING,
-        VAR1,
-        VAR2,
-        hljs.inherit(TEST_CONDITION, {begin: '\\[ ', end: ' \\]', relevance: 0}),
-        hljs.inherit(TEST_CONDITION, {begin: '\\[\\[ ', end: ' \\]\\]'})
-      ]
-    }
-  };
-}();
-/*
-Language: CMake
-Description: CMake is an open-source cross-platform system for build automation.
-Author: Igor Kalnitsky <igor.kalnitsky@gmail.com>
-Website: http://kalnitsky.org.ua/
-*/
-
-hljs.LANGUAGES.cmake = {
-  case_insensitive: true,
-  defaultMode: {
-    keywords: {
-    'add_custom_command': 2, 'add_custom_target': 2, 'add_definitions': 2, 'add_dependencies': 2, 'add_executable': 2, 'add_library': 2, 'add_subdirectory': 2, 'add_executable': 2, 'add_library': 2, 'add_subdirectory': 2, 'add_test': 2, 'aux_source_directory': 2, 'break': 1, 'build_command': 2, 'cmake_minimum_required': 3, 'cmake_policy': 3, 'configure_file': 1, 'create_test_sourcelist': 1, 'define_property': 1, 'else': 1, 'elseif': 1, 'enable_language': 2, 'enable_testing': 2, 'endforeach': 1, 'endfunction': 1, 'endif': 1, 'endmacro': 1, 'endwhile': 1, 'execute_process': 2, 'export': 1, 'find_file': 1, 'find_library': 2, 'find_package': 2, 'find_path': 1, 'find_program': 1, 'fltk_wrap_ui': 2, 'foreach': 1, 'function': 1, 'get_cmake_property': 3, 'get_directory_property': 1, 'get_filename_component': 1, 'get_property': 1, 'get_source_file_property': 1, 'get_target_property': 1, 'get_test_property': 1, 'if': 1, 'include': 1, 'include_directories': 2, 'include_external_msproject': 1, 'include_regular_expression': 2, 'install': 1, 'link_directories': 1, 'load_cache': 1, 'load_command': 1, 'macro': 1, 'mark_as_advanced': 1, 'message': 1, 'option': 1, 'output_required_files': 1, 'project': 1, 'qt_wrap_cpp': 2, 'qt_wrap_ui': 2, 'remove_definitions': 2, 'return': 1, 'separate_arguments': 1, 'set': 1, 'set_directory_properties': 1, 'set_property': 1, 'set_source_files_properties': 1, 'set_target_properties': 1, 'set_tests_properties': 1, 'site_name': 1, 'source_group': 1, 'string': 1, 'target_link_libraries': 2, 'try_compile': 2, 'try_run': 2, 'unset': 1, 'variable_watch': 2, 'while': 1, 'build_name': 1, 'exec_program': 1, 'export_library_dependencies': 1, 'install_files': 1, 'install_programs': 1, 'install_targets': 1, 'link_libraries': 1, 'make_directory': 1, 'remove': 1, 'subdir_depends': 1, 'subdirs': 1, 'use_mangled_mesa': 1, 'utility_source': 1, 'variable_requires': 1, 'write_file': 1 },
-
-    contains: [
-      {
-        className: 'envvar',
-        begin: '\\${', end: '}'
-      },
-      hljs.HASH_COMMENT_MODE,
-      hljs.QUOTE_STRING_MODE,
-      hljs.NUMBER_MODE
-    ]
-  }
-};
-/*
-Language: C++
-*/
-
-hljs.LANGUAGES.cpp = function(){
-  var CPP_KEYWORDS = {
-    'keyword': {
-      'false': 1, 'int': 1, 'float': 1, 'while': 1, 'private': 1, 'char': 1,
-      'catch': 1, 'export': 1, 'virtual': 1, 'operator': 2, 'sizeof': 2,
-      'dynamic_cast': 2, 'typedef': 2, 'const_cast': 2, 'const': 1,
-      'struct': 1, 'for': 1, 'static_cast': 2, 'union': 1, 'namespace': 1,
-      'unsigned': 1, 'long': 1, 'throw': 1, 'volatile': 2, 'static': 1,
-      'protected': 1, 'bool': 1, 'template': 1, 'mutable': 1, 'if': 1,
-      'public': 1, 'friend': 2, 'do': 1, 'return': 1, 'goto': 1, 'auto': 1,
-      'void': 2, 'enum': 1, 'else': 1, 'break': 1, 'new': 1, 'extern': 1,
-      'using': 1, 'true': 1, 'class': 1, 'asm': 1, 'case': 1, 'typeid': 1,
-      'short': 1, 'reinterpret_cast': 2, 'default': 1, 'double': 1,
-      'register': 1, 'explicit': 1, 'signed': 1, 'typename': 1, 'try': 1,
-      'this': 1, 'switch': 1, 'continue': 1, 'wchar_t': 1, 'inline': 1,
-      'delete': 1, 'alignof': 1, 'char16_t': 1, 'char32_t': 1, 'constexpr': 1,
-      'decltype': 1, 'noexcept': 1, 'nullptr': 1, 'static_assert': 1,
-      'thread_local': 1
-    },
-    'built_in': {
-      'std': 1, 'string': 1, 'cin': 1, 'cout': 1, 'cerr': 1, 'clog': 1,
-      'stringstream': 1, 'istringstream': 1, 'ostringstream': 1, 'auto_ptr': 1,
-      'deque': 1, 'list': 1, 'queue': 1, 'stack': 1, 'vector': 1, 'map': 1,
-      'set': 1, 'bitset': 1, 'multiset': 1, 'multimap': 1, 'unordered_set': 1,
-      'unordered_map': 1, 'unordered_multiset': 1, 'unordered_multimap': 1,
-      'array': 1, 'shared_ptr': 1
-    }
-  };
-  var STL_CONTAINER = {
-    className: 'stl_container',
-    begin: '\\b(deque|list|queue|stack|vector|map|set|bitset|multiset|multimap|unordered_map|unordered_set|unordered_multiset|unordered_multimap|array)\\s*<', end: '>',
-    keywords: CPP_KEYWORDS,
+hljs.LANGUAGES.tex = function() {
+  var COMMAND1 = {
+    className: 'command',
+    begin: '\\\\[a-zA-Zа-яА-я]+[\\*]?',
     relevance: 10
   };
-  STL_CONTAINER.contains = [STL_CONTAINER];
+  var COMMAND2 = {
+    className: 'command',
+    begin: '\\\\[^a-zA-Zа-яА-я0-9]',
+    relevance: 0
+  };
+  var SPECIAL = {
+    className: 'special',
+    begin: '[{}\\[\\]\\&#~]',
+    relevance: 0
+  };
+
   return {
     defaultMode: {
-      keywords: CPP_KEYWORDS,
-      illegal: '</',
       contains: [
-        hljs.C_LINE_COMMENT_MODE,
-        hljs.C_BLOCK_COMMENT_MODE,
-        hljs.QUOTE_STRING_MODE,
-        {
-          className: 'string',
-          begin: '\'', end: '[^\\\\]\'',
-          illegal: '[^\\\\][^\']'
-        },
-        hljs.C_NUMBER_MODE,
-        {
-          className: 'preprocessor',
-          begin: '#', end: '$'
-        },
-        STL_CONTAINER
-      ]
-    }
-  };
-}();
-/*
-Language: C#
-Author: Jason Diamond <jason@diamond.name>
-*/
-
-hljs.LANGUAGES.cs  = {
-  defaultMode: {
-    keywords: {
-        // Normal keywords.
-        'abstract': 1, 'as': 1, 'base': 1, 'bool': 1, 'break': 1, 'byte': 1, 'case': 1, 'catch': 1, 'char': 1, 'checked': 1, 'class': 1, 'const': 1, 'continue': 1, 'decimal': 1, 'default': 1, 'delegate': 1, 'do': 1, 'do': 1, 'double': 1, 'else': 1, 'enum': 1, 'event': 1, 'explicit': 1, 'extern': 1, 'false': 1, 'finally': 1, 'fixed': 1, 'float': 1, 'for': 1, 'foreach': 1, 'goto': 1, 'if': 1, 'implicit': 1, 'in': 1, 'int': 1, 'interface': 1, 'internal': 1, 'is': 1, 'lock': 1, 'long': 1, 'namespace': 1, 'new': 1, 'null': 1, 'object': 1, 'operator': 1, 'out': 1, 'override': 1, 'params': 1, 'private': 1, 'protected': 1, 'public': 1, 'readonly': 1, 'ref': 1, 'return': 1, 'sbyte': 1, 'sealed': 1, 'short': 1, 'sizeof': 1, 'stackalloc': 1, 'static': 1, 'string': 1, 'struct': 1, 'switch': 1, 'this': 1, 'throw': 1, 'true': 1, 'try': 1, 'typeof': 1, 'uint': 1, 'ulong': 1, 'unchecked': 1, 'unsafe': 1, 'ushort': 1, 'using': 1, 'virtual': 1, 'volatile': 1, 'void': 1, 'while': 1,
-        // Contextual keywords.
-        'ascending': 1, 'descending': 1, 'from': 1, 'get': 1, 'group': 1, 'into': 1, 'join': 1, 'let': 1, 'orderby': 1, 'partial': 1, 'select': 1, 'set': 1, 'value': 1, 'var': 1, 'where': 1, 'yield': 1
-    },
-    contains: [
-      {
-        className: 'comment',
-        begin: '///', end: '$', returnBegin: true,
-        contains: [
-          {
-            className: 'xmlDocTag',
-            begin: '///|<!--|-->'
-          },
-          {
-            className: 'xmlDocTag',
-            begin: '</?', end: '>'
-          }
-        ]
-      },
-      hljs.C_LINE_COMMENT_MODE,
-      hljs.C_BLOCK_COMMENT_MODE,
-      {
-        className: 'string',
-        begin: '@"', end: '"',
-        contains: [{begin: '""'}]
-      },
-      hljs.APOS_STRING_MODE,
-      hljs.QUOTE_STRING_MODE,
-      hljs.C_NUMBER_MODE
-    ]
-  }
-};
-/*
-Language: CSS
-*/
-
-hljs.LANGUAGES.css = function() {
-  var FUNCTION = {
-    className: 'function',
-    begin: hljs.IDENT_RE + '\\(', end: '\\)',
-    contains: [{
-        endsWithParent: true, excludeEnd: true,
-        contains: [hljs.NUMBER_MODE, hljs.APOS_STRING_MODE, hljs.QUOTE_STRING_MODE]
-    }]
-  };
-  return {
-    case_insensitive: true,
-    defaultMode: {
-      illegal: '[=/|\']',
-      contains: [
-        hljs.C_BLOCK_COMMENT_MODE,
-        {
-          className: 'id', begin: '\\#[A-Za-z0-9_-]+'
-        },
-        {
-          className: 'class', begin: '\\.[A-Za-z0-9_-]+',
-          relevance: 0
-        },
-        {
-          className: 'attr_selector',
-          begin: '\\[', end: '\\]',
-          illegal: '$'
-        },
-        {
-          className: 'pseudo',
-          begin: ':(:)?[a-zA-Z0-9\\_\\-\\+\\(\\)\\"\\\']+'
-        },
-        {
-          className: 'at_rule',
-          begin: '@(font-face|page)',
-          lexems: '[a-z-]+',
-          keywords: {'font-face': 1, 'page': 1}
-        },
-        {
-          className: 'at_rule',
-          begin: '@', end: '[{;]', // at_rule eating first "{" is a good thing
-                                   // because it doesn't let it to be parsed as
-                                   // a rule set but instead drops parser into
-                                   // the defaultMode which is how it should be.
-          excludeEnd: true,
-          keywords: {'import': 1, 'page': 1, 'media': 1, 'charset': 1},
+        { // parameter
+          begin: '\\\\[a-zA-Zа-яА-я]+[\\*]? *= *-?\\d*\\.?\\d+(pt|pc|mm|cm|in|dd|cc|ex|em)?',
+          returnBegin: true,
           contains: [
-            FUNCTION,
-            hljs.APOS_STRING_MODE, hljs.QUOTE_STRING_MODE,
-            hljs.NUMBER_MODE
-          ]
-        },
-        {
-          className: 'tag', begin: hljs.IDENT_RE,
-          relevance: 0
-        },
-        {
-          className: 'rules',
-          begin: '{', end: '}',
-          illegal: '[^\\s]',
-          relevance: 0,
-          contains: [
-            hljs.C_BLOCK_COMMENT_MODE,
+            COMMAND1, COMMAND2,
             {
-              className: 'rule',
-              begin: '[^\\s]', returnBegin: true, end: ';', endsWithParent: true,
-              contains: [
-                {
-                  className: 'attribute',
-                  begin: '[A-Z\\_\\.\\-]+', end: ':',
-                  excludeEnd: true,
-                  illegal: '[^\\s]',
-                  starts: {
-                    className: 'value',
-                    endsWithParent: true, excludeEnd: true,
-                    contains: [
-                      FUNCTION,
-                      hljs.NUMBER_MODE,
-                      hljs.QUOTE_STRING_MODE,
-                      hljs.APOS_STRING_MODE,
-                      hljs.C_BLOCK_COMMENT_MODE,
-                      {
-                        className: 'hexcolor', begin: '\\#[0-9A-F]+'
-                      },
-                      {
-                        className: 'important', begin: '!important'
-                      }
-                    ]
-                  }
-                }
-              ]
+              className: 'number',
+              begin: ' *=', end: '-?\\d*\\.?\\d+(pt|pc|mm|cm|in|dd|cc|ex|em)?',
+              excludeBegin: true
             }
-          ]
+          ],
+          relevance: 10
+        },
+        COMMAND1, COMMAND2,
+        SPECIAL,
+        {
+          className: 'formula',
+          begin: '\\$\\$', end: '\\$\\$',
+          contains: [COMMAND1, COMMAND2, SPECIAL],
+          relevance: 0
+        },
+        {
+          className: 'formula',
+          begin: '\\$', end: '\\$',
+          contains: [COMMAND1, COMMAND2, SPECIAL],
+          relevance: 0
+        },
+        {
+          className: 'comment',
+          begin: '%', end: '$',
+          relevance: 0
         }
       ]
     }
@@ -1591,285 +1709,358 @@ hljs.LANGUAGES.delphi = function(){
           keywords: DELPHI_CLASS_KEYWORDS,
           contains: [
             STRING, CHAR_STRING,
-            CURLY_COMMENT, PAREN_COMMENT,
+            CURLY_COMMENT, PAREN_COMMENT, hljs.C_LINE_COMMENT_MODE,
             FUNCTION
           ]
         }
       ]
-    },
-    modes: [
-
-    ]
+    }
   };
 }();
 /*
-Language: Diff
-Description: Unified and context diff
+Language: Go
+Author: Stephan Kountso aka StepLg <steplg@gmail.com>
+Description: Google go language (golang). For info about language see http://golang.org/
+*/
+
+hljs.LANGUAGES.go = function(){
+  var GO_KEYWORDS = {
+    'keyword': {
+       'break' : 1, 'default' : 1, 'func' : 1, 'interface' : 1, 'select' : 1,
+       'case' : 1, 'map' : 1, 'struct' : 1, 'chan' : 1,
+       'else' : 1, 'goto' : 1, 'package' : 1, 'switch' : 1, 'const' : 1,
+       'fallthrough' : 1, 'if' : 1, 'range' : 1, 'type' : 1, 'continue' : 1,
+       'for' : 1, 'import' : 1, 'return' : 1, 'var' : 1, 'go': 1, 'defer' : 1
+    },
+    'constant': {
+       'true': 1, 'false': 1, 'iota': 1, 'nil': 1
+    },
+    'typename': {
+       'bool': 1, 'byte': 1, 'complex64': 1, 'complex128': 1, 'float32': 1,
+       'float64': 1, 'int8': 1, 'int16': 1, 'int32': 1, 'int64': 1, 'string': 1,
+       'uint8': 1, 'uint16': 1, 'uint32': 1, 'uint64': 1, 'int': 1, 'uint': 1,
+       'uintptr': 1
+   },
+    'built_in': {
+       'append': 1, 'cap': 1, 'close': 1, 'complex': 1, 'copy': 1, 'imag': 1,
+       'len': 1, 'make': 1, 'new': 1, 'panic': 1, 'print': 1, 'println': 1,
+       'real': 1, 'recover': 1
+    }
+  };
+  return {
+    defaultMode: {
+      keywords: GO_KEYWORDS,
+      illegal: '</',
+      contains: [
+        hljs.C_LINE_COMMENT_MODE,
+        hljs.C_BLOCK_COMMENT_MODE,
+        hljs.QUOTE_STRING_MODE,
+        {
+          className: 'string',
+          begin: '\'', end: '[^\\\\]\'',
+          relevance: 0
+        },
+        {
+          className: 'string',
+          begin: '`', end: '[^\\\\]`'
+        },
+        {
+          className: 'number',
+          begin: '[^a-zA-Z_0-9](\\-|\\+)?\\d+(\\.\\d+|\\/\\d+)?((d|e|f|l|s)(\\+|\\-)?\\d+)?',
+          relevance: 0
+        },
+        hljs.C_NUMBER_MODE
+      ]
+    }
+  };
+}();
+
+/*
+Language: Lisp
+Description: Generic lisp syntax
 Author: Vasily Polovnyov <vast@whiteants.net>
 */
 
-hljs.LANGUAGES.diff = {
-  case_insensitive: true,
-  defaultMode: {
-    contains: [
-      {
-        className: 'chunk',
-        begin: '^\\@\\@ +\\-\\d+,\\d+ +\\+\\d+,\\d+ +\\@\\@$',
-        relevance: 10
-      },
-      {
-        className: 'chunk',
-        begin: '^\\*\\*\\* +\\d+,\\d+ +\\*\\*\\*\\*$',
-        relevance: 10
-      },
-      {
-        className: 'chunk',
-        begin: '^\\-\\-\\- +\\d+,\\d+ +\\-\\-\\-\\-$',
-        relevance: 10
-      },
-      {
-        className: 'header',
-        begin: 'Index: ', end: '$'
-      },
-      {
-        className: 'header',
-        begin: '=====', end: '=====$'
-      },
-      {
-        className: 'header',
-        begin: '^\\-\\-\\-', end: '$'
-      },
-      {
-        className: 'header',
-        begin: '^\\*{3} ', end: '$'
-      },
-      {
-        className: 'header',
-        begin: '^\\+\\+\\+', end: '$'
-      },
-      {
-        className: 'header',
-        begin: '\\*{5}', end: '\\*{5}$'
-      },
-      {
-        className: 'addition',
-        begin: '^\\+', end: '$'
-      },
-      {
-        className: 'deletion',
-        begin: '^\\-', end: '$'
-      },
-      {
-        className: 'change',
-        begin: '^\\!', end: '$'
-      }
-    ]
-  }
-};
-/*
-Language: HTML, XML
-*/
-
-hljs.LANGUAGES.xml = function(){
-  var XML_IDENT_RE = '[A-Za-z0-9\\._:-]+';
-  var TAG_INTERNALS = {
-    endsWithParent: true,
-    contains: [
-      {
-        className: 'attribute',
-        begin: XML_IDENT_RE,
-        relevance: 0
-      },
-      {
-        begin: '="', returnBegin: true, end: '"',
-        contains: [{
-            className: 'value',
-            begin: '"', endsWithParent: true
-        }]
-      },
-      {
-        begin: '=\'', returnBegin: true, end: '\'',
-        contains: [{
-          className: 'value',
-          begin: '\'', endsWithParent: true
-        }]
-      },
-      {
-        begin: '=',
-        contains: [{
-          className: 'value',
-          begin: '[^\\s/>]+'
-        }]
-      }
-    ]
+hljs.LANGUAGES.lisp = function(){
+  var LISP_IDENT_RE = '[a-zA-Z_\\-\\+\\*\\/\\<\\=\\>\\&\\#][a-zA-Z0-9_\\-\\+\\*\\/\\<\\=\\>\\&\\#]*';
+  var LISP_SIMPLE_NUMBER_RE = '(\\-|\\+)?\\d+(\\.\\d+|\\/\\d+)?((d|e|f|l|s)(\\+|\\-)?\\d+)?';
+  var LITERAL = {
+    className: 'literal',
+    begin: '\\b(t{1}|nil)\\b'
   };
+  var NUMBER1 = {
+    className: 'number', begin: LISP_SIMPLE_NUMBER_RE
+  };
+  var NUMBER2 = {
+    className: 'number', begin: '#b[0-1]+(/[0-1]+)?'
+  };
+  var NUMBER3 = {
+    className: 'number', begin: '#o[0-7]+(/[0-7]+)?'
+  };
+  var NUMBER4 = {
+    className: 'number', begin: '#x[0-9a-f]+(/[0-9a-f]+)?'
+  };
+  var NUMBER5 = {
+    className: 'number', begin: '#c\\(' + LISP_SIMPLE_NUMBER_RE + ' +' + LISP_SIMPLE_NUMBER_RE, end: '\\)'
+  };
+  var STRING = {
+    className: 'string',
+    begin: '"', end: '"',
+    contains: [hljs.BACKSLASH_ESCAPE],
+    relevance: 0
+  };
+  var COMMENT = {
+    className: 'comment',
+    begin: ';', end: '$'
+  };
+  var VARIABLE = {
+    className: 'variable',
+    begin: '\\*', end: '\\*'
+  };
+  var KEYWORD = {
+    className: 'keyword',
+    begin: '[:&]' + LISP_IDENT_RE
+  };
+  var QUOTED_LIST = {
+    begin: '\\(', end: '\\)'
+  };
+  QUOTED_LIST.contains = [QUOTED_LIST, LITERAL, NUMBER1, NUMBER2, NUMBER3, NUMBER4, NUMBER5, STRING];
+  var QUOTED1 = {
+    className: 'quoted',
+    begin: '[\'`]\\(', end: '\\)',
+    contains: [NUMBER1, NUMBER2, NUMBER3, NUMBER4, NUMBER5, STRING, VARIABLE, KEYWORD, QUOTED_LIST]
+  };
+  var QUOTED2 = {
+    className: 'quoted',
+    begin: '\\(quote ', end: '\\)',
+    keywords: {'title': {'quote': 1}},
+    contains: [NUMBER1, NUMBER2, NUMBER3, NUMBER4, NUMBER5, STRING, VARIABLE, KEYWORD, QUOTED_LIST]
+  };
+  var LIST = {
+    className: 'list',
+    begin: '\\(', end: '\\)'
+  };
+  var BODY = {
+    className: 'body',
+    endsWithParent: true, excludeEnd: true
+  };
+  LIST.contains = [{className: 'title', begin: LISP_IDENT_RE}, BODY];
+  BODY.contains = [QUOTED1, QUOTED2, LIST, LITERAL, NUMBER1, NUMBER2, NUMBER3, NUMBER4, NUMBER5, STRING, COMMENT, VARIABLE, KEYWORD];
+
   return {
     case_insensitive: true,
     defaultMode: {
+      illegal: '[^\\s]',
+      contains: [
+        LITERAL,
+        NUMBER1, NUMBER2, NUMBER3, NUMBER4, NUMBER5,
+        STRING,
+        COMMENT,
+        QUOTED1, QUOTED2,
+        LIST
+      ]
+    }
+  };
+}();
+/*
+Language: Scala
+Author: Jan Berkel <jan.berkel@gmail.com>
+*/
+
+hljs.LANGUAGES.scala = function() {
+  var ANNOTATION = {
+    className: 'annotation', begin: '@[A-Za-z]+'
+  };
+  var STRING = {
+    className: 'string',
+    begin: 'u?r?"""', end: '"""',
+    relevance: 10
+  };
+  return {
+    defaultMode: {
+      keywords: { 'type': 1, 'yield': 1, 'lazy': 1, 'override': 1, 'def': 1, 'with': 1, 'val':1, 'var': 1, 'false': 1, 'true': 1, 'sealed': 1, 'abstract': 1, 'private': 1, 'trait': 1,  'object': 1, 'null': 1, 'if': 1, 'for': 1, 'while': 1, 'throw': 1, 'finally': 1, 'protected': 1, 'extends': 1, 'import': 1, 'final': 1, 'return': 1, 'else': 1, 'break': 1, 'new': 1, 'catch': 1, 'super': 1, 'class': 1, 'case': 1,'package': 1, 'default': 1, 'try': 1, 'this': 1, 'match': 1, 'continue': 1, 'throws': 1},
       contains: [
         {
-          className: 'pi',
-          begin: '<\\?', end: '\\?>',
+          className: 'javadoc',
+          begin: '/\\*\\*', end: '\\*/',
+          contains: [{
+            className: 'javadoctag',
+            begin: '@[A-Za-z]+'
+          }],
           relevance: 10
         },
+        hljs.C_LINE_COMMENT_MODE, hljs.C_BLOCK_COMMENT_MODE,
+        hljs.APOS_STRING_MODE, hljs.QUOTE_STRING_MODE, STRING,
         {
-          className: 'doctype',
-          begin: '<!DOCTYPE', end: '>',
-          relevance: 10,
-          contains: [{begin: '\\[', end: '\\]'}]
+          className: 'class',
+          begin: '((case )?class |object |trait )', end: '({|$)',
+          illegal: ':',
+          keywords: {'case' : 1, 'class': 1, 'trait': 1, 'object': 1},
+          contains: [
+            {
+              begin: '(extends|with)',
+              keywords: {'extends': 1, 'with': 1},
+              relevance: 10
+            },
+            {
+              className: 'title',
+              begin: hljs.UNDERSCORE_IDENT_RE
+            },
+            {
+              className: 'params',
+              begin: '\\(', end: '\\)',
+              contains: [
+                hljs.APOS_STRING_MODE, hljs.QUOTE_STRING_MODE, STRING,
+                ANNOTATION
+              ]
+            }
+          ]
+        },
+        hljs.C_NUMBER_MODE,
+        ANNOTATION
+      ]
+    }
+  };
+}();
+/*
+Language: Haskell
+Author: Jeremy Hull <sourdrums@gmail.com>
+*/
+
+hljs.LANGUAGES.haskell = function(){
+  var LABEL = {
+    className: 'label',
+    begin: '\\b[A-Z][\\w\']*',
+    relevance: 0
+  };
+  var CONTAINER = {
+    className: 'container',
+    begin: '\\(', end: '\\)',
+    contains: [
+      {className: 'label', begin: '\\b[A-Z][\\w\\(\\)\\.\']*'},
+      {className: 'title', begin: '[_a-z][\\w\']*'}
+    ]
+  };
+
+  return {
+    defaultMode: {
+      keywords: {
+        'keyword': {
+          'let': 1, 'in': 1, 'if': 1, 'then': 1, 'else': 1, 'case': 1, 'of': 1,
+          'where': 1, 'do': 1, 'module': 1, 'import': 1, 'hiding': 1,
+          'qualified': 1, 'type': 1, 'data': 1, 'newtype': 1, 'deriving': 1,
+          'class': 1, 'instance': 1, 'null': 1, 'not': 1, 'as': 1
+        }
+      },
+      contains: [
+        {
+          className: 'comment',
+          begin: '--', end: '$'
         },
         {
           className: 'comment',
-          begin: '<!--', end: '-->',
-          relevance: 10
+          begin: '{-', end: '-}'
         },
         {
-          className: 'cdata',
-          begin: '<\\!\\[CDATA\\[', end: '\\]\\]>',
-          relevance: 10
+          className: 'string',
+          begin: '\\s+\'', end: '\'',
+          contains: [hljs.BACKSLASH_ESCAPE],
+          relevance: 0
+        },
+        hljs.QUOTE_STRING_MODE,
+        {
+          className: 'import',
+          begin: '\\bimport', end: '$',
+          keywords: {'import': 1, 'qualified': 1, 'as': 1, 'hiding': 1},
+          contains: [CONTAINER]
         },
         {
-          className: 'tag',
-          begin: '<style', end: '>',
-          keywords: {'title': {'style': 1}},
-          contains: [TAG_INTERNALS],
-          starts: {
-            className: 'css',
-            end: '</style>', returnEnd: true,
-            subLanguage: 'css'
-          }
+          className: 'module',
+          begin: '\\bmodule', end: 'where',
+          keywords: {'module': 1, 'where': 1},
+          contains: [CONTAINER]
         },
         {
-          className: 'tag',
-          begin: '<script', end: '>',
-          keywords: {'title': {'script': 1}},
-          contains: [TAG_INTERNALS],
-          starts: {
-            className: 'javascript',
-            end: '</script>', returnEnd: true,
-            subLanguage: 'javascript'
-          }
+          className: 'class',
+          begin: '\\b(class|instance|data|(new)?type)', end: '(where|$)',
+          keywords: {'class': 1, 'where': 1, 'instance': 1,'data': 1,'type': 1,'newtype': 1, 'deriving': 1},
+          contains: [LABEL]
         },
+        hljs.C_NUMBER_MODE,
         {
-          className: 'vbscript',
-          begin: '<%', end: '%>',
-          subLanguage: 'vbscript'
+          className: 'shebang',
+          begin: '#!\\/usr\\/bin\\/env\ runhaskell', end: '$'
         },
+        LABEL,
         {
-          className: 'tag',
-          begin: '</?', end: '/?>',
-          contains: [
-            {
-              className: 'title', begin: '[^ />]+'
-            },
-            TAG_INTERNALS
-          ]
+          className: 'title', begin: '^[_a-z][\\w\']*'
         }
       ]
     }
   };
 }();
 /*
-Language: Django
-Requires: xml.js
+Language: Bash
+Author: vah <vahtenberg@gmail.com>
 */
 
-hljs.LANGUAGES.django = function() {
-
-  function allowsDjangoSyntax(mode, parent) {
-    return (
-      parent == undefined || // defaultMode
-      (!mode.className && parent.className == 'tag') || // tag_internal
-      mode.className == 'value' // value
-    );
-  }
-
-  function copy(mode, parent) {
-    var result = {};
-    for (var key in mode) {
-      if (key != 'contains') {
-        result[key] = mode[key];
-      };
-      var contains = [];
-      for (var i = 0; mode.contains && i < mode.contains.length; i++) {
-        contains.push(copy(mode.contains[i], mode));
-      }
-      if (allowsDjangoSyntax(mode, parent)) {
-        contains = DJANGO_CONTAINS.concat(contains);
-      }
-      if (contains.length) {
-        result.contains = contains;
-      }
-    }
-    return result;
-  }
-
-  var FILTER = {
-    className: 'filter',
-    begin: '\\|[A-Za-z]+\\:?', excludeEnd: true,
-    keywords: {'truncatewords': 1, 'removetags': 1, 'linebreaksbr': 1, 'yesno': 1, 'get_digit': 1, 'timesince': 1, 'random': 1, 'striptags': 1, 'filesizeformat': 1, 'escape': 1, 'linebreaks': 1, 'length_is': 1, 'ljust': 1, 'rjust': 1, 'cut': 1, 'urlize': 1, 'fix_ampersands': 1, 'title': 1, 'floatformat': 1, 'capfirst': 1, 'pprint': 1, 'divisibleby': 1, 'add': 1, 'make_list': 1, 'unordered_list': 1, 'urlencode': 1, 'timeuntil': 1, 'urlizetrunc': 1, 'wordcount': 1, 'stringformat': 1, 'linenumbers': 1, 'slice': 1, 'date': 1, 'dictsort': 1, 'dictsortreversed': 1, 'default_if_none': 1, 'pluralize': 1, 'lower': 1, 'join': 1, 'center': 1, 'default': 1, 'truncatewords_html': 1, 'upper': 1, 'length': 1, 'phone2numeric': 1, 'wordwrap': 1, 'time': 1, 'addslashes': 1, 'slugify': 1, 'first': 1},
-    contains: [
-      {className: 'argument', begin: '"', end: '"'}
-    ]
+hljs.LANGUAGES.bash = function(){
+  var BASH_LITERAL = {'true' : 1, 'false' : 1};
+  var VAR1 = {
+    className: 'variable',
+    begin: '\\$([a-zA-Z0-9_]+)\\b'
   };
-
-  var DJANGO_CONTAINS = [
-    {
-      className: 'template_comment',
-      begin: '{%\\s*comment\\s*%}', end: '{%\\s*endcomment\\s*%}'
+  var VAR2 = {
+    className: 'variable',
+    begin: '\\$\\{(([^}])|(\\\\}))+\\}',
+    contains: [hljs.C_NUMBER_MODE]
+  };
+  var QUOTE_STRING = {
+    className: 'string',
+    begin: '"', end: '"',
+    illegal: '\\n',
+    contains: [hljs.BACKSLASH_ESCAPE, VAR1, VAR2],
+    relevance: 0
+  };
+  var APOS_STRING = {
+    className: 'string',
+    begin: '\'', end: '\'',
+    relevance: 0
+  };
+  var TEST_CONDITION = {
+    className: 'test_condition',
+    begin: '', end: '',
+    contains: [QUOTE_STRING, APOS_STRING, VAR1, VAR2, hljs.C_NUMBER_MODE],
+    keywords: {
+      'literal': BASH_LITERAL
     },
-    {
-      className: 'template_comment',
-      begin: '{#', end: '#}'
-    },
-    {
-      className: 'template_tag',
-      begin: '{%', end: '%}',
-      keywords: {'comment': 1, 'endcomment': 1, 'load': 1, 'templatetag': 1, 'ifchanged': 1, 'endifchanged': 1, 'if': 1, 'endif': 1, 'firstof': 1, 'for': 1, 'endfor': 1, 'in': 1, 'ifnotequal': 1, 'endifnotequal': 1, 'widthratio': 1, 'extends': 1, 'include': 1, 'spaceless': 1, 'endspaceless': 1, 'regroup': 1, 'by': 1, 'as': 1, 'ifequal': 1, 'endifequal': 1, 'ssi': 1, 'now': 1, 'with': 1, 'cycle': 1, 'url': 1, 'filter': 1, 'endfilter': 1, 'debug': 1, 'block': 1, 'endblock': 1, 'else': 1},
-      contains: [FILTER]
-    },
-    {
-      className: 'variable',
-      begin: '{{', end: '}}',
-      contains: [FILTER]
-    }
-  ];
+    relevance: 0
+  };
 
   return {
-    case_insensitive: true,
-    defaultMode: copy(hljs.LANGUAGES.xml.defaultMode)
+    defaultMode: {
+      keywords: {
+        'keyword': {'if' : 1, 'then' : 1, 'else' : 1, 'fi' : 1, 'for' : 1, 'break' : 1, 'continue' : 1, 'while' : 1, 'in' : 1, 'do' : 1, 'done' : 1, 'echo' : 1, 'exit' : 1, 'return' : 1, 'set' : 1, 'declare' : 1},
+        'literal': BASH_LITERAL
+      },
+      contains: [
+        {
+          className: 'shebang',
+          begin: '(#!\\/bin\\/bash)|(#!\\/bin\\/sh)',
+          relevance: 10
+        },
+        VAR1,
+        VAR2,
+        hljs.HASH_COMMENT_MODE,
+        hljs.C_NUMBER_MODE,
+        QUOTE_STRING,
+        APOS_STRING,
+        hljs.inherit(TEST_CONDITION, {begin: '\\[ ', end: ' \\]', relevance: 0}),
+        hljs.inherit(TEST_CONDITION, {begin: '\\[\\[ ', end: ' \\]\\]'})
+      ]
+    }
   };
-
 }();
-/*
-Language: DOS .bat
-Author: Alexander Makarov (http://rmcreative.ru/)
-*/
-
-hljs.LANGUAGES.dos = {
-  case_insensitive: true,
-  defaultMode: {
-    keywords: {
-      'flow': {'if':1, 'else':1, 'goto':1, 'for':1, 'in':1, 'do':1, 'call':1, 'exit':1, 'not':1, 'exist':1, 'errorlevel':1, 'defined':1, 'equ':1, 'neq':1, 'lss':1, 'leq':1, 'gtr':1, 'geq':1},
-      'keyword':{'shift':1, 'cd':1, 'dir':1, 'echo':1, 'setlocal':1, 'endlocal':1, 'set':1, 'pause':1, 'copy':1},
-      'stream':{'prn':1, 'nul':1, 'lpt3':1, 'lpt2':1, 'lpt1':1, 'con':1, 'com4':1, 'com3':1, 'com2':1, 'com1':1, 'aux':1},
-      'winutils':{'ping':1, 'net':1, 'ipconfig':1, 'taskkill':1, 'xcopy':1, 'ren':1, 'del':1}
-    },
-    contains: [
-      {
-        className: 'envvar', begin: '%[^ ]+?%'
-      },
-      {
-        className: 'number', begin: '\\b\\d+',
-        relevance: 0
-      },
-      {
-        className: 'comment',
-        begin: '@?rem', end: '$'
-      }
-    ]
-  }
-};
 /*
  Language: Erlang REPL
  Author: Sergey Ignatov <sergey@ignatov.spb.su>
@@ -1946,6 +2137,436 @@ hljs.LANGUAGES.erlang_repl = {
       {
         className: 'variable',
         begin: '[A-Z][a-zA-Z0-9_\']*',
+        relevance: 0
+      }
+    ]
+  }
+};
+/*
+Language: Lua
+Author: Andrew Fedorov <dmmdrs@mail.ru>
+*/
+
+hljs.LANGUAGES.lua = function() {
+  var OPENING_LONG_BRACKET = '\\[=*\\[';
+  var CLOSING_LONG_BRACKET = '\\]=*\\]';
+  var LONG_BRACKETS = {
+    begin: OPENING_LONG_BRACKET, end: CLOSING_LONG_BRACKET
+  };
+  LONG_BRACKETS.contains = [LONG_BRACKETS];
+  var COMMENT1 = {
+    className: 'comment',
+    begin: '--(?!' + OPENING_LONG_BRACKET + ')', end: '$'
+  };
+  var COMMENT2 = {
+    className: 'comment',
+    begin: '--' + OPENING_LONG_BRACKET, end: CLOSING_LONG_BRACKET,
+    contains: [LONG_BRACKETS],
+    relevance: 10
+  };
+  return {
+    defaultMode: {
+      lexems: hljs.UNDERSCORE_IDENT_RE,
+      keywords: {
+        'keyword': {
+          'and': 1, 'break': 1, 'do': 1, 'else': 1, 'elseif': 1, 'end': 1,
+          'false': 1, 'for': 1, 'if': 1, 'in': 1, 'local': 1, 'nil': 1,
+          'not': 1, 'or': 1, 'repeat': 1, 'return': 1, 'then': 1, 'true': 1,
+          'until': 1, 'while': 1
+        },
+        'built_in': {
+          '_G': 1, '_VERSION': 1, 'assert': 1, 'collectgarbage': 1, 'dofile': 1,
+          'error': 1, 'getfenv': 1, 'getmetatable': 1, 'ipairs': 1, 'load': 1,
+          'loadfile': 1, 'loadstring': 1, 'module': 1, 'next': 1, 'pairs': 1,
+          'pcall': 1, 'print': 1, 'rawequal': 1, 'rawget': 1, 'rawset': 1,
+          'require': 1, 'select': 1, 'setfenv': 1, 'setmetatable': 1,
+          'tonumber': 1, 'tostring': 1, 'type': 1, 'unpack': 1, 'xpcall': 1,
+          'coroutine': 1, 'debug': 1, 'io': 1, 'math': 1, 'os': 1, 'package': 1,
+          'string': 1, 'table': 1
+        }
+      },
+      contains: [
+        COMMENT1, COMMENT2,
+        {
+          className: 'function',
+          begin: '\\bfunction\\b', end: '\\)',
+          keywords: {'function': 1},
+          contains: [
+            {
+              className: 'title',
+              begin: '([_a-zA-Z]\\w*\\.)*([_a-zA-Z]\\w*:)?[_a-zA-Z]\\w*'
+            },
+            {
+              className: 'params',
+              begin: '\\(', endsWithParent: true,
+              contains: [COMMENT1, COMMENT2]
+            },
+            COMMENT1, COMMENT2
+          ]
+        },
+        hljs.C_NUMBER_MODE,
+        hljs.APOS_STRING_MODE,
+        hljs.QUOTE_STRING_MODE,
+        {
+          className: 'string',
+          begin: OPENING_LONG_BRACKET, end: CLOSING_LONG_BRACKET,
+          contains: [LONG_BRACKETS],
+          relevance: 10
+        }
+      ]
+    }
+  };
+}();
+/*
+Language: Perl
+Author: Peter Leonov <gojpeg@yandex.ru>
+*/
+
+hljs.LANGUAGES.perl = function(){
+  var PERL_KEYWORDS = {'getpwent': 1, 'getservent': 1, 'quotemeta': 1, 'msgrcv': 1, 'scalar': 1, 'kill': 1, 'dbmclose': 1, 'undef': 1, 'lc': 1, 'ma': 1, 'syswrite': 1, 'tr': 1, 'send': 1, 'umask': 1, 'sysopen': 1, 'shmwrite': 1, 'vec': 1, 'qx': 1, 'utime': 1, 'local': 1, 'oct': 1, 'semctl': 1, 'localtime': 1, 'readpipe': 1, 'do': 1, 'return': 1, 'format': 1, 'read': 1, 'sprintf': 1, 'dbmopen': 1, 'pop': 1, 'getpgrp': 1, 'not': 1, 'getpwnam': 1, 'rewinddir': 1, 'qq': 1, 'fileno': 1, 'qw': 1, 'endprotoent': 1, 'wait': 1, 'sethostent': 1, 'bless': 1, 's': 1, 'opendir': 1, 'continue': 1, 'each': 1, 'sleep': 1, 'endgrent': 1, 'shutdown': 1, 'dump': 1, 'chomp': 1, 'connect': 1, 'getsockname': 1, 'die': 1, 'socketpair': 1, 'close': 1, 'flock': 1, 'exists': 1, 'index': 1, 'shmget': 1, 'sub': 1, 'for': 1, 'endpwent': 1, 'redo': 1, 'lstat': 1, 'msgctl': 1, 'setpgrp': 1, 'abs': 1, 'exit': 1, 'select': 1, 'print': 1, 'ref': 1, 'gethostbyaddr': 1, 'unshift': 1, 'fcntl': 1, 'syscall': 1, 'goto': 1, 'getnetbyaddr': 1, 'join': 1, 'gmtime': 1, 'symlink': 1, 'semget': 1, 'splice': 1, 'x': 1, 'getpeername': 1, 'recv': 1, 'log': 1, 'setsockopt': 1, 'cos': 1, 'last': 1, 'reverse': 1, 'gethostbyname': 1, 'getgrnam': 1, 'study': 1, 'formline': 1, 'endhostent': 1, 'times': 1, 'chop': 1, 'length': 1, 'gethostent': 1, 'getnetent': 1, 'pack': 1, 'getprotoent': 1, 'getservbyname': 1, 'rand': 1, 'mkdir': 1, 'pos': 1, 'chmod': 1, 'y': 1, 'substr': 1, 'endnetent': 1, 'printf': 1, 'next': 1, 'open': 1, 'msgsnd': 1, 'readdir': 1, 'use': 1, 'unlink': 1, 'getsockopt': 1, 'getpriority': 1, 'rindex': 1, 'wantarray': 1, 'hex': 1, 'system': 1, 'getservbyport': 1, 'endservent': 1, 'int': 1, 'chr': 1, 'untie': 1, 'rmdir': 1, 'prototype': 1, 'tell': 1, 'listen': 1, 'fork': 1, 'shmread': 1, 'ucfirst': 1, 'setprotoent': 1, 'else': 1, 'sysseek': 1, 'link': 1, 'getgrgid': 1, 'shmctl': 1, 'waitpid': 1, 'unpack': 1, 'getnetbyname': 1, 'reset': 1, 'chdir': 1, 'grep': 1, 'split': 1, 'require': 1, 'caller': 1, 'lcfirst': 1, 'until': 1, 'warn': 1, 'while': 1, 'values': 1, 'shift': 1, 'telldir': 1, 'getpwuid': 1, 'my': 1, 'getprotobynumber': 1, 'delete': 1, 'and': 1, 'sort': 1, 'uc': 1, 'defined': 1, 'srand': 1, 'accept': 1, 'package': 1, 'seekdir': 1, 'getprotobyname': 1, 'semop': 1, 'our': 1, 'rename': 1, 'seek': 1, 'if': 1, 'q': 1, 'chroot': 1, 'sysread': 1, 'setpwent': 1, 'no': 1, 'crypt': 1, 'getc': 1, 'chown': 1, 'sqrt': 1, 'write': 1, 'setnetent': 1, 'setpriority': 1, 'foreach': 1, 'tie': 1, 'sin': 1, 'msgget': 1, 'map': 1, 'stat': 1, 'getlogin': 1, 'unless': 1, 'elsif': 1, 'truncate': 1, 'exec': 1, 'keys': 1, 'glob': 1, 'tied': 1, 'closedir': 1, 'ioctl': 1, 'socket': 1, 'readlink': 1, 'eval': 1, 'xor': 1, 'readline': 1, 'binmode': 1, 'setservent': 1, 'eof': 1, 'ord': 1, 'bind': 1, 'alarm': 1, 'pipe': 1, 'atan2': 1, 'getgrent': 1, 'exp': 1, 'time': 1, 'push': 1, 'setgrent': 1, 'gt': 1, 'lt': 1, 'or': 1, 'ne': 1, 'm': 1};
+  var SUBST = {
+    className: 'subst',
+    begin: '[$@]\\{', end: '\}',
+    keywords: PERL_KEYWORDS,
+    relevance: 10
+  };
+  var VAR1 = {
+    className: 'variable',
+    begin: '\\$\\d'
+  };
+  var VAR2 = {
+    className: 'variable',
+    begin: '[\\$\\%\\@\\*](\\^\\w\\b|#\\w+(\\:\\:\\w+)*|[^\\s\\w{]|{\\w+}|\\w+(\\:\\:\\w*)*)'
+  };
+  var STRING_CONTAINS = [hljs.BACKSLASH_ESCAPE, SUBST, VAR1, VAR2];
+  var METHOD = {
+    begin: '->',
+    contains: [
+      {begin: hljs.IDENT_RE},
+      {begin: '{', end: '}'}
+    ]
+  };
+  var PERL_DEFAULT_CONTAINS = [
+    VAR1, VAR2,
+    hljs.HASH_COMMENT_MODE,
+    {
+      className: 'comment',
+      begin: '^(__END__|__DATA__)', end: '\\n$',
+      relevance: 5
+    },
+    METHOD,
+    {
+      className: 'string',
+      begin: 'q[qwxr]?\\s*\\(', end: '\\)',
+      contains: STRING_CONTAINS,
+      relevance: 5
+    },
+    {
+      className: 'string',
+      begin: 'q[qwxr]?\\s*\\[', end: '\\]',
+      contains: STRING_CONTAINS,
+      relevance: 5
+    },
+    {
+      className: 'string',
+      begin: 'q[qwxr]?\\s*\\{', end: '\\}',
+      contains: STRING_CONTAINS,
+      relevance: 5
+    },
+    {
+      className: 'string',
+      begin: 'q[qwxr]?\\s*\\|', end: '\\|',
+      contains: STRING_CONTAINS,
+      relevance: 5
+    },
+    {
+      className: 'string',
+      begin: 'q[qwxr]?\\s*\\<', end: '\\>',
+      contains: STRING_CONTAINS,
+      relevance: 5
+    },
+    {
+      className: 'string',
+      begin: 'qw\\s+q', end: 'q',
+      contains: STRING_CONTAINS,
+      relevance: 5
+    },
+    {
+      className: 'string',
+      begin: '\'', end: '\'',
+      contains: [hljs.BACKSLASH_ESCAPE],
+      relevance: 0
+    },
+    {
+      className: 'string',
+      begin: '"', end: '"',
+      contains: STRING_CONTAINS,
+      relevance: 0
+    },
+    {
+      className: 'string',
+      begin: '`', end: '`',
+      contains: [hljs.BACKSLASH_ESCAPE]
+    },
+    {
+      className: 'string',
+      begin: '{\\w+}',
+      relevance: 0
+    },
+    {
+      className: 'string',
+      begin: '\-?\\w+\\s*\\=\\>',
+      relevance: 0
+    },
+    {
+      className: 'number',
+      begin: '(\\b0[0-7_]+)|(\\b0x[0-9a-fA-F_]+)|(\\b[1-9][0-9_]*(\\.[0-9_]+)?)|[0_]\\b',
+      relevance: 0
+    },
+    {
+      className: 'regexp',
+      begin: '(s|tr|y)/(\\\\.|[^/])*/(\\\\.|[^/])*/[a-z]*',
+      relevance: 10
+    },
+    {
+      className: 'regexp',
+      begin: '(m|qr)?/', end: '/[a-z]*',
+      contains: [hljs.BACKSLASH_ESCAPE],
+      relevance: 0 // allows empty "//" which is a common comment delimiter in other languages
+    },
+    {
+      className: 'sub',
+      begin: '\\bsub\\b', end: '(\\s*\\(.*?\\))?[;{]',
+      keywords: {'sub':1},
+      relevance: 5
+    },
+    {
+      className: 'operator',
+      begin: '-\\w\\b',
+      relevance: 0
+    },
+    {
+      className: 'pod',
+      begin: '\\=\\w', end: '\\=cut'
+    }
+  ];
+  SUBST.contains = PERL_DEFAULT_CONTAINS;
+  METHOD.contains[1].contains = PERL_DEFAULT_CONTAINS;
+
+  return {
+    defaultMode: {
+      keywords: PERL_KEYWORDS,
+      contains: PERL_DEFAULT_CONTAINS
+    }
+  };
+}();
+/*
+Language: VBScript
+Author: Nikita Ledyaev <lenikita@yandex.ru>
+Contributors: Michal Gabrukiewicz <mgabru@gmail.com>
+*/
+
+hljs.LANGUAGES.vbscript = {
+  case_insensitive: true,
+  defaultMode: {
+    keywords: {
+      'keyword': {'call' : 1,'class' : 1,'const' : 1,'dim' : 1,'do' : 1,'loop' : 1,'erase' : 1,'execute' : 1,'executeglobal' : 1,'exit' : 1,'for' : 1,'each' : 1,'next' : 1,'function' : 1,'if' : 1,'then' : 1,'else' : 1,'on' : 1, 'error' : 1,'option' : 1, 'explicit' : 1, 'new': 1, 'private' : 1,'property' : 1,'let' : 1,'get' : 1,'public' : 1,'randomize' : 1,'redim' : 1,'rem' : 1,'select' : 1,'case' : 1,'set' : 1,'stop' : 1,'sub' : 1,'while' : 1,'wend' : 1,'with' : 1, 'end' : 1, 'to' : 1, 'elseif': 1, 'is': 1, 'or': 1, 'xor': 1, 'and': 1, 'not': 1, 'class_initialize': 1, 'class_terminate': 1, 'default': 1, 'preserve': 1, 'in': 1, 'me': 1, 'byval': 1, 'byref': 1, 'step': 1, 'resume': 1, 'goto': 1},
+      'built_in': {'lcase': 1, 'month': 1, 'vartype': 1, 'instrrev': 1, 'ubound': 1, 'setlocale': 1, 'getobject': 1, 'rgb': 1, 'getref': 1, 'string': 1, 'weekdayname': 1, 'rnd': 1, 'dateadd': 1, 'monthname': 1, 'now': 1, 'day': 1, 'minute': 1, 'isarray': 1, 'cbool': 1, 'round': 1, 'formatcurrency': 1, 'conversions': 1, 'csng': 1, 'timevalue': 1, 'second': 1, 'year': 1, 'space': 1, 'abs': 1, 'clng': 1, 'timeserial': 1, 'fixs': 1, 'len': 1, 'asc': 1, 'isempty': 1, 'maths': 1, 'dateserial': 1, 'atn': 1, 'timer': 1, 'isobject': 1, 'filter': 1, 'weekday': 1, 'datevalue': 1, 'ccur': 1, 'isdate': 1, 'instr': 1, 'datediff': 1, 'formatdatetime': 1, 'replace': 1, 'isnull': 1, 'right': 1, 'sgn': 1, 'array': 1, 'snumeric': 1, 'log': 1, 'cdbl': 1, 'hex': 1, 'chr': 1, 'lbound': 1, 'msgbox': 1, 'ucase': 1, 'getlocale': 1, 'cos': 1, 'cdate': 1, 'cbyte': 1, 'rtrim': 1, 'join': 1, 'hour': 1, 'oct': 1, 'typename': 1, 'trim': 1, 'strcomp': 1, 'int': 1, 'createobject': 1, 'loadpicture': 1, 'tan': 1, 'formatnumber': 1, 'mid': 1, 'scriptenginebuildversion': 1, 'scriptengine': 1, 'split': 1, 'scriptengineminorversion': 1, 'cint': 1, 'sin': 1, 'datepart': 1, 'ltrim': 1, 'sqr': 1, 'scriptenginemajorversion': 1, 'time': 1, 'derived': 1, 'eval': 1, 'date': 1, 'formatpercent': 1, 'exp': 1, 'inputbox': 1, 'left': 1, 'ascw': 1, 'chrw': 1, 'regexp': 1, 'server': 1, 'response': 1, 'request': 1, 'cstr': 1, 'err': 1},
+      'literal': {'true': 1, 'false': 1, 'null': 1, 'nothing': 1, 'empty': 1}
+    },
+    illegal: '//',
+    contains: [
+      { // can't use standard QUOTE_STRING_MODE since it's compiled with its own escape and doesn't use the local one
+        className: 'string',
+        begin: '"', end: '"',
+        illegal: '\\n',
+        contains: [{begin: '""'}],
+        relevance: 0
+      },
+      {
+        className: 'comment',
+        begin: '\'', end: '$'
+      },
+      hljs.C_NUMBER_MODE
+    ]
+  }
+};
+/*
+Language: Diff
+Description: Unified and context diff
+Author: Vasily Polovnyov <vast@whiteants.net>
+*/
+
+hljs.LANGUAGES.diff = {
+  case_insensitive: true,
+  defaultMode: {
+    contains: [
+      {
+        className: 'chunk',
+        begin: '^\\@\\@ +\\-\\d+,\\d+ +\\+\\d+,\\d+ +\\@\\@$',
+        relevance: 10
+      },
+      {
+        className: 'chunk',
+        begin: '^\\*\\*\\* +\\d+,\\d+ +\\*\\*\\*\\*$',
+        relevance: 10
+      },
+      {
+        className: 'chunk',
+        begin: '^\\-\\-\\- +\\d+,\\d+ +\\-\\-\\-\\-$',
+        relevance: 10
+      },
+      {
+        className: 'header',
+        begin: 'Index: ', end: '$'
+      },
+      {
+        className: 'header',
+        begin: '=====', end: '=====$'
+      },
+      {
+        className: 'header',
+        begin: '^\\-\\-\\-', end: '$'
+      },
+      {
+        className: 'header',
+        begin: '^\\*{3} ', end: '$'
+      },
+      {
+        className: 'header',
+        begin: '^\\+\\+\\+', end: '$'
+      },
+      {
+        className: 'header',
+        begin: '\\*{5}', end: '\\*{5}$'
+      },
+      {
+        className: 'addition',
+        begin: '^\\+', end: '$'
+      },
+      {
+        className: 'deletion',
+        begin: '^\\-', end: '$'
+      },
+      {
+        className: 'change',
+        begin: '^\\!', end: '$'
+      }
+    ]
+  }
+};
+/*
+Language: 1C
+Author: Yuri Ivanov <ivanov@supersoft.ru>
+Contributors: Sergey Baranov <segyrn@yandex.ru>
+*/
+
+hljs.LANGUAGES['1c'] = function(){
+  var IDENT_RE_RU = '[a-zA-Zа-яА-Я][a-zA-Z0-9_а-яА-Я]*';
+  var OneS_KEYWORDS = {'возврат':1,'дата':1,'для':1,'если':1,'и':1,'или':1,'иначе':1,'иначеесли':1,'исключение':1,'конецесли':1,'конецпопытки':1,'конецпроцедуры':1,'конецфункции':1,'конеццикла':1,'константа':1,'не':1,'перейти':1,'перем':1,'перечисление':1,'по':1,'пока':1,'попытка':1,'прервать':1,'продолжить':1,'процедура':1,'строка':1,'тогда':1,'фс':1,'функция':1,'цикл':1,'число':1,'экспорт':1};
+  var OneS_BUILT_IN = {'ansitooem':1,'oemtoansi':1,'ввестивидсубконто':1,'ввестидату':1,'ввестизначение':1,'ввестиперечисление':1,'ввестипериод':1,'ввестиплансчетов':1,'ввестистроку':1,'ввестичисло':1,'вопрос':1,'восстановитьзначение':1,'врег':1,'выбранныйплансчетов':1,'вызватьисключение':1,'датагод':1,'датамесяц':1,'датачисло':1,'добавитьмесяц':1,'завершитьработусистемы':1,'заголовоксистемы':1,'записьжурналарегистрации':1,'запуститьприложение':1,'зафиксироватьтранзакцию':1,'значениевстроку':1,'значениевстрокувнутр':1,'значениевфайл':1,'значениеизстроки':1,'значениеизстрокивнутр':1,'значениеизфайла':1,'имякомпьютера':1,'имяпользователя':1,'каталогвременныхфайлов':1,'каталогиб':1,'каталогпользователя':1,'каталогпрограммы':1,'кодсимв':1,'командасистемы':1,'конгода':1,'конецпериодаби':1,'конецрассчитанногопериодаби':1,'конецстандартногоинтервала':1,'конквартала':1,'конмесяца':1,'коннедели':1,'лев':1,'лог':1,'лог10':1,'макс':1,'максимальноеколичествосубконто':1,'мин':1,'монопольныйрежим':1,'названиеинтерфейса':1,'названиенабораправ':1,'назначитьвид':1,'назначитьсчет':1,'найти':1,'найтипомеченныенаудаление':1,'найтиссылки':1,'началопериодаби':1,'началостандартногоинтервала':1,'начатьтранзакцию':1,'начгода':1,'начквартала':1,'начмесяца':1,'начнедели':1,'номерднягода':1,'номерднянедели':1,'номернеделигода':1,'нрег':1,'обработкаожидания':1,'окр':1,'описаниеошибки':1,'основнойжурналрасчетов':1,'основнойплансчетов':1,'основнойязык':1,'открытьформу':1,'открытьформумодально':1,'отменитьтранзакцию':1,'очиститьокносообщений':1,'периодстр':1,'полноеимяпользователя':1,'получитьвремята':1,'получитьдатута':1,'получитьдокументта':1,'получитьзначенияотбора':1,'получитьпозициюта':1,'получитьпустоезначение':1,'получитьта':1,'прав':1,'праводоступа':1,'предупреждение':1,'префиксавтонумерации':1,'пустаястрока':1,'пустоезначение':1,'рабочаядаттьпустоезначение':1,'получитьта':1,'прав':1,'праводоступа':1,'предупреждение':1,'префиксавтонумерации':1,'пустаястрока':1,'пустоезначение':1,'рабочаядата':1,'разделительстраниц':1,'разделительстрок':1,'разм':1,'разобратьпозициюдокумента':1,'рассчитатьрегистрына':1,'рассчитатьрегистрыпо':1,'сигнал':1,'симв':1,'символтабуляции':1,'создатьобъект':1,'сокрл':1,'сокрлп':1,'сокрп':1,' сообщить':1,'состояние':1,'сохранитьзначение':1,'сред':1,'статусвозврата':1,'стрдлина':1,'стрзаменить':1,'стрколичествострок':1,'стрполучитьстроку':1,' стрчисловхождений':1,'сформироватьпозициюдокумента':1,'счетпокоду':1,'текущаядата':1,'текущеевремя':1,'типзначения':1,'типзначениястр':1,'удалитьобъекты':1,'установитьтана':1,'установитьтапо':1,'фиксшаблон':1,'формат':1,'цел':1,'шаблон':1};
+  var DQUOTE =  {className: 'dquote',  begin: '""'};
+  var STR_START = {
+      className: 'string',
+      begin: '"', end: '"|$',
+      contains: [DQUOTE],
+      relevance: 0
+    };
+  var STR_CONT = {
+    className: 'string',
+    begin: '\\|', end: '"|$',
+    contains: [DQUOTE]
+  };
+
+  return {
+    case_insensitive: true,
+    defaultMode: {
+      lexems: IDENT_RE_RU,
+      keywords: {'keyword':OneS_KEYWORDS,'built_in':OneS_BUILT_IN},
+      contains: [
+        hljs.C_LINE_COMMENT_MODE,
+        hljs.NUMBER_MODE,
+        STR_START, STR_CONT,
+        {
+          className: 'function',
+          begin: '(процедура|функция)', end: '$',
+          lexems: IDENT_RE_RU,
+          keywords: {'процедура': 1, 'экспорт': 1, 'функция': 1},
+          contains: [
+            {className: 'title', begin: IDENT_RE_RU},
+            {
+              className: 'tail',
+              endsWithParent: true,
+              contains: [
+                {
+                  className: 'params',
+                  begin: '\\(', end: '\\)',
+                  lexems: IDENT_RE_RU,
+                  keywords: {'знач':1},
+                  contains: [STR_START, STR_CONT]
+                },
+                {
+                  className: 'export',
+                  begin: 'экспорт', endsWithParent: true,
+                  lexems: IDENT_RE_RU,
+                  keywords: {'экспорт': 1},
+                  contains: [hljs.C_LINE_COMMENT_MODE]
+                }
+              ]
+            },
+            hljs.C_LINE_COMMENT_MODE
+          ]
+        },
+        {className: 'preprocessor', begin: '#', end: '$'},
+        {className: 'date', begin: '\'\\d{2}\\.\\d{2}\\.(\\d{2}|\\d{4})\''}
+      ]
+    }
+  };
+}();
+/*
+Language: Python profile
+Description: Python profiler results
+Author: Brian Beck <exogen@gmail.com>
+*/
+
+hljs.LANGUAGES.profile = {
+  defaultMode: {
+    contains: [
+      hljs.C_NUMBER_MODE,
+      {
+        className: 'builtin',
+        begin: '{', end: '}$',
+        excludeBegin: true, excludeEnd: true,
+        contains: [hljs.APOS_STRING_MODE, hljs.QUOTE_STRING_MODE],
+        relevance: 0
+      },
+      {
+        className: 'filename',
+        begin: '(/\w|[a-zA-Z_][\da-zA-Z_]+\\.[\da-zA-Z_]{1,3})', end: ':',
+        excludeEnd: true
+      },
+      {
+        className: 'header',
+        begin: '(ncalls|tottime|cumtime)', end: '$',
+        keywords: {'ncalls': 1, 'tottime': 10, 'cumtime': 10, 'filename': 1},
+        relevance: 10
+      },
+      {
+        className: 'summary',
+        begin: 'function calls', end: '$',
+        contains: [hljs.C_NUMBER_MODE],
+        relevance: 10
+      },
+      hljs.APOS_STRING_MODE,
+      hljs.QUOTE_STRING_MODE,
+      {
+        className: 'function',
+        begin: '\\(', end: '\\)$',
+        contains: [{
+          className: 'title',
+          begin: hljs.UNDERSCORE_IDENT_RE,
+          relevance: 0
+        }],
         relevance: 0
       }
     ]
@@ -2153,141 +2774,6 @@ hljs.LANGUAGES.erlang = function(){
   };
 }();
 /*
-Language: Go
-Author: Stephan Kountso aka StepLg <steplg@gmail.com>
-Description: Google go language (golang). For info about language see http://golang.org/
-*/
-
-hljs.LANGUAGES.go = function(){
-  var GO_KEYWORDS = {
-    'keyword': {
-       'break' : 1, 'default' : 1, 'func' : 1, 'interface' : 1, 'select' : 1,
-       'case' : 1, 'map' : 1, 'struct' : 1, 'chan' : 1,
-       'else' : 1, 'goto' : 1, 'package' : 1, 'switch' : 1, 'const' : 1,
-       'fallthrough' : 1, 'if' : 1, 'range' : 1, 'type' : 1, 'continue' : 1,
-       'for' : 1, 'import' : 1, 'return' : 1, 'var' : 1, 'go': 1, 'defer' : 1
-    },
-    'constant': {
-       'true': 1, 'false': 1, 'iota': 1, 'nil': 1
-    },
-    'typename': {
-       'bool': 1, 'byte': 1, 'complex64': 1, 'complex128': 1, 'float32': 1,
-       'float64': 1, 'int8': 1, 'int16': 1, 'int32': 1, 'int64': 1, 'string': 1,
-       'uint8': 1, 'uint16': 1, 'uint32': 1, 'uint64': 1, 'int': 1, 'uint': 1,
-       'uintptr': 1
-   },
-    'built_in': {
-       'append': 1, 'cap': 1, 'close': 1, 'complex': 1, 'copy': 1, 'imag': 1,
-       'len': 1, 'make': 1, 'new': 1, 'panic': 1, 'print': 1, 'println': 1,
-       'real': 1, 'recover': 1
-    }
-  };
-  return {
-    defaultMode: {
-      keywords: GO_KEYWORDS,
-      illegal: '</',
-      contains: [
-        hljs.C_LINE_COMMENT_MODE,
-        hljs.C_BLOCK_COMMENT_MODE,
-        hljs.QUOTE_STRING_MODE,
-        {
-          className: 'string',
-          begin: '\'', end: '[^\\\\]\'',
-          relevance: 0
-        },
-        {
-          className: 'string',
-          begin: '`', end: '[^\\\\]`'
-        },
-        {
-          className: 'number',
-          begin: '[^a-zA-Z_0-9](\\-|\\+)?\\d+(\\.\\d+|\\/\\d+)?((d|e|f|l|s)(\\+|\\-)?\\d+)?',
-          relevance: 0
-        },
-        hljs.C_NUMBER_MODE
-      ]
-    }
-  };
-}();
-
-/*
-Language: Haskell
-Author: Jeremy Hull <sourdrums@gmail.com>
-*/
-
-hljs.LANGUAGES.haskell = function(){
-  var LABEL = {
-    className: 'label',
-    begin: '\\b[A-Z][\\w\']*',
-    relevance: 0
-  };
-  var CONTAINER = {
-    className: 'container',
-    begin: '\\(', end: '\\)',
-    contains: [
-      {className: 'label', begin: '\\b[A-Z][\\w\\(\\)\\.\']*'},
-      {className: 'title', begin: '[_a-z][\\w\']*'}
-    ]
-  };
-
-  return {
-    defaultMode: {
-      keywords: {
-        'keyword': {
-          'let': 1, 'in': 1, 'if': 1, 'then': 1, 'else': 1, 'case': 1, 'of': 1,
-          'where': 1, 'do': 1, 'module': 1, 'import': 1, 'hiding': 1,
-          'qualified': 1, 'type': 1, 'data': 1, 'newtype': 1, 'deriving': 1,
-          'class': 1, 'instance': 1, 'null': 1, 'not': 1, 'as': 1
-        }
-      },
-      contains: [
-        {
-          className: 'comment',
-          begin: '--', end: '$'
-        },
-        {
-          className: 'comment',
-          begin: '{-', end: '-}'
-        },
-        {
-          className: 'string',
-          begin: '\\s+\'', end: '\'',
-          contains: [hljs.BACKSLASH_ESCAPE],
-          relevance: 0
-        },
-        hljs.QUOTE_STRING_MODE,
-        {
-          className: 'import',
-          begin: '\\bimport', end: '$',
-          keywords: {'import': 1, 'qualified': 1, 'as': 1, 'hiding': 1},
-          contains: [CONTAINER]
-        },
-        {
-          className: 'module',
-          begin: '\\bmodule', end: 'where',
-          keywords: {'module': 1, 'where': 1},
-          contains: [CONTAINER]
-        },
-        {
-          className: 'class',
-          begin: '\\b(class|instance|data|(new)?type)', end: '(where|$)',
-          keywords: {'class': 1, 'where': 1, 'instance': 1,'data': 1,'type': 1,'newtype': 1, 'deriving': 1},
-          contains: [LABEL]
-        },
-        hljs.C_NUMBER_MODE,
-        {
-          className: 'shebang',
-          begin: '#!\\/usr\\/bin\\/env\ runhaskell', end: '$'
-        },
-        LABEL,
-        {
-          className: 'title', begin: '^[_a-z][\\w\']*'
-        }
-      ]
-    }
-  };
-}();
-/*
 Language: Ini
 */
 
@@ -2316,6 +2802,467 @@ hljs.LANGUAGES.ini = {
           }
         ]
       }
+    ]
+  }
+};
+/*
+Language: Ruby
+Author: Anton Kovalyov <anton@kovalyov.net>
+Contributors: Peter Leonov <gojpeg@yandex.ru>, Vasily Polovnyov <vast@whiteants.net>, Loren Segal <lsegal@soen.ca>
+*/
+
+hljs.LANGUAGES.ruby = function(){
+  var RUBY_IDENT_RE = '[a-zA-Z_][a-zA-Z0-9_]*(\\!|\\?)?';
+  var RUBY_METHOD_RE = '[a-zA-Z_]\\w*[!?=]?|[-+~]\\@|<<|>>|=~|===?|<=>|[<>]=?|\\*\\*|[-/+%^&*~`|]|\\[\\]=?';
+  var RUBY_KEYWORDS = {
+    'keyword': {'and': 1, 'false': 1, 'then': 1, 'defined': 1, 'module': 1, 'in': 1, 'return': 1, 'redo': 1, 'if': 1, 'BEGIN': 1, 'retry': 1, 'end': 1, 'for': 1, 'true': 1, 'self': 1, 'when': 1, 'next': 1, 'until': 1, 'do': 1, 'begin': 1, 'unless': 1, 'END': 1, 'rescue': 1, 'nil': 1, 'else': 1, 'break': 1, 'undef': 1, 'not': 1, 'super': 1, 'class': 1, 'case': 1, 'require': 1, 'yield': 1, 'alias': 1, 'while': 1, 'ensure': 1, 'elsif': 1, 'or': 1, 'def': 1},
+    'keymethods': {'__id__': 1, '__send__': 1, 'abort': 1, 'abs': 1, 'all?': 1, 'allocate': 1, 'ancestors': 1, 'any?': 1, 'arity': 1, 'assoc': 1, 'at': 1, 'at_exit': 1, 'autoload': 1, 'autoload?': 1, 'between?': 1, 'binding': 1, 'binmode': 1, 'block_given?': 1, 'call': 1, 'callcc': 1, 'caller': 1, 'capitalize': 1, 'capitalize!': 1, 'casecmp': 1, 'catch': 1, 'ceil': 1, 'center': 1, 'chomp': 1, 'chomp!': 1, 'chop': 1, 'chop!': 1, 'chr': 1, 'class': 1, 'class_eval': 1, 'class_variable_defined?': 1, 'class_variables': 1, 'clear': 1, 'clone': 1, 'close': 1, 'close_read': 1, 'close_write': 1, 'closed?': 1, 'coerce': 1, 'collect': 1, 'collect!': 1, 'compact': 1, 'compact!': 1, 'concat': 1, 'const_defined?': 1, 'const_get': 1, 'const_missing': 1, 'const_set': 1, 'constants': 1, 'count': 1, 'crypt': 1, 'default': 1, 'default_proc': 1, 'delete': 1, 'delete!': 1, 'delete_at': 1, 'delete_if': 1, 'detect': 1, 'display': 1, 'div': 1, 'divmod': 1, 'downcase': 1, 'downcase!': 1, 'downto': 1, 'dump': 1, 'dup': 1, 'each': 1, 'each_byte': 1, 'each_index': 1, 'each_key': 1, 'each_line': 1, 'each_pair': 1, 'each_value': 1, 'each_with_index': 1, 'empty?': 1, 'entries': 1, 'eof': 1, 'eof?': 1, 'eql?': 1, 'equal?': 1, 'eval': 1, 'exec': 1, 'exit': 1, 'exit!': 1, 'extend': 1, 'fail': 1, 'fcntl': 1, 'fetch': 1, 'fileno': 1, 'fill': 1, 'find': 1, 'find_all': 1, 'first': 1, 'flatten': 1, 'flatten!': 1, 'floor': 1, 'flush': 1, 'for_fd': 1, 'foreach': 1, 'fork': 1, 'format': 1, 'freeze': 1, 'frozen?': 1, 'fsync': 1, 'getc': 1, 'gets': 1, 'global_variables': 1, 'grep': 1, 'gsub': 1, 'gsub!': 1, 'has_key?': 1, 'has_value?': 1, 'hash': 1, 'hex': 1, 'id': 1, 'include': 1, 'include?': 1, 'included_modules': 1, 'index': 1, 'indexes': 1, 'indices': 1, 'induced_from': 1, 'inject': 1, 'insert': 1, 'inspect': 1, 'instance_eval': 1, 'instance_method': 1, 'instance_methods': 1, 'instance_of?': 1, 'instance_variable_defined?': 1, 'instance_variable_get': 1, 'instance_variable_set': 1, 'instance_variables': 1, 'integer?': 1, 'intern': 1, 'invert': 1, 'ioctl': 1, 'is_a?': 1, 'isatty': 1, 'iterator?': 1, 'join': 1, 'key?': 1, 'keys': 1, 'kind_of?': 1, 'lambda': 1, 'last': 1, 'length': 1, 'lineno': 1, 'ljust': 1, 'load': 1, 'local_variables': 1, 'loop': 1, 'lstrip': 1, 'lstrip!': 1, 'map': 1, 'map!': 1, 'match': 1, 'max': 1, 'member?': 1, 'merge': 1, 'merge!': 1, 'method': 1, 'method_defined?': 1, 'method_missing': 1, 'methods': 1, 'min': 1, 'module_eval': 1, 'modulo': 1, 'name': 1, 'nesting': 1, 'new': 1, 'next': 1, 'next!': 1, 'nil?': 1, 'nitems': 1, 'nonzero?': 1, 'object_id': 1, 'oct': 1, 'open': 1, 'pack': 1, 'partition': 1, 'pid': 1, 'pipe': 1, 'pop': 1, 'popen': 1, 'pos': 1, 'prec': 1, 'prec_f': 1, 'prec_i': 1, 'print': 1, 'printf': 1, 'private_class_method': 1, 'private_instance_methods': 1, 'private_method_defined?': 1, 'private_methods': 1, 'proc': 1, 'protected_instance_methods': 1, 'protected_method_defined?': 1, 'protected_methods': 1, 'public_class_method': 1, 'public_instance_methods': 1, 'public_method_defined?': 1, 'public_methods': 1, 'push': 1, 'putc': 1, 'puts': 1, 'quo': 1, 'raise': 1, 'rand': 1, 'rassoc': 1, 'read': 1, 'read_nonblock': 1, 'readchar': 1, 'readline': 1, 'readlines': 1, 'readpartial': 1, 'rehash': 1, 'reject': 1, 'reject!': 1, 'remainder': 1, 'reopen': 1, 'replace': 1, 'require': 1, 'respond_to?': 1, 'reverse': 1, 'reverse!': 1, 'reverse_each': 1, 'rewind': 1, 'rindex': 1, 'rjust': 1, 'round': 1, 'rstrip': 1, 'rstrip!': 1, 'scan': 1, 'seek': 1, 'select': 1, 'send': 1, 'set_trace_func': 1, 'shift': 1, 'singleton_method_added': 1, 'singleton_methods': 1, 'size': 1, 'sleep': 1, 'slice': 1, 'slice!': 1, 'sort': 1, 'sort!': 1, 'sort_by': 1, 'split': 1, 'sprintf': 1, 'squeeze': 1, 'squeeze!': 1, 'srand': 1, 'stat': 1, 'step': 1, 'store': 1, 'strip': 1, 'strip!': 1, 'sub': 1, 'sub!': 1, 'succ': 1, 'succ!': 1, 'sum': 1, 'superclass': 1, 'swapcase': 1, 'swapcase!': 1, 'sync': 1, 'syscall': 1, 'sysopen': 1, 'sysread': 1, 'sysseek': 1, 'system': 1, 'syswrite': 1, 'taint': 1, 'tainted?': 1, 'tell': 1, 'test': 1, 'throw': 1, 'times': 1, 'to_a': 1, 'to_ary': 1, 'to_f': 1, 'to_hash': 1, 'to_i': 1, 'to_int': 1, 'to_io': 1, 'to_proc': 1, 'to_s': 1, 'to_str': 1, 'to_sym': 1, 'tr': 1, 'tr!': 1, 'tr_s': 1, 'tr_s!': 1, 'trace_var': 1, 'transpose': 1, 'trap': 1, 'truncate': 1, 'tty?': 1, 'type': 1, 'ungetc': 1, 'uniq': 1, 'uniq!': 1, 'unpack': 1, 'unshift': 1, 'untaint': 1, 'untrace_var': 1, 'upcase': 1, 'upcase!': 1, 'update': 1, 'upto': 1, 'value?': 1, 'values': 1, 'values_at': 1, 'warn': 1, 'write': 1, 'write_nonblock': 1, 'zero?': 1, 'zip': 1}
+  };
+  var YARDOCTAG = {
+    className: 'yardoctag',
+    begin: '@[A-Za-z]+'
+  };
+  var COMMENT1 = {
+    className: 'comment',
+    begin: '#', end: '$',
+    contains: [YARDOCTAG]
+  };
+  var COMMENT2 = {
+    className: 'comment',
+    begin: '^\\=begin', end: '^\\=end',
+    contains: [YARDOCTAG],
+    relevance: 10
+  };
+  var COMMENT3 = {
+    className: 'comment',
+    begin: '^__END__', end: '\\n$'
+  };
+  var SUBST = {
+    className: 'subst',
+    begin: '#\\{', end: '}',
+    lexems: RUBY_IDENT_RE,
+    keywords: RUBY_KEYWORDS
+  };
+  var STR_CONTAINS = [hljs.BACKSLASH_ESCAPE, SUBST];
+  var STR1 = {
+    className: 'string',
+    begin: '\'', end: '\'',
+    contains: STR_CONTAINS,
+    relevance: 0
+  };
+  var STR2 = {
+    className: 'string',
+    begin: '"', end: '"',
+    contains: STR_CONTAINS,
+    relevance: 0
+  };
+  var STR3 = {
+    className: 'string',
+    begin: '%[qw]?\\(', end: '\\)',
+    contains: STR_CONTAINS,
+    relevance: 10
+  };
+  var STR4 = {
+    className: 'string',
+    begin: '%[qw]?\\[', end: '\\]',
+    contains: STR_CONTAINS,
+    relevance: 10
+  };
+  var STR5 = {
+    className: 'string',
+    begin: '%[qw]?{', end: '}',
+    contains: STR_CONTAINS,
+    relevance: 10
+  };
+  var STR6 = {
+    className: 'string',
+    begin: '%[qw]?<', end: '>',
+    contains: STR_CONTAINS,
+    relevance: 10
+  };
+  var STR7 = {
+    className: 'string',
+    begin: '%[qw]?/', end: '/',
+    contains: STR_CONTAINS,
+    relevance: 10
+  };
+  var STR8 = {
+    className: 'string',
+    begin: '%[qw]?%', end: '%',
+    contains: STR_CONTAINS,
+    relevance: 10
+  };
+  var STR9 = {
+    className: 'string',
+    begin: '%[qw]?-', end: '-',
+    contains: STR_CONTAINS,
+    relevance: 10
+  };
+  var STR10 = {
+    className: 'string',
+    begin: '%[qw]?\\|', end: '\\|',
+    contains: STR_CONTAINS,
+    relevance: 10
+  };
+  var FUNCTION = {
+    className: 'function',
+    begin: '\\bdef\\s+', end: ' |$|;',
+    lexems: RUBY_IDENT_RE,
+    keywords: RUBY_KEYWORDS,
+    contains: [
+      {
+        className: 'title',
+        begin: RUBY_METHOD_RE,
+        lexems: RUBY_IDENT_RE,
+        keywords: RUBY_KEYWORDS
+      },
+      {
+        className: 'params',
+        begin: '\\(', end: '\\)',
+        lexems: RUBY_IDENT_RE,
+        keywords: RUBY_KEYWORDS
+      },
+      COMMENT1, COMMENT2, COMMENT3
+    ]
+  };
+  var IDENTIFIER = {
+    className: 'identifier',
+    begin: RUBY_IDENT_RE,
+    lexems: RUBY_IDENT_RE,
+    keywords: RUBY_KEYWORDS,
+    relevance: 0
+  };
+
+  var RUBY_DEFAULT_CONTAINS = [
+    COMMENT1, COMMENT2, COMMENT3,
+    STR1, STR2, STR3, STR4, STR5, STR6, STR7, STR8, STR9, STR10,
+    {
+      className: 'class',
+      begin: '\\b(class|module)\\b', end: '$|;',
+      keywords: {'class': 1, 'module': 1},
+      contains: [
+        {
+          className: 'title',
+          begin: '[A-Za-z_]\\w*(::\\w+)*(\\?|\\!)?',
+          relevance: 0
+        },
+        {
+          className: 'inheritance',
+          begin: '<\\s*',
+          contains: [{
+            className: 'parent',
+            begin: '(' + hljs.IDENT_RE + '::)?' + hljs.IDENT_RE
+          }]
+        },
+        COMMENT1, COMMENT2, COMMENT3
+      ]
+    },
+    FUNCTION,
+    {
+      className: 'constant',
+      begin: '(::)?([A-Z]\\w*(::)?)+',
+      relevance: 0
+    },
+    {
+      className: 'symbol',
+      begin: ':',
+      contains: [STR1, STR2, STR3, STR4, STR5, STR6, STR7, STR8, STR9, STR10, IDENTIFIER],
+      relevance: 0
+    },
+    {
+      className: 'number',
+      begin: '(\\b0[0-7_]+)|(\\b0x[0-9a-fA-F_]+)|(\\b[1-9][0-9_]*(\\.[0-9_]+)?)|[0_]\\b',
+      relevance: 0
+    },
+    {
+      className: 'number',
+      begin: '\\?\\w'
+    },
+    {
+      className: 'variable',
+      begin: '(\\$\\W)|((\\$|\\@\\@?)(\\w+))'
+    },
+    IDENTIFIER,
+    { // regexp container
+      begin: '(' + hljs.RE_STARTERS_RE + ')\\s*',
+      contains: [
+        COMMENT1, COMMENT2, COMMENT3,
+        {
+          className: 'regexp',
+          begin: '/', end: '/[a-z]*',
+          illegal: '\\n',
+          contains: [hljs.BACKSLASH_ESCAPE]
+        }
+      ],
+      relevance: 0
+    }
+  ];
+  SUBST.contains = RUBY_DEFAULT_CONTAINS;
+  FUNCTION.contains[1].contains = RUBY_DEFAULT_CONTAINS;
+
+  return {
+    defaultMode: {
+      lexems: RUBY_IDENT_RE,
+      keywords: RUBY_KEYWORDS,
+      contains: RUBY_DEFAULT_CONTAINS
+    }
+  };
+}();
+/*
+Language: DOS .bat
+Author: Alexander Makarov (http://rmcreative.ru/)
+*/
+
+hljs.LANGUAGES.dos = {
+  case_insensitive: true,
+  defaultMode: {
+    keywords: {
+      'flow': {'if':1, 'else':1, 'goto':1, 'for':1, 'in':1, 'do':1, 'call':1, 'exit':1, 'not':1, 'exist':1, 'errorlevel':1, 'defined':1, 'equ':1, 'neq':1, 'lss':1, 'leq':1, 'gtr':1, 'geq':1},
+      'keyword':{'shift':1, 'cd':1, 'dir':1, 'echo':1, 'setlocal':1, 'endlocal':1, 'set':1, 'pause':1, 'copy':1},
+      'stream':{'prn':1, 'nul':1, 'lpt3':1, 'lpt2':1, 'lpt1':1, 'con':1, 'com4':1, 'com3':1, 'com2':1, 'com1':1, 'aux':1},
+      'winutils':{'ping':1, 'net':1, 'ipconfig':1, 'taskkill':1, 'xcopy':1, 'ren':1, 'del':1}
+    },
+    contains: [
+      {
+        className: 'envvar', begin: '%[^ ]+?%'
+      },
+      {
+        className: 'number', begin: '\\b\\d+',
+        relevance: 0
+      },
+      {
+        className: 'comment',
+        begin: '@?rem', end: '$'
+      }
+    ]
+  }
+};
+/*
+Language: CSS
+*/
+
+hljs.LANGUAGES.css = function() {
+  var FUNCTION = {
+    className: 'function',
+    begin: hljs.IDENT_RE + '\\(', end: '\\)',
+    contains: [{
+        endsWithParent: true, excludeEnd: true,
+        contains: [hljs.NUMBER_MODE, hljs.APOS_STRING_MODE, hljs.QUOTE_STRING_MODE]
+    }]
+  };
+  return {
+    case_insensitive: true,
+    defaultMode: {
+      illegal: '[=/|\']',
+      contains: [
+        hljs.C_BLOCK_COMMENT_MODE,
+        {
+          className: 'id', begin: '\\#[A-Za-z0-9_-]+'
+        },
+        {
+          className: 'class', begin: '\\.[A-Za-z0-9_-]+',
+          relevance: 0
+        },
+        {
+          className: 'attr_selector',
+          begin: '\\[', end: '\\]',
+          illegal: '$'
+        },
+        {
+          className: 'pseudo',
+          begin: ':(:)?[a-zA-Z0-9\\_\\-\\+\\(\\)\\"\\\']+'
+        },
+        {
+          className: 'at_rule',
+          begin: '@(font-face|page)',
+          lexems: '[a-z-]+',
+          keywords: {'font-face': 1, 'page': 1}
+        },
+        {
+          className: 'at_rule',
+          begin: '@', end: '[{;]', // at_rule eating first "{" is a good thing
+                                   // because it doesn't let it to be parsed as
+                                   // a rule set but instead drops parser into
+                                   // the defaultMode which is how it should be.
+          excludeEnd: true,
+          keywords: {'import': 1, 'page': 1, 'media': 1, 'charset': 1},
+          contains: [
+            FUNCTION,
+            hljs.APOS_STRING_MODE, hljs.QUOTE_STRING_MODE,
+            hljs.NUMBER_MODE
+          ]
+        },
+        {
+          className: 'tag', begin: hljs.IDENT_RE,
+          relevance: 0
+        },
+        {
+          className: 'rules',
+          begin: '{', end: '}',
+          illegal: '[^\\s]',
+          relevance: 0,
+          contains: [
+            hljs.C_BLOCK_COMMENT_MODE,
+            {
+              className: 'rule',
+              begin: '[^\\s]', returnBegin: true, end: ';', endsWithParent: true,
+              contains: [
+                {
+                  className: 'attribute',
+                  begin: '[A-Z\\_\\.\\-]+', end: ':',
+                  excludeEnd: true,
+                  illegal: '[^\\s]',
+                  starts: {
+                    className: 'value',
+                    endsWithParent: true, excludeEnd: true,
+                    contains: [
+                      FUNCTION,
+                      hljs.NUMBER_MODE,
+                      hljs.QUOTE_STRING_MODE,
+                      hljs.APOS_STRING_MODE,
+                      hljs.C_BLOCK_COMMENT_MODE,
+                      {
+                        className: 'hexcolor', begin: '\\#[0-9A-F]+'
+                      },
+                      {
+                        className: 'important', begin: '!important'
+                      }
+                    ]
+                  }
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  };
+}();
+/*
+Language: Smalltalk
+Author: Vladimir Gubarkov <xonixx@gmail.com>
+*/
+
+hljs.LANGUAGES.smalltalk = function() {
+  var VAR_IDENT_RE = '[a-z][a-zA-Z0-9_]*';
+  var CHAR = {
+    className: 'char',
+    begin: '\\$.{1}'
+  };
+  var SYMBOL = {
+    className: 'symbol',
+    begin: '#' + hljs.UNDERSCORE_IDENT_RE
+  };
+  return {
+    defaultMode: {
+      keywords: {'self': 1, 'super': 1, 'nil': 1, 'true': 1, 'false': 1, 'thisContext': 1}, // only 6
+      contains: [
+        {
+          className: 'comment',
+          begin: '"', end: '"',
+          relevance: 0
+        },
+        hljs.APOS_STRING_MODE,
+        {
+          className: 'class',
+          begin: '\\b[A-Z][A-Za-z0-9_]*',
+          relevance: 0
+        },
+        {
+          className: 'method',
+          begin: VAR_IDENT_RE + ':'
+        },
+        hljs.C_NUMBER_MODE,
+        SYMBOL,
+        CHAR,
+        {
+          className: 'localvars',
+          begin: '\\|\\s*((' + VAR_IDENT_RE + ')\\s*)+\\|'
+        },
+        {
+          className: 'array',
+          begin: '\\#\\(', end: '\\)',
+          contains: [
+            hljs.APOS_STRING_MODE,
+            CHAR,
+            hljs.C_NUMBER_MODE,
+            SYMBOL
+          ]
+        }
+      ]
+    }
+  };
+}();
+/*
+Language: CMake
+Description: CMake is an open-source cross-platform system for build automation.
+Author: Igor Kalnitsky <igor.kalnitsky@gmail.com>
+Website: http://kalnitsky.org.ua/
+*/
+
+hljs.LANGUAGES.cmake = {
+  case_insensitive: true,
+  defaultMode: {
+    keywords: {
+    'add_custom_command': 2, 'add_custom_target': 2, 'add_definitions': 2, 'add_dependencies': 2, 'add_executable': 2, 'add_library': 2, 'add_subdirectory': 2, 'add_executable': 2, 'add_library': 2, 'add_subdirectory': 2, 'add_test': 2, 'aux_source_directory': 2, 'break': 1, 'build_command': 2, 'cmake_minimum_required': 3, 'cmake_policy': 3, 'configure_file': 1, 'create_test_sourcelist': 1, 'define_property': 1, 'else': 1, 'elseif': 1, 'enable_language': 2, 'enable_testing': 2, 'endforeach': 1, 'endfunction': 1, 'endif': 1, 'endmacro': 1, 'endwhile': 1, 'execute_process': 2, 'export': 1, 'find_file': 1, 'find_library': 2, 'find_package': 2, 'find_path': 1, 'find_program': 1, 'fltk_wrap_ui': 2, 'foreach': 1, 'function': 1, 'get_cmake_property': 3, 'get_directory_property': 1, 'get_filename_component': 1, 'get_property': 1, 'get_source_file_property': 1, 'get_target_property': 1, 'get_test_property': 1, 'if': 1, 'include': 1, 'include_directories': 2, 'include_external_msproject': 1, 'include_regular_expression': 2, 'install': 1, 'link_directories': 1, 'load_cache': 1, 'load_command': 1, 'macro': 1, 'mark_as_advanced': 1, 'message': 1, 'option': 1, 'output_required_files': 1, 'project': 1, 'qt_wrap_cpp': 2, 'qt_wrap_ui': 2, 'remove_definitions': 2, 'return': 1, 'separate_arguments': 1, 'set': 1, 'set_directory_properties': 1, 'set_property': 1, 'set_source_files_properties': 1, 'set_target_properties': 1, 'set_tests_properties': 1, 'site_name': 1, 'source_group': 1, 'string': 1, 'target_link_libraries': 2, 'try_compile': 2, 'try_run': 2, 'unset': 1, 'variable_watch': 2, 'while': 1, 'build_name': 1, 'exec_program': 1, 'export_library_dependencies': 1, 'install_files': 1, 'install_programs': 1, 'install_targets': 1, 'link_libraries': 1, 'make_directory': 1, 'remove': 1, 'subdir_depends': 1, 'subdirs': 1, 'use_mangled_mesa': 1, 'utility_source': 1, 'variable_requires': 1, 'write_file': 1 },
+
+    contains: [
+      {
+        className: 'envvar',
+        begin: '\\${', end: '}'
+      },
+      hljs.HASH_COMMENT_MODE,
+      hljs.QUOTE_STRING_MODE,
+      hljs.NUMBER_MODE
+    ]
+  }
+};
+/*
+Language: C#
+Author: Jason Diamond <jason@diamond.name>
+*/
+
+hljs.LANGUAGES.cs  = {
+  defaultMode: {
+    keywords: {
+        // Normal keywords.
+        'abstract': 1, 'as': 1, 'base': 1, 'bool': 1, 'break': 1, 'byte': 1, 'case': 1, 'catch': 1, 'char': 1, 'checked': 1, 'class': 1, 'const': 1, 'continue': 1, 'decimal': 1, 'default': 1, 'delegate': 1, 'do': 1, 'do': 1, 'double': 1, 'else': 1, 'enum': 1, 'event': 1, 'explicit': 1, 'extern': 1, 'false': 1, 'finally': 1, 'fixed': 1, 'float': 1, 'for': 1, 'foreach': 1, 'goto': 1, 'if': 1, 'implicit': 1, 'in': 1, 'int': 1, 'interface': 1, 'internal': 1, 'is': 1, 'lock': 1, 'long': 1, 'namespace': 1, 'new': 1, 'null': 1, 'object': 1, 'operator': 1, 'out': 1, 'override': 1, 'params': 1, 'private': 1, 'protected': 1, 'public': 1, 'readonly': 1, 'ref': 1, 'return': 1, 'sbyte': 1, 'sealed': 1, 'short': 1, 'sizeof': 1, 'stackalloc': 1, 'static': 1, 'string': 1, 'struct': 1, 'switch': 1, 'this': 1, 'throw': 1, 'true': 1, 'try': 1, 'typeof': 1, 'uint': 1, 'ulong': 1, 'unchecked': 1, 'unsafe': 1, 'ushort': 1, 'using': 1, 'virtual': 1, 'volatile': 1, 'void': 1, 'while': 1,
+        // Contextual keywords.
+        'ascending': 1, 'descending': 1, 'from': 1, 'get': 1, 'group': 1, 'into': 1, 'join': 1, 'let': 1, 'orderby': 1, 'partial': 1, 'select': 1, 'set': 1, 'value': 1, 'var': 1, 'where': 1, 'yield': 1
+    },
+    contains: [
+      {
+        className: 'comment',
+        begin: '///', end: '$', returnBegin: true,
+        contains: [
+          {
+            className: 'xmlDocTag',
+            begin: '///|<!--|-->'
+          },
+          {
+            className: 'xmlDocTag',
+            begin: '</?', end: '>'
+          }
+        ]
+      },
+      hljs.C_LINE_COMMENT_MODE,
+      hljs.C_BLOCK_COMMENT_MODE,
+      {
+        className: 'preprocessor',
+        begin: '#', end: '$',
+        keywords: {
+          'if': 1, 'else': 1, 'elif': 1, 'endif': 1, 'define': 1, 'undef': 1, 'warning': 1,
+          'error': 1, 'line': 1, 'region': 1, 'endregion': 1, 'pragma': 1, 'checksum': 1
+        }
+      },
+      {
+        className: 'string',
+        begin: '@"', end: '"',
+        contains: [{begin: '""'}]
+      },
+      hljs.APOS_STRING_MODE,
+      hljs.QUOTE_STRING_MODE,
+      hljs.C_NUMBER_MODE
     ]
   }
 };
@@ -2365,484 +3312,48 @@ hljs.LANGUAGES.java  = {
   }
 };
 /*
-Language: Javascript
+Language: Axapta
+Author: Dmitri Roudakov <dmitri@roudakov.ru>
 */
 
-hljs.LANGUAGES.javascript = {
+hljs.LANGUAGES.axapta  = {
   defaultMode: {
-    keywords: {
-      'keyword': {'in': 1, 'if': 1, 'for': 1, 'while': 1, 'finally': 1, 'var': 1, 'new': 1, 'function': 1, 'do': 1, 'return': 1, 'void': 1, 'else': 1, 'break': 1, 'catch': 1, 'instanceof': 1, 'with': 1, 'throw': 1, 'case': 1, 'default': 1, 'try': 1, 'this': 1, 'switch': 1, 'continue': 1, 'typeof': 1, 'delete': 1},
-      'literal': {'true': 1, 'false': 1, 'null': 1}
+    keywords: {'false': 1, 'int': 1, 'abstract': 1, 'private': 1, 'char': 1, 'interface': 1, 'boolean': 1, 'static': 1, 'null': 1, 'if': 1, 'for': 1, 'true': 1, 'while': 1, 'long': 1, 'throw': 1,  'finally': 1, 'protected': 1, 'extends': 1, 'final': 1, 'implements': 1, 'return': 1, 'void': 1, 'enum': 1, 'else': 1, 'break': 1, 'new': 1, 'catch': 1, 'byte': 1, 'super': 1, 'class': 1, 'case': 1, 'short': 1, 'default': 1, 'double': 1, 'public': 1, 'try': 1, 'this': 1, 'switch': 1, 'continue': 1,
+    'reverse':1, 'firstfast':1,'firstonly':1,'forupdate':1,'nofetch':1, 'sum':1, 'avg':1, 'minof':1, 'maxof':1, 'count':1, 'order':1, 'group':1, 'by':1, 'asc':1, 'desc':1, 'index':1, 'hint':1, 'like':1,
+    'dispaly':1, 'edit':1, 'client':1, 'server':1, 'ttsbegin':1, 'ttscommit':1,
+    'str':1, 'real':1, 'date':1, 'container':1, 'anytype':1, 'common':1, 'div':1,'mod':1
     },
     contains: [
-      hljs.APOS_STRING_MODE,
-      hljs.QUOTE_STRING_MODE,
       hljs.C_LINE_COMMENT_MODE,
       hljs.C_BLOCK_COMMENT_MODE,
+      hljs.APOS_STRING_MODE,
+      hljs.QUOTE_STRING_MODE,
       hljs.C_NUMBER_MODE,
-      { // regexp container
-        begin: '(' + hljs.RE_STARTERS_RE + '|case|return|throw)\\s*',
-        keywords: {'return': 1, 'throw': 1, 'case': 1},
-        contains: [
-          hljs.C_LINE_COMMENT_MODE,
-          hljs.C_BLOCK_COMMENT_MODE,
-          {
-            className: 'regexp',
-            begin: '/', end: '/[gim]*',
-            contains: [{begin: '\\\\/'}]
-          }
-        ],
-        relevance: 0
+      {
+        className: 'preprocessor',
+        begin: '#', end: '$'
       },
       {
-        className: 'function',
-        begin: '\\bfunction\\b', end: '{',
-        keywords: {'function': 1},
+        className: 'class',
+        begin: '(class |interface )', end: '{',
+        illegal: ':',
+        keywords: {'class': 1, 'interface': 1},
         contains: [
           {
-            className: 'title', begin: '[A-Za-z$_][0-9A-Za-z$_]*'
+            className: 'inheritance',
+            begin: '(implements|extends)',
+            keywords: {'extends': 1, 'implements': 1},
+            relevance: 10
           },
           {
-            className: 'params',
-            begin: '\\(', end: '\\)',
-            contains: [
-              hljs.APOS_STRING_MODE,
-              hljs.QUOTE_STRING_MODE,
-              hljs.C_LINE_COMMENT_MODE,
-              hljs.C_BLOCK_COMMENT_MODE
-            ]
+            className: 'title',
+            begin: hljs.UNDERSCORE_IDENT_RE
           }
         ]
       }
     ]
   }
 };
-/*
-Language: Lisp
-Description: Generic lisp syntax
-Author: Vasily Polovnyov <vast@whiteants.net>
-*/
-
-hljs.LANGUAGES.lisp = function(){
-  var LISP_IDENT_RE = '[a-zA-Z_\\-\\+\\*\\/\\<\\=\\>\\&\\#][a-zA-Z0-9_\\-\\+\\*\\/\\<\\=\\>\\&\\#]*';
-  var LISP_SIMPLE_NUMBER_RE = '(\\-|\\+)?\\d+(\\.\\d+|\\/\\d+)?((d|e|f|l|s)(\\+|\\-)?\\d+)?';
-  var LITERAL = {
-    className: 'literal',
-    begin: '\\b(t{1}|nil)\\b'
-  };
-  var NUMBER1 = {
-    className: 'number', begin: LISP_SIMPLE_NUMBER_RE
-  };
-  var NUMBER2 = {
-    className: 'number', begin: '#b[0-1]+(/[0-1]+)?'
-  };
-  var NUMBER3 = {
-    className: 'number', begin: '#o[0-7]+(/[0-7]+)?'
-  };
-  var NUMBER4 = {
-    className: 'number', begin: '#x[0-9a-f]+(/[0-9a-f]+)?'
-  };
-  var NUMBER5 = {
-    className: 'number', begin: '#c\\(' + LISP_SIMPLE_NUMBER_RE + ' +' + LISP_SIMPLE_NUMBER_RE, end: '\\)'
-  };
-  var STRING = {
-    className: 'string',
-    begin: '"', end: '"',
-    contains: [hljs.BACKSLASH_ESCAPE],
-    relevance: 0
-  };
-  var COMMENT = {
-    className: 'comment',
-    begin: ';', end: '$'
-  };
-  var VARIABLE = {
-    className: 'variable',
-    begin: '\\*', end: '\\*'
-  };
-  var KEYWORD = {
-    className: 'keyword',
-    begin: '[:&]' + LISP_IDENT_RE
-  };
-  var QUOTED_LIST = {
-    begin: '\\(', end: '\\)'
-  };
-  QUOTED_LIST.contains = [QUOTED_LIST, LITERAL, NUMBER1, NUMBER2, NUMBER3, NUMBER4, NUMBER5, STRING];
-  var QUOTED1 = {
-    className: 'quoted',
-    begin: '[\'`]\\(', end: '\\)',
-    contains: [NUMBER1, NUMBER2, NUMBER3, NUMBER4, NUMBER5, STRING, VARIABLE, KEYWORD, QUOTED_LIST]
-  };
-  var QUOTED2 = {
-    className: 'quoted',
-    begin: '\\(quote ', end: '\\)',
-    keywords: {'title': {'quote': 1}},
-    contains: [NUMBER1, NUMBER2, NUMBER3, NUMBER4, NUMBER5, STRING, VARIABLE, KEYWORD, QUOTED_LIST]
-  };
-  var LIST = {
-    className: 'list',
-    begin: '\\(', end: '\\)'
-  };
-  var BODY = {
-    className: 'body',
-    endsWithParent: true, excludeEnd: true
-  };
-  LIST.contains = [{className: 'title', begin: LISP_IDENT_RE}, BODY];
-  BODY.contains = [QUOTED1, QUOTED2, LIST, LITERAL, NUMBER1, NUMBER2, NUMBER3, NUMBER4, NUMBER5, STRING, COMMENT, VARIABLE, KEYWORD];
-
-  return {
-    case_insensitive: true,
-    defaultMode: {
-      illegal: '[^\\s]',
-      contains: [
-        LITERAL,
-        NUMBER1, NUMBER2, NUMBER3, NUMBER4, NUMBER5,
-        STRING,
-        COMMENT,
-        QUOTED1, QUOTED2,
-        LIST
-      ]
-    }
-  };
-}();
-/*
-Language: Lua
-Author: Andrew Fedorov <dmmdrs@mail.ru>
-*/
-
-hljs.LANGUAGES.lua = function() {
-  var OPENING_LONG_BRACKET = '\\[=*\\[';
-  var CLOSING_LONG_BRACKET = '\\]=*\\]';
-  var LONG_BRACKETS = {
-    begin: OPENING_LONG_BRACKET, end: CLOSING_LONG_BRACKET
-  };
-  LONG_BRACKETS.contains = [LONG_BRACKETS];
-  var COMMENT1 = {
-    className: 'comment',
-    begin: '--(?!' + OPENING_LONG_BRACKET + ')', end: '$'
-  };
-  var COMMENT2 = {
-    className: 'comment',
-    begin: '--' + OPENING_LONG_BRACKET, end: CLOSING_LONG_BRACKET,
-    contains: [LONG_BRACKETS],
-    relevance: 10
-  };
-  return {
-    defaultMode: {
-      lexems: hljs.UNDERSCORE_IDENT_RE,
-      keywords: {
-        'keyword': {
-          'and': 1, 'break': 1, 'do': 1, 'else': 1, 'elseif': 1, 'end': 1,
-          'false': 1, 'for': 1, 'if': 1, 'in': 1, 'local': 1, 'nil': 1,
-          'not': 1, 'or': 1, 'repeat': 1, 'return': 1, 'then': 1, 'true': 1,
-          'until': 1, 'while': 1
-        },
-        'built_in': {
-          '_G': 1, '_VERSION': 1, 'assert': 1, 'collectgarbage': 1, 'dofile': 1,
-          'error': 1, 'getfenv': 1, 'getmetatable': 1, 'ipairs': 1, 'load': 1,
-          'loadfile': 1, 'loadstring': 1, 'module': 1, 'next': 1, 'pairs': 1,
-          'pcall': 1, 'print': 1, 'rawequal': 1, 'rawget': 1, 'rawset': 1,
-          'require': 1, 'select': 1, 'setfenv': 1, 'setmetatable': 1,
-          'tonumber': 1, 'tostring': 1, 'type': 1, 'unpack': 1, 'xpcall': 1,
-          'coroutine': 1, 'debug': 1, 'io': 1, 'math': 1, 'os': 1, 'package': 1,
-          'string': 1, 'table': 1
-        }
-      },
-      contains: [
-        COMMENT1, COMMENT2,
-        {
-          className: 'function',
-          begin: '\\bfunction\\b', end: '\\)',
-          keywords: {'function': 1},
-          contains: [
-            {
-              className: 'title',
-              begin: '([_a-zA-Z]\\w*\\.)*([_a-zA-Z]\\w*:)?[_a-zA-Z]\\w*'
-            },
-            {
-              className: 'params',
-              begin: '\\(', endsWithParent: true,
-              contains: [COMMENT1, COMMENT2]
-            },
-            COMMENT1, COMMENT2
-          ]
-        },
-        hljs.C_NUMBER_MODE,
-        hljs.APOS_STRING_MODE,
-        hljs.QUOTE_STRING_MODE,
-        {
-          className: 'string',
-          begin: OPENING_LONG_BRACKET, end: CLOSING_LONG_BRACKET,
-          contains: [LONG_BRACKETS],
-          relevance: 10
-        }
-      ]
-    }
-  };
-}();
-/*
-Language: MEL
-Description: Maya Embedded Language
-Author: Shuen-Huei Guan <drake.guan@gmail.com>
-*/
-
-hljs.LANGUAGES.mel = {
-  defaultMode: {
-    keywords: {
-      'int': 1, 'float': 1, 'string': 1, 'float': 1, 'vector': 1, 'matrix': 1,
-      'if': 1, 'else': 1, 'switch': 1, 'case': 1, 'default': 1, 'while': 1, 'do': 1, 'for': 1, 'in': 1, 'break': 1, 'continue': 1,
-      'exists': 1, 'objExists': 1, 'attributeExists': 1,
-      'global': 1, 'proc': 1, 'return': 1,
-      'error': 1, 'warning': 1, 'trace': 1, 'catch': 1,
-      'about': 1, 'abs': 1, 'addAttr': 1, 'addAttributeEditorNodeHelp': 1, 'addDynamic': 1, 'addNewShelfTab': 1, 'addPP': 1, 'addPanelCategory': 1, 'addPrefixToName': 1, 'advanceToNextDrivenKey': 1, 'affectedNet': 1, 'affects': 1, 'aimConstraint': 1, 'air': 1, 'alias': 1, 'aliasAttr': 1, 'align': 1, 'alignCtx': 1, 'alignCurve': 1, 'alignSurface': 1, 'allViewFit': 1, 'ambientLight': 1, 'angle': 1, 'angleBetween': 1, 'animCone': 1, 'animCurveEditor': 1, 'animDisplay': 1, 'animView': 1, 'annotate': 1, 'appendStringArray': 1, 'applicationName': 1, 'applyAttrPreset': 1, 'applyTake': 1, 'arcLenDimContext': 1, 'arcLengthDimension': 1, 'arclen': 1, 'arrayMapper': 1, 'art3dPaintCtx': 1, 'artAttrCtx': 1, 'artAttrPaintVertexCtx': 1, 'artAttrSkinPaintCtx': 1, 'artAttrTool': 1, 'artBuildPaintMenu': 1, 'artFluidAttrCtx': 1, 'artPuttyCtx': 1, 'artSelectCtx': 1, 'artSetPaintCtx': 1, 'artUserPaintCtx': 1, 'assignCommand': 1, 'assignInputDevice': 1, 'assignViewportFactories': 1, 'attachCurve': 1, 'attachDeviceAttr': 1, 'attachSurface': 1, 'attrColorSliderGrp': 1, 'attrCompatibility': 1, 'attrControlGrp': 1, 'attrEnumOptionMenu': 1, 'attrEnumOptionMenuGrp': 1, 'attrFieldGrp': 1, 'attrFieldSliderGrp': 1, 'attrNavigationControlGrp': 1, 'attrPresetEditWin': 1, 'attributeExists': 1, 'attributeInfo': 1, 'attributeMenu': 1, 'attributeQuery': 1, 'autoKeyframe': 1, 'autoPlace': 1, 'bakeClip': 1, 'bakeFluidShading': 1, 'bakePartialHistory': 1, 'bakeResults': 1, 'bakeSimulation': 1, 'basename': 1, 'basenameEx': 1, 'batchRender': 1, 'bessel': 1, 'bevel': 1, 'bevelPlus': 1, 'binMembership': 1, 'bindSkin': 1, 'blend2': 1, 'blendShape': 1, 'blendShapeEditor': 1, 'blendShapePanel': 1, 'blendTwoAttr': 1, 'blindDataType': 1, 'boneLattice': 1, 'boundary': 1, 'boxDollyCtx': 1, 'boxZoomCtx': 1, 'bufferCurve': 1, 'buildBookmarkMenu': 1, 'buildKeyframeMenu': 1, 'button': 1, 'buttonManip': 1, 'CBG': 1, 'cacheFile': 1, 'cacheFileCombine': 1, 'cacheFileMerge': 1, 'cacheFileTrack': 1, 'camera': 1, 'cameraView': 1, 'canCreateManip': 1, 'canvas': 1, 'capitalizeString': 1, 'catch': 1, 'catchQuiet': 1, 'ceil': 1, 'changeSubdivComponentDisplayLevel': 1, 'changeSubdivRegion': 1, 'channelBox': 1, 'character': 1, 'characterMap': 1, 'characterOutlineEditor': 1, 'characterize': 1, 'chdir': 1, 'checkBox': 1, 'checkBoxGrp': 1, 'checkDefaultRenderGlobals': 1, 'choice': 1, 'circle': 1, 'circularFillet': 1, 'clamp': 1, 'clear': 1, 'clearCache': 1, 'clip': 1, 'clipEditor': 1, 'clipEditorCurrentTimeCtx': 1, 'clipSchedule': 1, 'clipSchedulerOutliner': 1, 'clipTrimBefore': 1, 'closeCurve': 1, 'closeSurface': 1, 'cluster': 1, 'cmdFileOutput': 1, 'cmdScrollFieldExecuter': 1, 'cmdScrollFieldReporter': 1, 'cmdShell': 1, 'coarsenSubdivSelectionList': 1, 'collision': 1, 'color': 1, 'colorAtPoint': 1, 'colorEditor': 1, 'colorIndex': 1, 'colorIndexSliderGrp': 1, 'colorSliderButtonGrp': 1, 'colorSliderGrp': 1, 'columnLayout': 1, 'commandEcho': 1, 'commandLine': 1, 'commandPort': 1, 'compactHairSystem': 1, 'componentEditor': 1, 'compositingInterop': 1, 'computePolysetVolume': 1, 'condition': 1, 'cone': 1, 'confirmDialog': 1, 'connectAttr': 1, 'connectControl': 1, 'connectDynamic': 1, 'connectJoint': 1, 'connectionInfo': 1, 'constrain': 1, 'constrainValue': 1, 'constructionHistory': 1, 'container': 1, 'containsMultibyte': 1, 'contextInfo': 1, 'control': 1, 'convertFromOldLayers': 1, 'convertIffToPsd': 1, 'convertLightmap': 1, 'convertSolidTx': 1, 'convertTessellation': 1, 'convertUnit': 1, 'copyArray': 1, 'copyFlexor': 1, 'copyKey': 1, 'copySkinWeights': 1, 'cos': 1, 'cpButton': 1, 'cpCache': 1, 'cpClothSet': 1, 'cpCollision': 1, 'cpConstraint': 1, 'cpConvClothToMesh': 1, 'cpForces': 1, 'cpGetSolverAttr': 1, 'cpPanel': 1, 'cpProperty': 1, 'cpRigidCollisionFilter': 1, 'cpSeam': 1, 'cpSetEdit': 1, 'cpSetSolverAttr': 1, 'cpSolver': 1, 'cpSolverTypes': 1, 'cpTool': 1, 'cpUpdateClothUVs': 1, 'createDisplayLayer': 1, 'createDrawCtx': 1, 'createEditor': 1, 'createLayeredPsdFile': 1, 'createMotionField': 1, 'createNewShelf': 1, 'createNode': 1, 'createRenderLayer': 1, 'createSubdivRegion': 1, 'cross': 1, 'crossProduct': 1, 'ctxAbort': 1, 'ctxCompletion': 1, 'ctxEditMode': 1, 'ctxTraverse': 1, 'currentCtx': 1, 'currentTime': 1, 'currentTimeCtx': 1, 'currentUnit': 1, 'currentUnit': 1, 'curve': 1, 'curveAddPtCtx': 1, 'curveCVCtx': 1, 'curveEPCtx': 1, 'curveEditorCtx': 1, 'curveIntersect': 1, 'curveMoveEPCtx': 1, 'curveOnSurface': 1, 'curveSketchCtx': 1, 'cutKey': 1, 'cycleCheck': 1, 'cylinder': 1, 'dagPose': 1, 'date': 1, 'defaultLightListCheckBox': 1, 'defaultNavigation': 1, 'defineDataServer': 1, 'defineVirtualDevice': 1, 'deformer': 1, 'deg_to_rad': 1, 'delete': 1, 'deleteAttr': 1, 'deleteShadingGroupsAndMaterials': 1, 'deleteShelfTab': 1, 'deleteUI': 1, 'deleteUnusedBrushes': 1, 'delrandstr': 1, 'detachCurve': 1, 'detachDeviceAttr': 1, 'detachSurface': 1, 'deviceEditor': 1, 'devicePanel': 1, 'dgInfo': 1, 'dgdirty': 1, 'dgeval': 1, 'dgtimer': 1, 'dimWhen': 1, 'directKeyCtx': 1, 'directionalLight': 1, 'dirmap': 1, 'dirname': 1, 'disable': 1, 'disconnectAttr': 1, 'disconnectJoint': 1, 'diskCache': 1, 'displacementToPoly': 1, 'displayAffected': 1, 'displayColor': 1, 'displayCull': 1, 'displayLevelOfDetail': 1, 'displayPref': 1, 'displayRGBColor': 1, 'displaySmoothness': 1, 'displayStats': 1, 'displayString': 1, 'displaySurface': 1, 'distanceDimContext': 1, 'distanceDimension': 1, 'doBlur': 1, 'dolly': 1, 'dollyCtx': 1, 'dopeSheetEditor': 1, 'dot': 1, 'dotProduct': 1, 'doubleProfileBirailSurface': 1, 'drag': 1, 'dragAttrContext': 1, 'draggerContext': 1, 'dropoffLocator': 1, 'duplicate': 1, 'duplicateCurve': 1, 'duplicateSurface': 1, 'dynCache': 1, 'dynControl': 1, 'dynExport': 1, 'dynExpression': 1, 'dynGlobals': 1, 'dynPaintEditor': 1, 'dynParticleCtx': 1, 'dynPref': 1, 'dynRelEdPanel': 1, 'dynRelEditor': 1, 'dynamicLoad': 1, 'editAttrLimits': 1, 'editDisplayLayerGlobals': 1, 'editDisplayLayerMembers': 1, 'editRenderLayerAdjustment': 1, 'editRenderLayerGlobals': 1, 'editRenderLayerMembers': 1, 'editor': 1, 'editorTemplate': 1, 'effector': 1, 'emit': 1, 'emitter': 1, 'enableDevice': 1, 'encodeString': 1, 'endString': 1, 'endsWith': 1, 'env': 1, 'equivalent': 1, 'equivalentTol': 1, 'erf': 1, 'error': 1, 'eval': 1, 'eval': 1, 'evalDeferred': 1, 'evalEcho': 1, 'event': 1, 'exactWorldBoundingBox': 1, 'exclusiveLightCheckBox': 1, 'exec': 1, 'executeForEachObject': 1, 'exists': 1, 'exp': 1, 'expression': 1, 'expressionEditorListen': 1, 'extendCurve': 1, 'extendSurface': 1, 'extrude': 1, 'fcheck': 1, 'fclose': 1, 'feof': 1, 'fflush': 1, 'fgetline': 1, 'fgetword': 1, 'file': 1, 'fileBrowserDialog': 1, 'fileDialog': 1, 'fileExtension': 1, 'fileInfo': 1, 'filetest': 1, 'filletCurve': 1, 'filter': 1, 'filterCurve': 1, 'filterExpand': 1, 'filterStudioImport': 1, 'findAllIntersections': 1, 'findAnimCurves': 1, 'findKeyframe': 1, 'findMenuItem': 1, 'findRelatedSkinCluster': 1, 'finder': 1, 'firstParentOf': 1, 'fitBspline': 1, 'flexor': 1, 'floatEq': 1, 'floatField': 1, 'floatFieldGrp': 1, 'floatScrollBar': 1, 'floatSlider': 1, 'floatSlider2': 1, 'floatSliderButtonGrp': 1, 'floatSliderGrp': 1, 'floor': 1, 'flow': 1, 'fluidCacheInfo': 1, 'fluidEmitter': 1, 'fluidVoxelInfo': 1, 'flushUndo': 1, 'fmod': 1, 'fontDialog': 1, 'fopen': 1, 'formLayout': 1, 'format': 1, 'fprint': 1, 'frameLayout': 1, 'fread': 1, 'freeFormFillet': 1, 'frewind': 1, 'fromNativePath': 1, 'fwrite': 1, 'gamma': 1, 'gauss': 1, 'geometryConstraint': 1, 'getApplicationVersionAsFloat': 1, 'getAttr': 1, 'getClassification': 1, 'getDefaultBrush': 1, 'getFileList': 1, 'getFluidAttr': 1, 'getInputDeviceRange': 1, 'getMayaPanelTypes': 1, 'getModifiers': 1, 'getPanel': 1, 'getParticleAttr': 1, 'getPluginResource': 1, 'getenv': 1, 'getpid': 1, 'glRender': 1, 'glRenderEditor': 1, 'globalStitch': 1, 'gmatch': 1, 'goal': 1, 'gotoBindPose': 1, 'grabColor': 1, 'gradientControl': 1, 'gradientControlNoAttr': 1, 'graphDollyCtx': 1, 'graphSelectContext': 1, 'graphTrackCtx': 1, 'gravity': 1, 'grid': 1, 'gridLayout': 1, 'group': 1, 'groupObjectsByName': 1, 'HfAddAttractorToAS': 1, 'HfAssignAS': 1, 'HfBuildEqualMap': 1, 'HfBuildFurFiles': 1, 'HfBuildFurImages': 1, 'HfCancelAFR': 1, 'HfConnectASToHF': 1, 'HfCreateAttractor': 1, 'HfDeleteAS': 1, 'HfEditAS': 1, 'HfPerformCreateAS': 1, 'HfRemoveAttractorFromAS': 1, 'HfSelectAttached': 1, 'HfSelectAttractors': 1, 'HfUnAssignAS': 1, 'hardenPointCurve': 1, 'hardware': 1, 'hardwareRenderPanel': 1, 'headsUpDisplay': 1, 'headsUpMessage': 1, 'help': 1, 'helpLine': 1, 'hermite': 1, 'hide': 1, 'hilite': 1, 'hitTest': 1, 'hotBox': 1, 'hotkey': 1, 'hotkeyCheck': 1, 'hsv_to_rgb': 1, 'hudButton': 1, 'hudSlider': 1, 'hudSliderButton': 1, 'hwReflectionMap': 1, 'hwRender': 1, 'hwRenderLoad': 1, 'hyperGraph': 1, 'hyperPanel': 1, 'hyperShade': 1, 'hypot': 1, 'iconTextButton': 1, 'iconTextCheckBox': 1, 'iconTextRadioButton': 1, 'iconTextRadioCollection': 1, 'iconTextScrollList': 1, 'iconTextStaticLabel': 1, 'ikHandle': 1, 'ikHandleCtx': 1, 'ikHandleDisplayScale': 1, 'ikSolver': 1, 'ikSplineHandleCtx': 1, 'ikSystem': 1, 'ikSystemInfo': 1, 'ikfkDisplayMethod': 1, 'illustratorCurves': 1, 'image': 1, 'imfPlugins': 1, 'inheritTransform': 1, 'insertJoint': 1, 'insertJointCtx': 1, 'insertKeyCtx': 1, 'insertKnotCurve': 1, 'insertKnotSurface': 1, 'instance': 1, 'instanceable': 1, 'instancer': 1, 'intField': 1, 'intFieldGrp': 1, 'intScrollBar': 1, 'intSlider': 1, 'intSliderGrp': 1, 'interToUI': 1, 'internalVar': 1, 'intersect': 1, 'iprEngine': 1, 'isAnimCurve': 1, 'isConnected': 1, 'isDirty': 1, 'isParentOf': 1, 'isSameObject': 1, 'isTrue': 1, 'isValidObjectName': 1, 'isValidString': 1, 'isValidUiName': 1, 'isolateSelect': 1, 'itemFilter': 1, 'itemFilterAttr': 1, 'itemFilterRender': 1, 'itemFilterType': 1, 'joint': 1, 'jointCluster': 1, 'jointCtx': 1, 'jointDisplayScale': 1, 'jointLattice': 1, 'keyTangent': 1, 'keyframe': 1, 'keyframeOutliner': 1, 'keyframeRegionCurrentTimeCtx': 1, 'keyframeRegionDirectKeyCtx': 1, 'keyframeRegionDollyCtx': 1, 'keyframeRegionInsertKeyCtx': 1, 'keyframeRegionMoveKeyCtx': 1, 'keyframeRegionScaleKeyCtx': 1, 'keyframeRegionSelectKeyCtx': 1, 'keyframeRegionSetKeyCtx': 1, 'keyframeRegionTrackCtx': 1, 'keyframeStats': 1, 'lassoContext': 1, 'lattice': 1, 'latticeDeformKeyCtx': 1, 'launch': 1, 'launchImageEditor': 1, 'layerButton': 1, 'layeredShaderPort': 1, 'layeredTexturePort': 1, 'layout': 1, 'layoutDialog': 1, 'lightList': 1, 'lightListEditor': 1, 'lightListPanel': 1, 'lightlink': 1, 'lineIntersection': 1, 'linearPrecision': 1, 'linstep': 1, 'listAnimatable': 1, 'listAttr': 1, 'listCameras': 1, 'listConnections': 1, 'listDeviceAttachments': 1, 'listHistory': 1, 'listInputDeviceAxes': 1, 'listInputDeviceButtons': 1, 'listInputDevices': 1, 'listMenuAnnotation': 1, 'listNodeTypes': 1, 'listPanelCategories': 1, 'listRelatives': 1, 'listSets': 1, 'listTransforms': 1, 'listUnselected': 1, 'listerEditor': 1, 'loadFluid': 1, 'loadNewShelf': 1, 'loadPlugin': 1, 'loadPluginLanguageResources': 1, 'loadPrefObjects': 1, 'localizedPanelLabel': 1, 'lockNode': 1, 'loft': 1, 'log': 1, 'longNameOf': 1, 'lookThru': 1, 'ls': 1, 'lsThroughFilter': 1, 'lsType': 1, 'lsUI': 1, 'Mayatomr': 1, 'mag': 1, 'makeIdentity': 1, 'makeLive': 1, 'makePaintable': 1, 'makeRoll': 1, 'makeSingleSurface': 1, 'makeTubeOn': 1, 'makebot': 1, 'manipMoveContext': 1, 'manipMoveLimitsCtx': 1, 'manipOptions': 1, 'manipRotateContext': 1, 'manipRotateLimitsCtx': 1, 'manipScaleContext': 1, 'manipScaleLimitsCtx': 1, 'marker': 1, 'match': 1, 'max': 1, 'memory': 1, 'menu': 1, 'menuBarLayout': 1, 'menuEditor': 1, 'menuItem': 1, 'menuItemToShelf': 1, 'menuSet': 1, 'menuSetPref': 1, 'messageLine': 1, 'min': 1, 'minimizeApp': 1, 'mirrorJoint': 1, 'modelCurrentTimeCtx': 1, 'modelEditor': 1, 'modelPanel': 1, 'mouse': 1, 'movIn': 1, 'movOut': 1, 'move': 1, 'moveIKtoFK': 1, 'moveKeyCtx': 1, 'moveVertexAlongDirection': 1, 'multiProfileBirailSurface': 1, 'mute': 1, 'nParticle': 1, 'nameCommand': 1, 'nameField': 1, 'namespace': 1, 'namespaceInfo': 1, 'newPanelItems': 1, 'newton': 1, 'nodeCast': 1, 'nodeIconButton': 1, 'nodeOutliner': 1, 'nodePreset': 1, 'nodeType': 1, 'noise': 1, 'nonLinear': 1, 'normalConstraint': 1, 'normalize': 1, 'nurbsBoolean': 1, 'nurbsCopyUVSet': 1, 'nurbsCube': 1, 'nurbsEditUV': 1, 'nurbsPlane': 1, 'nurbsSelect': 1, 'nurbsSquare': 1, 'nurbsToPoly': 1, 'nurbsToPolygonsPref': 1, 'nurbsToSubdiv': 1, 'nurbsToSubdivPref': 1, 'nurbsUVSet': 1, 'nurbsViewDirectionVector': 1, 'objExists': 1, 'objectCenter': 1, 'objectLayer': 1, 'objectType': 1, 'objectTypeUI': 1, 'obsoleteProc': 1, 'oceanNurbsPreviewPlane': 1, 'offsetCurve': 1, 'offsetCurveOnSurface': 1, 'offsetSurface': 1, 'openGLExtension': 1, 'openMayaPref': 1, 'optionMenu': 1, 'optionMenuGrp': 1, 'optionVar': 1, 'orbit': 1, 'orbitCtx': 1, 'orientConstraint': 1, 'outlinerEditor': 1, 'outlinerPanel': 1, 'overrideModifier': 1, 'paintEffectsDisplay': 1, 'pairBlend': 1, 'palettePort': 1, 'paneLayout': 1, 'panel': 1, 'panelConfiguration': 1, 'panelHistory': 1, 'paramDimContext': 1, 'paramDimension': 1, 'paramLocator': 1, 'parent': 1, 'parentConstraint': 1, 'particle': 1, 'particleExists': 1, 'particleInstancer': 1, 'particleRenderInfo': 1, 'partition': 1, 'pasteKey': 1, 'pathAnimation': 1, 'pause': 1, 'pclose': 1, 'percent': 1, 'performanceOptions': 1, 'pfxstrokes': 1, 'pickWalk': 1, 'picture': 1, 'pixelMove': 1, 'planarSrf': 1, 'plane': 1, 'play': 1, 'playbackOptions': 1, 'playblast': 1, 'plugAttr': 1, 'plugNode': 1, 'pluginInfo': 1, 'pluginResourceUtil': 1, 'pointConstraint': 1, 'pointCurveConstraint': 1, 'pointLight': 1, 'pointMatrixMult': 1, 'pointOnCurve': 1, 'pointOnSurface': 1, 'pointPosition': 1, 'poleVectorConstraint': 1, 'polyAppend': 1, 'polyAppendFacetCtx': 1, 'polyAppendVertex': 1, 'polyAutoProjection': 1, 'polyAverageNormal': 1, 'polyAverageVertex': 1, 'polyBevel': 1, 'polyBlendColor': 1, 'polyBlindData': 1, 'polyBoolOp': 1, 'polyBridgeEdge': 1, 'polyCacheMonitor': 1, 'polyCheck': 1, 'polyChipOff': 1, 'polyClipboard': 1, 'polyCloseBorder': 1, 'polyCollapseEdge': 1, 'polyCollapseFacet': 1, 'polyColorBlindData': 1, 'polyColorDel': 1, 'polyColorPerVertex': 1, 'polyColorSet': 1, 'polyCompare': 1, 'polyCone': 1, 'polyCopyUV': 1, 'polyCrease': 1, 'polyCreaseCtx': 1, 'polyCreateFacet': 1, 'polyCreateFacetCtx': 1, 'polyCube': 1, 'polyCut': 1, 'polyCutCtx': 1, 'polyCylinder': 1, 'polyCylindricalProjection': 1, 'polyDelEdge': 1, 'polyDelFacet': 1, 'polyDelVertex': 1, 'polyDuplicateAndConnect': 1, 'polyDuplicateEdge': 1, 'polyEditUV': 1, 'polyEditUVShell': 1, 'polyEvaluate': 1, 'polyExtrudeEdge': 1, 'polyExtrudeFacet': 1, 'polyExtrudeVertex': 1, 'polyFlipEdge': 1, 'polyFlipUV': 1, 'polyForceUV': 1, 'polyGeoSampler': 1, 'polyHelix': 1, 'polyInfo': 1, 'polyInstallAction': 1, 'polyLayoutUV': 1, 'polyListComponentConversion': 1, 'polyMapCut': 1, 'polyMapDel': 1, 'polyMapSew': 1, 'polyMapSewMove': 1, 'polyMergeEdge': 1, 'polyMergeEdgeCtx': 1, 'polyMergeFacet': 1, 'polyMergeFacetCtx': 1, 'polyMergeUV': 1, 'polyMergeVertex': 1, 'polyMirrorFace': 1, 'polyMoveEdge': 1, 'polyMoveFacet': 1, 'polyMoveFacetUV': 1, 'polyMoveUV': 1, 'polyMoveVertex': 1, 'polyNormal': 1, 'polyNormalPerVertex': 1, 'polyNormalizeUV': 1, 'polyOptUvs': 1, 'polyOptions': 1, 'polyOutput': 1, 'polyPipe': 1, 'polyPlanarProjection': 1, 'polyPlane': 1, 'polyPlatonicSolid': 1, 'polyPoke': 1, 'polyPrimitive': 1, 'polyPrism': 1, 'polyProjection': 1, 'polyPyramid': 1, 'polyQuad': 1, 'polyQueryBlindData': 1, 'polyReduce': 1, 'polySelect': 1, 'polySelectConstraint': 1, 'polySelectConstraintMonitor': 1, 'polySelectCtx': 1, 'polySelectEditCtx': 1, 'polySeparate': 1, 'polySetToFaceNormal': 1, 'polySewEdge': 1, 'polyShortestPathCtx': 1, 'polySmooth': 1, 'polySoftEdge': 1, 'polySphere': 1, 'polySphericalProjection': 1, 'polySplit': 1, 'polySplitCtx': 1, 'polySplitEdge': 1, 'polySplitRing': 1, 'polySplitVertex': 1, 'polyStraightenUVBorder': 1, 'polySubdivideEdge': 1, 'polySubdivideFacet': 1, 'polyToSubdiv': 1, 'polyTorus': 1, 'polyTransfer': 1, 'polyTriangulate': 1, 'polyUVSet': 1, 'polyUnite': 1, 'polyWedgeFace': 1, 'popen': 1, 'popupMenu': 1, 'pose': 1, 'pow': 1, 'preloadRefEd': 1, 'print': 1, 'progressBar': 1, 'progressWindow': 1, 'projFileViewer': 1, 'projectCurve': 1, 'projectTangent': 1, 'projectionContext': 1, 'projectionManip': 1, 'promptDialog': 1, 'propModCtx': 1, 'propMove': 1, 'psdChannelOutliner': 1, 'psdEditTextureFile': 1, 'psdExport': 1, 'psdTextureFile': 1, 'putenv': 1, 'pwd': 1, 'python': 1, 'querySubdiv': 1, 'quit': 1, 'rad_to_deg': 1, 'radial': 1, 'radioButton': 1, 'radioButtonGrp': 1, 'radioCollection': 1, 'radioMenuItemCollection': 1, 'rampColorPort': 1, 'rand': 1, 'randomizeFollicles': 1, 'randstate': 1, 'rangeControl': 1, 'readTake': 1, 'rebuildCurve': 1, 'rebuildSurface': 1, 'recordAttr': 1, 'recordDevice': 1, 'redo': 1, 'reference': 1, 'referenceEdit': 1, 'referenceQuery': 1, 'refineSubdivSelectionList': 1, 'refresh': 1, 'refreshAE': 1, 'registerPluginResource': 1, 'rehash': 1, 'reloadImage': 1, 'removeJoint': 1, 'removeMultiInstance': 1, 'removePanelCategory': 1, 'rename': 1, 'renameAttr': 1, 'renameSelectionList': 1, 'renameUI': 1, 'render': 1, 'renderGlobalsNode': 1, 'renderInfo': 1, 'renderLayerButton': 1, 'renderLayerParent': 1, 'renderLayerPostProcess': 1, 'renderLayerUnparent': 1, 'renderManip': 1, 'renderPartition': 1, 'renderQualityNode': 1, 'renderSettings': 1, 'renderThumbnailUpdate': 1, 'renderWindowEditor': 1, 'renderWindowSelectContext': 1, 'renderer': 1, 'reorder': 1, 'reorderDeformers': 1, 'requires': 1, 'reroot': 1, 'resampleFluid': 1, 'resetAE': 1, 'resetPfxToPolyCamera': 1, 'resetTool': 1, 'resolutionNode': 1, 'retarget': 1, 'reverseCurve': 1, 'reverseSurface': 1, 'revolve': 1, 'rgb_to_hsv': 1, 'rigidBody': 1, 'rigidSolver': 1, 'roll': 1, 'rollCtx': 1, 'rootOf': 1, 'rot': 1, 'rotate': 1, 'rotationInterpolation': 1, 'roundConstantRadius': 1, 'rowColumnLayout': 1, 'rowLayout': 1, 'runTimeCommand': 1, 'runup': 1, 'sampleImage': 1, 'saveAllShelves': 1, 'saveAttrPreset': 1, 'saveFluid': 1, 'saveImage': 1, 'saveInitialState': 1, 'saveMenu': 1, 'savePrefObjects': 1, 'savePrefs': 1, 'saveShelf': 1, 'saveToolSettings': 1, 'scale': 1, 'scaleBrushBrightness': 1, 'scaleComponents': 1, 'scaleConstraint': 1, 'scaleKey': 1, 'scaleKeyCtx': 1, 'sceneEditor': 1, 'sceneUIReplacement': 1, 'scmh': 1, 'scriptCtx': 1, 'scriptEditorInfo': 1, 'scriptJob': 1, 'scriptNode': 1, 'scriptTable': 1, 'scriptToShelf': 1, 'scriptedPanel': 1, 'scriptedPanelType': 1, 'scrollField': 1, 'scrollLayout': 1, 'sculpt': 1, 'searchPathArray': 1, 'seed': 1, 'selLoadSettings': 1, 'select': 1, 'selectContext': 1, 'selectCurveCV': 1, 'selectKey': 1, 'selectKeyCtx': 1, 'selectKeyframeRegionCtx': 1, 'selectMode': 1, 'selectPref': 1, 'selectPriority': 1, 'selectType': 1, 'selectedNodes': 1, 'selectionConnection': 1, 'separator': 1, 'setAttr': 1, 'setAttrEnumResource': 1, 'setAttrMapping': 1, 'setAttrNiceNameResource': 1, 'setConstraintRestPosition': 1, 'setDefaultShadingGroup': 1, 'setDrivenKeyframe': 1, 'setDynamic': 1, 'setEditCtx': 1, 'setEditor': 1, 'setFluidAttr': 1, 'setFocus': 1, 'setInfinity': 1, 'setInputDeviceMapping': 1, 'setKeyCtx': 1, 'setKeyPath': 1, 'setKeyframe': 1, 'setKeyframeBlendshapeTargetWts': 1, 'setMenuMode': 1, 'setNodeNiceNameResource': 1, 'setNodeTypeFlag': 1, 'setParent': 1, 'setParticleAttr': 1, 'setPfxToPolyCamera': 1, 'setPluginResource': 1, 'setProject': 1, 'setStampDensity': 1, 'setStartupMessage': 1, 'setState': 1, 'setToolTo': 1, 'setUITemplate': 1, 'setXformManip': 1, 'sets': 1, 'shadingConnection': 1, 'shadingGeometryRelCtx': 1, 'shadingLightRelCtx': 1, 'shadingNetworkCompare': 1, 'shadingNode': 1, 'shapeCompare': 1, 'shelfButton': 1, 'shelfLayout': 1, 'shelfTabLayout': 1, 'shellField': 1, 'shortNameOf': 1, 'showHelp': 1, 'showHidden': 1, 'showManipCtx': 1, 'showSelectionInTitle': 1, 'showShadingGroupAttrEditor': 1, 'showWindow': 1, 'sign': 1, 'simplify': 1, 'sin': 1, 'singleProfileBirailSurface': 1, 'size': 1, 'sizeBytes': 1, 'skinCluster': 1, 'skinPercent': 1, 'smoothCurve': 1, 'smoothTangentSurface': 1, 'smoothstep': 1, 'snap2to2': 1, 'snapKey': 1, 'snapMode': 1, 'snapTogetherCtx': 1, 'snapshot': 1, 'soft': 1, 'softMod': 1, 'softModCtx': 1, 'sort': 1, 'sound': 1, 'soundControl': 1, 'source': 1, 'spaceLocator': 1, 'sphere': 1, 'sphrand': 1, 'spotLight': 1, 'spotLightPreviewPort': 1, 'spreadSheetEditor': 1, 'spring': 1, 'sqrt': 1, 'squareSurface': 1, 'srtContext': 1, 'stackTrace': 1, 'startString': 1, 'startsWith': 1, 'stitchAndExplodeShell': 1, 'stitchSurface': 1, 'stitchSurfacePoints': 1, 'strcmp': 1, 'stringArrayCatenate': 1, 'stringArrayContains': 1, 'stringArrayCount': 1, 'stringArrayInsertAtIndex': 1, 'stringArrayIntersector': 1, 'stringArrayRemove': 1, 'stringArrayRemoveAtIndex': 1, 'stringArrayRemoveDuplicates': 1, 'stringArrayRemoveExact': 1, 'stringArrayToString': 1, 'stringToStringArray': 1, 'strip': 1, 'stripPrefixFromName': 1, 'stroke': 1, 'subdAutoProjection': 1, 'subdCleanTopology': 1, 'subdCollapse': 1, 'subdDuplicateAndConnect': 1, 'subdEditUV': 1, 'subdListComponentConversion': 1, 'subdMapCut': 1, 'subdMapSewMove': 1, 'subdMatchTopology': 1, 'subdMirror': 1, 'subdToBlind': 1, 'subdToPoly': 1, 'subdTransferUVsToCache': 1, 'subdiv': 1, 'subdivCrease': 1, 'subdivDisplaySmoothness': 1, 'substitute': 1, 'substituteAllString': 1, 'substituteGeometry': 1, 'substring': 1, 'surface': 1, 'surfaceSampler': 1, 'surfaceShaderList': 1, 'swatchDisplayPort': 1, 'switchTable': 1, 'symbolButton': 1, 'symbolCheckBox': 1, 'sysFile': 1, 'system': 1, 'tabLayout': 1, 'tan': 1, 'tangentConstraint': 1, 'texLatticeDeformContext': 1, 'texManipContext': 1, 'texMoveContext': 1, 'texMoveUVShellContext': 1, 'texRotateContext': 1, 'texScaleContext': 1, 'texSelectContext': 1, 'texSelectShortestPathCtx': 1, 'texSmudgeUVContext': 1, 'texWinToolCtx': 1, 'text': 1, 'textCurves': 1, 'textField': 1, 'textFieldButtonGrp': 1, 'textFieldGrp': 1, 'textManip': 1, 'textScrollList': 1, 'textToShelf': 1, 'textureDisplacePlane': 1, 'textureHairColor': 1, 'texturePlacementContext': 1, 'textureWindow': 1, 'threadCount': 1, 'threePointArcCtx': 1, 'timeControl': 1, 'timePort': 1, 'timerX': 1, 'toNativePath': 1, 'toggle': 1, 'toggleAxis': 1, 'toggleWindowVisibility': 1, 'tokenize': 1, 'tokenizeList': 1, 'tolerance': 1, 'tolower': 1, 'toolButton': 1, 'toolCollection': 1, 'toolDropped': 1, 'toolHasOptions': 1, 'toolPropertyWindow': 1, 'torus': 1, 'toupper': 1, 'trace': 1, 'track': 1, 'trackCtx': 1, 'transferAttributes': 1, 'transformCompare': 1, 'transformLimits': 1, 'translator': 1, 'trim': 1, 'trunc': 1, 'truncateFluidCache': 1, 'truncateHairCache': 1, 'tumble': 1, 'tumbleCtx': 1, 'turbulence': 1, 'twoPointArcCtx': 1, 'uiRes': 1, 'uiTemplate': 1, 'unassignInputDevice': 1, 'undo': 1, 'undoInfo': 1, 'ungroup': 1, 'uniform': 1, 'unit': 1, 'unloadPlugin': 1, 'untangleUV': 1, 'untitledFileName': 1, 'untrim': 1, 'upAxis': 1, 'updateAE': 1, 'userCtx': 1, 'uvLink': 1, 'uvSnapshot': 1, 'validateShelfName': 1, 'vectorize': 1, 'view2dToolCtx': 1, 'viewCamera': 1, 'viewClipPlane': 1, 'viewFit': 1, 'viewHeadOn': 1, 'viewLookAt': 1, 'viewManip': 1, 'viewPlace': 1, 'viewSet': 1, 'visor': 1, 'volumeAxis': 1, 'vortex': 1, 'waitCursor': 1, 'warning': 1, 'webBrowser': 1, 'webBrowserPrefs': 1, 'whatIs': 1, 'window': 1, 'windowPref': 1, 'wire': 1, 'wireContext': 1, 'workspace': 1, 'wrinkle': 1, 'wrinkleContext': 1, 'writeTake': 1, 'xbmLangPathList': 1, 'xform': 1
-    },
-    illegal: '</',
-    contains: [
-      hljs.C_NUMBER_MODE,
-      hljs.APOS_STRING_MODE,
-      hljs.QUOTE_STRING_MODE,
-      {
-        className: 'string',
-        begin: '`', end: '`',
-        contains: [hljs.BACKSLASH_ESCAPE]
-      },
-      {
-        className: 'variable',
-        begin: '\\$\\d',
-        relevance: 5
-      },
-      {
-        className: 'variable',
-        begin: '[\\$\\%\\@\\*](\\^\\w\\b|#\\w+|[^\\s\\w{]|{\\w+}|\\w+)'
-      },
-      hljs.C_LINE_COMMENT_MODE,
-      hljs.C_BLOCK_COMMENT_MODE
-    ]
-  }
-};
-/*
-Language: Nginx
-Author: Peter Leonov <gojpeg@yandex.ru>
-*/
-
-hljs.LANGUAGES.nginx = function() {
-  var VAR1 = {
-    className: 'variable',
-    begin: '\\$\\d+'
-  };
-  var VAR2 = {
-    className: 'variable',
-    begin: '\\${', end: '}'
-  };
-  var VAR3 = {
-    className: 'variable',
-    begin: '[\\$\\@]' + hljs.UNDERSCORE_IDENT_RE
-  };
-
-  return {
-    defaultMode: {
-      contains: [
-        hljs.HASH_COMMENT_MODE,
-        { // directive
-          begin: hljs.UNDERSCORE_IDENT_RE, end: ';|{', returnEnd: true,
-          keywords: {
-            accept_mutex: 1, accept_mutex_delay: 1, access_log: 1,
-            add_after_body: 1, add_before_body: 1, add_header: 1,
-            addition_types: 1, alias: 1, allow: 1, ancient_browser: 1,
-            ancient_browser: 1, ancient_browser_value: 1, ancient_browser_value: 1,
-            auth_basic: 1, auth_basic_user_file: 1, autoindex: 1,
-            autoindex_exact_size: 1, autoindex_localtime: 1, 'break': 1,
-            charset: 1, charset: 1, charset_map: 1, charset_map: 1,
-            charset_types: 1, charset_types: 1, client_body_buffer_size: 1,
-            client_body_in_file_only: 1, client_body_in_single_buffer: 1,
-            client_body_temp_path: 1, client_body_timeout: 1,
-            client_header_buffer_size: 1, client_header_timeout: 1,
-            client_max_body_size: 1, connection_pool_size: 1, connections: 1,
-            create_full_put_path: 1, daemon: 1, dav_access: 1, dav_methods: 1,
-            debug_connection: 1, debug_points: 1, default_type: 1, deny: 1,
-            directio: 1, directio_alignment: 1, echo: 1, echo_after_body: 1,
-            echo_before_body: 1, echo_blocking_sleep: 1, echo_duplicate: 1,
-            echo_end: 1, echo_exec: 1, echo_flush: 1, echo_foreach_split: 1,
-            echo_location: 1, echo_location_async: 1, echo_read_request_body: 1,
-            echo_request_body: 1, echo_reset_timer: 1, echo_sleep: 1,
-            echo_subrequest: 1, echo_subrequest_async: 1, empty_gif: 1,
-            empty_gif: 1, env: 1, error_log: 1, error_log: 1, error_page: 1,
-            events: 1, expires: 1, fastcgi_bind: 1, fastcgi_buffer_size: 1,
-            fastcgi_buffers: 1, fastcgi_busy_buffers_size: 1, fastcgi_cache: 1,
-            fastcgi_cache_key: 1, fastcgi_cache_methods: 1,
-            fastcgi_cache_min_uses: 1, fastcgi_cache_path: 1,
-            fastcgi_cache_use_stale: 1, fastcgi_cache_valid: 1,
-            fastcgi_catch_stderr: 1, fastcgi_connect_timeout: 1,
-            fastcgi_hide_header: 1, fastcgi_ignore_client_abort: 1,
-            fastcgi_ignore_headers: 1, fastcgi_index: 1,
-            fastcgi_intercept_errors: 1, fastcgi_max_temp_file_size: 1,
-            fastcgi_next_upstream: 1, fastcgi_param: 1, fastcgi_pass: 1,
-            fastcgi_pass_header: 1, fastcgi_pass_request_body: 1,
-            fastcgi_pass_request_headers: 1, fastcgi_read_timeout: 1,
-            fastcgi_send_lowat: 1, fastcgi_send_timeout: 1,
-            fastcgi_split_path_info: 1, fastcgi_store: 1, fastcgi_store_access: 1,
-            fastcgi_temp_file_write_size: 1, fastcgi_temp_path: 1,
-            fastcgi_upstream_fail_timeout: 1, fastcgi_upstream_max_fails: 1,
-            flv: 1, geo: 1, geo: 1, geoip_city: 1, geoip_country: 1, gzip: 1,
-            gzip_buffers: 1, gzip_comp_level: 1, gzip_disable: 1, gzip_hash: 1,
-            gzip_http_version: 1, gzip_min_length: 1, gzip_no_buffer: 1,
-            gzip_proxied: 1, gzip_static: 1, gzip_types: 1, gzip_vary: 1,
-            gzip_window: 1, http: 1, 'if': 1, if_modified_since: 1,
-            ignore_invalid_headers: 1, image_filter: 1, image_filter_buffer: 1,
-            image_filter_jpeg_quality: 1, image_filter_transparency: 1, include: 1,
-            index: 1, internal: 1, ip_hash: 1, js: 1, js_load: 1, js_require: 1,
-            js_utf8: 1, keepalive_requests: 1, keepalive_timeout: 1,
-            kqueue_changes: 1, kqueue_events: 1, large_client_header_buffers: 1,
-            limit_conn: 1, limit_conn_log_level: 1, limit_except: 1, limit_rate: 1,
-            limit_rate_after: 1, limit_req: 1, limit_req_log_level: 1,
-            limit_req_zone: 1, limit_zone: 1, lingering_time: 1,
-            lingering_timeout: 1, listen: 1, location: 1, lock_file: 1,
-            log_format: 1, log_not_found: 1, log_subrequest: 1, map: 1,
-            map_hash_bucket_size: 1, map_hash_max_size: 1, master_process: 1,
-            memcached_bind: 1, memcached_buffer_size: 1,
-            memcached_connect_timeout: 1, memcached_next_upstream: 1,
-            memcached_pass: 1, memcached_read_timeout: 1,
-            memcached_send_timeout: 1, memcached_upstream_fail_timeout: 1,
-            memcached_upstream_max_fails: 1, merge_slashes: 1, min_delete_depth: 1,
-            modern_browser: 1, modern_browser: 1, modern_browser_value: 1,
-            modern_browser_value: 1, more_clear_headers: 1,
-            more_clear_input_headers: 1, more_set_headers: 1,
-            more_set_input_headers: 1, msie_padding: 1, msie_refresh: 1,
-            multi_accept: 1, open_file_cache: 1, open_file_cache_errors: 1,
-            open_file_cache_events: 1, open_file_cache_min_uses: 1,
-            open_file_cache_retest: 1, open_file_cache_valid: 1,
-            open_log_file_cache: 1, optimize_server_names: 1, output_buffers: 1,
-            override_charset: 1, override_charset: 1, perl: 1, perl_modules: 1,
-            perl_require: 1, perl_set: 1, pid: 1, port_in_redirect: 1,
-            post_action: 1, postpone_gzipping: 1, postpone_output: 1,
-            proxy_bind: 1, proxy_buffer_size: 1, proxy_buffering: 1,
-            proxy_buffers: 1, proxy_busy_buffers_size: 1, proxy_cache: 1,
-            proxy_cache_key: 1, proxy_cache_methods: 1, proxy_cache_min_uses: 1,
-            proxy_cache_path: 1, proxy_cache_use_stale: 1, proxy_cache_valid: 1,
-            proxy_connect_timeout: 1, proxy_headers_hash_bucket_size: 1,
-            proxy_headers_hash_max_size: 1, proxy_hide_header: 1,
-            proxy_ignore_client_abort: 1, proxy_ignore_headers: 1,
-            proxy_intercept_errors: 1, proxy_max_temp_file_size: 1,
-            proxy_method: 1, proxy_next_upstream: 1, proxy_pass: 1,
-            proxy_pass_header: 1, proxy_pass_request_body: 1,
-            proxy_pass_request_headers: 1, proxy_read_timeout: 1,
-            proxy_redirect: 1, proxy_send_lowat: 1, proxy_send_timeout: 1,
-            proxy_set_body: 1, proxy_set_header: 1, proxy_store: 1,
-            proxy_store_access: 1, proxy_temp_file_write_size: 1,
-            proxy_temp_path: 1, proxy_upstream_fail_timeout: 1,
-            proxy_upstream_max_fails: 1, push_authorized_channels_only: 1,
-            push_channel_group: 1, push_max_channel_id_length: 1,
-            push_max_channel_subscribers: 1, push_max_message_buffer_length: 1,
-            push_max_reserved_memory: 1, push_message_buffer_length: 1,
-            push_message_timeout: 1, push_min_message_buffer_length: 1,
-            push_min_message_recipients: 1, push_publisher: 1,
-            push_store_messages: 1, push_subscriber: 1,
-            push_subscriber_concurrency: 1, random_index: 1, read_ahead: 1,
-            real_ip_header: 1, recursive_error_pages: 1, request_pool_size: 1,
-            reset_timedout_connection: 1, resolver: 1, resolver_timeout: 1,
-            'return': 1, rewrite: 1, rewrite_log: 1, root: 1, satisfy: 1,
-            satisfy_any: 1, send_lowat: 1, send_timeout: 1, sendfile: 1,
-            sendfile_max_chunk: 1, server: 1, server: 1, server_name: 1,
-            server_name_in_redirect: 1, server_names_hash_bucket_size: 1,
-            server_names_hash_max_size: 1, server_tokens: 1, 'set': 1,
-            set_real_ip_from: 1, source_charset: 1, source_charset: 1, ssi: 1,
-            ssi_ignore_recycled_buffers: 1, ssi_min_file_chunk: 1,
-            ssi_silent_errors: 1, ssi_types: 1, ssi_value_length: 1, ssl: 1,
-            ssl_certificate: 1, ssl_certificate_key: 1, ssl_ciphers: 1,
-            ssl_client_certificate: 1, ssl_crl: 1, ssl_dhparam: 1,
-            ssl_prefer_server_ciphers: 1, ssl_protocols: 1, ssl_session_cache: 1,
-            ssl_session_timeout: 1, ssl_verify_client: 1, ssl_verify_depth: 1,
-            sub_filter: 1, sub_filter_once: 1, sub_filter_types: 1, tcp_nodelay: 1,
-            tcp_nopush: 1, timer_resolution: 1, try_files: 1, types: 1,
-            types_hash_bucket_size: 1, types_hash_max_size: 1,
-            underscores_in_headers: 1, uninitialized_variable_warn: 1, upstream: 1,
-            use: 1, user: 1, userid: 1, userid: 1, userid_domain: 1,
-            userid_domain: 1, userid_expires: 1, userid_expires: 1, userid_mark: 1,
-            userid_name: 1, userid_name: 1, userid_p3p: 1, userid_p3p: 1,
-            userid_path: 1, userid_path: 1, userid_service: 1, userid_service: 1,
-            valid_referers: 1, variables_hash_bucket_size: 1,
-            variables_hash_max_size: 1, worker_connections: 1,
-            worker_cpu_affinity: 1, worker_priority: 1, worker_processes: 1,
-            worker_rlimit_core: 1, worker_rlimit_nofile: 1,
-            worker_rlimit_sigpending: 1, working_directory: 1, xml_entities: 1,
-            xslt_stylesheet: 1, xslt_types: 1
-          },
-          relevance: 0,
-          contains: [
-            hljs.HASH_COMMENT_MODE,
-            {
-              begin: '\\s', end: '[;{]', returnBegin: true, returnEnd: true,
-              lexems: '[a-z/]+',
-              keywords: {
-                'built_in': {
-                  'on': 1, 'off': 1, 'yes': 1, 'no': 1, 'true': 1, 'false': 1,
-                  'none': 1, 'blocked': 1, 'debug': 1, 'info': 1, 'notice': 1,
-                  'warn': 1, 'error': 1, 'crit': 1, 'select': 1, 'permanent': 1,
-                  'redirect': 1, 'kqueue': 1, 'rtsig': 1, 'epoll': 1, 'poll': 1,
-                  '/dev/poll': 1
-                }
-              },
-              relevance: 0,
-              contains: [
-                hljs.HASH_COMMENT_MODE,
-                {
-                  className: 'string',
-                  begin: '"', end: '"',
-                  contains: [hljs.BACKSLASH_ESCAPE, VAR1, VAR2, VAR3],
-                  relevance: 0
-                },
-                {
-                  className: 'string',
-                  begin: "'", end: "'",
-                  contains: [hljs.BACKSLASH_ESCAPE, VAR1, VAR2, VAR3],
-                  relevance: 0
-                },
-                {
-                  className: 'string',
-                  begin: '([a-z]+):/', end: '[;\\s]', returnEnd: true
-                },
-                {
-                  className: 'regexp',
-                  begin: "\\s\\^", end: "\\s|{|;", returnEnd: true,
-                  contains: [hljs.BACKSLASH_ESCAPE, VAR1, VAR2, VAR3]
-                },
-                // regexp locations (~, ~*)
-                {
-                  className: 'regexp',
-                  begin: "~\\*?\\s+", end: "\\s|{|;", returnEnd: true,
-                  contains: [hljs.BACKSLASH_ESCAPE, VAR1, VAR2, VAR3]
-                },
-                // *.example.com
-                {
-                  className: 'regexp',
-                  begin: "\\*(\\.[a-z\\-]+)+",
-                  contains: [hljs.BACKSLASH_ESCAPE, VAR1, VAR2, VAR3]
-                },
-                // sub.example.*
-                {
-                  className: 'regexp',
-                  begin: "([a-z\\-]+\\.)+\\*",
-                  contains: [hljs.BACKSLASH_ESCAPE, VAR1, VAR2, VAR3]
-                },
-                // IP
-                {
-                  className: 'number',
-                  begin: '\\b\\d{1,3}\\.\\d{1,3}\\.\\d{1,3}\\.\\d{1,3}\\b'
-                },
-                // units
-                {
-                  className: 'number',
-                  begin: '\\s\\d+[kKmMgGdshdwy]*\\b',
-                  relevance: 0
-                },
-                VAR1, VAR2, VAR3
-              ]
-            }
-          ]
-        }
-      ]
-    }
-  }
-}();
 /*
 Language: Objective C
 Author: Valerii Hiora <valerii.hiora@gmail.com>
@@ -2938,375 +3449,306 @@ hljs.LANGUAGES.objectivec = function(){
   };
 }();
 /*
-Language: Parser3
+Language: Django
 Requires: xml.js
-Author: Oleg Volchkov <oleg@volchkov.net>
 */
 
-hljs.LANGUAGES.parser3 = function() {
-  var COMMENTED_BLOCK = {
-    begin: '{', end: '}'
-  };
-  COMMENTED_BLOCK.contains = [COMMENTED_BLOCK];
+hljs.LANGUAGES.django = function() {
 
-  return {
-    defaultMode: {
-      subLanguage: 'html',
-      contains: [
-        {
-          className: 'comment',
-          begin: '^#', end: '$'
-        },
-        {
-          className: 'comment',
-          contains: [COMMENTED_BLOCK],
-          begin: '\\^rem{', end: '}',
-          relevance: 10
-        },
-        {
-          className: 'preprocessor',
-          begin: '^@(?:BASE|USE|CLASS|OPTIONS)$',
-          relevance: 10
-        },
-        {
-          className: 'title',
-          begin: '@[\\w\\-]+\\[[\\w^;\\-]*\\](?:\\[[\\w^;\\-]*\\])?(?:.*)$'
-        },
-        {
-          className: 'variable',
-          begin: '\\$\\{?[\\w\\-\\.\\:]+\\}?'
-        },
-        {
-          className: 'keyword',
-          begin: '\\^[\\w\\-\\.\\:]+'
-        },
-        {
-          className: 'number',
-          begin: '\\^#[0-9a-fA-F]+'
-        },
-        hljs.C_NUMBER_MODE
-      ]
+  function allowsDjangoSyntax(mode, parent) {
+    return (
+      parent == undefined || // defaultMode
+      (!mode.className && parent.className == 'tag') || // tag_internal
+      mode.className == 'value' // value
+    );
+  }
+
+  function copy(mode, parent) {
+    var result = {};
+    for (var key in mode) {
+      if (key != 'contains') {
+        result[key] = mode[key];
+      };
+      var contains = [];
+      for (var i = 0; mode.contains && i < mode.contains.length; i++) {
+        contains.push(copy(mode.contains[i], mode));
+      }
+      if (allowsDjangoSyntax(mode, parent)) {
+        contains = DJANGO_CONTAINS.concat(contains);
+      }
+      if (contains.length) {
+        result.contains = contains;
+      }
     }
-  };
-}();
-/*
-Language: Perl
-Author: Peter Leonov <gojpeg@yandex.ru>
-*/
+    return result;
+  }
 
-hljs.LANGUAGES.perl = function(){
-  var PERL_KEYWORDS = {'getpwent': 1, 'getservent': 1, 'quotemeta': 1, 'msgrcv': 1, 'scalar': 1, 'kill': 1, 'dbmclose': 1, 'undef': 1, 'lc': 1, 'ma': 1, 'syswrite': 1, 'tr': 1, 'send': 1, 'umask': 1, 'sysopen': 1, 'shmwrite': 1, 'vec': 1, 'qx': 1, 'utime': 1, 'local': 1, 'oct': 1, 'semctl': 1, 'localtime': 1, 'readpipe': 1, 'do': 1, 'return': 1, 'format': 1, 'read': 1, 'sprintf': 1, 'dbmopen': 1, 'pop': 1, 'getpgrp': 1, 'not': 1, 'getpwnam': 1, 'rewinddir': 1, 'qq': 1, 'fileno': 1, 'qw': 1, 'endprotoent': 1, 'wait': 1, 'sethostent': 1, 'bless': 1, 's': 1, 'opendir': 1, 'continue': 1, 'each': 1, 'sleep': 1, 'endgrent': 1, 'shutdown': 1, 'dump': 1, 'chomp': 1, 'connect': 1, 'getsockname': 1, 'die': 1, 'socketpair': 1, 'close': 1, 'flock': 1, 'exists': 1, 'index': 1, 'shmget': 1, 'sub': 1, 'for': 1, 'endpwent': 1, 'redo': 1, 'lstat': 1, 'msgctl': 1, 'setpgrp': 1, 'abs': 1, 'exit': 1, 'select': 1, 'print': 1, 'ref': 1, 'gethostbyaddr': 1, 'unshift': 1, 'fcntl': 1, 'syscall': 1, 'goto': 1, 'getnetbyaddr': 1, 'join': 1, 'gmtime': 1, 'symlink': 1, 'semget': 1, 'splice': 1, 'x': 1, 'getpeername': 1, 'recv': 1, 'log': 1, 'setsockopt': 1, 'cos': 1, 'last': 1, 'reverse': 1, 'gethostbyname': 1, 'getgrnam': 1, 'study': 1, 'formline': 1, 'endhostent': 1, 'times': 1, 'chop': 1, 'length': 1, 'gethostent': 1, 'getnetent': 1, 'pack': 1, 'getprotoent': 1, 'getservbyname': 1, 'rand': 1, 'mkdir': 1, 'pos': 1, 'chmod': 1, 'y': 1, 'substr': 1, 'endnetent': 1, 'printf': 1, 'next': 1, 'open': 1, 'msgsnd': 1, 'readdir': 1, 'use': 1, 'unlink': 1, 'getsockopt': 1, 'getpriority': 1, 'rindex': 1, 'wantarray': 1, 'hex': 1, 'system': 1, 'getservbyport': 1, 'endservent': 1, 'int': 1, 'chr': 1, 'untie': 1, 'rmdir': 1, 'prototype': 1, 'tell': 1, 'listen': 1, 'fork': 1, 'shmread': 1, 'ucfirst': 1, 'setprotoent': 1, 'else': 1, 'sysseek': 1, 'link': 1, 'getgrgid': 1, 'shmctl': 1, 'waitpid': 1, 'unpack': 1, 'getnetbyname': 1, 'reset': 1, 'chdir': 1, 'grep': 1, 'split': 1, 'require': 1, 'caller': 1, 'lcfirst': 1, 'until': 1, 'warn': 1, 'while': 1, 'values': 1, 'shift': 1, 'telldir': 1, 'getpwuid': 1, 'my': 1, 'getprotobynumber': 1, 'delete': 1, 'and': 1, 'sort': 1, 'uc': 1, 'defined': 1, 'srand': 1, 'accept': 1, 'package': 1, 'seekdir': 1, 'getprotobyname': 1, 'semop': 1, 'our': 1, 'rename': 1, 'seek': 1, 'if': 1, 'q': 1, 'chroot': 1, 'sysread': 1, 'setpwent': 1, 'no': 1, 'crypt': 1, 'getc': 1, 'chown': 1, 'sqrt': 1, 'write': 1, 'setnetent': 1, 'setpriority': 1, 'foreach': 1, 'tie': 1, 'sin': 1, 'msgget': 1, 'map': 1, 'stat': 1, 'getlogin': 1, 'unless': 1, 'elsif': 1, 'truncate': 1, 'exec': 1, 'keys': 1, 'glob': 1, 'tied': 1, 'closedir': 1, 'ioctl': 1, 'socket': 1, 'readlink': 1, 'eval': 1, 'xor': 1, 'readline': 1, 'binmode': 1, 'setservent': 1, 'eof': 1, 'ord': 1, 'bind': 1, 'alarm': 1, 'pipe': 1, 'atan2': 1, 'getgrent': 1, 'exp': 1, 'time': 1, 'push': 1, 'setgrent': 1, 'gt': 1, 'lt': 1, 'or': 1, 'ne': 1, 'm': 1};
-  var SUBST = {
-    className: 'subst',
-    begin: '[$@]\\{', end: '\}',
-    keywords: PERL_KEYWORDS,
-    relevance: 10
-  };
-  var VAR1 = {
-    className: 'variable',
-    begin: '\\$\\d'
-  };
-  var VAR2 = {
-    className: 'variable',
-    begin: '[\\$\\%\\@\\*](\\^\\w\\b|#\\w+(\\:\\:\\w+)*|[^\\s\\w{]|{\\w+}|\\w+(\\:\\:\\w*)*)'
-  };
-  var STRING_CONTAINS = [hljs.BACKSLASH_ESCAPE, SUBST, VAR1, VAR2];
-  var METHOD = {
-    begin: '->',
+  var FILTER = {
+    className: 'filter',
+    begin: '\\|[A-Za-z]+\\:?', excludeEnd: true,
+    keywords: {'truncatewords': 1, 'removetags': 1, 'linebreaksbr': 1, 'yesno': 1, 'get_digit': 1, 'timesince': 1, 'random': 1, 'striptags': 1, 'filesizeformat': 1, 'escape': 1, 'linebreaks': 1, 'length_is': 1, 'ljust': 1, 'rjust': 1, 'cut': 1, 'urlize': 1, 'fix_ampersands': 1, 'title': 1, 'floatformat': 1, 'capfirst': 1, 'pprint': 1, 'divisibleby': 1, 'add': 1, 'make_list': 1, 'unordered_list': 1, 'urlencode': 1, 'timeuntil': 1, 'urlizetrunc': 1, 'wordcount': 1, 'stringformat': 1, 'linenumbers': 1, 'slice': 1, 'date': 1, 'dictsort': 1, 'dictsortreversed': 1, 'default_if_none': 1, 'pluralize': 1, 'lower': 1, 'join': 1, 'center': 1, 'default': 1, 'truncatewords_html': 1, 'upper': 1, 'length': 1, 'phone2numeric': 1, 'wordwrap': 1, 'time': 1, 'addslashes': 1, 'slugify': 1, 'first': 1},
     contains: [
-      {begin: hljs.IDENT_RE},
-      {begin: '{', end: '}'}
+      {className: 'argument', begin: '"', end: '"'}
     ]
   };
-  var PERL_DEFAULT_CONTAINS = [
-    VAR1, VAR2,
-    hljs.HASH_COMMENT_MODE,
+
+  var DJANGO_CONTAINS = [
     {
-      className: 'comment',
-      begin: '^(__END__|__DATA__)', end: '\\n$',
-      relevance: 5
-    },
-    METHOD,
-    {
-      className: 'string',
-      begin: 'q[qwxr]?\\s*\\(', end: '\\)',
-      contains: STRING_CONTAINS,
-      relevance: 5
+      className: 'template_comment',
+      begin: '{%\\s*comment\\s*%}', end: '{%\\s*endcomment\\s*%}'
     },
     {
-      className: 'string',
-      begin: 'q[qwxr]?\\s*\\[', end: '\\]',
-      contains: STRING_CONTAINS,
-      relevance: 5
+      className: 'template_comment',
+      begin: '{#', end: '#}'
     },
     {
-      className: 'string',
-      begin: 'q[qwxr]?\\s*\\{', end: '\\}',
-      contains: STRING_CONTAINS,
-      relevance: 5
+      className: 'template_tag',
+      begin: '{%', end: '%}',
+      keywords: {'comment': 1, 'endcomment': 1, 'load': 1, 'templatetag': 1, 'ifchanged': 1, 'endifchanged': 1, 'if': 1, 'endif': 1, 'firstof': 1, 'for': 1, 'endfor': 1, 'in': 1, 'ifnotequal': 1, 'endifnotequal': 1, 'widthratio': 1, 'extends': 1, 'include': 1, 'spaceless': 1, 'endspaceless': 1, 'regroup': 1, 'by': 1, 'as': 1, 'ifequal': 1, 'endifequal': 1, 'ssi': 1, 'now': 1, 'with': 1, 'cycle': 1, 'url': 1, 'filter': 1, 'endfilter': 1, 'debug': 1, 'block': 1, 'endblock': 1, 'else': 1},
+      contains: [FILTER]
     },
     {
-      className: 'string',
-      begin: 'q[qwxr]?\\s*\\|', end: '\\|',
-      contains: STRING_CONTAINS,
-      relevance: 5
-    },
-    {
-      className: 'string',
-      begin: 'q[qwxr]?\\s*\\<', end: '\\>',
-      contains: STRING_CONTAINS,
-      relevance: 5
-    },
-    {
-      className: 'string',
-      begin: 'qw\\s+q', end: 'q',
-      contains: STRING_CONTAINS,
-      relevance: 5
-    },
-    {
-      className: 'string',
-      begin: '\'', end: '\'',
-      contains: [hljs.BACKSLASH_ESCAPE],
-      relevance: 0
-    },
-    {
-      className: 'string',
-      begin: '"', end: '"',
-      contains: STRING_CONTAINS,
-      relevance: 0
-    },
-    {
-      className: 'string',
-      begin: '`', end: '`',
-      contains: [hljs.BACKSLASH_ESCAPE]
-    },
-    {
-      className: 'string',
-      begin: '{\\w+}',
-      relevance: 0
-    },
-    {
-      className: 'string',
-      begin: '\-?\\w+\\s*\\=\\>',
-      relevance: 0
-    },
-    {
-      className: 'number',
-      begin: '(\\b0[0-7_]+)|(\\b0x[0-9a-fA-F_]+)|(\\b[1-9][0-9_]*(\\.[0-9_]+)?)|[0_]\\b',
-      relevance: 0
-    },
-    {
-      className: 'regexp',
-      begin: '(s|tr|y)/(\\\\.|[^/])*/(\\\\.|[^/])*/[a-z]*',
-      relevance: 10
-    },
-    {
-      className: 'regexp',
-      begin: '(m|qr)?/', end: '/[a-z]*',
-      contains: [hljs.BACKSLASH_ESCAPE],
-      relevance: 0 // allows empty "//" which is a common comment delimiter in other languages
-    },
-    {
-      className: 'sub',
-      begin: '\\bsub\\b', end: '(\\s*\\(.*?\\))?[;{]',
-      keywords: {'sub':1},
-      relevance: 5
-    },
-    {
-      className: 'operator',
-      begin: '-\\w\\b',
-      relevance: 0
-    },
-    {
-      className: 'pod',
-      begin: '\\=\\w', end: '\\=cut'
+      className: 'variable',
+      begin: '{{', end: '}}',
+      contains: [FILTER]
     }
   ];
-  SUBST.contains = PERL_DEFAULT_CONTAINS;
-  METHOD.contains[1].contains = PERL_DEFAULT_CONTAINS;
 
   return {
-    defaultMode: {
-      keywords: PERL_KEYWORDS,
-      contains: PERL_DEFAULT_CONTAINS
-    }
+    case_insensitive: true,
+    defaultMode: copy(hljs.LANGUAGES.xml.defaultMode)
   };
+
 }();
 /*
-Language: PHP
-Author: Victor Karamzin <Victor.Karamzin@enterra-inc.com>
+Language: AVR Assembler
+Author: Vladimir Ermakov <vooon341@gmail.com>
 */
 
-hljs.LANGUAGES.php = {
+hljs.LANGUAGES.avrasm =
+{
   case_insensitive: true,
   defaultMode: {
     keywords: {
-      'and': 1, 'include_once': 1, 'list': 1, 'abstract': 1, 'global': 1,
-      'private': 1, 'echo': 1, 'interface': 1, 'as': 1, 'static': 1,
-      'endswitch': 1, 'array': 1, 'null': 1, 'if': 1, 'endwhile': 1, 'or': 1,
-      'const': 1, 'for': 1, 'endforeach': 1, 'self': 1, 'var': 1, 'while': 1,
-      'isset': 1, 'public': 1, 'protected': 1, 'exit': 1, 'foreach': 1,
-      'throw': 1, 'elseif': 1, 'extends': 1, 'include': 1, '__FILE__': 1,
-      'empty': 1, 'require_once': 1, 'function': 1, 'do': 1, 'xor': 1,
-      'return': 1, 'implements': 1, 'parent': 1, 'clone': 1, 'use': 1,
-      '__CLASS__': 1, '__LINE__': 1, 'else': 1, 'break': 1, 'print': 1,
-      'eval': 1, 'new': 1, 'catch': 1, '__METHOD__': 1, 'class': 1, 'case': 1,
-      'exception': 1, 'php_user_filter': 1, 'default': 1, 'die': 1,
-      'require': 1, '__FUNCTION__': 1, 'enddeclare': 1, 'final': 1, 'try': 1,
-      'this': 1, 'switch': 1, 'continue': 1, 'endfor': 1, 'endif': 1,
-      'declare': 1, 'unset': 1, 'true': 1, 'false': 1, 'namespace': 1
+        'keyword': {
+          /* mnemonic */
+          'adc': 1,  'add': 1 , 'adiw': 1 , 'and': 1 , 'andi': 1 , 'asr': 1 , 'bclr': 1 , 'bld': 1 , 'brbc': 1 , 'brbs': 1 , 'brcc': 1 ,
+          'brcs': 1, 'break': 1, 'breq': 1, 'brge': 1, 'brhc': 1, 'brhs': 1, 'brid': 1, 'brie': 1, 'brlo': 1, 'brlt': 1, 'brmi': 1,
+          'brne': 1, 'brpl': 1, 'brsh': 1, 'brtc': 1, 'brts': 1, 'brvc': 1, 'brvs': 1, 'bset': 1, 'bst': 1, 'call': 1, 'cbi': 1,
+          'cbr': 1, 'clc': 1, 'clh': 1, 'cli': 1, 'cln': 1, 'clr': 1, 'cls': 1, 'clt': 1, 'clv': 1, 'clz': 1, 'com': 1, 'cp': 1,
+          'cpc': 1, 'cpi': 1, 'cpse': 1, 'dec': 1, 'eicall': 1, 'eijmp': 1, 'elpm': 1, 'eor': 1, 'fmul': 1, 'fmuls': 1, 'fmulsu': 1,
+          'icall': 1, 'ijmp': 1, 'in': 1, 'inc': 1, 'jmp': 1, 'ld': 1, 'ldd': 1, 'ldi': 1, 'lds': 1, 'lpm': 1, 'lsl': 1, 'lsr': 1,
+          'mov': 1, 'movw': 1, 'mul': 1, 'muls': 1, 'mulsu': 1, 'neg': 1, 'nop': 1, 'or': 1, 'ori': 1, 'out': 1, 'pop': 1, 'push': 1,
+          'rcall': 1, 'ret': 1, 'reti': 1, 'rjmp': 1, 'rol': 1, 'ror': 1, 'sbc': 1, 'sbr': 1, 'sbrc': 1, 'sbrs': 1, 'sec': 1, 'seh': 1,
+          'sbi': 1, 'sbci': 1, 'sbic': 1, 'sbis': 1, 'sbiw': 1, 'sei': 1, 'sen': 1, 'ser': 1, 'ses': 1, 'set': 1, 'sev': 1, 'sez': 1,
+          'sleep': 1, 'spm': 1, 'st': 1, 'std': 1, 'sts': 1, 'sub': 1, 'subi': 1, 'swap': 1, 'tst': 1, 'wdr': 1
+        },
+        'built_in': {
+          /* general purpose registers */
+          'r0': 1, 'r1': 1, 'r2': 1, 'r3': 1, 'r4': 1, 'r5': 1, 'r6': 1, 'r7': 1, 'r8': 1, 'r9': 1, 'r10': 1, 'r11': 1, 'r12': 1,
+          'r13': 1, 'r14': 1, 'r15': 1, 'r16': 1, 'r17': 1, 'r18': 1, 'r19': 1,  'r20': 1, 'r21': 1, 'r22': 1, 'r23': 1, 'r24': 1,
+          'r25': 1, 'r26': 1, 'r27': 1, 'r28': 1, 'r29': 1, 'r30': 1, 'r31': 1,
+          'x': 1 /* R27:R26 */, 'xh': 1 /* R27 */, 'xl': 1 /* R26 */,
+          'y': 1 /* R29:R28 */, 'yh': 1 /* R29 */, 'yl': 1 /* R28 */,
+          'z': 1 /* R31:R30 */, 'zh': 1 /* R31 */, 'zl': 1 /* R30 */,
+          /* IO Registers (ATMega128) */
+          'ucsr1c': 1, 'udr1': 1, 'ucsr1a': 1, 'ucsr1b': 1, 'ubrr1l': 1, 'ubrr1h': 1, 'ucsr0c': 1, 'ubrr0h': 1, 'tccr3c': 1,
+          'tccr3a': 1, 'tccr3b': 1, 'tcnt3h': 1, 'tcnt3l': 1, 'ocr3ah': 1, 'ocr3al': 1, 'ocr3bh': 1, 'ocr3bl': 1, 'ocr3ch': 1,
+          'ocr3cl': 1, 'icr3h': 1, 'icr3l': 1, 'etimsk': 1, 'etifr': 1, 'tccr1c': 1, 'ocr1ch': 1, 'ocr1cl': 1, 'twcr': 1,
+          'twdr': 1, 'twar': 1, 'twsr': 1, 'twbr': 1, 'osccal': 1, 'xmcra': 1, 'xmcrb': 1, 'eicra': 1, 'spmcsr': 1, 'spmcr': 1,
+          'portg': 1, 'ddrg': 1, 'ping': 1, 'portf': 1, 'ddrf': 1, 'sreg': 1, 'sph': 1, 'spl': 1, 'xdiv': 1, 'rampz': 1,
+          'eicrb': 1, 'eimsk': 1, 'gimsk': 1, 'gicr': 1, 'eifr': 1, 'gifr': 1, 'timsk': 1, 'tifr': 1, 'mcucr': 1,
+          'mcucsr': 1, 'tccr0': 1, 'tcnt0': 1, 'ocr0': 1, 'assr': 1, 'tccr1a': 1, 'tccr1b': 1, 'tcnt1h': 1, 'tcnt1l': 1,
+          'ocr1ah': 1, 'ocr1al': 1, 'ocr1bh': 1, 'ocr1bl': 1, 'icr1h': 1, 'icr1l': 1, 'tccr2': 1, 'tcnt2': 1, 'ocr2': 1,
+          'ocdr': 1, 'wdtcr': 1, 'sfior': 1, 'eearh': 1, 'eearl': 1, 'eedr': 1, 'eecr': 1, 'porta': 1, 'ddra': 1, 'pina': 1,
+          'portb': 1, 'ddrb': 1, 'pinb': 1, 'portc': 1, 'ddrc': 1, 'pinc': 1, 'portd': 1, 'ddrd': 1, 'pind': 1, 'spdr': 1,
+          'spsr': 1, 'spcr': 1, 'udr0': 1, 'ucsr0a': 1, 'ucsr0b': 1, 'ubrr0l': 1, 'acsr': 1, 'admux': 1, 'adcsr': 1, 'adch': 1,
+          'adcl': 1, 'porte': 1, 'ddre': 1, 'pine': 1, 'pinf': 1
+        }
     },
     contains: [
-      hljs.C_LINE_COMMENT_MODE,
-      hljs.HASH_COMMENT_MODE,
-      {
-        className: 'comment',
-        begin: '/\\*', end: '\\*/',
-        contains: [{
-            className: 'phpdoc',
-            begin: '\\s@[A-Za-z]+',
-            relevance: 10
-        }]
-      },
+      hljs.C_BLOCK_COMMENT_MODE,
+      {className: 'comment', begin: ';',  end: '$'},
       hljs.C_NUMBER_MODE,
-      hljs.inherit(hljs.APOS_STRING_MODE, {illegal: null}),
-      hljs.inherit(hljs.QUOTE_STRING_MODE, {illegal: null}),
+      /*{  // Hex: 0x00, $00;  Oct: 0o00;  Bin: 0b00000000;  Dec: 0
+        // пока что-то не получается :(, буду использовать сишную моду.
+        className: 'number',
+        begin: '((0[xX]|\$)[A-Fa-f0-9]+|0[oO][0-7]+|0[bB][0-1]+|\\d+)'
+      }*/
+      hljs.QUOTE_STRING_MODE,
       {
-        className: 'variable',
-        begin: '\\$[a-zA-Z_\x7f-\xff][a-zA-Z0-9_\x7f-\xff]*'
+        className: 'string',
+        begin: '\'', end: '[^\\\\]\'',
+        illegal: '[^\\\\][^\']'
       },
-      {
+      {className: 'label',  begin: '^[A-Za-z0-9_.$]+:'},
+      {className: 'preprocessor', begin: '#', end: '$'},
+      {  // директивы «.include» «.macro» и т.д.
         className: 'preprocessor',
-        begin: '<\\?php',
-        relevance: 10
+        begin: '\\.[a-zA-Z]+'
       },
-      {
-        className: 'preprocessor',
-        begin: '\\?>'
+      {  // подстановка в «.macro»
+        className: 'localvars',
+        begin: '@[0-9]+'
       }
     ]
   }
 };
+
 /*
-Language: Python profile
-Description: Python profiler results
-Author: Brian Beck <exogen@gmail.com>
+Language: Vala
+Author: Antono Vasiljev <antono.vasiljev@gmail.com>
+Description: Vala is a new programming language that aims to bring modern programming language features to GNOME developers without imposing any additional runtime requirements and without using a different ABI compared to applications and libraries written in C.
 */
 
-hljs.LANGUAGES.profile = {
+hljs.LANGUAGES.vala = {
   defaultMode: {
+    keywords: {
+      keyword: {
+        // Value types
+        'char': 1, 'uchar': 1, 'unichar': 1,
+        'int': 1, 'uint': 1, 'long': 1, 'ulong': 1,
+        'short': 1, 'ushort': 1,
+        'int8': 1, 'int16': 1, 'int32': 1, 'int64': 1,
+        'uint8': 1, 'uint16': 1, 'uint32': 1, 'uint64': 1,
+        'float': 1, 'double': 1, 'bool': 1, 'struct': 1, 'enum': 1,
+        'string': 1, 'void': 1,
+        // Reference types
+        'weak': 5, 'unowned': 5, 'owned': 5,
+        // Modifiers
+        'async': 5, 'signal': 5, 'static': 1, 'abstract': 1, 'interface': 1, 'override': 1,
+        // Control Structures
+        'while': 1, 'do': 1, 'for': 1, 'foreach': 1, 'else': 1, 'switch': 1,
+        'case': 1, 'break': 1, 'default': 1, 'return': 1, 'try': 1, 'catch': 1,
+        // Visibility
+        'public': 1, 'private': 1, 'protected': 1, 'internal': 1,
+        // Other
+        'using': 1, 'new': 1, 'this': 1, 'get': 1, 'set': 1, 'const': 1,
+        'stdout': 1, 'stdin': 1, 'stderr': 1, 'var': 1,
+        // Builtins
+        'DBus': 2, 'GLib': 2, 'CCode': 10, 'Gee': 10, 'Object': 1
+      },
+      literal: { 'false': 1, 'true': 1, 'null': 1 }
+    },
     contains: [
-      hljs.C_NUMBER_MODE,
       {
-        className: 'builtin',
-        begin: '{', end: '}$',
-        excludeBegin: true, excludeEnd: true,
-        contains: [hljs.APOS_STRING_MODE, hljs.QUOTE_STRING_MODE],
-        relevance: 0
+        className: 'class',
+        begin: '(class |interface |delegate |namespace )', end: '{',
+        keywords: {'class': 1, 'interface': 1},
+        contains: [
+          {
+            begin: '(implements|extends)', end: hljs.IMMEDIATE_RE,
+            keywords: {'extends': 1, 'implements': 1},
+            relevance: 1
+          },
+          {
+            className: 'title',
+            begin: hljs.UNDERSCORE_IDENT_RE, end: hljs.IMMEDIATE_RE
+          }
+        ]
       },
+      hljs.C_LINE_COMMENT_MODE,
+      hljs.C_BLOCK_COMMENT_MODE,
       {
-        className: 'filename',
-        begin: '(/\w|[a-zA-Z_][\da-zA-Z_]+\\.[\da-zA-Z_]{1,3})', end: ':',
-        excludeEnd: true
-      },
-      {
-        className: 'header',
-        begin: '(ncalls|tottime|cumtime)', end: '$',
-        keywords: {'ncalls': 1, 'tottime': 10, 'cumtime': 10, 'filename': 1},
-        relevance: 10
-      },
-      {
-        className: 'summary',
-        begin: 'function calls', end: '$',
-        contains: [hljs.C_NUMBER_MODE],
-        relevance: 10
+        className: 'string',
+        begin: '"""', end: '"""',
+        relevance: 5
       },
       hljs.APOS_STRING_MODE,
       hljs.QUOTE_STRING_MODE,
+      hljs.C_NUMBER_MODE,
       {
-        className: 'function',
-        begin: '\\(', end: '\\)$',
-        contains: [{
-          className: 'title',
-          begin: hljs.UNDERSCORE_IDENT_RE,
-          relevance: 0
-        }],
+        className: 'preprocessor',
+        begin: '^#', end: '$',
+        relevance: 2
+      },
+      {
+        className: 'constant',
+        begin: ' [A-Z_]+ ', end: hljs.IMMEDIATE_RE,
         relevance: 0
       }
     ]
   }
 };
 /*
-Language: Python
+Language: Markdown
+Requires: xml.js
+Author: John Crepezzi <john.crepezzi@gmail.com>
+Website: http://seejohncode.com/
 */
 
-hljs.LANGUAGES.python = function() {
-  var STR1 = {
-    className: 'string',
-    begin: '(u|b)?r?\'\'\'', end: '\'\'\'',
-    relevance: 10
-  };
-  var STR2 = {
-    className: 'string',
-    begin: '(u|b)?r?"""', end: '"""',
-    relevance: 10
-  };
-  var STR3 = {
-    className: 'string',
-    begin: '(u|r|ur|b|br)\'', end: '\'',
-    contains: [hljs.BACKSLASH_ESCAPE],
-    relevance: 10
-  };
-  var STR4 = {
-    className: 'string',
-    begin: '(u|r|ur|b|br)"', end: '"',
-    contains: [hljs.BACKSLASH_ESCAPE],
-    relevance: 10
-  };
-  var TITLE = {
-    className: 'title', begin: hljs.UNDERSCORE_IDENT_RE
-  };
-  var PARAMS = {
-    className: 'params',
-    begin: '\\(', end: '\\)',
-    contains: [STR1, STR2, STR3, STR4, hljs.APOS_STRING_MODE, hljs.QUOTE_STRING_MODE]
-  };
-
-  return {
-    defaultMode: {
-      keywords: {
-        'keyword': {'and': 1, 'elif': 1, 'is': 1, 'global': 1, 'as': 1, 'in': 1, 'if': 1, 'from': 1, 'raise': 1, 'for': 1, 'except': 1, 'finally': 1, 'print': 1, 'import': 1, 'pass': 1, 'return': 1, 'exec': 1, 'else': 1, 'break': 1, 'not': 1, 'with': 1, 'class': 1, 'assert': 1, 'yield': 1, 'try': 1, 'while': 1, 'continue': 1, 'del': 1, 'or': 1, 'def': 1, 'lambda': 1, 'nonlocal': 10},
-        'built_in': {'None': 1, 'True': 1, 'False': 1, 'Ellipsis': 1, 'NotImplemented': 1}
+hljs.LANGUAGES.markdown = {
+  case_insensitive: true,
+  defaultMode: {
+    contains: [
+      // highlight headers
+      {
+        className: 'header',
+        begin: '^\#{1,3}', end: '$'
       },
-      illegal: '(</|->|\\?)',
-      contains: [
-        hljs.HASH_COMMENT_MODE,
-        STR1, STR2, STR3, STR4, hljs.APOS_STRING_MODE, hljs.QUOTE_STRING_MODE,
-        {
-          className: 'function',
-          begin: '\\bdef ', end: ':',
-          illegal: '$',
-          keywords: {'def': 1},
-          contains: [TITLE, PARAMS],
-          relevance: 10
-        },
-        {
-          className: 'class',
-          begin: '\\bclass ', end: ':',
-          illegal: '[${]',
-          keywords: {'class': 1},
-          contains: [TITLE, PARAMS],
-          relevance: 10
-        },
-        hljs.C_NUMBER_MODE,
-        {
-          className: 'decorator',
-          begin: '@', end: '$'
-        }
-      ]
-    }
-  };
-}();
+      {
+        className: 'header',
+        begin: '^.+?\\n[=-]{2,}$'
+      },
+      // inline html
+      {
+        begin: '<', end: '>',
+        subLanguage: 'xml'
+      },
+      // lists (indicators only)
+      {
+        className: 'bullet',
+        begin: '^([*+-]|(\\d+\.))\\s+'
+      },
+      // strong segments
+      {
+        className: 'strong',
+        begin: '[*_]{2}.+?[*_]{2}'
+      },
+      // emphasis segments
+      {
+        className: 'emphasis',
+        begin: '[*_].+?[*_]'
+      },
+      // blockquotes
+      {
+        className: 'blockquote',
+        begin: '^>\\s+', end: '$'
+      },
+      // code snippets
+      {
+        className: 'code',
+        begin: '`.+?`'
+      },
+      {
+        className: 'code',
+        begin: '^    ', end: '$',
+        relevance: 0
+      },
+      // horizontal rules
+      {
+        className: 'horizontal_rule',
+        begin: '^-{3,}', end: '$'
+      },
+      // using links - title and link
+      {
+        begin: '\\[.+?\\]\\(.+?\\)',
+        returnBegin: true,
+        contains: [
+          {
+            className: 'link_label',
+            begin: '\\[.+\\]'
+          },
+          {
+            className: 'link_url',
+            begin: '\\(', end: '\\)',
+            excludeBegin: true, excludeEnd: true
+          }
+        ]
+      }
+    ]
+  }
+};
 /*
 Language: RenderMan
 Description: RenderMan Languages RIB and RSL
@@ -3538,580 +3980,229 @@ hljs.LANGUAGES.rsl  = {
   }
 };
 /*
-Language: Ruby
-Author: Anton Kovalyov <anton@kovalyov.net>
-Contributors: Peter Leonov <gojpeg@yandex.ru>, Vasily Polovnyov <vast@whiteants.net>, Loren Segal <lsegal@soen.ca>
+Language: Nginx
+Author: Peter Leonov <gojpeg@yandex.ru>
 */
 
-hljs.LANGUAGES.ruby = function(){
-  var RUBY_IDENT_RE = '[a-zA-Z_][a-zA-Z0-9_]*(\\!|\\?)?';
-  var RUBY_METHOD_RE = '[a-zA-Z_]\\w*[!?=]?|[-+~]\\@|<<|>>|=~|===?|<=>|[<>]=?|\\*\\*|[-/+%^&*~`|]|\\[\\]=?';
-  var RUBY_KEYWORDS = {
-    'keyword': {'and': 1, 'false': 1, 'then': 1, 'defined': 1, 'module': 1, 'in': 1, 'return': 1, 'redo': 1, 'if': 1, 'BEGIN': 1, 'retry': 1, 'end': 1, 'for': 1, 'true': 1, 'self': 1, 'when': 1, 'next': 1, 'until': 1, 'do': 1, 'begin': 1, 'unless': 1, 'END': 1, 'rescue': 1, 'nil': 1, 'else': 1, 'break': 1, 'undef': 1, 'not': 1, 'super': 1, 'class': 1, 'case': 1, 'require': 1, 'yield': 1, 'alias': 1, 'while': 1, 'ensure': 1, 'elsif': 1, 'or': 1, 'def': 1},
-    'keymethods': {'__id__': 1, '__send__': 1, 'abort': 1, 'abs': 1, 'all?': 1, 'allocate': 1, 'ancestors': 1, 'any?': 1, 'arity': 1, 'assoc': 1, 'at': 1, 'at_exit': 1, 'autoload': 1, 'autoload?': 1, 'between?': 1, 'binding': 1, 'binmode': 1, 'block_given?': 1, 'call': 1, 'callcc': 1, 'caller': 1, 'capitalize': 1, 'capitalize!': 1, 'casecmp': 1, 'catch': 1, 'ceil': 1, 'center': 1, 'chomp': 1, 'chomp!': 1, 'chop': 1, 'chop!': 1, 'chr': 1, 'class': 1, 'class_eval': 1, 'class_variable_defined?': 1, 'class_variables': 1, 'clear': 1, 'clone': 1, 'close': 1, 'close_read': 1, 'close_write': 1, 'closed?': 1, 'coerce': 1, 'collect': 1, 'collect!': 1, 'compact': 1, 'compact!': 1, 'concat': 1, 'const_defined?': 1, 'const_get': 1, 'const_missing': 1, 'const_set': 1, 'constants': 1, 'count': 1, 'crypt': 1, 'default': 1, 'default_proc': 1, 'delete': 1, 'delete!': 1, 'delete_at': 1, 'delete_if': 1, 'detect': 1, 'display': 1, 'div': 1, 'divmod': 1, 'downcase': 1, 'downcase!': 1, 'downto': 1, 'dump': 1, 'dup': 1, 'each': 1, 'each_byte': 1, 'each_index': 1, 'each_key': 1, 'each_line': 1, 'each_pair': 1, 'each_value': 1, 'each_with_index': 1, 'empty?': 1, 'entries': 1, 'eof': 1, 'eof?': 1, 'eql?': 1, 'equal?': 1, 'eval': 1, 'exec': 1, 'exit': 1, 'exit!': 1, 'extend': 1, 'fail': 1, 'fcntl': 1, 'fetch': 1, 'fileno': 1, 'fill': 1, 'find': 1, 'find_all': 1, 'first': 1, 'flatten': 1, 'flatten!': 1, 'floor': 1, 'flush': 1, 'for_fd': 1, 'foreach': 1, 'fork': 1, 'format': 1, 'freeze': 1, 'frozen?': 1, 'fsync': 1, 'getc': 1, 'gets': 1, 'global_variables': 1, 'grep': 1, 'gsub': 1, 'gsub!': 1, 'has_key?': 1, 'has_value?': 1, 'hash': 1, 'hex': 1, 'id': 1, 'include': 1, 'include?': 1, 'included_modules': 1, 'index': 1, 'indexes': 1, 'indices': 1, 'induced_from': 1, 'inject': 1, 'insert': 1, 'inspect': 1, 'instance_eval': 1, 'instance_method': 1, 'instance_methods': 1, 'instance_of?': 1, 'instance_variable_defined?': 1, 'instance_variable_get': 1, 'instance_variable_set': 1, 'instance_variables': 1, 'integer?': 1, 'intern': 1, 'invert': 1, 'ioctl': 1, 'is_a?': 1, 'isatty': 1, 'iterator?': 1, 'join': 1, 'key?': 1, 'keys': 1, 'kind_of?': 1, 'lambda': 1, 'last': 1, 'length': 1, 'lineno': 1, 'ljust': 1, 'load': 1, 'local_variables': 1, 'loop': 1, 'lstrip': 1, 'lstrip!': 1, 'map': 1, 'map!': 1, 'match': 1, 'max': 1, 'member?': 1, 'merge': 1, 'merge!': 1, 'method': 1, 'method_defined?': 1, 'method_missing': 1, 'methods': 1, 'min': 1, 'module_eval': 1, 'modulo': 1, 'name': 1, 'nesting': 1, 'new': 1, 'next': 1, 'next!': 1, 'nil?': 1, 'nitems': 1, 'nonzero?': 1, 'object_id': 1, 'oct': 1, 'open': 1, 'pack': 1, 'partition': 1, 'pid': 1, 'pipe': 1, 'pop': 1, 'popen': 1, 'pos': 1, 'prec': 1, 'prec_f': 1, 'prec_i': 1, 'print': 1, 'printf': 1, 'private_class_method': 1, 'private_instance_methods': 1, 'private_method_defined?': 1, 'private_methods': 1, 'proc': 1, 'protected_instance_methods': 1, 'protected_method_defined?': 1, 'protected_methods': 1, 'public_class_method': 1, 'public_instance_methods': 1, 'public_method_defined?': 1, 'public_methods': 1, 'push': 1, 'putc': 1, 'puts': 1, 'quo': 1, 'raise': 1, 'rand': 1, 'rassoc': 1, 'read': 1, 'read_nonblock': 1, 'readchar': 1, 'readline': 1, 'readlines': 1, 'readpartial': 1, 'rehash': 1, 'reject': 1, 'reject!': 1, 'remainder': 1, 'reopen': 1, 'replace': 1, 'require': 1, 'respond_to?': 1, 'reverse': 1, 'reverse!': 1, 'reverse_each': 1, 'rewind': 1, 'rindex': 1, 'rjust': 1, 'round': 1, 'rstrip': 1, 'rstrip!': 1, 'scan': 1, 'seek': 1, 'select': 1, 'send': 1, 'set_trace_func': 1, 'shift': 1, 'singleton_method_added': 1, 'singleton_methods': 1, 'size': 1, 'sleep': 1, 'slice': 1, 'slice!': 1, 'sort': 1, 'sort!': 1, 'sort_by': 1, 'split': 1, 'sprintf': 1, 'squeeze': 1, 'squeeze!': 1, 'srand': 1, 'stat': 1, 'step': 1, 'store': 1, 'strip': 1, 'strip!': 1, 'sub': 1, 'sub!': 1, 'succ': 1, 'succ!': 1, 'sum': 1, 'superclass': 1, 'swapcase': 1, 'swapcase!': 1, 'sync': 1, 'syscall': 1, 'sysopen': 1, 'sysread': 1, 'sysseek': 1, 'system': 1, 'syswrite': 1, 'taint': 1, 'tainted?': 1, 'tell': 1, 'test': 1, 'throw': 1, 'times': 1, 'to_a': 1, 'to_ary': 1, 'to_f': 1, 'to_hash': 1, 'to_i': 1, 'to_int': 1, 'to_io': 1, 'to_proc': 1, 'to_s': 1, 'to_str': 1, 'to_sym': 1, 'tr': 1, 'tr!': 1, 'tr_s': 1, 'tr_s!': 1, 'trace_var': 1, 'transpose': 1, 'trap': 1, 'truncate': 1, 'tty?': 1, 'type': 1, 'ungetc': 1, 'uniq': 1, 'uniq!': 1, 'unpack': 1, 'unshift': 1, 'untaint': 1, 'untrace_var': 1, 'upcase': 1, 'upcase!': 1, 'update': 1, 'upto': 1, 'value?': 1, 'values': 1, 'values_at': 1, 'warn': 1, 'write': 1, 'write_nonblock': 1, 'zero?': 1, 'zip': 1}
+hljs.LANGUAGES.nginx = function() {
+  var VAR1 = {
+    className: 'variable',
+    begin: '\\$\\d+'
   };
-  var YARDOCTAG = {
-    className: 'yardoctag',
-    begin: '@[A-Za-z]+'
+  var VAR2 = {
+    className: 'variable',
+    begin: '\\${', end: '}'
   };
-  var COMMENT1 = {
-    className: 'comment',
-    begin: '#', end: '$',
-    contains: [YARDOCTAG]
+  var VAR3 = {
+    className: 'variable',
+    begin: '[\\$\\@]' + hljs.UNDERSCORE_IDENT_RE
   };
-  var COMMENT2 = {
-    className: 'comment',
-    begin: '^\\=begin', end: '^\\=end',
-    contains: [YARDOCTAG],
-    relevance: 10
-  };
-  var COMMENT3 = {
-    className: 'comment',
-    begin: '^__END__', end: '\\n$'
-  };
-  var SUBST = {
-    className: 'subst',
-    begin: '#\\{', end: '}',
-    lexems: RUBY_IDENT_RE,
-    keywords: RUBY_KEYWORDS
-  };
-  var STR_CONTAINS = [hljs.BACKSLASH_ESCAPE, SUBST];
-  var STR1 = {
-    className: 'string',
-    begin: '\'', end: '\'',
-    contains: STR_CONTAINS,
-    relevance: 0
-  };
-  var STR2 = {
-    className: 'string',
-    begin: '"', end: '"',
-    contains: STR_CONTAINS,
-    relevance: 0
-  };
-  var STR3 = {
-    className: 'string',
-    begin: '%[qw]?\\(', end: '\\)',
-    contains: STR_CONTAINS,
-    relevance: 10
-  };
-  var STR4 = {
-    className: 'string',
-    begin: '%[qw]?\\[', end: '\\]',
-    contains: STR_CONTAINS,
-    relevance: 10
-  };
-  var STR5 = {
-    className: 'string',
-    begin: '%[qw]?{', end: '}',
-    contains: STR_CONTAINS,
-    relevance: 10
-  };
-  var STR6 = {
-    className: 'string',
-    begin: '%[qw]?<', end: '>',
-    contains: STR_CONTAINS,
-    relevance: 10
-  };
-  var STR7 = {
-    className: 'string',
-    begin: '%[qw]?/', end: '/',
-    contains: STR_CONTAINS,
-    relevance: 10
-  };
-  var STR8 = {
-    className: 'string',
-    begin: '%[qw]?%', end: '%',
-    contains: STR_CONTAINS,
-    relevance: 10
-  };
-  var STR9 = {
-    className: 'string',
-    begin: '%[qw]?-', end: '-',
-    contains: STR_CONTAINS,
-    relevance: 10
-  };
-  var STR10 = {
-    className: 'string',
-    begin: '%[qw]?\\|', end: '\\|',
-    contains: STR_CONTAINS,
-    relevance: 10
-  };
-  var FUNCTION = {
-    className: 'function',
-    begin: '\\bdef\\s+', end: ' |$|;',
-    lexems: RUBY_IDENT_RE,
-    keywords: RUBY_KEYWORDS,
-    contains: [
-      {
-        className: 'title',
-        begin: RUBY_METHOD_RE,
-        lexems: RUBY_IDENT_RE,
-        keywords: RUBY_KEYWORDS
-      },
-      {
-        className: 'params',
-        begin: '\\(', end: '\\)',
-        lexems: RUBY_IDENT_RE,
-        keywords: RUBY_KEYWORDS
-      },
-      COMMENT1, COMMENT2, COMMENT3
-    ]
-  };
-  var IDENTIFIER = {
-    className: 'identifier',
-    begin: RUBY_IDENT_RE,
-    lexems: RUBY_IDENT_RE,
-    keywords: RUBY_KEYWORDS,
-    relevance: 0
-  };
-
-  var RUBY_DEFAULT_CONTAINS = [
-    COMMENT1, COMMENT2, COMMENT3,
-    STR1, STR2, STR3, STR4, STR5, STR6, STR7, STR8, STR9, STR10,
-    {
-      className: 'class',
-      begin: '\\b(class|module)\\b', end: '$|;',
-      keywords: {'class': 1, 'module': 1},
-      contains: [
-        {
-          className: 'title',
-          begin: '[A-Za-z_]\\w*(::\\w+)*(\\?|\\!)?',
-          relevance: 0
-        },
-        {
-          className: 'inheritance',
-          begin: '<\\s*',
-          contains: [{
-            className: 'parent',
-            begin: '(' + hljs.IDENT_RE + '::)?' + hljs.IDENT_RE
-          }]
-        },
-        COMMENT1, COMMENT2, COMMENT3
-      ]
-    },
-    FUNCTION,
-    {
-      className: 'constant',
-      begin: '(::)?([A-Z]\\w*(::)?)+',
-      relevance: 0
-    },
-    {
-      className: 'symbol',
-      begin: ':',
-      contains: [STR1, STR2, STR3, STR4, STR5, STR6, STR7, STR8, STR9, STR10, IDENTIFIER],
-      relevance: 0
-    },
-    {
-      className: 'number',
-      begin: '(\\b0[0-7_]+)|(\\b0x[0-9a-fA-F_]+)|(\\b[1-9][0-9_]*(\\.[0-9_]+)?)|[0_]\\b',
-      relevance: 0
-    },
-    {
-      className: 'number',
-      begin: '\\?\\w'
-    },
-    {
-      className: 'variable',
-      begin: '(\\$\\W)|((\\$|\\@\\@?)(\\w+))'
-    },
-    IDENTIFIER,
-    { // regexp container
-      begin: '(' + hljs.RE_STARTERS_RE + ')\\s*',
-      contains: [
-        COMMENT1, COMMENT2, COMMENT3,
-        {
-          className: 'regexp',
-          begin: '/', end: '/[a-z]*',
-          illegal: '\\n',
-          contains: [hljs.BACKSLASH_ESCAPE]
-        }
-      ],
-      relevance: 0
-    }
-  ];
-  SUBST.contains = RUBY_DEFAULT_CONTAINS;
-  FUNCTION.contains[1].contains = RUBY_DEFAULT_CONTAINS;
 
   return {
     defaultMode: {
-      lexems: RUBY_IDENT_RE,
-      keywords: RUBY_KEYWORDS,
-      contains: RUBY_DEFAULT_CONTAINS
-    }
-  };
-}();
-/*
-Language: Scala
-Author: Jan Berkel <jan.berkel@gmail.com>
-*/
-
-hljs.LANGUAGES.scala = function() {
-  var ANNOTATION = {
-    className: 'annotation', begin: '@[A-Za-z]+'
-  };
-  var STRING = {
-    className: 'string',
-    begin: 'u?r?"""', end: '"""',
-    relevance: 10
-  };
-  return {
-    defaultMode: {
-      keywords: { 'type': 1, 'yield': 1, 'lazy': 1, 'override': 1, 'def': 1, 'with': 1, 'val':1, 'var': 1, 'false': 1, 'true': 1, 'sealed': 1, 'abstract': 1, 'private': 1, 'trait': 1,  'object': 1, 'null': 1, 'if': 1, 'for': 1, 'while': 1, 'throw': 1, 'finally': 1, 'protected': 1, 'extends': 1, 'import': 1, 'final': 1, 'return': 1, 'else': 1, 'break': 1, 'new': 1, 'catch': 1, 'super': 1, 'class': 1, 'case': 1,'package': 1, 'default': 1, 'try': 1, 'this': 1, 'match': 1, 'continue': 1, 'throws': 1},
       contains: [
-        {
-          className: 'javadoc',
-          begin: '/\\*\\*', end: '\\*/',
-          contains: [{
-            className: 'javadoctag',
-            begin: '@[A-Za-z]+'
-          }],
-          relevance: 10
-        },
-        hljs.C_LINE_COMMENT_MODE, hljs.C_BLOCK_COMMENT_MODE,
-        hljs.APOS_STRING_MODE, hljs.QUOTE_STRING_MODE, STRING,
-        {
-          className: 'class',
-          begin: '((case )?class |object |trait )', end: '({|$)',
-          illegal: ':',
-          keywords: {'case' : 1, 'class': 1, 'trait': 1, 'object': 1},
+        hljs.HASH_COMMENT_MODE,
+        { // directive
+          begin: hljs.UNDERSCORE_IDENT_RE, end: ';|{', returnEnd: true,
+          keywords: {
+            accept_mutex: 1, accept_mutex_delay: 1, access_log: 1,
+            add_after_body: 1, add_before_body: 1, add_header: 1,
+            addition_types: 1, alias: 1, allow: 1, ancient_browser: 1,
+            ancient_browser: 1, ancient_browser_value: 1, ancient_browser_value: 1,
+            auth_basic: 1, auth_basic_user_file: 1, autoindex: 1,
+            autoindex_exact_size: 1, autoindex_localtime: 1, 'break': 1,
+            charset: 1, charset: 1, charset_map: 1, charset_map: 1,
+            charset_types: 1, charset_types: 1, client_body_buffer_size: 1,
+            client_body_in_file_only: 1, client_body_in_single_buffer: 1,
+            client_body_temp_path: 1, client_body_timeout: 1,
+            client_header_buffer_size: 1, client_header_timeout: 1,
+            client_max_body_size: 1, connection_pool_size: 1, connections: 1,
+            create_full_put_path: 1, daemon: 1, dav_access: 1, dav_methods: 1,
+            debug_connection: 1, debug_points: 1, default_type: 1, deny: 1,
+            directio: 1, directio_alignment: 1, echo: 1, echo_after_body: 1,
+            echo_before_body: 1, echo_blocking_sleep: 1, echo_duplicate: 1,
+            echo_end: 1, echo_exec: 1, echo_flush: 1, echo_foreach_split: 1,
+            echo_location: 1, echo_location_async: 1, echo_read_request_body: 1,
+            echo_request_body: 1, echo_reset_timer: 1, echo_sleep: 1,
+            echo_subrequest: 1, echo_subrequest_async: 1, empty_gif: 1,
+            empty_gif: 1, env: 1, error_log: 1, error_log: 1, error_page: 1,
+            events: 1, expires: 1, fastcgi_bind: 1, fastcgi_buffer_size: 1,
+            fastcgi_buffers: 1, fastcgi_busy_buffers_size: 1, fastcgi_cache: 1,
+            fastcgi_cache_key: 1, fastcgi_cache_methods: 1,
+            fastcgi_cache_min_uses: 1, fastcgi_cache_path: 1,
+            fastcgi_cache_use_stale: 1, fastcgi_cache_valid: 1,
+            fastcgi_catch_stderr: 1, fastcgi_connect_timeout: 1,
+            fastcgi_hide_header: 1, fastcgi_ignore_client_abort: 1,
+            fastcgi_ignore_headers: 1, fastcgi_index: 1,
+            fastcgi_intercept_errors: 1, fastcgi_max_temp_file_size: 1,
+            fastcgi_next_upstream: 1, fastcgi_param: 1, fastcgi_pass: 1,
+            fastcgi_pass_header: 1, fastcgi_pass_request_body: 1,
+            fastcgi_pass_request_headers: 1, fastcgi_read_timeout: 1,
+            fastcgi_send_lowat: 1, fastcgi_send_timeout: 1,
+            fastcgi_split_path_info: 1, fastcgi_store: 1, fastcgi_store_access: 1,
+            fastcgi_temp_file_write_size: 1, fastcgi_temp_path: 1,
+            fastcgi_upstream_fail_timeout: 1, fastcgi_upstream_max_fails: 1,
+            flv: 1, geo: 1, geo: 1, geoip_city: 1, geoip_country: 1, gzip: 1,
+            gzip_buffers: 1, gzip_comp_level: 1, gzip_disable: 1, gzip_hash: 1,
+            gzip_http_version: 1, gzip_min_length: 1, gzip_no_buffer: 1,
+            gzip_proxied: 1, gzip_static: 1, gzip_types: 1, gzip_vary: 1,
+            gzip_window: 1, http: 1, 'if': 1, if_modified_since: 1,
+            ignore_invalid_headers: 1, image_filter: 1, image_filter_buffer: 1,
+            image_filter_jpeg_quality: 1, image_filter_transparency: 1, include: 1,
+            index: 1, internal: 1, ip_hash: 1, js: 1, js_load: 1, js_require: 1,
+            js_utf8: 1, keepalive_requests: 1, keepalive_timeout: 1,
+            kqueue_changes: 1, kqueue_events: 1, large_client_header_buffers: 1,
+            limit_conn: 1, limit_conn_log_level: 1, limit_except: 1, limit_rate: 1,
+            limit_rate_after: 1, limit_req: 1, limit_req_log_level: 1,
+            limit_req_zone: 1, limit_zone: 1, lingering_time: 1,
+            lingering_timeout: 1, listen: 1, location: 1, lock_file: 1,
+            log_format: 1, log_not_found: 1, log_subrequest: 1, map: 1,
+            map_hash_bucket_size: 1, map_hash_max_size: 1, master_process: 1,
+            memcached_bind: 1, memcached_buffer_size: 1,
+            memcached_connect_timeout: 1, memcached_next_upstream: 1,
+            memcached_pass: 1, memcached_read_timeout: 1,
+            memcached_send_timeout: 1, memcached_upstream_fail_timeout: 1,
+            memcached_upstream_max_fails: 1, merge_slashes: 1, min_delete_depth: 1,
+            modern_browser: 1, modern_browser: 1, modern_browser_value: 1,
+            modern_browser_value: 1, more_clear_headers: 1,
+            more_clear_input_headers: 1, more_set_headers: 1,
+            more_set_input_headers: 1, msie_padding: 1, msie_refresh: 1,
+            multi_accept: 1, open_file_cache: 1, open_file_cache_errors: 1,
+            open_file_cache_events: 1, open_file_cache_min_uses: 1,
+            open_file_cache_retest: 1, open_file_cache_valid: 1,
+            open_log_file_cache: 1, optimize_server_names: 1, output_buffers: 1,
+            override_charset: 1, override_charset: 1, perl: 1, perl_modules: 1,
+            perl_require: 1, perl_set: 1, pid: 1, port_in_redirect: 1,
+            post_action: 1, postpone_gzipping: 1, postpone_output: 1,
+            proxy_bind: 1, proxy_buffer_size: 1, proxy_buffering: 1,
+            proxy_buffers: 1, proxy_busy_buffers_size: 1, proxy_cache: 1,
+            proxy_cache_key: 1, proxy_cache_methods: 1, proxy_cache_min_uses: 1,
+            proxy_cache_path: 1, proxy_cache_use_stale: 1, proxy_cache_valid: 1,
+            proxy_connect_timeout: 1, proxy_headers_hash_bucket_size: 1,
+            proxy_headers_hash_max_size: 1, proxy_hide_header: 1,
+            proxy_ignore_client_abort: 1, proxy_ignore_headers: 1,
+            proxy_intercept_errors: 1, proxy_max_temp_file_size: 1,
+            proxy_method: 1, proxy_next_upstream: 1, proxy_pass: 1,
+            proxy_pass_header: 1, proxy_pass_request_body: 1,
+            proxy_pass_request_headers: 1, proxy_read_timeout: 1,
+            proxy_redirect: 1, proxy_send_lowat: 1, proxy_send_timeout: 1,
+            proxy_set_body: 1, proxy_set_header: 1, proxy_store: 1,
+            proxy_store_access: 1, proxy_temp_file_write_size: 1,
+            proxy_temp_path: 1, proxy_upstream_fail_timeout: 1,
+            proxy_upstream_max_fails: 1, push_authorized_channels_only: 1,
+            push_channel_group: 1, push_max_channel_id_length: 1,
+            push_max_channel_subscribers: 1, push_max_message_buffer_length: 1,
+            push_max_reserved_memory: 1, push_message_buffer_length: 1,
+            push_message_timeout: 1, push_min_message_buffer_length: 1,
+            push_min_message_recipients: 1, push_publisher: 1,
+            push_store_messages: 1, push_subscriber: 1,
+            push_subscriber_concurrency: 1, random_index: 1, read_ahead: 1,
+            real_ip_header: 1, recursive_error_pages: 1, request_pool_size: 1,
+            reset_timedout_connection: 1, resolver: 1, resolver_timeout: 1,
+            'return': 1, rewrite: 1, rewrite_log: 1, root: 1, satisfy: 1,
+            satisfy_any: 1, send_lowat: 1, send_timeout: 1, sendfile: 1,
+            sendfile_max_chunk: 1, server: 1, server: 1, server_name: 1,
+            server_name_in_redirect: 1, server_names_hash_bucket_size: 1,
+            server_names_hash_max_size: 1, server_tokens: 1, 'set': 1,
+            set_real_ip_from: 1, source_charset: 1, source_charset: 1, ssi: 1,
+            ssi_ignore_recycled_buffers: 1, ssi_min_file_chunk: 1,
+            ssi_silent_errors: 1, ssi_types: 1, ssi_value_length: 1, ssl: 1,
+            ssl_certificate: 1, ssl_certificate_key: 1, ssl_ciphers: 1,
+            ssl_client_certificate: 1, ssl_crl: 1, ssl_dhparam: 1,
+            ssl_prefer_server_ciphers: 1, ssl_protocols: 1, ssl_session_cache: 1,
+            ssl_session_timeout: 1, ssl_verify_client: 1, ssl_verify_depth: 1,
+            sub_filter: 1, sub_filter_once: 1, sub_filter_types: 1, tcp_nodelay: 1,
+            tcp_nopush: 1, timer_resolution: 1, try_files: 1, types: 1,
+            types_hash_bucket_size: 1, types_hash_max_size: 1,
+            underscores_in_headers: 1, uninitialized_variable_warn: 1, upstream: 1,
+            use: 1, user: 1, userid: 1, userid: 1, userid_domain: 1,
+            userid_domain: 1, userid_expires: 1, userid_expires: 1, userid_mark: 1,
+            userid_name: 1, userid_name: 1, userid_p3p: 1, userid_p3p: 1,
+            userid_path: 1, userid_path: 1, userid_service: 1, userid_service: 1,
+            valid_referers: 1, variables_hash_bucket_size: 1,
+            variables_hash_max_size: 1, worker_connections: 1,
+            worker_cpu_affinity: 1, worker_priority: 1, worker_processes: 1,
+            worker_rlimit_core: 1, worker_rlimit_nofile: 1,
+            worker_rlimit_sigpending: 1, working_directory: 1, xml_entities: 1,
+            xslt_stylesheet: 1, xslt_types: 1
+          },
+          relevance: 0,
           contains: [
+            hljs.HASH_COMMENT_MODE,
             {
-              begin: '(extends|with)',
-              keywords: {'extends': 1, 'with': 1},
-              relevance: 10
-            },
-            {
-              className: 'title',
-              begin: hljs.UNDERSCORE_IDENT_RE
-            },
-            {
-              className: 'params',
-              begin: '\\(', end: '\\)',
+              begin: '\\s', end: '[;{]', returnBegin: true, returnEnd: true,
+              lexems: '[a-z/]+',
+              keywords: {
+                'built_in': {
+                  'on': 1, 'off': 1, 'yes': 1, 'no': 1, 'true': 1, 'false': 1,
+                  'none': 1, 'blocked': 1, 'debug': 1, 'info': 1, 'notice': 1,
+                  'warn': 1, 'error': 1, 'crit': 1, 'select': 1, 'permanent': 1,
+                  'redirect': 1, 'kqueue': 1, 'rtsig': 1, 'epoll': 1, 'poll': 1,
+                  '/dev/poll': 1
+                }
+              },
+              relevance: 0,
               contains: [
-                hljs.APOS_STRING_MODE, hljs.QUOTE_STRING_MODE, STRING,
-                ANNOTATION
+                hljs.HASH_COMMENT_MODE,
+                {
+                  className: 'string',
+                  begin: '"', end: '"',
+                  contains: [hljs.BACKSLASH_ESCAPE, VAR1, VAR2, VAR3],
+                  relevance: 0
+                },
+                {
+                  className: 'string',
+                  begin: "'", end: "'",
+                  contains: [hljs.BACKSLASH_ESCAPE, VAR1, VAR2, VAR3],
+                  relevance: 0
+                },
+                {
+                  className: 'string',
+                  begin: '([a-z]+):/', end: '[;\\s]', returnEnd: true
+                },
+                {
+                  className: 'regexp',
+                  begin: "\\s\\^", end: "\\s|{|;", returnEnd: true,
+                  contains: [hljs.BACKSLASH_ESCAPE, VAR1, VAR2, VAR3]
+                },
+                // regexp locations (~, ~*)
+                {
+                  className: 'regexp',
+                  begin: "~\\*?\\s+", end: "\\s|{|;", returnEnd: true,
+                  contains: [hljs.BACKSLASH_ESCAPE, VAR1, VAR2, VAR3]
+                },
+                // *.example.com
+                {
+                  className: 'regexp',
+                  begin: "\\*(\\.[a-z\\-]+)+",
+                  contains: [hljs.BACKSLASH_ESCAPE, VAR1, VAR2, VAR3]
+                },
+                // sub.example.*
+                {
+                  className: 'regexp',
+                  begin: "([a-z\\-]+\\.)+\\*",
+                  contains: [hljs.BACKSLASH_ESCAPE, VAR1, VAR2, VAR3]
+                },
+                // IP
+                {
+                  className: 'number',
+                  begin: '\\b\\d{1,3}\\.\\d{1,3}\\.\\d{1,3}\\.\\d{1,3}\\b'
+                },
+                // units
+                {
+                  className: 'number',
+                  begin: '\\s\\d+[kKmMgGdshdwy]*\\b',
+                  relevance: 0
+                },
+                VAR1, VAR2, VAR3
               ]
             }
           ]
-        },
-        hljs.C_NUMBER_MODE,
-        ANNOTATION
-      ]
-    }
-  };
-}();
-/*
-Language: Smalltalk
-Author: Vladimir Gubarkov <xonixx@gmail.com>
-*/
-
-hljs.LANGUAGES.smalltalk = function() {
-  var VAR_IDENT_RE = '[a-z][a-zA-Z0-9_]*';
-  var CHAR = {
-    className: 'char',
-    begin: '\\$.{1}'
-  };
-  var SYMBOL = {
-    className: 'symbol',
-    begin: '#' + hljs.UNDERSCORE_IDENT_RE
-  };
-  return {
-    defaultMode: {
-      keywords: {'self': 1, 'super': 1, 'nil': 1, 'true': 1, 'false': 1, 'thisContext': 1}, // only 6
-      contains: [
-        {
-          className: 'comment',
-          begin: '"', end: '"',
-          relevance: 0
-        },
-        hljs.APOS_STRING_MODE,
-        {
-          className: 'class',
-          begin: '\\b[A-Z][A-Za-z0-9_]*',
-          relevance: 0
-        },
-        {
-          className: 'method',
-          begin: VAR_IDENT_RE + ':'
-        },
-        hljs.C_NUMBER_MODE,
-        SYMBOL,
-        CHAR,
-        {
-          className: 'localvars',
-          begin: '\\|\\s*((' + VAR_IDENT_RE + ')\\s*)+\\|'
-        },
-        {
-          className: 'array',
-          begin: '\\#\\(', end: '\\)',
-          contains: [
-            hljs.APOS_STRING_MODE,
-            CHAR,
-            hljs.C_NUMBER_MODE,
-            SYMBOL
-          ]
         }
       ]
     }
-  };
+  }
 }();
-/*
-Language: SQL
-*/
-
-hljs.LANGUAGES.sql = {
-  case_insensitive: true,
-  defaultMode: {
-    illegal: '[^\\s]',
-    contains: [
-      {
-        className: 'operator',
-        begin: '(begin|start|commit|rollback|savepoint|lock|alter|create|drop|rename|call|delete|do|handler|insert|load|replace|select|truncate|update|set|show|pragma)\\b', end: ';|$',
-        keywords: {
-          'keyword': {
-            'all': 1, 'partial': 1, 'global': 1, 'month': 1,
-            'current_timestamp': 1, 'using': 1, 'go': 1, 'revoke': 1,
-            'smallint': 1, 'indicator': 1, 'end-exec': 1, 'disconnect': 1,
-            'zone': 1, 'with': 1, 'character': 1, 'assertion': 1, 'to': 1,
-            'add': 1, 'current_user': 1, 'usage': 1, 'input': 1, 'local': 1,
-            'alter': 1, 'match': 1, 'collate': 1, 'real': 1, 'then': 1,
-            'rollback': 1, 'get': 1, 'read': 1, 'timestamp': 1,
-            'session_user': 1, 'not': 1, 'integer': 1, 'bit': 1, 'unique': 1,
-            'day': 1, 'minute': 1, 'desc': 1, 'insert': 1, 'execute': 1,
-            'like': 1, 'ilike': 2, 'level': 1, 'decimal': 1, 'drop': 1,
-            'continue': 1, 'isolation': 1, 'found': 1, 'where': 1,
-            'constraints': 1, 'domain': 1, 'right': 1, 'national': 1, 'some': 1,
-            'module': 1, 'transaction': 1, 'relative': 1, 'second': 1,
-            'connect': 1, 'escape': 1, 'close': 1, 'system_user': 1, 'for': 1,
-            'deferred': 1, 'section': 1, 'cast': 1, 'current': 1, 'sqlstate': 1,
-            'allocate': 1, 'intersect': 1, 'deallocate': 1, 'numeric': 1,
-            'public': 1, 'preserve': 1, 'full': 1, 'goto': 1, 'initially': 1,
-            'asc': 1, 'no': 1, 'key': 1, 'output': 1, 'collation': 1, 'group': 1,
-            'by': 1, 'union': 1, 'session': 1, 'both': 1, 'last': 1,
-            'language': 1, 'constraint': 1, 'column': 1, 'of': 1, 'space': 1,
-            'foreign': 1, 'deferrable': 1, 'prior': 1, 'connection': 1,
-            'unknown': 1, 'action': 1, 'commit': 1, 'view': 1, 'or': 1,
-            'first': 1, 'into': 1, 'float': 1, 'year': 1, 'primary': 1,
-            'cascaded': 1, 'except': 1, 'restrict': 1, 'set': 1, 'references': 1,
-            'names': 1, 'table': 1, 'outer': 1, 'open': 1, 'select': 1,
-            'size': 1, 'are': 1, 'rows': 1, 'from': 1, 'prepare': 1,
-            'distinct': 1, 'leading': 1, 'create': 1, 'only': 1, 'next': 1,
-            'inner': 1, 'authorization': 1, 'schema': 1, 'corresponding': 1,
-            'option': 1, 'declare': 1, 'precision': 1, 'immediate': 1, 'else': 1,
-            'timezone_minute': 1, 'external': 1, 'varying': 1, 'translation': 1,
-            'true': 1, 'case': 1, 'exception': 1, 'join': 1, 'hour': 1,
-            'default': 1, 'double': 1, 'scroll': 1, 'value': 1, 'cursor': 1,
-            'descriptor': 1, 'values': 1, 'dec': 1, 'fetch': 1, 'procedure': 1,
-            'delete': 1, 'and': 1, 'false': 1, 'int': 1, 'is': 1, 'describe': 1,
-            'char': 1, 'as': 1, 'at': 1, 'in': 1, 'varchar': 1, 'null': 1,
-            'trailing': 1, 'any': 1, 'absolute': 1, 'current_time': 1, 'end': 1,
-            'grant': 1, 'privileges': 1, 'when': 1, 'cross': 1, 'check': 1,
-            'write': 1, 'current_date': 1, 'pad': 1, 'begin': 1, 'temporary': 1,
-            'exec': 1, 'time': 1, 'update': 1, 'catalog': 1, 'user': 1, 'sql': 1,
-            'date': 1, 'on': 1, 'identity': 1, 'timezone_hour': 1, 'natural': 1,
-            'whenever': 1, 'interval': 1, 'work': 1, 'order': 1, 'cascade': 1,
-            'diagnostics': 1, 'nchar': 1, 'having': 1, 'left': 1, 'call': 1,
-            'do': 1, 'handler': 1, 'load': 1, 'replace': 1, 'truncate': 1,
-            'start': 1, 'lock': 1, 'show': 1, 'pragma': 1},
-          'aggregate': {'count': 1, 'sum': 1, 'min': 1, 'max': 1, 'avg': 1}
-        },
-        contains: [
-          {
-            className: 'string',
-            begin: '\'', end: '\'',
-            contains: [hljs.BACKSLASH_ESCAPE, {begin: '\'\''}],
-            relevance: 0
-          },
-          {
-            className: 'string',
-            begin: '"', end: '"',
-            contains: [hljs.BACKSLASH_ESCAPE, {begin: '""'}],
-            relevance: 0
-          },
-          {
-            className: 'string',
-            begin: '`', end: '`',
-            contains: [hljs.BACKSLASH_ESCAPE]
-          },
-          hljs.C_NUMBER_MODE,
-          {begin: '\\n'}
-        ]
-      },
-      hljs.C_BLOCK_COMMENT_MODE,
-      {
-        className: 'comment',
-        begin: '--', end: '$'
-      }
-    ]
-  }
-};
-/*
-Language: TeX
-Author: Vladimir Moskva <vladmos@gmail.com>
-Website: http://fulc.ru/
-*/
-
-hljs.LANGUAGES.tex = function() {
-  var COMMAND1 = {
-    className: 'command',
-    begin: '\\\\[a-zA-Zа-яА-я]+[\\*]?',
-    relevance: 10
-  };
-  var COMMAND2 = {
-    className: 'command',
-    begin: '\\\\[^a-zA-Zа-яА-я0-9]',
-    relevance: 0
-  };
-  var SPECIAL = {
-    className: 'special',
-    begin: '[{}\\[\\]\\&#~]',
-    relevance: 0
-  };
-
-  return {
-    defaultMode: {
-      contains: [
-        { // parameter
-          begin: '\\\\[a-zA-Zа-яА-я]+[\\*]? *= *-?\\d*\\.?\\d+(pt|pc|mm|cm|in|dd|cc|ex|em)?',
-          returnBegin: true,
-          contains: [
-            COMMAND1, COMMAND2,
-            {
-              className: 'number',
-              begin: ' *=', end: '-?\\d*\\.?\\d+(pt|pc|mm|cm|in|dd|cc|ex|em)?',
-              excludeBegin: true
-            }
-          ],
-          relevance: 10
-        },
-        COMMAND1, COMMAND2,
-        SPECIAL,
-        {
-          className: 'formula',
-          begin: '\\$\\$', end: '\\$\\$',
-          contains: [COMMAND1, COMMAND2, SPECIAL],
-          relevance: 0
-        },
-        {
-          className: 'formula',
-          begin: '\\$', end: '\\$',
-          contains: [COMMAND1, COMMAND2, SPECIAL],
-          relevance: 0
-        },
-        {
-          className: 'comment',
-          begin: '%', end: '$',
-          relevance: 0
-        }
-      ]
-    }
-  };
-}();
-/*
-Language: Vala
-Author: Antono Vasiljev <antono.vasiljev@gmail.com>
-Description: Vala is a new programming language that aims to bring modern programming language features to GNOME developers without imposing any additional runtime requirements and without using a different ABI compared to applications and libraries written in C.
-*/
-
-hljs.LANGUAGES.vala = {
-  defaultMode: {
-    keywords: {
-      keyword: {
-        // Value types
-        'char': 1, 'uchar': 1, 'unichar': 1,
-        'int': 1, 'uint': 1, 'long': 1, 'ulong': 1,
-        'short': 1, 'ushort': 1,
-        'int8': 1, 'int16': 1, 'int32': 1, 'int64': 1,
-        'uint8': 1, 'uint16': 1, 'uint32': 1, 'uint64': 1,
-        'float': 1, 'double': 1, 'bool': 1, 'struct': 1, 'enum': 1,
-        'string': 1, 'void': 1,
-        // Reference types
-        'weak': 5, 'unowned': 5, 'owned': 5,
-        // Modifiers
-        'async': 5, 'signal': 5, 'static': 1, 'abstract': 1, 'interface': 1, 'override': 1,
-        // Control Structures
-        'while': 1, 'do': 1, 'for': 1, 'foreach': 1, 'else': 1, 'switch': 1,
-        'case': 1, 'break': 1, 'default': 1, 'return': 1, 'try': 1, 'catch': 1,
-        // Visibility
-        'public': 1, 'private': 1, 'protected': 1, 'internal': 1,
-        // Other
-        'using': 1, 'new': 1, 'this': 1, 'get': 1, 'set': 1, 'const': 1,
-        'stdout': 1, 'stdin': 1, 'stderr': 1, 'var': 1,
-        // Builtins
-        'DBus': 2, 'GLib': 2, 'CCode': 10, 'Gee': 10, 'Object': 1
-      },
-      literal: { 'false': 1, 'true': 1, 'null': 1 }
-    },
-    contains: [
-      {
-        className: 'class',
-        begin: '(class |interface |delegate |namespace )', end: '{',
-        keywords: {'class': 1, 'interface': 1},
-        contains: [
-          {
-            begin: '(implements|extends)', end: hljs.IMMEDIATE_RE,
-            keywords: {'extends': 1, 'implements': 1},
-            relevance: 1
-          },
-          {
-            className: 'title',
-            begin: hljs.UNDERSCORE_IDENT_RE, end: hljs.IMMEDIATE_RE
-          }
-        ]
-      },
-      hljs.C_LINE_COMMENT_MODE,
-      hljs.C_BLOCK_COMMENT_MODE,
-      {
-        className: 'string',
-        begin: '"""', end: '"""',
-        relevance: 5
-      },
-      hljs.APOS_STRING_MODE,
-      hljs.QUOTE_STRING_MODE,
-      hljs.C_NUMBER_MODE,
-      {
-        className: 'preprocessor',
-        begin: '^#', end: '$',
-        relevance: 2
-      },
-      {
-        className: 'constant',
-        begin: ' [A-Z_]+ ', end: hljs.IMMEDIATE_RE,
-        relevance: 0
-      }
-    ]
-  }
-};
-/*
-Language: VBScript
-Author: Nikita Ledyaev <lenikita@yandex.ru>
-Contributors: Michal Gabrukiewicz <mgabru@gmail.com>
-*/
-
-hljs.LANGUAGES.vbscript = {
-  case_insensitive: true,
-  defaultMode: {
-    keywords: {
-      'keyword': {'call' : 1,'class' : 1,'const' : 1,'dim' : 1,'do' : 1,'loop' : 1,'erase' : 1,'execute' : 1,'executeglobal' : 1,'exit' : 1,'for' : 1,'each' : 1,'next' : 1,'function' : 1,'if' : 1,'then' : 1,'else' : 1,'on' : 1, 'error' : 1,'option' : 1, 'explicit' : 1, 'new': 1, 'private' : 1,'property' : 1,'let' : 1,'get' : 1,'public' : 1,'randomize' : 1,'redim' : 1,'rem' : 1,'select' : 1,'case' : 1,'set' : 1,'stop' : 1,'sub' : 1,'while' : 1,'wend' : 1,'with' : 1, 'end' : 1, 'to' : 1, 'elseif': 1, 'is': 1, 'or': 1, 'xor': 1, 'and': 1, 'not': 1, 'class_initialize': 1, 'class_terminate': 1, 'default': 1, 'preserve': 1, 'in': 1, 'me': 1, 'byval': 1, 'byref': 1, 'step': 1, 'resume': 1, 'goto': 1},
-      'built_in': {'lcase': 1, 'month': 1, 'vartype': 1, 'instrrev': 1, 'ubound': 1, 'setlocale': 1, 'getobject': 1, 'rgb': 1, 'getref': 1, 'string': 1, 'weekdayname': 1, 'rnd': 1, 'dateadd': 1, 'monthname': 1, 'now': 1, 'day': 1, 'minute': 1, 'isarray': 1, 'cbool': 1, 'round': 1, 'formatcurrency': 1, 'conversions': 1, 'csng': 1, 'timevalue': 1, 'second': 1, 'year': 1, 'space': 1, 'abs': 1, 'clng': 1, 'timeserial': 1, 'fixs': 1, 'len': 1, 'asc': 1, 'isempty': 1, 'maths': 1, 'dateserial': 1, 'atn': 1, 'timer': 1, 'isobject': 1, 'filter': 1, 'weekday': 1, 'datevalue': 1, 'ccur': 1, 'isdate': 1, 'instr': 1, 'datediff': 1, 'formatdatetime': 1, 'replace': 1, 'isnull': 1, 'right': 1, 'sgn': 1, 'array': 1, 'snumeric': 1, 'log': 1, 'cdbl': 1, 'hex': 1, 'chr': 1, 'lbound': 1, 'msgbox': 1, 'ucase': 1, 'getlocale': 1, 'cos': 1, 'cdate': 1, 'cbyte': 1, 'rtrim': 1, 'join': 1, 'hour': 1, 'oct': 1, 'typename': 1, 'trim': 1, 'strcomp': 1, 'int': 1, 'createobject': 1, 'loadpicture': 1, 'tan': 1, 'formatnumber': 1, 'mid': 1, 'scriptenginebuildversion': 1, 'scriptengine': 1, 'split': 1, 'scriptengineminorversion': 1, 'cint': 1, 'sin': 1, 'datepart': 1, 'ltrim': 1, 'sqr': 1, 'scriptenginemajorversion': 1, 'time': 1, 'derived': 1, 'eval': 1, 'date': 1, 'formatpercent': 1, 'exp': 1, 'inputbox': 1, 'left': 1, 'ascw': 1, 'chrw': 1, 'regexp': 1, 'server': 1, 'response': 1, 'request': 1, 'cstr': 1, 'err': 1},
-      'literal': {'true': 1, 'false': 1, 'null': 1, 'nothing': 1, 'empty': 1}
-    },
-    contains: [
-      { // can't use standard QUOTE_STRING_MODE since it's compiled with its own escape and doesn't use the local one
-        className: 'string',
-        begin: '"', end: '"',
-        illegal: '\\n',
-        contains: [{begin: '""'}],
-        relevance: 0
-      },
-      {
-        className: 'comment',
-        begin: '\'', end: '$'
-      },
-      hljs.C_NUMBER_MODE
-    ]
-  }
-};
 /*
 Language: VHDL
 Description: VHDL is a hardware description language used in electronic design automation to describe digital and mixed-signal systems.

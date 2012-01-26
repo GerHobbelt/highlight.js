@@ -7,6 +7,7 @@ Ivan Sagalaev <maniac@softwaremaniacs.org>
 
 Contributors:
 
+- Greg Allen <@jgaui>
 - Peter Leonov <gojpeg@gmail.com>
 - Victor Karamzin <Victor.Karamzin@enterra-inc.com>
 - Vsevolod Solovyov <vsevolod.solovyov@gmail.com>
