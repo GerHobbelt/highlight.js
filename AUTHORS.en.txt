@@ -46,3 +46,5 @@ Contributors:
 - Stephan Kountso <steplg@gmail.com>
 - pumbur <pumbur@pumbur.net>
 - John Crepezzi <john.crepezzi@gmail.com>
+- Andrey Vlasovskikh <andrey.vlasovskikh@gmail.com>
+- Alexander Myadzel <myadzel@gmail.com>
