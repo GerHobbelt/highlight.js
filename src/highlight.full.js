@@ -784,7 +784,13 @@ hljs.LANGUAGES.xml = function(){
         },
         {
           className: 'tag',
-          begin: '<style', end: '>',
+          /*
+          The lookahead pattern (?=...) ensures that 'begin' only matches
+          '<style' as a single word, followed by a whitespace or an
+          ending braket. The '$' is needed for the lexem to be recognized
+          by hljs.subMode() that tests lexems outside the stream.
+          */
+          begin: '<style(?=\\s|>|$)', end: '>',
           keywords: {'title': {'style': 1}},
           contains: [TAG_INTERNALS],
           starts: {
@@ -795,7 +801,8 @@ hljs.LANGUAGES.xml = function(){
         },
         {
           className: 'tag',
-          begin: '<script', end: '>',
+          // See the comment in the <style tag about the lookahead pattern
+          begin: '<script(?=\\s|>|$)', end: '>',
           keywords: {'title': {'script': 1}},
           contains: [TAG_INTERNALS],
           starts: {
@@ -1776,6 +1783,88 @@ hljs.LANGUAGES.go = function(){
 }();
 
 /*
+Language: ActionScript
+Author: Alexander Myadzel <myadzel@gmail.com>
+*/
+
+hljs.LANGUAGES.actionscript = function() {
+  var IDENT_RE = '[a-zA-Z_$][a-zA-Z0-9_$]*';
+  var IDENT_FUNC_RETURN_TYPE_RE = '([*]|[a-zA-Z_$][a-zA-Z0-9_$]*)';
+
+  var AS3_REST_ARG_MODE = {
+    className: 'rest_arg',
+    begin: '[.]{3}', end: IDENT_RE,
+    relevance: 10
+  };
+  var TITLE_MODE = {className: 'title', begin: IDENT_RE};
+
+  return {
+    defaultMode: {
+      keywords: {
+        'keyword': {'as': 1, 'break': 1, 'case': 1, 'catch': 1, 'class': 1, 'const': 1, 'continue': 1, 'default': 1, 'delete': 1, 'do': 1, 'dynamic': 5, 'each': 1, 'else': 1, 'extends': 1, 'final': 1, 'finally': 1, 'for': 1, 'function': 1, 'get': 1, 'if': 1, 'implements': 1, 'import': 1, 'in': 1, 'include': 1, 'instanceof': 1, 'interface': 1, 'internal': 1, 'is': 1, 'namespace': 1, 'native': 1, 'native': 1, 'new': 1, 'override': 1, 'package': 1, 'private': 1, 'protected': 1, 'public': 1, 'return': 1, 'set': 1,  'static': 1, 'super': 5, 'switch': 1, 'this': 1, 'throw': 1, 'try': 1, 'typeof': 1, 'use': 1, 'var': 1, 'void': 1, 'while': 1, 'with': 1},
+        'literal': {'true': 1, 'false': 1, 'null': 1, 'undefined': 1},
+        'reserved': {'abstract': 0, 'boolean': 0, 'byte': 0, 'cast': 0, 'char': 0, 'debugger': 0, 'double': 0, 'enum': 0, 'export': 0, 'float': 0, 'goto': 0, 'intrinsic': 0, 'long': 0, 'prototype': 0, 'short': 0, 'synchronized': 0, 'throws': 0, 'to': 0, 'transient': 0, 'type': 0, 'virtual': 0, 'volatile': 0}
+      },
+      contains: [
+        hljs.APOS_STRING_MODE,
+        hljs.QUOTE_STRING_MODE,
+        hljs.C_LINE_COMMENT_MODE,
+        hljs.C_BLOCK_COMMENT_MODE,
+        hljs.C_NUMBER_MODE,
+        {
+          className: 'package',
+          begin: 'package ?', end: '{',
+          keywords: {'package': 1},
+          contains: [TITLE_MODE]
+        },
+        {
+          className: 'class',
+          begin: '(class|interface) ', end: '{',
+          keywords: {'class': 1, 'interface': 1},
+          contains: [
+            {
+              begin: '(implements|extends)',
+              keywords: {'extends': 1, 'implements': 1},
+              relevance: 5
+            },
+            TITLE_MODE
+          ]
+        },
+        {
+          className: 'preprocessor',
+          begin: '(import|include)\\b', end: ';',
+          keywords: {'import': 1, 'include': 1}
+        },
+        {
+          className: 'function',
+          begin: 'function ', end: '[{;]',
+          keywords: {'function': 1},
+          contains: [
+            TITLE_MODE,
+            {
+              className: 'params',
+              begin: '\\(', end: '\\)',
+              contains: [
+                hljs.APOS_STRING_MODE,
+                hljs.QUOTE_STRING_MODE,
+                hljs.C_LINE_COMMENT_MODE,
+                hljs.C_BLOCK_COMMENT_MODE,
+                AS3_REST_ARG_MODE
+              ]
+            },
+            {
+              className: 'type',
+              begin: ':',
+              end: IDENT_FUNC_RETURN_TYPE_RE,
+              relevance: 10
+            }
+          ]
+        }
+      ]
+    }
+  }
+}();
+/*
 Language: Lisp
 Description: Generic lisp syntax
 Author: Vasily Polovnyov <vast@whiteants.net>
@@ -2142,6 +2231,86 @@ hljs.LANGUAGES.erlang_repl = {
     ]
   }
 };
+/*
+Language: Rust
+Author: Andrey Vlasovskikh <andrey.vlasovskikh@gmail.com>
+*/
+
+hljs.LANGUAGES.rust = function() {
+  var TITLE = {
+    className: 'title',
+    begin: hljs.UNDERSCORE_IDENT_RE
+  };
+  var QUOTE_STRING = {
+    className: 'string',
+    begin: '"', end: '"',
+    contains: [hljs.BACKSLASH_ESCAPE],
+    relevance: 0
+  };
+  var NUMBER = {
+    className: 'number',
+    begin: '\\b(0[xb][A-Za-z0-9_]+|[0-9_]+(\\.[0-9_]+)?([uif](8|16|32|64)?)?)',
+    relevance: 0
+  };
+  var KEYWORDS = {
+    'alt': 1, 'any': 1, 'as': 1, 'assert': 1,
+    'be': 1, 'bind': 1, 'block': 1, 'bool': 1, 'break': 1,
+    'char': 1, 'check': 1, 'claim': 1, 'const': 1, 'cont': 1,
+    'dir': 1, 'do': 1,
+    'else': 1, 'enum': 1, 'export': 1,
+    'f32': 1, 'f64': 1, 'fail': 1, 'false': 1, 'float': 1, 'fn': 10, 'for': 1,
+    'i16': 1, 'i32': 1, 'i64': 1, 'i8': 1, 'if': 1, 'iface': 10, 'impl': 10, 'import': 1, 'in': 1, 'int': 1,
+    'let': 1, 'log': 1,
+    'mod': 1, 'mutable': 1,
+    'native': 1, 'note': 1,
+    'of': 1,
+    'prove': 1, 'pure': 10,
+    'resource': 1, 'ret': 1,
+    'self': 1, 'str': 1, 'syntax': 1,
+    'true': 1, 'type': 1,
+    'u16': 1, 'u32': 1, 'u64': 1, 'u8': 1, 'uint': 1, 'unchecked': 1, 'unsafe': 1, 'use': 1,
+    'vec': 1,
+    'while': 1
+  };
+  return {
+    defaultMode: {
+      keywords: KEYWORDS,
+      illegal: '</',
+      contains: [
+        hljs.C_LINE_COMMENT_MODE,
+        hljs.C_BLOCK_COMMENT_MODE,
+        QUOTE_STRING,
+        hljs.APOS_STRING_MODE,
+        NUMBER,
+        {
+          className: 'function',
+          begin: 'fn', end: '(\\(|<)',
+          keywords: {'fn': 1},
+          contains: [TITLE]
+        },
+        {
+          className: 'preprocessor',
+          begin: '#\\[', end: '\\]'
+        },
+        {
+          begin: 'type', end: '(=|<)',
+          keywords: {'type': 1},
+          contains: [TITLE]
+        },
+        {
+          begin: 'iface', end: '({|<)',
+          keywords: {'iface': 1},
+          contains: [TITLE]
+        },
+        {
+          begin: 'enum', end: '({|<)',
+          keywords: {'enum': 1},
+          contains: [TITLE]
+        }
+      ]
+    }
+  };
+}();
 /*
 Language: Lua
 Author: Andrew Fedorov <dmmdrs@mail.ru>
