@@ -26,9 +26,9 @@ hljs.LANGUAGES.avrasm =
           'r0': 1, 'r1': 1, 'r2': 1, 'r3': 1, 'r4': 1, 'r5': 1, 'r6': 1, 'r7': 1, 'r8': 1, 'r9': 1, 'r10': 1, 'r11': 1, 'r12': 1,
           'r13': 1, 'r14': 1, 'r15': 1, 'r16': 1, 'r17': 1, 'r18': 1, 'r19': 1,  'r20': 1, 'r21': 1, 'r22': 1, 'r23': 1, 'r24': 1,
           'r25': 1, 'r26': 1, 'r27': 1, 'r28': 1, 'r29': 1, 'r30': 1, 'r31': 1,
-          'x': 1 /* R27:R26 */, 'xh': 1 /* R27 */, 'xl': 1 /* R26 */,
-          'y': 1 /* R29:R28 */, 'yh': 1 /* R29 */, 'yl': 1 /* R28 */,
-          'z': 1 /* R31:R30 */, 'zh': 1 /* R31 */, 'zl': 1 /* R30 */,
+          'x': 0 /* R27:R26 */, 'xh': 1 /* R27 */, 'xl': 1 /* R26 */,
+          'y': 0 /* R29:R28 */, 'yh': 1 /* R29 */, 'yl': 1 /* R28 */,
+          'z': 0 /* R31:R30 */, 'zh': 1 /* R31 */, 'zl': 1 /* R30 */,
           /* IO Registers (ATMega128) */
           'ucsr1c': 1, 'udr1': 1, 'ucsr1a': 1, 'ucsr1b': 1, 'ubrr1l': 1, 'ubrr1h': 1, 'ucsr0c': 1, 'ubrr0h': 1, 'tccr3c': 1,
           'tccr3a': 1, 'tccr3b': 1, 'tcnt3h': 1, 'tcnt3l': 1, 'ocr3ah': 1, 'ocr3al': 1, 'ocr3bh': 1, 'ocr3bl': 1, 'ocr3ch': 1,
@@ -47,12 +47,12 @@ hljs.LANGUAGES.avrasm =
     contains: [
       hljs.C_BLOCK_COMMENT_MODE,
       {className: 'comment', begin: ';',  end: '$'},
-      hljs.C_NUMBER_MODE,
-      /*{  // Hex: 0x00, $00;  Oct: 0o00;  Bin: 0b00000000;  Dec: 0
-        // пока что-то не получается :(, буду использовать сишную моду.
+      hljs.C_NUMBER_MODE, // 0x..., decimal, float
+      hljs.BINARY_NUMBER_MODE, // 0b...
+      {
         className: 'number',
-        begin: '((0[xX]|\$)[A-Fa-f0-9]+|0[oO][0-7]+|0[bB][0-1]+|\\d+)'
-      }*/
+        begin: '\\b(\\$[a-zA-Z0-9]+|0o[0-7]+)' // $..., 0o...
+      },
       hljs.QUOTE_STRING_MODE,
       {
         className: 'string',

@@ -20,6 +20,7 @@ REPLACES = {
     'modes': 'm',
     'className': 'cN',
     'begin': 'b',
+    'beginWithKeyword': 'bWK',
     'end': 'e',
     'endsWithParent': 'eW',
     'illegal': 'i',
@@ -33,7 +34,9 @@ REPLACES = {
     'UNDERSCORE_IDENT_RE': 'UIR',
     'NUMBER_RE': 'NR',
     'C_NUMBER_RE': 'CNR',
+    'BINARY_NUMBER_RE': 'BNR',
     'RE_STARTERS_RE': 'RSR',
+    'EOF_RE': 'ER',
     'APOS_STRING_MODE': 'ASM',
     'QUOTE_STRING_MODE': 'QSM',
     'BACKSLASH_ESCAPE': 'BE',
@@ -41,6 +44,7 @@ REPLACES = {
     'C_BLOCK_COMMENT_MODE': 'CBLCLM',
     'HASH_COMMENT_MODE': 'HCM',
     'C_NUMBER_MODE': 'CNM',
+    'BINARY_NUMBER_MODE': 'BNM',
     'NUMBER_MODE': 'NM',
 }
 
@@ -49,17 +53,15 @@ LIBRARY_REPLACES = {
     'endRe': 'eR',
     'illegalRe': 'iR',
     'lexemsRe': 'lR',
-    'sub_modes': 'sm',
     'terminators': 't',
-    'keywordGroups': 'kG',
 }
 
 CATEGORIES = {
-    'common': ['bash', 'java', 'ini', 'sql', 'diff', 'php', 'cs', 'cpp', 'ruby', 'python', 'css', 'perl', 'xml', 'javascript'],
+    'common': ['bash', 'java', 'ini', 'sql', 'diff', 'php', 'cs', 'cpp', 'ruby', 'python', 'css', 'perl', 'xml', 'javascript', 'http'],
 }
 
 def compress_content(tools_path, content):
-    cmd = 'java -jar %s --type js' % os.path.join(tools_path, 'yuicompressor.jar')
+    args = ['java', '-jar', os.path.join(tools_path, 'yuicompressor.jar'), '--type', 'js']
 
     def replace(content, s, r):
         return re.sub(r'(?<=[^\w"\'|])%s(?=[^\w"\'|])' % s, r, content)
@@ -70,7 +72,7 @@ def compress_content(tools_path, content):
         content = re.sub(r'(block|parentNode)\.cN', r'\1.className', content)
         for s, r in LIBRARY_REPLACES.items():
             content = replace(content, s, r)
-    p = subprocess.Popen(cmd, shell=True, stdin=subprocess.PIPE, stdout=subprocess.PIPE)
+    p = subprocess.Popen(args, stdin=subprocess.PIPE, stdout=subprocess.PIPE)
     p.stdin.write(content)
     p.stdin.close()
     content = p.stdout.read()

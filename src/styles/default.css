@@ -108,7 +108,8 @@ pre .bash .variable,
 pre .apache .tag,
 pre .go .typename,
 pre .tex .command,
-pre .markdown .strong {
+pre .markdown .strong,
+pre .header {
   font-weight: bold;
 }
 
@@ -120,6 +121,7 @@ pre .nginx .built_in {
   font-weight: normal;
 }
 
+pre .coffeescript .javascript,
 pre .xml .css,
 pre .xml .javascript,
 pre .xml .vbscript,

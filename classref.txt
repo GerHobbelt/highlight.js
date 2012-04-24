@@ -150,7 +150,7 @@ Django ("django"):
   filter           filter from "|" till the next filter or the end of tag
   argument         filter argument
 
-Javascript ("javascript"):
+JavaScript ("javascript"):
 
   keyword          keyword
   comment          comment
@@ -160,7 +160,36 @@ Javascript ("javascript"):
   regexp           regular expression
   function         header of a function
   title            name of a function inside a header
-  params           everything inside parentheses in a function's header
+  params           parentheses and everything inside them in a function's header
+
+CoffeeScript ("coffeescript"):
+
+  keyword          keyword
+  comment          comment
+  number           number
+  literal          special literal: "true", "false" and "null"
+  string           string
+  regexp           regular expression
+  function         header of a function
+  title            name of a function variable inside a header
+  params           parentheses and everything inside them in a function's header
+
+ActionScript ("actionscript"):
+
+  comment          comment
+  string           string
+  number           number
+  keyword          keywords
+  literal          literal
+  reserved         reserved keyword
+  title            name of declaration (package, class or function)
+  preprocessor     preprocessor directive (import, include)
+  type             type of returned value (for functions)
+  package          package (named or not)
+  class            class/interface
+  function         function
+  param            params of function
+  rest_arg         rest argument of function
 
 VBScript ("vbscript"):
 
@@ -169,6 +198,12 @@ VBScript ("vbscript"):
   string           string
   comment          comment
   built_in         built-in function
+
+HTTP ("http"):
+
+  title            first line of a request or a response
+  header           header
+  value            value
 
 Lua ("lua"):
 
@@ -242,6 +277,15 @@ C# ("cs"):
   string           string
   comment          commment
   xmlDocTag        xmldoc tag ("///", "<!--", "-->", "<..>")
+
+D language ("d"):
+
+  comment          comment
+  string           string constant
+  number           number
+  keyword          language keywords (including @attributes)
+  constant         true false null
+  built_in         built-in plain types (int, string etc.)
 
 RenderMan RSL ("rsl"):
 
@@ -456,20 +500,22 @@ Rust ("rust"):
   keyword          keyword
   title            name of declaration
   preprocessor     preprocessor directive
-  
-ActionScript ("actionscript"):
+
+Matlab ("matlab"):
 
   comment          comment
   string           string
   number           number
-  keyword          keywords
-  literal          literal
-  reserved         reserved keyword
-  title            name of declaration (package, class or function)
-  preprocessor     preprocessor directive (import, include)
-  type             type of returned value (for functions)
-  package          package (named or not)
-  class            class/interface
+  keyword          keyword
+  title            function name
   function         function
   param            params of function
-  rest_arg         rest argument of function
+
+R ("r"):
+
+  comment          comment
+  string           string constant
+  number           number
+  keyword          language keywords (function, if) plus "structural"
+                   functions (attach, require, setClass)
+  literal          special literal: TRUE, FALSE, NULL, NA, etc.

@@ -12,7 +12,7 @@ hljs.LANGUAGES.markdown = {
       // highlight headers
       {
         className: 'header',
-        begin: '^\#{1,3}', end: '$'
+        begin: '^#{1,3}', end: '$'
       },
       {
         className: 'header',
@@ -21,12 +21,13 @@ hljs.LANGUAGES.markdown = {
       // inline html
       {
         begin: '<', end: '>',
-        subLanguage: 'xml'
+        subLanguage: 'xml',
+        relevance: 0
       },
       // lists (indicators only)
       {
         className: 'bullet',
-        begin: '^([*+-]|(\\d+\.))\\s+'
+        begin: '^([*+-]|(\\d+\\.))\\s+'
       },
       // strong segments
       {
@@ -36,7 +37,12 @@ hljs.LANGUAGES.markdown = {
       // emphasis segments
       {
         className: 'emphasis',
-        begin: '[*_].+?[*_]'
+        begin: '\\*.+?\\*'
+      },
+      {
+        className: 'emphasis',
+        begin: '_.+?_',
+        relevance: 0
       },
       // blockquotes
       {

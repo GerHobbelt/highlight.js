@@ -93,8 +93,8 @@ pre .winutils,
 pre .bash .variable,
 pre .apache .tag,
 pre .xml .tag,
-pre .xml .title,
-pre .tex .command {
+pre .tex .command,
+pre .header {
   font-weight: bold;
   color: navy;
 }
@@ -103,6 +103,7 @@ pre .nginx .built_in {
   font-weight: normal;
 }
 
+pre .coffeescript .javascript,
 pre .xml .css,
 pre .xml .javascript,
 pre .xml .vbscript,
