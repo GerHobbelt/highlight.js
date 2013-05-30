@@ -413,6 +413,14 @@ function() {
     }
 
     var language = languages[language_name];
+    // when the specified language is not supported by us, simple return the HTML-escaped input:
+    if (!language) {
+      return {
+        relevance: 0,
+        keyword_count: 0,
+        value: escape(value)
+      };
+    }
     var modes = [language.defaultMode];
     var relevance = 0;
     var keyword_count = 0;
