@@ -82,21 +82,20 @@ function(hljs) {
   };
 
   return {
-    defaultMode: {
-      contains: [
-        hljs.HASH_COMMENT_MODE,
-        {
-          begin: hljs.UNDERSCORE_IDENT_RE + '\\s', end: ';|{', returnBegin: true,
-          contains: [
-            {
-              className: 'title',
-              begin: hljs.UNDERSCORE_IDENT_RE,
-              starts: DEFAULT
-            }
-          ]
-        }
-      ],
-      illegal: '[^\\s\\}]'
-    }
+    contains: [
+      hljs.HASH_COMMENT_MODE,
+      {
+        begin: hljs.UNDERSCORE_IDENT_RE + '\\s', end: ';|{', returnBegin: true,
+        contains: [
+          {
+            className: 'title',
+            begin: hljs.UNDERSCORE_IDENT_RE,
+            starts: DEFAULT
+          }
+        ],
+        relevance: 0
+      }
+    ],
+    illegal: '[^\\s\\}]'
   };
 }
