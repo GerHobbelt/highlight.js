@@ -1,2 +1,5 @@
 .DS_Store
 build
+*.bak
+*~
+npm-debug.log
