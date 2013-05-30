@@ -42,7 +42,7 @@ installable from NPM:
 
 Alternatively, you can build it from the source with only languages you need:
 
-    python tools/build.py -tnode lang1 lang2 ..
+    python3 tools/build.py -tnode lang1 lang2 ..
 
 Using the library:
 
@@ -55,6 +55,31 @@ hljs.highlight(lang, code).value;
 // Automatic language detection
 hljs.highlightAuto(code).value;
 ```
+
+
+## AMD
+
+Highlight.js can be used with an AMD loader.  You will need to build it from
+source in order to do so:
+
+```bash
+$ python3 tools/build.py -tamd lang1 lang2 ..
+```
+
+Which will generate a `build/highlight.pack.js` which will load as an AMD
+module with support for the built languages and can be used like so:
+
+```javascript
+require(["highlight.js/build/highlight.pack"], function(hljs){
+
+  // If you know the language
+  hljs.highlight(lang, code).value;
+
+  // Automatic language detection
+  hljs.highlightAuto(code).value;
+});
+```
+
 
 ## Tab replacement
 
@@ -135,7 +160,7 @@ on a site.
 
 ## Meta
 
-- Version: 7.0
+- Version: 7.3
 - URL:     http://softwaremaniacs.org/soft/highlight/en/
 - Author:  Ivan Sagalaev (<maniac@softwaremaniacs.org>)
 

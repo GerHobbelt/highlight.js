@@ -62,3 +62,24 @@ Contributors:
 - Marc Fornos <marc.fornos@gmail.com>
 - Yoshihide Jimbo <yjimbo@gmail.com>
 - Casey Duncan <casey.duncan@gmail.com>
+- Eugene Nizhibitsky <nizhibitsky@gmail.com>
+- Alberto Gimeno <gimenete@gmail.com>
+- Kirk Kimmel <kimmel.k.programmer@gmail.com>
+- Nathan Grigg <nathan@nathanamy.org>
+- Dr. Drang <drdrang@gmail.com>
+- Robin Ward <robin.ward@gmail.com>
+- Dmitry Medvinsky <me@dmedvinsky.name>
+- Jason Jacobson <jason.a.jacobson@gmail.com>
+- Jonas Follesø <jonas@follesoe.no>
+- Dan Allen <dan.j.allen@gmail.com>
+- noformnocontent <i@noformnocontent.com>
+- Damien White <damien.white@visoftinc.com>
+- Alexander Marenin <great_muchacho@mail.ru>
+- Cédric Néhémie <cedric.nehemie@gmail.com>
+- Simon Madine <simon@angryrobotzombie.com>
+- Benjamin Pannell <contact@sierrasoftworks.com>
+- Eric Knibbe <eric@lassosoft.com>
+- Poren Chiang <ren.chiang@gmail.com>
+- Kelley van Evert <kelleyvanevert@gmail.com>
+- Kurt Emch <kurt@kurtemch.com>
+- Jan T. Sott <jan.sott@gmail.com>

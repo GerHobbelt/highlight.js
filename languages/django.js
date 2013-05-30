@@ -9,7 +9,7 @@ function(hljs) {
 
   function allowsDjangoSyntax(mode, parent) {
     return (
-      parent == undefined || // defaultMode
+      parent == undefined || // default mode
       (!mode.className && parent.className == 'tag') || // tag_internal
       mode.className == 'value' // value
     );
@@ -37,7 +37,7 @@ function(hljs) {
 
   var FILTER = {
     className: 'filter',
-    begin: '\\|[A-Za-z]+\\:?', excludeEnd: true,
+    begin: '\\|[A-Za-z]+\\:?',
     keywords:
       'truncatewords removetags linebreaksbr yesno get_digit timesince random striptags ' +
       'filesizeformat escape linebreaks length_is ljust rjust cut urlize fix_ampersands ' +
@@ -72,7 +72,8 @@ function(hljs) {
         'endwith static trans blocktrans endblocktrans get_static_prefix get_media_prefix ' +
         'plural get_current_language language get_available_languages ' +
         'get_current_language_bidi get_language_info get_language_info_list localize ' +
-        'endlocalize localtime endlocaltime timezone endtimezone get_current_timezone',
+        'endlocalize localtime endlocaltime timezone endtimezone get_current_timezone ' +
+        'verbatim',
       contains: [FILTER]
     },
     {
@@ -82,9 +83,7 @@ function(hljs) {
     }
   ];
 
-  return {
-    case_insensitive: true,
-    defaultMode: copy(hljs.LANGUAGES.xml.defaultMode)
-  };
-
+  var result = copy(hljs.LANGUAGES.xml);
+  result.case_insensitive = true;
+  return result;
 }

@@ -150,7 +150,12 @@ function(hljs) {
     {
       className: 'symbol',
       begin: ':',
-      contains: STRINGS.concat([{begin: RUBY_IDENT_RE}]),
+      contains: STRINGS.concat([{begin: RUBY_METHOD_RE}]),
+      relevance: 0
+    },
+    {
+      className: 'symbol',
+      begin: RUBY_IDENT_RE + ':',
       relevance: 0
     },
     {
@@ -173,7 +178,7 @@ function(hljs) {
           className: 'regexp',
           begin: '/', end: '/[a-z]*',
           illegal: '\\n',
-          contains: [hljs.BACKSLASH_ESCAPE]
+          contains: [hljs.BACKSLASH_ESCAPE, SUBST]
         }
       ]),
       relevance: 0
@@ -183,10 +188,8 @@ function(hljs) {
   FUNCTION.contains[1].contains = RUBY_DEFAULT_CONTAINS;
 
   return {
-    defaultMode: {
-      lexems: RUBY_IDENT_RE,
-      keywords: RUBY_KEYWORDS,
-      contains: RUBY_DEFAULT_CONTAINS
-    }
+    lexems: RUBY_IDENT_RE,
+    keywords: RUBY_KEYWORDS,
+    contains: RUBY_DEFAULT_CONTAINS
   };
 }

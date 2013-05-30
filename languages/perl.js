@@ -22,7 +22,7 @@ function(hljs) {
     'chroot sysread setpwent no crypt getc chown sqrt write setnetent setpriority foreach ' +
     'tie sin msgget map stat getlogin unless elsif truncate exec keys glob tied closedir' +
     'ioctl socket readlink eval xor readline binmode setservent eof ord bind alarm pipe ' +
-    'atan2 getgrent exp time push setgrent gt lt or ne m|0';
+    'atan2 getgrent exp time push setgrent gt lt or ne m|0 break given say state when';
   var SUBST = {
     className: 'subst',
     begin: '[$@]\\{', end: '\\}',
@@ -163,9 +163,7 @@ function(hljs) {
   METHOD.contains[1].contains = PERL_DEFAULT_CONTAINS;
 
   return {
-    defaultMode: {
-      keywords: PERL_KEYWORDS,
-      contains: PERL_DEFAULT_CONTAINS
-    }
+    keywords: PERL_KEYWORDS,
+    contains: PERL_DEFAULT_CONTAINS
   };
 }

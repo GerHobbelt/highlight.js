@@ -6,15 +6,13 @@ pre-packed modules.
 
 import os
 import shutil
-import sys
 import re
-import optparse
+import argparse
 import subprocess
 import json
 from functools import partial
 
 REPLACES = {
-    'defaultMode': 'dM',
     'case_insensitive': 'cI',
     'lexems': 'l',
     'contains': 'c',
@@ -53,6 +51,7 @@ REPLACES = {
     'illegalRe': 'iR',
     'lexemsRe': 'lR',
     'terminators': 't',
+    'terminator_end': 'tE',
 }
 
 CATEGORIES = {
@@ -65,7 +64,7 @@ def lang_name(filename):
 def mapnonstrings(source, func):
     result = []
     pos = 0
-    quotes = re.compile('[\'"]')
+    quotes = re.compile('[\'"/]')
     while pos < len(source):
         match = quotes.search(source, pos)
         end = match.start() if match else len(source)
@@ -95,18 +94,19 @@ def compress_content(tools_path, content, filetype='js'):
 
     args = ['java', '-jar', os.path.join(tools_path, 'yuicompressor.jar'), '--type', filetype]
     p = subprocess.Popen(args, stdin=subprocess.PIPE, stdout=subprocess.PIPE)
-    p.stdin.write(content)
+    p.stdin.write(content.encode('utf-8'))
     p.stdin.close()
-    content = p.stdout.read()
+    content = p.stdout.read().decode('utf-8')
     p.stdout.close()
 
     return content
 
-def parse_header(content):
+def parse_header(filename):
     '''
     Parses possible language description header from a file. If a header is found returns it
     as dict, otherwise returns None.
     '''
+    content = open(filename, encoding='utf-8').read(1024)
     match = re.search(r'^\s*/\*(.*?)\*/', content, re.S)
     if not match:
         return
@@ -119,19 +119,16 @@ def language_filenames(src_path, languages):
     Resolves dependencies and returns the list of actual language filenames
     '''
     lang_path = os.path.join(src_path, 'languages')
-    filenames = os.listdir(lang_path)
-    infos = [
-        (parse_header(open(os.path.join(lang_path, f)).read(1024)), f)
-        for f in filenames
-    ]
-    infos = [(i, f) for i, f in infos if i]
+    filenames = [os.path.join(lang_path, f) for f in os.listdir(lang_path) if f.endswith('.js')]
+    headers = [parse_header(f) for f in filenames]
+    infos = [(h, f) for h, f in zip(headers, filenames) if h]
 
     # Filtering infos based on list of languages and categories
     if languages:
-        categories = set(l for l in languages if l.startswith(':'))
+        categories = {l for l in languages if l.startswith(':')}
         languages = set(languages) - categories
-        categories = set(c.strip(':') for c in categories)
-        cat_languages = set(l for c, ls in CATEGORIES.items() if c in categories for l in ls)
+        categories = {c.strip(':') for c in categories}
+        cat_languages = {l for c, ls in CATEGORIES.items() if c in categories for l in ls}
         languages |= cat_languages
         infos = [
             (i, f) for i, f in infos
@@ -152,7 +149,7 @@ def language_filenames(src_path, languages):
     return [os.path.join(lang_path, f) for f in filenames]
 
 def strip_read(filename):
-    s = open(filename).read()
+    s = open(filename, encoding='utf-8').read()
     pattern = re.compile(r'^\s*(/\*(.*?)\*/)?\s*', re.DOTALL)
     s = pattern.sub('', s)
     return s.strip()
@@ -183,7 +180,7 @@ def glue_files(hljs_filename, language_filenames, compressed):
     '''
     if compressed:
         hljs = 'var hljs=new %s();' % strip_read(hljs_filename).rstrip(';')
-        file_func = lambda f: open(f).read()
+        file_func = lambda f: open(f, encoding='utf-8').read()
     else:
         hljs = 'var hljs = new %s();\n' % strip_read(hljs_filename)
         file_func = strip_read
@@ -192,14 +189,14 @@ def glue_files(hljs_filename, language_filenames, compressed):
 def build_browser(root, build_path, filenames, options):
     src_path = os.path.join(root, 'src')
     tools_path = os.path.join(root, 'tools')
-    print 'Building %d files:\n%s' % (len(filenames), '\n'.join(filenames))
+    print('Building %d files:\n%s' % (len(filenames), '\n'.join(filenames)))
     content = glue_files(os.path.join(src_path, 'highlight.js'), filenames, False)
-    print 'Uncompressed size:', len(content)
+    print('Uncompressed size:', len(content.encode('utf-8')))
     if options.compress:
-        print 'Compressing...'
+        print('Compressing...')
         content = compress_content(tools_path, content)
-        print 'Compressed size:', len(content)
-    open(os.path.join(build_path, 'highlight.pack.js'), 'w').write(content)
+        print('Compressed size:', len(content.encode('utf-8')))
+    open(os.path.join(build_path, 'highlight.pack.js'), 'w', encoding='utf-8').write(content)
 
 def build_amd(root, build_path, filenames, options):
     src_path = os.path.join(root, 'src')
@@ -207,99 +204,95 @@ def build_amd(root, build_path, filenames, options):
     print('Building %d files:\n%s' % (len(filenames), '\n'.join(filenames)))
     content = glue_files(os.path.join(src_path, 'highlight.js'), filenames, False)
     content = 'define(function() {\n%s\nreturn hljs;\n});' % content # AMD wrap
-    print 'Uncompressed size:', len(content)
+    print('Uncompressed size:', len(content.encode('utf-8')))
     if options.compress:
-        print 'Compressing...'
+        print('Compressing...')
         content = compress_content(tools_path, content)
-        print 'Compressed size:', len(content)
-    open(os.path.join(build_path, 'highlight.pack.js'), 'w').write(content)
+        print('Compressed size:', len(content.encode('utf-8')))
+    open(os.path.join(build_path, 'highlight.pack.js'), 'w', encoding='utf-8').write(content)
 
 def build_node(root, build_path, filenames, options):
     src_path = os.path.join(root, 'src')
-    print 'Building %d files:' % len(filenames)
+    print('Building %d files:' % len(filenames))
     for filename in filenames:
-        print filename
+        print(filename)
         content = 'module.exports = %s;' % strip_read(filename)
-        open(os.path.join(build_path, os.path.basename(filename)), 'w').write(content)
+        open(os.path.join(build_path, os.path.basename(filename)), 'w', encoding='utf-8').write(content)
     filename = os.path.join(src_path, 'highlight.js')
-    print filename
+    print(filename)
 
-    print 'Registering languages with the library...'
+    print('Registering languages with the library...')
     hljs = 'var hljs = new %s();' % strip_read(filename)
     filenames = map(os.path.basename, filenames)
     for filename in filenames:
         hljs += '\nhljs.LANGUAGES[\'%s\'] = require(\'./%s\')(hljs);' % (lang_name(filename), filename)
     hljs += '\nmodule.exports = hljs;'
-    open(os.path.join(build_path, 'highlight.js'), 'w').write(hljs)
+    open(os.path.join(build_path, 'highlight.js'), 'w', encoding='utf-8').write(hljs)
     if options.compress:
-        print 'Notice: not compressing files for "node" target.'
+        print('Notice: not compressing files for "node" target.')
 
-    print 'Adding package.json...'
-    package = json.load(open(os.path.join(src_path, 'package.json')))
-    authors = open(os.path.join(root, 'AUTHORS.en.txt'))
+    print('Adding package.json...')
+    package = json.load(open(os.path.join(src_path, 'package.json'), encoding='utf-8'))
+    authors = open(os.path.join(root, 'AUTHORS.en.txt'), encoding='utf-8')
     matches = (re.match('^- (?P<name>.*) <(?P<email>.*)>$', a) for a in authors)
     package['contributors'] = [m.groupdict() for m in matches if m]
     content = json.dumps(package, indent=2)
-    open(os.path.join(build_path, 'package.json'), 'w').write(content)
+    open(os.path.join(build_path, 'package.json'), 'w', encoding='utf-8').write(content)
 
 def build_cdn(root, build_path, filenames, options):
     src_path = os.path.join(root, 'src')
     tools_path = os.path.join(root, 'tools')
     if not options.compress:
-        print 'Notice: forcing compression for "cdn" target'
+        print('Notice: forcing compression for "cdn" target')
         options.compress = True
     build_browser(root, build_path, filenames, options)
     os.rename(os.path.join(build_path, 'highlight.pack.js'), os.path.join(build_path, 'highlight.min.js'))
-    print 'Compressing all languages...'
+    print('Compressing all languages...')
     lang_path = os.path.join(build_path, 'languages')
     os.mkdir(lang_path)
     all_filenames = language_filenames(src_path, [])
     for filename in all_filenames:
-        print filename
+        print(filename)
         content = compress_content(tools_path, open(filename).read())
         content = wrap_language(filename, content, True)
-        open(os.path.join(lang_path, '%s.min.js' % lang_name(filename)), 'w').write(content)
-    print 'Compressing styles...'
+        open(os.path.join(lang_path, '%s.min.js' % lang_name(filename)), 'w', encoding='utf-8').write(content)
+    print('Compressing styles...')
     build_style_path = os.path.join(build_path, 'styles')
     src_style_path = os.path.join(src_path, 'styles')
     os.mkdir(build_style_path)
     styles = [lang_name(f) for f in os.listdir(src_style_path) if f.endswith('.css')]
     for style in styles:
         filename = os.path.join(src_style_path, '%s.css' % style)
-        print filename
+        print(filename)
         content = compress_content(tools_path, open(filename).read(), 'css')
-        open(os.path.join(build_style_path, '%s.min.css' % style), 'w').write(content)
+        open(os.path.join(build_style_path, '%s.min.css' % style), 'w', encoding='utf-8').write(content)
 
-def build(buildfunc, root, languages, options):
+def build(buildfunc, root, args):
     build_path = os.path.join(root, 'build')
     if os.path.exists(build_path):
         shutil.rmtree(build_path)
     os.mkdir(build_path)
-    filenames = language_filenames(os.path.join(root, 'src'), languages)
-    buildfunc(root, build_path, filenames, options)
-    print 'Done.'
+    filenames = language_filenames(os.path.join(root, 'src'), args.languages)
+    buildfunc(root, build_path, filenames, args)
+    print('Done.')
 
 if __name__ == '__main__':
-    parser = optparse.OptionParser()
-    parser.add_option(
+    parser = argparse.ArgumentParser(description='Build highlight.js for various targets')
+    parser.add_argument(
+        'languages', nargs='*',
+        help = 'language (the name of a language file without the .js extension) or :category (currently the only available category is ":common")',
+    )
+    parser.add_argument(
         '-n', '--no-compress',
         dest = 'compress', action = 'store_false', default = True,
         help = 'Don\'t compress source files. Compression only works for the "browser" target.',
     )
-    parser.add_option(
-        '-t', '--target',
-        dest = 'target', default = 'browser',
-        help = 'Target format: "browser" (default), "node", "cdn", "amd"',
+    parser.add_argument(
+        '-t', '--target', dest = 'target',
+        choices = ['browser', 'node', 'cdn', 'amd'], default = 'browser',
+        help = 'Target format, default is "browser"',
     )
-    parser.set_usage('''%%prog [options] [<language>|:<category> ...]
-
-- <language> is the name of a language file without the .js extension
-- <category> is a pre-defined set of language names: %s''' % ', '.join(CATEGORIES.keys()))
-    options, args = parser.parse_args()
-    try:
-        buildfunc = locals()['build_%s' % options.target]
-    except KeyError:
-        print 'Unknown target:', options.target
-        sys.exit(1)
+    args = parser.parse_args()
+    buildfunc = locals()['build_%s' % args.target]
     root = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-    build(buildfunc, root, args, options)
+    build(buildfunc, root, args)
