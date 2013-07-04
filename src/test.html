@@ -182,6 +182,73 @@ Most snippets do not contain working code :-).
 <p id="summary">...</p>
 <table id="autotest">
   <tr>
+    <th>Scheme
+    <td class="scheme">
+<pre>
+<code class="scheme">(define (factorial n)
+  (let loop ((fact 1)
+              (n n))
+            (cond ((= n 0) fact)
+                  (else (loop (* n fact) (- n 1))))))
+</code></pre>
+
+  <tr>
+    <th>OCaml
+    <td class="ocaml">
+<pre>
+<code>type etat = Actif | Inactif | Inconnu;;
+(* type etat : un état est l'une des trois valeurs : Actif, Inactif, Inconnu *)
+ 
+let est_actif = function
+  | Actif -> true
+  | Inactif -> false;;
+
+let year_size = 365.;;
+ 
+let rec birthday_paradox prob people =
+  let prob' = (year_size -. float people) /. year_size *. prob in
+  if prob' < 0.5 then
+    Printf.printf "answer = %d\n" (people+1)
+  else
+    birthday_paradox prob' (people+1);;
+ 
+birthday_paradox 1.0 1;;
+</code></pre>
+
+  <tr>
+    <th>Yaka
+    <td class="yaka">
+<pre>
+<code>programme param
+
+  entier fonction max(entier i, entier j)
+    var booleen b, c;
+    var entier k;
+    k = i;
+    si k>j alors
+      retourne k
+    sinon
+      retourne j
+    fsi
+  ffonction
+
+  (* main *)
+  principal
+    var entier i, j, k;
+    var booleen b;
+    i = 5;
+    lire(j);
+    alaligne;
+    k = max(i,j) + 2;
+    alaligne;
+    ecrire("k = ");
+    ecrire(k);
+  fprincipal
+
+fprogramme
+</code></pre>
+
+  <tr>
     <th>Python
     <td class="python">
 <pre>
