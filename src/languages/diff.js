@@ -9,17 +9,17 @@ function(hljs) {
     contains: [
       {
         className: 'chunk',
-        begin: '^\\@\\@ +\\-\\d+,\\d+ +\\+\\d+,\\d+ +\\@\\@$',
+        begin: '^\\@\\@ +\\-\\d+,\\d+ +\\+\\d+,\\d+ +\\@\\@', end: '$',
         relevance: 10
       },
       {
         className: 'chunk',
-        begin: '^\\*\\*\\* +\\d+,\\d+ +\\*\\*\\*\\*$',
+        begin: '^\\*\\*\\* +\\d+,\\d+ +\\*\\*\\*\\*', end: '$',
         relevance: 10
       },
       {
         className: 'chunk',
-        begin: '^\\-\\-\\- +\\d+,\\d+ +\\-\\-\\-\\-$',
+        begin: '^\\-\\-\\- +\\d+,\\d+ +\\-\\-\\-\\-', end: '$',
         relevance: 10
       },
       {
