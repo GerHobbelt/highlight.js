@@ -24,7 +24,7 @@ function(hljs) {
       },
       {
         className: 'header',
-        begin: 'Index: ', end: '$'
+        begin: '^[Ii]ndex:? ', end: '$'
       },
       {
         className: 'header',
