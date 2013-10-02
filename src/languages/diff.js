@@ -36,6 +36,10 @@ function(hljs) {
       },
       {
         className: 'header',
+        begin: '^diff \\-\\-git a/', end: '$'
+      },
+      {
+        className: 'header',
         begin: '^\\*{3} ', end: '$'
       },
       {
