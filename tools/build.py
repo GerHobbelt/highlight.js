@@ -10,6 +10,7 @@ import re
 import argparse
 import subprocess
 import json
+import textwrap                 # http://stackoverflow.com/questions/2504411/proper-indentation-for-python-multiline-strings
 from functools import partial
 
 REPLACES = {
@@ -198,18 +199,43 @@ def build_browser(root, build_path, filenames, options):
         print('Compressed size:', len(content.encode('utf-8')))
     open(os.path.join(build_path, 'highlight.pack.js'), 'w', encoding='utf-8').write(content)
 
-def build_amd(root, build_path, filenames, options):
+def build_umd(root, build_path, filenames, options):
     src_path = os.path.join(root, 'src')
     tools_path = os.path.join(root, 'tools')
     print('Building %d files:\n%s' % (len(filenames), '\n'.join(filenames)))
     content = glue_files(os.path.join(src_path, 'highlight.js'), filenames, False)
-    content = 'define(function() {\n%s\nreturn hljs;\n});' % content # AMD wrap
+    tpl = textwrap.dedent("""\
+            (function (root, factory) {
+                if (typeof define === 'function' && define.amd) {
+                    // AMD. Register as an anonymous module.
+                    define("highlight", factory);
+                } else if (typeof exports === 'object') {
+                    // Node. Does not work with strict CommonJS, but
+                    // only CommonJS-like enviroments that support module.exports,
+                    // like Node.
+                    module.exports = factory();
+                } else {
+                    // Browser globals (root is window)
+                    root.hljs = factory();
+              }
+            }(this, function () {
+
+                %s
+
+                return hljs;
+            }));
+            """)
+    content = tpl % content # UMD wrap
     print('Uncompressed size:', len(content.encode('utf-8')))
     if options.compress:
         print('Compressing...')
         content = compress_content(tools_path, content)
         print('Compressed size:', len(content.encode('utf-8')))
     open(os.path.join(build_path, 'highlight.pack.js'), 'w', encoding='utf-8').write(content)
+
+# AMD is treated identical to UMD (which includes AMD)
+def build_amd(root, build_path, filenames, options):
+    build_umd(root, build_path, filenames, options)
 
 def build_node(root, build_path, filenames, options):
     src_path = os.path.join(root, 'src')
@@ -289,7 +315,7 @@ if __name__ == '__main__':
     )
     parser.add_argument(
         '-t', '--target', dest = 'target',
-        choices = ['browser', 'node', 'cdn', 'amd'], default = 'browser',
+        choices = ['browser', 'node', 'cdn', 'amd', 'umd'], default = 'browser',
         help = 'Target format, default is "browser"',
     )
     args = parser.parse_args()
