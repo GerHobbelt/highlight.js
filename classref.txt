@@ -2,6 +2,15 @@ This is a full list of available classes corresponding to languages'
 syntactic structures. The parentheses after language name contain identifiers
 used as class names in `<code>` element.
 
+Yaka ("yaka"):
+
+  keyword          keyword
+  number           number
+  string           string
+  program          class header "programme some_name"
+  function         function header "some_type FONCTION some_name(...):"
+  params           everything inside parentheses in a function's header
+
 Python ("python"):
 
   keyword          keyword
