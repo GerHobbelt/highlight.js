@@ -83,3 +83,4 @@ Contributors:
 - Kelley van Evert <kelleyvanevert@gmail.com>
 - Kurt Emch <kurt@kurtemch.com>
 - Jan T. Sott <jan.sott@gmail.com>
+- Alexander Kaupanin <kaupanin@gmail.com>
