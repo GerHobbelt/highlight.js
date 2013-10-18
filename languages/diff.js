@@ -9,22 +9,22 @@ function(hljs) {
     contains: [
       {
         className: 'chunk',
-        begin: '^\\@\\@ +\\-\\d+,\\d+ +\\+\\d+,\\d+ +\\@\\@$',
+        begin: '^\\@\\@ +\\-\\d+,\\d+ +\\+\\d+,\\d+ +\\@\\@', end: '$',
         relevance: 10
       },
       {
         className: 'chunk',
-        begin: '^\\*\\*\\* +\\d+,\\d+ +\\*\\*\\*\\*$',
+        begin: '^\\*\\*\\* +\\d+,\\d+ +\\*\\*\\*\\*', end: '$',
         relevance: 10
       },
       {
         className: 'chunk',
-        begin: '^\\-\\-\\- +\\d+,\\d+ +\\-\\-\\-\\-$',
+        begin: '^\\-\\-\\- +\\d+,\\d+ +\\-\\-\\-\\-', end: '$',
         relevance: 10
       },
       {
         className: 'header',
-        begin: 'Index: ', end: '$'
+        begin: '^[Ii]ndex:? ', end: '$'
       },
       {
         className: 'header',
@@ -33,6 +33,10 @@ function(hljs) {
       {
         className: 'header',
         begin: '^\\-\\-\\-', end: '$'
+      },
+      {
+        className: 'header',
+        begin: '^diff \\-\\-git a/', end: '$'
       },
       {
         className: 'header',
