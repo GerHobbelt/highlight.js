@@ -80,6 +80,17 @@ require(["highlight.js/build/highlight.pack"], function(hljs){
 });
 ```
 
+## Line numbers
+
+This fork has support for line numbers (based on the this idea: https://groups.google.com/forum/#!topic/highlightjs/FATSYzv7IGc).
+To enable them just pass the `lineNodes` set to `true` as a configuration option, like in the following example:
+
+```html
+<script type="text/javascript">
+  hljs.configure({ lineNodes: true });
+  hljs.initHighlightingOnLoad();
+</script>
+```
 
 ## Tab replacement
 
