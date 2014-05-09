@@ -142,12 +142,47 @@
     address {
       margin-top: 4em;
     }
+
+    /* Add this for line numbers */
+    pre {
+      counter-reset: lines;
+    }
+    pre .line {
+      counter-increment: lines;
+    }
+    pre .line::before {
+      content: counter(lines); text-align: right;
+      display: inline-block; width: 2em;
+      padding-right: 0.5em; margin-right: 0.5em;
+      color: #BBB; border-right: solid 1px;
+    }
   </style>
 
   <script src="../build/highlight.pack.js"></script>
   <script>
-  hljs.configure({ tabReplace: '    ' });
-  hljs.initHighlightingOnLoad();
+  hljs.configure({ tabReplace: '    ', lineNodes: true });
+  // hljs.initHighlightingOnLoad();
+  document.addEventListener('DOMContentLoaded', function(){
+    var $$ = function(selector) {
+      return Array.prototype.slice.call(document.querySelectorAll(selector));
+    };
+    $$('pre code').forEach(function(element) {
+      if (element.className.indexOf('no-highlight') !== -1) { return; }
+
+      var highlighted = hljs.getHighlighted(element.textContent);
+      element.innerHTML = highlighted.innerHTML;
+      element.result = highlighted.result;
+      element.second_best = highlighted.second_best;
+      highlighted.classes.forEach(function(cls) {
+        if (cls) {
+          element.classList.add(cls);
+        }
+      });
+      // hljs.highlightBlock(e)
+    });
+
+    testDetection();
+  });
   </script>
 
   <script>
@@ -216,10 +251,6 @@
   <script>
   // Test result detection © Ivan Sagalaev <maniac@softwaremaniacs.org>
   function testDetection() {
-      if (!hljs.initHighlighting.called) {
-          window.setTimeout(testDetection, 500);
-          return;
-      }
       var table = document.getElementById('autotest');
       var tds = table.getElementsByTagName('TD');
       var failed = [];
@@ -250,7 +281,6 @@
       summary.innerHTML = failed.length ? ('Failed tests: ' + failed.join(', ')) : 'All tests passed';
       summary.className = failed.length ? 'failed' : 'passed';
   }
-  testDetection();
   </script>
 
   <script>
@@ -287,6 +317,7 @@
   </script>
 <body>
 
+<h1>This fork shows how to use highlight.js with line number support enabled and makes use of getHighlighted() instead highlightBlock()</h1>
 <p>This is a demo/test page showing all languages supported by <a href="http://highlightjs.org/">highlight.js</a>.
 Most snippets do not contain working code :-).
 

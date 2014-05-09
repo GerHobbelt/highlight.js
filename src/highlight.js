@@ -542,6 +542,41 @@ function() {
     }
   }
 
+  /*
+    Instead of replacing the original text with the highlited one in the HTML
+    (like highlightBlock does) this method will return the highlited text and 
+    other stuff like the classes you should use or the language detected.
+    Especially useful in Node or when you want to get the highlight output
+    without touching the DOM.
+  */
+  function getHighlighted(text, language) {
+    var result = language ? highlight(language, text, true) : highlightAuto(text);
+
+    result.value = fixMarkup(result.value);
+
+    if (options.lineNodes) {
+      result.value = result.value.replace(/^.*?(\n|$)/gm, '<span class="line">$&</span>');
+    }
+
+    var res = {
+      innerHTML: result.value,
+      classes: ['hljs', (language || result.language || '')],
+      result: {
+        language: result.language,
+        re: result.relevance
+      }
+    };
+
+    if (result.second_best) {
+      res.second_best = {
+        language: result.second_best.language,
+        re: result.second_best.relevance
+      };
+    }
+
+    return res;
+  }
+
   var options = {
     classPrefix: 'hljs-',
     tabReplace: null,
@@ -600,6 +635,7 @@ function() {
   this.highlightAuto = highlightAuto;
   this.fixMarkup = fixMarkup;
   this.highlightBlock = highlightBlock;
+  this.getHighlighted = getHighlighted;
   this.configure = configure;
   this.initHighlighting = initHighlighting;
   this.initHighlightingOnLoad = initHighlightingOnLoad;

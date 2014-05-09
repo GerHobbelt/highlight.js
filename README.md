@@ -122,6 +122,16 @@ $(document).ready(function() {
 });
 ```
 
+## Get highlighted text
+
+In case you don't want to touch the DOM (perhaps you are using highlight.js with Node)
+there's the `getHighlighted(code, language)`.
+
+```
+// note: the language is optional
+console.log(getHighlighted(code, 'javascript'));
+```
+
 You can use `highlightBlock` to highlight blocks dynamically inserted into
 the page. Just make sure you don't do it twice for already highlighted
 blocks.
