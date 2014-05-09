@@ -125,9 +125,9 @@ $(document).ready(function() {
 ## Get highlighted text
 
 In case you don't want to touch the DOM (perhaps you are using highlight.js with Node)
-there's the `getHighlighted(code, language)`.
+you can use the `getHighlighted(code, language)` method.
 
-```
+```javascript
 // note: the language is optional
 console.log(getHighlighted(code, 'javascript'));
 ```
