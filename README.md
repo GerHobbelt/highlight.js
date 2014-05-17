@@ -129,7 +129,7 @@ you can use the `getHighlighted(code, language)` method.
 
 ```javascript
 // note: the language is optional
-console.log(getHighlighted(code, 'javascript'));
+console.log(hljs.getHighlighted(code, 'javascript'));
 ```
 
 You can use `highlightBlock` to highlight blocks dynamically inserted into
