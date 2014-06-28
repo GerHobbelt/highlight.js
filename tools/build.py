@@ -120,8 +120,8 @@ def language_filenames(src_path, languages):
     Resolves dependencies and returns the list of actual language filenames
     '''
     lang_path = os.path.join(src_path, 'languages')
-    filenames = [os.path.join(lang_path, f) for f in os.listdir(lang_path) if f.endswith('.js')]
-    headers = [parse_header(f) for f in filenames]
+    filenames = [f for f in os.listdir(lang_path) if f.endswith('.js')]
+    headers = [parse_header(os.path.join(lang_path, f)) for f in filenames]
     infos = [(h, f) for h, f in zip(headers, filenames) if h]
 
     # Filtering infos based on list of languages and categories
@@ -279,7 +279,7 @@ def build_cdn(root, build_path, filenames, options):
     all_filenames = language_filenames(src_path, [])
     for filename in all_filenames:
         print(filename)
-        content = compress_content(tools_path, open(filename).read())
+        content = compress_content(tools_path, strip_read(filename))
         content = wrap_language(filename, content, True)
         open(os.path.join(lang_path, '%s.min.js' % lang_name(filename)), 'w', encoding='utf-8').write(content)
     print('Compressing styles...')
