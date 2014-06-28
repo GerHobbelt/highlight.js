@@ -509,9 +509,7 @@ function() {
       var resultPre = document.createElement('pre');
       resultPre.innerHTML = result.value;
       var linesPre = document.createElement('pre');
-      console.log("text is ", text);
       var lines = escape(text).replace(/^/gm, '<span class="line"></span>');
-      console.log("lines is ", lines);
       linesPre.innerHTML = lines;
       result.value = mergeStreams(nodeStream(linesPre), nodeStream(resultPre), text);
     }

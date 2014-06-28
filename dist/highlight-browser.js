@@ -9,7 +9,7 @@ var hljs = new function() {
 
   function findCode(pre) {
     for (var node = pre.firstChild; node; node = node.nextSibling) {
-      if (node.nodeName === 'CODE')
+      if (node.nodeName.toUpperCase() === 'CODE')
         return node;
       if (!(node.nodeType === 3 && node.nodeValue.match(/\s+/)))
         break;
@@ -21,7 +21,7 @@ var hljs = new function() {
       if (node.nodeType === 3) {
         return ignoreNewLines ? node.nodeValue.replace(/\n/g, '') : node.nodeValue;
       }
-      if (node.nodeName === 'BR') {
+      if (node.nodeName.toUpperCase() === 'BR') {
         return '\n';
       }
       return blockText(node, ignoreNewLines);
@@ -46,7 +46,7 @@ var hljs = new function() {
       for (var child = node.firstChild; child; child = child.nextSibling) {
         if (child.nodeType === 3)
           offset += child.nodeValue.length;
-        else if (child.nodeName === 'BR')
+        else if (child.nodeName.toUpperCase() === 'BR')
           offset += 1;
         else if (child.nodeType === 1) {
           result.push({
@@ -153,6 +153,9 @@ var hljs = new function() {
         var compiled_keywords = {};
 
         function flatten(className, str) {
+          if (language.case_insensitive) {
+            str = str.toLowerCase();
+          }
           str.split(' ').forEach(function(kw) {
             var pair = kw.split('|');
             compiled_keywords[pair[0]] = [className, pair[1] ? Number(pair[1]) : 1];
@@ -160,7 +163,7 @@ var hljs = new function() {
           });
         }
 
-        mode.lexemsRe = langRe(mode.lexems || self.IDENT_RE + '(?!\\.)', true);
+        mode.lexemsRe = langRe(mode.lexems || '\\b' + self.IDENT_RE + '\\b(?!\\.)', true);
         if (typeof mode.keywords === 'string') { // string
           flatten('keyword', mode.keywords);
         } else {
@@ -227,7 +230,7 @@ var hljs = new function() {
   - value (an HTML string with highlighting markup)
 
   */
-  function highlight(language_name, value, ignore_illegals) {
+  function highlight(language_name, value, ignore_illegals, continuation) {
 
     function subMode(lexem, mode) {
       for (var i = 0; i < mode.contains.length; i++) {
@@ -283,7 +286,8 @@ var hljs = new function() {
       if (top.subLanguage && !languages[top.subLanguage]) {
         return escape(mode_buffer);
       }
-      var result = top.subLanguage ? highlight(top.subLanguage, mode_buffer) : highlightAuto(mode_buffer);
+      var continuation = top.subLanguageMode == 'continuous' ? top.top : undefined;
+      var result = top.subLanguage ? highlight(top.subLanguage, mode_buffer, true, continuation) : highlightAuto(mode_buffer);
       // Counting embedded language score towards the host language may be disabled
       // with zeroing the containing mode relevance. Usecase in point is Markdown that
       // allows XML everywhere and makes every XML snippet to have a much larger Markdown
@@ -292,6 +296,7 @@ var hljs = new function() {
         keyword_count += result.keyword_count;
         relevance += result.relevance;
       }
+      top.top = result.top;
       return '<span class="' + result.language  + '">' + result.value + '</span>';
     }
 
@@ -373,12 +378,18 @@ var hljs = new function() {
         value: escape(value)
       };
     }
+
     compileLanguage(language);
-    var top = language;
+    var top = continuation || language;
+    var result = '';
+    for(var current = top; current != language; current = current.parent) {
+      if (current.className) {
+        result = '<span class="' + current.className +'">' + result;
+      }
+    }
     var mode_buffer = '';
     var relevance = 0;
     var keyword_count = 0;
-    var result = '';
     try {
       var match, count, index = 0;
       while (true) {
@@ -390,11 +401,17 @@ var hljs = new function() {
         index = match.index + count;
       }
       processLexem(value.substr(index));
+      for(var current = top; current.parent; current = current.parent) { // close dangling modes
+        if (current.className) {
+          result += '</span>';
+        }
+      };
       return {
         relevance: relevance,
         keyword_count: keyword_count,
         value: result,
-        language: language_name
+        language: language_name,
+        top: top
       };
     } catch (e) {
       if (e.message.indexOf('Illegal') !== -1) {
@@ -479,7 +496,7 @@ var hljs = new function() {
     language = result.language;
     var original = nodeStream(block);
     if (original.length) {
-      var pre = document.createElement('pre');
+      var pre = document.createElementNS('http://www.w3.org/1999/xhtml', 'pre');
       pre.innerHTML = result.value;
       result.value = mergeStreams(original, nodeStream(pre), text);
     }
@@ -488,7 +505,11 @@ var hljs = new function() {
       resultPre.innerHTML = result.value;
       var linesPre = document.createElement('pre');
       console.log("text is ", text);
-      var lines = escape(text).replace(/^/gm, '<span class="line"></span>');
+      var lineno = 0;
+      var lines = escape(text).replace(/^/gm, function (match) {
+        ++lineno;
+        return '<span class="line" data-hljs-lineno="' + lineno + '"></span>';
+      });
       console.log("lines is ", lines);
       linesPre.innerHTML = lines;
       result.value = mergeStreams(nodeStream(linesPre), nodeStream(resultPre), text);
@@ -522,7 +543,7 @@ var hljs = new function() {
     if (initHighlighting.called)
       return;
     initHighlighting.called = true;
-    Array.prototype.map.call(document.getElementsByTagName('pre'), findCode).
+    Array.prototype.map.call(document.getElementsByTagNameNS('http://www.w3.org/1999/xhtml', 'pre'), findCode).
       filter(Boolean).
       forEach(function(code) { 
         highlightBlock(code, self.tabReplace, false, self.lineNodes);
