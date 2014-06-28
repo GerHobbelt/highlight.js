@@ -98,6 +98,12 @@ function(hljs) {
       begin: '%[qw]?\\|', end: '\\|',
       contains: STR_CONTAINS,
       relevance: 10
+    },
+    {
+      className: 'string',
+      // \B in the beginning suppresses recognition of ?-sequences where ?
+      // is the last character of a preceding identifier, as in: `func?4`
+      begin: /\B\?(\\\d{1,3}|\\x[A-Fa-f0-9]{1,2}|\\u[A-Fa-f0-9]{4}|\\?\S)\b/
     }
   ];
   var FUNCTION = {
@@ -162,10 +168,6 @@ function(hljs) {
       className: 'number',
       begin: '(\\b0[0-7_]+)|(\\b0x[0-9a-fA-F_]+)|(\\b[1-9][0-9_]*(\\.[0-9_]+)?)|[0_]\\b',
       relevance: 0
-    },
-    {
-      className: 'number',
-      begin: '^\\?\\d'
     },
     {
       className: 'variable',

@@ -171,7 +171,7 @@
   </script>
 <body>
 
-<p>This is a demo/test page showing all languages supported by <a href="http://softwaremaniacs.org/soft/highlight/en/">highlight.js</a>.
+<p>This is a demo/test page showing all languages supported by <a href="http://highlightjs.org/">highlight.js</a>.
 Most snippets do not contain working code :-).
 
 <div id="styleswitcher">
@@ -292,7 +292,8 @@ module ABC::DEF
   # @return [String] nothing
   def foo(test)
     Thread.new do |blockvar|
-      ABC::DEF.reverse(:a_symbol, :'a symbol', :&lt;=&gt;, 'test' + test)
+      ABC::DEF.reverse(:a_symbol, :'a symbol', :&lt;=&gt;, 'test' + ?\012)
+      answer = valid?4 && valid?CONST && ?A && ?A.ord
     end.join
   end
 
@@ -373,6 +374,7 @@ abstract class URI extends BaseURI
    */
   static public function _factory($stats = array(), $uri = 'http')
   {
+      echo __METHOD__;
       $uri = explode(':', $uri, 0b10);
       $schemeSpecific = isset($uri[1]) ? $uri[1] : '';
       $desc = 'Multi
@@ -1342,6 +1344,35 @@ let minutte = 60&lt;s&gt;
 
 </code></pre>
 
+  <tr>
+    <th>OCaml
+    <td class="ocaml">
+<pre>
+<code>(* This is a
+multiline, (* nested *) comment *)
+type point = { x: float; y: float };;
+let some_string = "this is a string";;
+let rec length lst =
+    match lst with
+      [] -> 0
+    | head :: tail -> 1 + length tail
+  ;;
+exception Test;;
+type expression =
+      Const of float
+    | Var of string
+    | Sum of expression * expression    (* e1 + e2 *)
+    | Diff of expression * expression   (* e1 - e2 *)
+    | Prod of expression * expression   (* e1 * e2 *)
+    | Quot of expression * expression   (* e1 / e2 *)
+class point =
+    object
+      val mutable x = 0
+      method get_x = x
+      method private move d = x <- x + d
+    end;;
+</code></pre>
+
 <tr>
     <th>D
     <td class="d">
@@ -2099,7 +2130,7 @@ $$
   -&gt;+++&gt;++++++++++&lt;&lt;
 ]&gt;&gt;
 [ filling cells
-  -&gt;++&gt;&gt;++&gt;++&gt;+&gt;++&gt;&gt;++&gt;++&gt;++&gt;++&gt;++&gt;++&gt;++&gt;++&gt;++&gt;++&gt;++[&lt;]&lt;[&lt;]&lt;[&lt;]&gt;&gt;
+  -&gt;++&gt;&gt;++&gt;++&gt;+&gt;++&gt;&gt;++&gt;++&gt;++&gt;++&gt;++&gt;++&gt;++&gt;++&gt;++&gt;++&gt;++[&lt;/]&lt;[&lt;]&lt;[&lt;]&gt;&gt;
 ]&lt;
 +++++++++&lt;&lt;
 [ rough codes correction loop

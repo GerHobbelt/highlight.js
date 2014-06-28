@@ -1,6 +1,6 @@
 /*
 Syntax highlighting with language autodetection.
-http://softwaremaniacs.org/soft/highlight/
+http://highlightjs.org/
 */
 
 function() {
@@ -158,6 +158,9 @@ function() {
         var compiled_keywords = {};
 
         function flatten(className, str) {
+          if (language.case_insensitive) {
+            str = str.toLowerCase();
+          }
           str.split(' ').forEach(function(kw) {
             var pair = kw.split('|');
             compiled_keywords[pair[0]] = [className, pair[1] ? Number(pair[1]) : 1];
@@ -165,7 +168,7 @@ function() {
           });
         }
 
-        mode.lexemsRe = langRe(mode.lexems || self.IDENT_RE + '(?!\\.)', true);
+        mode.lexemsRe = langRe(mode.lexems || '\\b' + self.IDENT_RE + '\\b(?!\\.)', true);
         if (typeof mode.keywords === 'string') { // string
           flatten('keyword', mode.keywords);
         } else {

@@ -1,6 +1,6 @@
 Подсветка синтаксиса с автоопределением языка.
 
-URL:   http://softwaremaniacs.org/soft/highlight/
+URL:   http://highlightjs.org/
 
 Первоначальный автор и ведущий проекта:
 Иван Сагалаев <maniac@softwaremaniacs.org>
@@ -82,4 +82,6 @@ URL:   http://softwaremaniacs.org/soft/highlight/
 - Порен Чянь <ren.chiang@gmail.com>
 - Келли ван Эверт <kelleyvanevert@gmail.com>
 - Курт Эмч <kurt@kurtemch.com>
+- Мейди Догги <mehdi@dogguy.org>
+- Николя Бро-Сантони <nicolas.braud-santoni@ens-cachan.fr>
 - Александр Каупанин <kaupanin@gmail.com>
