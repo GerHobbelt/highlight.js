@@ -6,7 +6,7 @@
     "syntax"
   ],
   "homepage": "https://highlightjs.org/",
-  "version": "8.7.0",
+  "version": "8.9.1",
   "author": {
     "name": "Ivan Sagalaev",
     "email": "maniac@softwaremaniacs.org"
@@ -22,7 +22,8 @@
   },
   "main": "./lib/index.js",
   "scripts": {
-    "test": "./node_modules/.bin/mocha test/"
+    "test": "./node_modules/.bin/mocha test/",
+    "test-browser": "./node_modules/.bin/mocha test/browser/"
   },
   "engines": {
     "node": "*"
@@ -37,6 +38,7 @@
     "jsdom": "3.1.2",
     "lodash": "^3.3.1",
     "mocha": "^2.0.1",
-    "should": "^7.0.1"
+    "should": "^7.0.1",
+    "webworker-threads": "^0.6.2"
   }
 }

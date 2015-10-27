@@ -9,7 +9,7 @@ https://highlightjs.org/
   // CommonJS.
   if(typeof exports !== 'undefined') {
     factory(exports);
-  } else {
+  } else if (typeof window !== 'undefined') {
     // Export hljs globally even when using AMD for cases when this script
     // is loaded with others that may still expect a global hljs.
     window.hljs = factory({});
@@ -20,6 +20,11 @@ https://highlightjs.org/
         return window.hljs;
       });
     }
+  } else if (typeof self !== 'undefined') {
+    // Export hljs to web worker.
+    self.hljs = factory({});
+  } else {
+    throw new Error('No global object found to bind hljs variable to.');
   }
 
 }(function(hljs) {
@@ -650,7 +655,7 @@ https://highlightjs.org/
   }
 
   function getLanguage(name) {
-    name = name.toLowerCase();
+    name = (name || '').toLowerCase();
     return languages[name] || languages[aliases[name]];
   }
 
@@ -693,7 +698,7 @@ https://highlightjs.org/
     contains: [hljs.BACKSLASH_ESCAPE]
   };
   hljs.PHRASAL_WORDS_MODE = {
-    begin: /\b(a|an|the|are|I|I'm|isn't|don't|doesn't|won't|but|just|should|pretty|simply|enough|gonna|going|wtf|so|such)\b/
+    begin: /\b(a|an|the|are|I|I'm|isn't|don't|doesn't|won't|but|just|should|pretty|simply|enough|gonna|going|wtf|so|such|will|you|your|like)\b/
   };
   hljs.COMMENT = function (begin, end, inherits) {
     var mode = hljs.inherit(

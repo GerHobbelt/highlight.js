@@ -59,7 +59,7 @@ Contributors:
 - Joe Cheng <joe@rstudio.org>
 - Angel G. Olloqui <angelgarcia.mail@gmail.com>
 - Jason Tate <adminz@web-cms-designs.com>
-- Sergey Tikhomirov <me@stikhomirov.com>
+- Sergey Tikhomirov <sergey@tikhomirov.io>
 - Marc Fornos <marc.fornos@gmail.com>
 - Yoshihide Jimbo <yjimbo@gmail.com>
 - Casey Duncan <casey.duncan@gmail.com>
@@ -185,3 +185,9 @@ Contributors:
 - Samuel Reed <sam@bitmex.com>
 - Yury Selivanov <yselivanov@gmail.com>
 - Tsuyusato Kitsune <make.just.on@gmail.com>
+- Mick MacCallum <micksmaccallum@gmail.com>
+- Kristoffer Gronlund <kgronlund@suse.com>
+- Søren Enevoldsen <senevoldsen90@gmail.com>
+- Daniel Rosenwasser <DanielRosenwasser@users.noreply.github.com>
+- Ladislav Prskavec <ladislav@prskavec.net>
+- Jan Kühle <jkuehle90@gmail.com>
