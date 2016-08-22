@@ -1,0 +1,13 @@
+; My "lil" database
+q ; Ensure that the routine cannot be called directly
+initializeDB()
+ s ^DATABASE("name")="My ""lil"" database"
+ s ^DATABASE("contributors", "Greg Weisbrod")=1
+ s ^DATABASE("contributors", "Neil Pappalardo")=1
+ q
+printContributors()
+ n contributor
+ f  s contributor=$o(^DATABASE("contributors", contributor) q:contributor="" d
+ . w contributor_" has contributed to the MUMPS language",!
+ q
+ 
