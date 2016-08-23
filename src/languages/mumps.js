@@ -33,7 +33,7 @@ function(hljs) {
 	return {
 		aliases: ["m", "cache", "caché", "gtm", "gt.m"],
 		case_insensitive: true, // TODO this makes everything case insensitive, but it's only commands and built-ins that are
-		lexemes: /\$?[a-zA-Z]+/, // TODO this does not account for keywords used as variables or $$order
+		lexemes: /\$[a-zA-Z]+/, // TODO this does not account for keywords used as variables or $$order
 		keywords: {
 			// Because MUMPS keywords are actually not reserved, we need to special case them as modes
 			built_in: MUMPS_BUILT_INS
@@ -41,6 +41,7 @@ function(hljs) {
 		illegal: /^\s*$/,
 		contains: [
 			hljs.COMMENT(/;/, /$/),
+			MUMPS_STRING,
 			{
 				// These are actually NOT regular expressions but
 				// rather MUMPS patterns. MUMPS has no support for regexps. 
@@ -52,7 +53,6 @@ function(hljs) {
 				excludeEnd: true,
 				contains: [MUMPS_STRING]
 			},
-			MUMPS_STRING,
 			{
 				// These are MUMPS globals - not actually
 				// "global" variables but rather variables
@@ -77,50 +77,52 @@ function(hljs) {
 				]
 			},
 			{
-				begin: /(^\s|^|\s\s)/,
-				end: /[\s$:]/,
+				//begin: /(\s(?!$)\s)+/,
+				begin: /[\s]{2,}/,
+				//end: /[\s:$]/,
+				end: /$/,
+				className: "anotherTest",
 				contains: [
 					{
 						className: "keyword",
-						begin: new RegExp("(" + MUMPS_KEYWORDS.split(" ").join("|") + ")(?=\\s|$|:)"),
-						end: /[\s$:]/,
+						begin: new RegExp("(" + MUMPS_KEYWORDS.split(" ").join("|") + ")"),
+						//endsWithParent: true,
+						end: /[\s:$]/,
+						endsParent: true,
 						excludeEnd: true
 					}
+				]
+			},
+			{
+				begin: /^[\s\.]*/,
+				end: /[\s:$]/,
+				className: "test",
+				contains: [
+					{
+						className: "keyword",
+						begin: new RegExp("\\b(" + MUMPS_KEYWORDS.split(" ").join("|") + ")\\b"),
+						end: /[\s:$]/,
+						endsParent: true,
+						excludeEnd: true,
+						returnEnd: true
+					},
 				]
 			},
 			/*
 			{
-				begin: /^/,
-				end: /[\s$]/,
+				begin: /^(?!h\b)/,
+				//begin: new RegExp("^(?!" + MUMPS_KEYWORDS.split(" ").join("\\b|") + ")"),
+				end: /$/,
+				returnStart: true,
+				className: "functest",
 				contains: [
-					/*
 					{
-						className: "keyword",
-						begin: new RegExp("(" + MUMPS_KEYWORDS.split(" ").join("|") + ")(?=\\s|$|:)"),
-						end: /[\s$:]/,
-						excludeEnd: true
-					},
-					{
-						begin: new RegExp("(?!" + MUMPS_KEYWORDS.split(" ").join("[\\s$:]|") + ")"),
-						end: /[\s$]/,
-						contains: [
-							{
-								className: "function",
-								begin: /^[%a-zA-Z]/,
-								end: /[\s$]/,
-								excludeEnd: true,
-								contains: [
-									{
-										className: "params",
-										begin: /\(/,
-										end: /\)/
-									}
-								]
-							}
-						]
+						className: "function",
+						begin: /^[%a-zA-Z]/,
+						endsWithParent: true
 					}
 				]
-			},
+			}
 			*/
 		]
 	};
