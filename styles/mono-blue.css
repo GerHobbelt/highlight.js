@@ -10,7 +10,8 @@ pre .keyword,
 pre .title,
 pre .important,
 pre .request,
-pre .header {
+pre .header,
+pre .javadoctag {
   font-weight: bold;
 }
 
@@ -53,6 +54,26 @@ pre .deletion,
 pre .shebang,
 pre .string .variable,
 pre .link_url,
-pre .bullet {
+pre .bullet,
+pre .sqbracket,
+pre .phony {
   color: #4C81C9;
 }
+
+pre {
+  counter-reset: lines;
+}
+pre .line {
+  counter-increment: lines;
+}
+pre .line::before {
+  content: counter(lines); 
+  text-align: right;
+  display: inline-block; 
+  width: 2em;
+  padding-right: 0.5em; 
+  margin-right: 0.5em;
+  color: #BBB; 
+  border-right: solid 1px;
+}
+

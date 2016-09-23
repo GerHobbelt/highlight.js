@@ -1,29 +1,28 @@
 /*
 Language: OCaml
-Author: Paul Chaignon <paul.chaignon@gmail.com>
-Description: OCaml is the main implementation of the language Caml.
+Contributors: Nicolas Braud-Santoni <nicolas.braud-santoni@ens-cachan.fr>
 */
 function(hljs) {
   return {
-    keywords:
-      'let function type true false in match with rec|10 float if else then fun ' +
-      'succ int assert-false|10 val list List raise failwith|10 and exit of when exception',
+      keyword:
+        'and as assert asr begin class constraint do done downto else end ' +
+        'inherit initializer land lazy let lor lsl lsr lxor match method ' +
+        'mod module mutable new object of open or private rec ref sig struct ' +
+      built_in:
+        'bool char float int list unit array exn option int32 int64 nativeint ' +
+        'format4 format6 lazy_t in_channel out_channel string',
+    },
+    illegal: /\/\//,
     contains: [
       hljs.C_NUMBER_MODE,
       hljs.QUOTE_STRING_MODE,
       {
-        className: 'comment',
-        begin: '\\(\\*', end: '\\*\\)',
       },
       {
-        className: 'let',
-        beginWithKeyword: true, end: '=',
         excludeEnd: true,
-        keywords: 'let rec'
       },
       {
         className: 'class',
-        beginWithKeyword: true, end: '=',
         keywords: 'type',
         contains: [
           {
@@ -32,6 +31,13 @@ function(hljs) {
           }
         ]
       },
+      {
+        className: 'annotation',
+        begin: '\\[<', end: '>\\]'
+      },
+      hljs.C_BLOCK_COMMENT_MODE,
+      hljs.inherit(hljs.APOS_STRING_MODE, {illegal: null}),
+      hljs.inherit(hljs.QUOTE_STRING_MODE, {illegal: null}),
+      hljs.C_NUMBER_MODE
     ]
-  };
 }
