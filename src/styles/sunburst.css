@@ -100,21 +100,3 @@ Sunburst-like style (c) Vasily Polovnyov <vast@whiteants.net>
 .hljs-strong {
   font-weight: bold;
 }
-
-pre {
-  counter-reset: lines;
-}
-pre .line {
-  counter-increment: lines;
-}
-pre .line::before {
-  content: counter(lines); 
-  text-align: right;
-  display: inline-block; 
-  width: 2em;
-  padding-right: 0.5em; 
-  margin-right: 0.5em;
-  color: #BBB; 
-  border-right: solid 1px;
-}
-
