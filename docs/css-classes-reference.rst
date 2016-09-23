@@ -103,6 +103,22 @@ Scala ("scala")
 * ``params``:           everything in parentheses inside a class header
 * ``inheritance``:      keywords "extends" and "with" inside class header
 
+Groovy ("groovy)
+----------------
+
+* ``keyword``:          keyword
+* ``number``:           number
+* ``string``:           string, map string keys and named argument labels
+* ``regex``:            regular expression
+* ``comment``:          comment
+* ``annotation``:       annotation
+* ``javadoc``:          javadoc comment
+* ``javadoctag``:       @-tag in javadoc
+* ``class``:            class header
+* ``title``:            class name inside a header
+* ``label``:            label
+* ``shebang``:          Groovy shell script header
+
 Go ("go", "golang")
 -------------------
 
@@ -244,8 +260,17 @@ Handlebars ("handlebars", "hbs", "html.hbs", "html.handlebars")
 
 * ``expression``:       expression to be evaluated
 * ``variable``:         variable
-* ``begin``:-block      the beginning of a block
-* ``end``:-block        the ending of a block
+* ``begin-block``:      the beginning of a block
+* ``end-block``:        the ending of a block
+* ``string``:           string
+
+Dust ("dust", "dst")
+--------------------
+
+* ``expression``:       expression to be evaluated
+* ``variable``:         variable
+* ``begin-block``:      the beginning of a block
+* ``end-block``:        the ending of a block
 * ``string``:           string
 
 JSON ("json")
@@ -310,6 +335,21 @@ CoffeeScript ("coffeescript", "coffee", "cson", "iced")
 * ``title``:            name of a function variable inside a header
 * ``params``:           parentheses and everything inside them in a function's header
 * ``property``:         @-property within class and functions
+
+Dart ("dart")
+--------------------
+
+* ``keyword``:          keyword
+* ``literal``:          keyword that can be uses as identifier but have special meaning in some cases
+* ``built_in``:         some of basic built in classes and function
+* ``number``:           number
+* ``string``:           string
+* ``subst``:            in-string substitution (${...})
+* ``comment``:          commment
+* ``annotaion``:        annotation
+* ``dartdoc``:          dartdoc comment
+* ``class``:            class header from "class" till "{"
+* ``title``:            class name
 
 ActionScript ("actionscript", "as")
 -----------------------------------
@@ -462,6 +502,7 @@ Java ("java", "jsp")
 * ``annotaion``:        annotation
 * ``javadoc``:          javadoc comment
 * ``class``:            class header from "class" till "{"
+* ``function``:         method header
 * ``title``:            class or method name
 * ``params``:           everything in parentheses inside a class header
 * ``inheritance``:      keywords "extends" and "implements" inside class header
@@ -508,6 +549,8 @@ C# ("cs", "csharp")
 * ``string``:           string
 * ``comment``:          comment
 * ``xmlDocTag``:        xmldoc tag ("///", "<!--", "-->", "<..>")
+* ``class``:            class header from "class" till "{"
+* ``function``:         method header
 * ``title``:            title of namespace or class
 
 F# ("fsharp", "fs")
@@ -598,14 +641,13 @@ Smalltalk ("smalltalk", "st")
 Lisp ("lisp")
 -------------
 
-* ``keyword``:          keyword
 * ``number``:           number
 * ``string``:           string
 * ``comment``:          comment
 * ``variable``:         variable
 * ``literal``:          b, t and nil
 * ``list``:             non-quoted list
-* ``title``:            first symbol in a non-quoted list
+* ``keyword``:          first symbol in a non-quoted list
 * ``body``:             remainder of the non-quoted list
 * ``quoted``:           quoted list, both "(quote .. )" and "'(..)"
 
@@ -617,8 +659,23 @@ Clojure ("clojure", "clj")
 * ``number``:           number
 * ``collection``:       collections
 * ``attribute``:        :keyword
-* ``title``:            function name (built-in or user defined)
-* ``built_in``:         built-in function name
+* ``list``:             non-quoted list
+* ``keyword``:          first symbol in a list
+* ``built_in``:         built-in function name as the first symbol in a list
+
+Scheme ("scheme")
+--------------------------
+
+* ``shebang``:          script interpreter header
+* ``comment``:          comment
+* ``string``:           string
+* ``number``:           number
+* ``regexp``:           regexp
+* ``variable``:         single-quote 'identifier
+* ``list``:             non-quoted list
+* ``keyword``:          first symbol in a list
+* ``built_in``:         built-in function name as the first symbol in a list
+* ``literal``:          #t, #f, #\...\
 
 Ini ("ini")
 -----------
@@ -734,7 +791,6 @@ Axapta ("axapta")
 * ``class``:            class header from "class" till "{"
 * ``title``:            class name inside a header
 * ``params``:           everything in parentheses inside a class header
-* ``inheritance``:      keywords "extends" and "implements" inside class header
 * ``preprocessor``:     preprocessor directive
 
 Oracle Rules Language ("ruleslanguage")
@@ -1043,3 +1099,26 @@ Swift ("swift")
 * ``params``:           parameters of a function
 * ``type``:             a type
 * ``preprocessor``:     @attributes
+
+G-Code ("gcode", "nc")
+-------------------------------
+
+* ``keyword``:          G words, looping constructs and conditional operators
+* ``comment``:          comment
+* ``number``:           number
+* ``built_in``:         trigonometric and mathematical functions
+* ``title``:            M words and variable registers
+* ``preprocessor``:     program number and ending character
+* ``label``:            block number
+
+
+Q ("k", "kdb")
+-------------------
+
+* ``comment``:          comment
+* ``string``:           string constant
+* ``number``:           number
+* ``keyword``:          language keywords
+* ``constant``:         0/1b
+* ``typename``:         built-in plain types (int, symbol etc.)
+* ``built_in``:         built-in function

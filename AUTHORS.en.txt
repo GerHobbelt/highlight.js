@@ -1,6 +1,6 @@
 Syntax highlighting with language autodetection.
 
-URL:   http://highlightjs.org/
+URL:   https://highlightjs.org/
 
 Core developers (in order of appearance):
 
@@ -118,5 +118,15 @@ Contributors:
 - Chris Eidhof <chris@eidhof.nl>
 - Nate Cook <natecook@gmail.com>
 - Matt Diephouse <matt@diephouse.com>
+- Erik Osheim <d_m@plastic-idolatry.com>
+- Guillaume Laforge <glaforge@gmail.com>
+- Lucas Mazza <lucastmazza@gmail.com>
+- Maxim Dikun <dikmax@gmail.com>
+- Henrik Feldt <henrik@haf.se>
+- Anton Kochkov <anton.kochkov@gmail.com>
+- Michael Allen <Michael.Allen@benefitfocus.com>
+- JP Verkamp <me@jverkamp.com>
+- Adam Joseph Cook <adam.joseph.cook@gmail.com>
+- Sergey Vidyuk <svidyuk@gmail.com>
 - Jan T. Sott <jan.sott@gmail.com>
 - Alexander Kaupanin <kaupanin@gmail.com>

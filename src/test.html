@@ -288,7 +288,7 @@
   </script>
 <body>
 
-<p>This is a demo/test page showing all languages supported by <a href="http://highlightjs.org/">highlight.js</a>.
+<p>This is a demo/test page showing all languages supported by <a href="https://highlightjs.org/">highlight.js</a>.
 Most snippets do not contain working code :-).
 
 <div id="styleswitcher">
@@ -377,7 +377,8 @@ def somefunc(param1='', param2=0):
         print 'Gre\'ater'
     return (param2 - param1 + 1 + 0b10l) or None
 
-class SomeClass:<br>    pass
+class SomeClass:
+    pass
 
 &gt;&gt;&gt; message = '''interpreter
 ... prompt'''
@@ -420,6 +421,8 @@ end
 
 class Car < ActiveRecord::Base
   has_many :wheels, :class_name => 'Wheel', :foreign_key => 'car_id'
+  has_many :wheels, class_name: 'Wheel', foreign_key: 'car_id'
+  scope :available, -> { where(available: true) }
 end
 omega = -> { 'alpha' }
 alpha = ->(arg) { arg*2 }
@@ -602,37 +605,110 @@ datahere</code></pre>
   <tr>
     <th>Scala
     <td class="scala">
-<pre><code>object abstractTypes extends Application {
-  abstract class SeqBuffer {
-    type T; val element: Seq[T]; def length = element.length
-  }
+<pre><code>case class Person(name: String, age: Int)
+
+def absoluteValue(n: Int): Int =
+  if (n < 0) -n else n
+
+val hux = "hux"
+def mux = "mux"
+def qux: String = "qux"
+
+type ξ[A] = (A, A)
+
+trait Hist { lhs =>
+  def ⊕(rhs: Hist): Hist
 }
 
-/** Turn command line arguments to uppercase */
-object Main {
-  def main(args: Array[String]) {
-    val res = for (a &lt;- args) yield a.toUpperCase
-    println("Arguments: " + res.toString)
-  }
+def gsum[A: Ring](as: Seq[A]): A =
+  as.foldLeft(Ring[A].zero)(_ + _)
+
+sealed trait Compass
+case object North extends Compass
+case object South extends Compass
+case object East extends Compass
+case object West extends Compass
+
+trait Cake {
+  type T;
+  val things: Seq[T]
+
+  abstract class Spindler
+
+  def spindle(s: Spindler, ts: Seq[T], reversed: Boolean = false): Seq[T]
 }
 
-/** Maps are easy to use in Scala. */
-object Maps {
-  val colors = Map("red" -&gt; 0xFF0000,
-                   "turquoise" -&gt; 0x00FFFF,
-                   "black" -&gt; 0x000000,
-                   "orange" -&gt; 0xFF8040,
-                   "brown" -&gt; 0x804000)
-  def main(args: Array[String]) {
-    for (name &lt;- args) println(
-      colors.get(name) match {
-        case Some(code) =&gt;
-          name + " has code: " + code
-        case None =&gt;
-          "Unknown color: " + name
-      }
-    )
-  }
+val colors = Map(
+  "red" -&gt; 0xFF0000,
+  "turquoise" -&gt; 0x00FFFF,
+  "black" -&gt; 0x000000,
+  "orange" -&gt; 0xFF8040,
+  "brown" -&gt; 0x804000)
+
+lazy val ns = for {
+  x <- 0 until 100
+  y <- 0 until 100
+} yield (x + y) * 33.33
+</code></pre>
+
+  <tr>
+      <th>Groovy</th>
+      <td class="groovy">
+<pre><code>#!/usr/bin/env groovy
+package model
+
+import groovy.transform.CompileStatic
+import java.util.List as MyList
+
+trait Distributable {
+    void distribute(String version) {}
+}
+
+@CompileStatic
+class Distribution implements Distributable {
+    double number = 1234.234 / 567
+    def otherNumber = 3 / 4
+    boolean archivable = condition ?: true
+    def ternary = a ? b : c
+    String name = "Guillaume"
+    Closure description = null
+    List&lt;DownloadPackage&gt; packages = []
+    String regex = ~/.*foo.*/
+    String multi = '''
+        multi line string
+    ''' + """
+        now with double quotes and ${gstring}
+    """ + $/
+        even with dollar slashy strings
+    /$
+
+    /**
+     * description method
+     * @param cl the closure
+     */
+    void description(Closure cl) { this.description = cl }
+
+    void version(String name, Closure versionSpec) {
+        def closure = { println "hi" } as Runnable
+
+        MyList ml = [1, 2, [a: 1, b:2,c :3]]
+        for (ch in "name") {}
+
+        // single line comment
+        DownloadPackage pkg = new DownloadPackage(version: name)
+
+        check that: true
+
+        label:
+        def clone = versionSpec.rehydrate(pkg, pkg, pkg)
+        /*
+            now clone() in a multiline comment
+        */
+        clone()
+        packages.add(pkg)
+
+        assert 4 / 2 == 2
+    }
 }
 </code></pre>
 
@@ -770,6 +846,8 @@ you can write text [with links](http://example.com) inline or [link references][
 * one _thing_ has *em*phasis
 * two __things__ are **bold**
 
+[1]: http://example.com
+
 ---
 
 hello world
@@ -784,7 +862,6 @@ hello world
 1. one thing (yeah!)
 2. two thing `i can write code`, and `more` wipee!
 
-[1]: http://example.com
 </code></pre>
 
   <tr>
@@ -888,6 +965,19 @@ Markup is &lt;em&gt;not&lt;/em&gt; highlighted within comments.
   {{#each content.users}}
   &lt;li {{bindAttr hello="world"}}&gt;{{firstName}}&lt;/li&gt;
   {{/each}}
+&lt;/ul&gt;
+</code></pre>
+
+  <tr>
+    <th>Dust.js
+    <td class="dust">
+<pre>
+<code>&lt;h3&gt;Hours&lt;/h3&gt;
+
+&lt;ul&gt;
+  {#users}
+  &lt;li {hello}}&gt;{firstName}&lt;/li&gt;{~n}
+  {/users}
 &lt;/ul&gt;
 </code></pre>
 
@@ -1068,6 +1158,9 @@ x = f / foo / gm
 x = f /foo * 2/6
 
 # Regexps
+x = /\//
+x = /\n/
+x = /ab\/ ab/
 x = f /6 * 2/ - 3
 x = f /foo * 2/gm
 x = if true then /\n/ else /[.,]+/
@@ -1115,6 +1208,43 @@ Released under the MIT License
 OPERATOR = /// ^ (
 ?: [-=]>             # function
 ) ///</code></pre>
+
+<tr>
+  <th>Dart</th>
+  <td class="dart">
+<pre><code>library app;
+import 'dart:html';
+
+part 'app2.dart';
+
+/**
+ * Class description and [link](http://dartlang.org/).
+ */
+@Awesome('it works!')
+class SomeClass&lt;S extends Iterable&gt; extends BaseClass&lt;S&gt; implements Comparable {
+  factory SomeClass(num param);
+  SomeClass._internal(int q) : super() {
+    assert(q != 1);
+    double z = 0.0;
+  }
+
+  /// **Sum** function
+  int sum(int a, int b) =&gt; a + b;
+
+  ElementList els() => querySelectorAll('.dart');
+}
+
+String str = ' (${'parameter' + 'zxc'})';
+String str = " (${true ? 2 + 2 / 2 : null})";
+String str = r'\nraw\';
+String str = r"\nraw\";
+var str = '''
+Something ${2+3}
+''';
+var str = r"""
+Something ${2+3}
+""";
+</code></pre>
 
 <tr>
     <th>ActionScript
@@ -1598,6 +1728,8 @@ public abstract class L2Character extends L2Object {
   public class NotifyAITask implements Runnable {
     private final CtrlEvent _evt;
 
+    List&lt;String&gt; mList = new ArrayList&lt;String&gt;()
+
     public void run() {
       try {
         getAI().notifyEvent(_evt, _evt.class, null);
@@ -1778,10 +1910,6 @@ let checkList alist =
     | _ -&gt; failwith "List is too big!"
 
 
-type IEncoding =
-    abstract Encode : string -&gt; string
-    abstract Decode : string -&gt; string
-
 let text = "Some text..."
 let text2 = @"A ""verbatim"" string..."
 let catalog = """
@@ -1811,6 +1939,9 @@ type Point = {X: float; Y: float;}
 type s
 let minutte = 60&lt;s&gt;
 
+type DefaultMailbox&lt;'a&gt;() =
+    let mutable inbox = ConcurrentQueue&lt;'a&gt;()
+    let awaitMsg = new AutoResetEvent(false)
 </code></pre>
 
   <tr>
@@ -2129,6 +2260,38 @@ heapExample
     (cons chunk (lazy-seq (chunk-seq rdr)))))
 </code></pre>
 
+<tr>
+  <th>Scheme
+  <td class="scheme">
+<pre><code>;; Calculation of Hofstadter's male and female sequences as a list of pairs
+
+(define (hofstadter-male-female n)
+(letrec ((female (lambda (n)
+           (if (= n 0)
+           1
+           (- n (male (female (- n 1)))))))
+     (male (lambda (n)
+         (if (= n 0)
+             0
+             (- n (female (male (- n 1))))))))
+  (let loop ((i 0))
+    (if (> i n)
+    '()
+    (cons (cons (female i)
+            (male i))
+      (loop (+ i 1)))))))
+
+(hofstadter-male-female 8)
+
+(define (find-first func lst)
+(call-with-current-continuation
+ (lambda (return-immediately)
+   (for-each (lambda (x)
+       (if (func x)
+           (return-immediately x)))
+         lst)
+   #f)))</code></pre>
+
   <tr>
     <th>Ini file
     <td class="ini">
@@ -2198,7 +2361,12 @@ http {
     #lingering_time 30;
 
     server {
-        server_name   one.example.com  www.one.example.com;
+        server_name www.example.com;
+        return 301 http://www.example.com$request_uri;
+    }
+
+    server {
+        server_name   example.com;
         access_log   /var/log/nginx.access_log  main;
 
         rewrite (.*) /index.php?page=$1 break;
@@ -2932,6 +3100,7 @@ It ends with an unescaped '\"'.";
         result *= i;
         i += 1;
     }
+    assert!(i == n);
     ret result;
 }
 
@@ -3456,6 +3625,22 @@ caption:db      'SEGV',0
 section .drectve info
         db      '/defaultlib:user32.lib /defaultlib:msvcrt.lib '
 </code></pre>
+<tr>
+    <th>Q/KDB+
+    <td class="q">
+<pre><code>
+select time, price by date,stock from quote where price=(max;price)fby stock
+data:raze value flip trade
+select vwap:size wavg price by 5 xbar time.minute from aapl where date within (.z.d-10;.z.d)
+f1:{[x;y;z] show (x;y+z);sum 1 2 3}
+.z.pc:{[handle] show -3!(`long$.z.p;"Closed";handle)}
+// random normal distribution, e.g. nor 10
+nor:{$[x=2*n:x div 2;raze sqrt[-2*log n?1f]*/:(sin;cos)@\:(2*pi)*n?1f;-1_.z.s 1+x]}
+
+mode:{where g=max g:count each group x}		// mode function
+</code></pre>
+
+
 
   <tr>
   <th>Monkey
@@ -3640,6 +3825,42 @@ if( propFile.canRead() ) {
 }
 </code></pre>
 
+  <tr>
+    <th>G-code</th>
+    <td class="gcode">
+<pre><code>O003 (DIAMOND SQUARE)
+N2 G54 G90 G49 G80
+N3 M6 T1 (1.ENDMILL)
+N4 M3 S1800
+N5 G0 X-.6 Y2.050
+N6 G43  H1  Z.1
+N7 G1 Z-.3 F50.
+N8 G41 D1 Y1.45
+N9 G1 X0 F20.
+N10 G2 J-1.45
+(CUTTER COMP CANCEL)
+N11 G1 Z-.2 F50.
+N12 Y-.990
+N13 G40
+N14 G0 X-.6 Y1.590
+N15 G0 Z.1
+N16 M5 G49 G28 G91 Z0
+N17 CALL O9456
+N18 #500=0.004
+N19 #503=[#500+#501]
+N20 VC45=0.0006
+VS4=0.0007
+N21 G90 G10 L20 P3 X5.Y4. Z6.567
+N22 G0 X5000
+N23 IF [#1 LT 0.370] GOTO 49
+N24 X-0.678 Y+.990
+N25 G84.3 X-0.1
+N26 #4=#5*COS[45]
+N27 #4=#5*SIN[45]
+N28 VZOFZ=652.9658
+%
+</code></pre>
+
 </table>
 
 
@@ -3692,14 +3913,6 @@ if( propFile.canRead() ) {
 </code></pre>
 
   <tr>
-    <th>Non-pre container
-    <td>
-<div id="codecontainer" class="code">for x in [1, 2, 3]:<br>
-&nbsp;&nbsp;count(x)<br>
-</div>
-<script>hljs.highlightBlock(document.getElementById('codecontainer'), null, true);</script>
-
-  <tr>
     <th>Language alias
     <td>
       <pre><code class="language-js">var x = '&lt;p&gt;this should &lt;b&gt;not&lt;/b&gt; be highlighted as &lt;em&gt;HTML&lt;/em&gt;';</code></pre>
@@ -3713,7 +3926,7 @@ if( propFile.canRead() ) {
   <tr>
     <th>Disabled highlighting
     <td>
-<pre><code class="no-highlight">&lt;div id="contents"&gt;
+<pre><code class="nohighlight">&lt;div id="contents"&gt;
   &lt;p&gt;Hello, World!c
 &lt;/div&gt;
 </code></pre>
@@ -3760,5 +3973,5 @@ if( propFile.canRead() ) {
     Stylesheet switcher: <a href="mailto:voldmar@voldmar.ru">Vladimir Epifanov</a><br>
     Test result detection: <a href="mailto:maniac@softwaremaniacs.org">Ivan Sagalaev</a><br>
     Export script: <a href="mailto:xonixx@gmail.com">Vladimir Gubarkov</a><br>
-    Highlighting: <a href="http://highlightjs.org/">highlight.js</a>
+    Highlighting: <a href="https://highlightjs.org/">highlight.js</a>
 </address>
