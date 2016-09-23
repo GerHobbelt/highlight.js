@@ -525,7 +525,7 @@ function() {
       var resultPre = document.createElement('pre');
       resultPre.innerHTML = result.value;
       var linesPre = document.createElement('pre');
-      var lines = escape(text).replace(/^/gm, '<span class="line"></span>');
+      var lines = escape(text.trimRight()).replace(/^.*?(\n|$)/gm, '<span class="line">$&</span>');
       linesPre.innerHTML = lines;
       result.value = mergeStreams(nodeStream(linesPre), nodeStream(resultPre), text);
     }
