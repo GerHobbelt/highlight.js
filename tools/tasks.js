@@ -1,11 +1,12 @@
 'use strict';
 
-var _       = require('lodash');
-var del     = require('del');
-var gear    = require('gear');
-var path    = require('path');
-var fs      = require('fs');
-var utility = require('./utility');
+var _        = require('lodash');
+var bluebird = require('bluebird');
+var del      = require('del');
+var fs       = bluebird.promisifyAll(require('fs'));
+var gear     = require('gear');
+var path     = require('path');
+var utility  = require('./utility');
 
 var parseHeader   = utility.parseHeader;
 var getStyleNames = utility.getStyleNames;
@@ -14,12 +15,13 @@ var tasks         = require('gear-lib');
 tasks.clean = function(directories, blobs, done) {
   directories = _.isString(directories) ? [directories] : directories;
 
-  del(directories, function(err) {
-    return done(err, blobs);
-  });
+  return del(directories, _.partial(done, _, blobs));
 };
 tasks.clean.type = 'collect';
 
+// Depending on the languages required for the current language being
+// processed, this task reorders it's dependencies first then include the
+// language.
 tasks.reorderDeps = function(options, blobs, done) {
   var buffer       = {},
       newBlobOrder = [];
@@ -94,6 +96,8 @@ tasks.rename = function(options, blob, done) {
   return done(null, new gear.Blob(blob.result, {name: name}));
 };
 
+// Adds the contributors from `AUTHORS.en.txt` onto the `package.json` file
+// and moves the result into the `build` directory.
 tasks.buildPackage = function(json, blob, done) {
   var result,
       lines = blob.result.split(/\r?\n/),
@@ -115,6 +119,10 @@ tasks.buildPackage = function(json, blob, done) {
   return done(null, new gear.Blob(result, blob));
 };
 
+// Mainly for replacing the keys of `utility.REPLACES` for it's values while
+// skipping over strings, regular expressions, or comments. However, this is
+// pretty generic so long as you use the `utility.replace` function, you can
+// replace a regular expression with a string.
 tasks.replaceSkippingStrings = function(params, blob, done) {
   var content = blob.result,
       length  = content.length,
@@ -199,34 +207,37 @@ tasks.readSnippet = function(options, blob, done) {
       snippetName = path.join('test', 'detect', name, 'default.txt');
 
   function onRead(error, blob) {
-    if (error !== null) return done(null, null); // ignore missing snippets
+    if(error) return done(error); // ignore missing snippets
+
     var meta = {name: name + '.js', fileInfo: fileInfo};
-    blob = new gear.Blob(blob.result, meta);
-    return done(error, blob);
+
+    return done(null, new gear.Blob(blob.result, meta));
   }
 
   gear.Blob.readFile(snippetName, 'utf8', onRead, false);
 };
 
+// Translate the template for the demo in `demo/index.html` to a usable HTML
+// file.
 tasks.templateDemo = function(options, blobs, done) {
-  var name = path.join('demo', 'index.html');
+  var name        = path.join('demo', 'index.html'),
+      getTemplate = fs.readFileAsync(name);
 
-  fs.readFile(name, function(err, template) {
-    if(err) return done(err, null);
+  bluebird.join(getTemplate, getStyleNames(), function(template, styles) {
+    var content = _.template(template)({
+                    path: path,
+                    blobs: _.compact(blobs),
+                    styles: styles
+                  });
 
-    getStyleNames(function(err, styles) {
-      var content = _.template(template)({
-                      path: path,
-                      blobs: _.compact(blobs),
-                      styles: styles
-                    });
-
-      return done(err, [new gear.Blob(content)]);
-    });
-  });
+    return done(null, [new gear.Blob(content)]);
+  })
+  .catch(done);
 };
 tasks.templateDemo.type = 'collect';
 
+// Packages up included languages into the core `highlight.js` and moves the
+// result into the `build` directory.
 tasks.packageFiles = function(options, blobs, done) {
   var content,
       coreFile  = _.head(blobs),

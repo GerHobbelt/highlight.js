@@ -167,7 +167,6 @@ Contributors:
 - Jan T. Sott <jan.sott@gmail.com>
 - Alexander Kaupanin <kaupanin@gmail.com>
 - Kenneth Fuglsang <kfuglsang@gmail.com>
-- Raivo Laanemets <raivo@infdot.com>
 - David Anson <david@dlaa.me>
 - Louis Barranqueiro <louis.barranqueiro@gmail.com>
 - Tim Schumacher <tim@datenknoten.me>
@@ -175,3 +174,11 @@ Contributors:
 - Dan Panzarella <alsoelp@gmail.com>
 - Bruno Dias <bruno.r.dias@gmail.com>
 - Jay Strybis <jay.strybis@gmail.com>
+- Guillaume Gomez <guillaume1.gomez@gmail.com>
+- Janis Voigtländer <janis.voigtlaender@gmail.com>
+- Dirk Kirsten <dk@basex.org>
+- MY Sun <simonmysun@gmail.com>
+- Vadimtro <vadimtro@yahoo.com>
+- Benjamin Auder <benjamin.auder@gmail.com>
+- Dotan Dimet <dotan@corky.net>
+- Manh Tuan <junookyo@gmail.com>

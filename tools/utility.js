@@ -1,8 +1,9 @@
 'use strict';
 
-var _    = require('lodash');
-var glob = require('glob');
-var path = require('path');
+var _        = require('lodash');
+var bluebird = require('bluebird');
+var glob     = bluebird.promisifyAll(require('glob')).globAsync;
+var path     = require('path');
 
 var REPLACES,
     regex       = {},
@@ -72,6 +73,10 @@ function replaceClassNames(match) {
   return REPLACES[match];
 }
 
+// All meta data, for each language definition, it store within the headers
+// of each file in `src/languages`. `parseHeader` extracts that data and
+// turns it into a useful object -- mainly for categories and what language
+// this definition requires.
 function parseHeader(content) {
   var headers,
       match = content.match(headerRegex);
@@ -103,7 +108,7 @@ function filterByQualifiers(blob, languages, categories) {
   var language         = path.basename(blob.name, '.js'),
       fileInfo         = parseHeader(blob.result),
       fileCategories   = fileInfo.Category || [],
-      containsCategory = _.curry(_.contains)(categories);
+      containsCategory = _.partial(_.contains, categories);
 
   if(!fileInfo) return false;
 
@@ -111,6 +116,8 @@ function filterByQualifiers(blob, languages, categories) {
          _.any(fileCategories, containsCategory);
 }
 
+// For the filter task in `tools/tasks.js`, this function will look for
+// categories and languages specificed from the CLI.
 function buildFilterCallback(qualifiers) {
   var isCategory = _.matchesProperty(0, ':'),
       languages  = _.reject(qualifiers, isCategory),
@@ -118,36 +125,38 @@ function buildFilterCallback(qualifiers) {
                                 .map(function(c) {return c.slice(1);})
                                 .value();
 
-  return function(blob) {
-    return filterByQualifiers(blob, languages, categories);
-  };
+  return _.partial(filterByQualifiers, _, languages, categories);
 }
 
-function glob(pattern, encoding) {
+function globDefaults(pattern, encoding) {
   encoding = encoding || 'utf8';
 
+  // The limit option is a fix for issue #636 when the build script would
+  // EMFILE error for those systems who had a limit of open files per
+  // process.
+  //
+  // <https://github.com/isagalaev/highlight.js/issues/636>
   return { pattern: pattern, limit: 50, encoding: encoding };
 }
 
-function getStyleNames(callback) {
+function getStyleNames() {
   var stylesDir = 'src/styles/',
       options   = { ignore: stylesDir + 'default.css' };
 
-  glob(stylesDir + '*.css', options, function(err, styles) {
-    callback(err, _.map(styles, function(style) {
+  return glob(stylesDir + '*.css', options)
+    .map(function(style) {
       var basename = path.basename(style, '.css'),
           name     = _.startCase(basename),
           pathName = path.relative('src', style);
 
       return { path: pathName, name: name };
-    }));
-  });
+    });
 }
 
 module.exports = {
   buildFilterCallback: buildFilterCallback,
   getStyleNames: getStyleNames,
-  glob: glob,
+  glob: globDefaults,
   parseHeader: parseHeader,
   regex: regex,
   replace: replace,
