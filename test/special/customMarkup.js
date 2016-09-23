@@ -10,31 +10,31 @@ describe('custom markup', function() {
     this.blocks = _.map(testHTML, 'innerHTML');
   });
 
-  it('should replace tabs', function(done) {
-    var filename = utility.buildPath('expect', 'tabreplace.txt'),
+  it('should replace tabs', function() {
+    var filename = utility.buildPath('fixtures', 'expect', 'tabreplace.txt'),
         actual   = this.blocks[0];
 
-    utility.expectedFile(filename, 'utf-8', actual, done);
+    return utility.expectedFile(filename, 'utf-8', actual);
   });
 
-  it('should keep custom markup', function(done) {
-    var filename = utility.buildPath('expect', 'custommarkup.txt'),
+  it('should keep custom markup', function() {
+    var filename = utility.buildPath('fixtures', 'expect', 'custommarkup.txt'),
         actual   = this.blocks[1];
 
-    utility.expectedFile(filename, 'utf-8', actual, done);
+    return utility.expectedFile(filename, 'utf-8', actual);
   });
 
-  it('should keep custom markup and replace tabs', function(done) {
-    var filename = utility.buildPath('expect', 'customtabreplace.txt'),
+  it('should keep custom markup and replace tabs', function() {
+    var filename = utility.buildPath('fixtures', 'expect', 'customtabreplace.txt'),
         actual   = this.blocks[2];
 
-    utility.expectedFile(filename, 'utf-8', actual, done);
+    return utility.expectedFile(filename, 'utf-8', actual);
   });
 
-  it('should keep the same amount of void elements (<br>, <hr>, ...)', function(done) {
-    var filename = utility.buildPath('expect', 'brInPre.txt'),
+  it('should keep the same amount of void elements (<br>, <hr>, ...)', function() {
+    var filename = utility.buildPath('fixtures', 'expect', 'brInPre.txt'),
         actual   = this.blocks[3];
 
-    utility.expectedFile(filename, 'utf-8', actual, done);
+    return utility.expectedFile(filename, 'utf-8', actual);
   });
 });

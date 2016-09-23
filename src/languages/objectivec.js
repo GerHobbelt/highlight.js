@@ -8,7 +8,7 @@ Category: common
 function(hljs) {
   var API_CLASS = {
     className: 'built_in',
-    begin: '(AV|CA|CF|CG|CI|MK|MP|NS|UI)\\w+',
+    begin: '(AV|CA|CF|CG|CI|MK|MP|NS|UI|XC)\\w+',
   };
   var OBJC_KEYWORDS = {
     keyword:
@@ -54,12 +54,12 @@ function(hljs) {
         ]
       },
       {
-        className: 'preprocessor',
+        className: 'meta',
         begin: '#',
         end: '$',
         contains: [
           {
-            className: 'title',
+            className: 'meta-string',
             variants: [
               { begin: '\"', end: '\"' },
               { begin: '<', end: '>' }
@@ -76,7 +76,6 @@ function(hljs) {
         ]
       },
       {
-        className: 'variable',
         begin: '\\.'+hljs.UNDERSCORE_IDENT_RE,
         relevance: 0
       }

@@ -12,7 +12,7 @@ function(hljs) {
   var SCHEME_SIMPLE_NUMBER_RE = '(\\-|\\+)?\\d+([./]\\d+)?';
   var SCHEME_COMPLEX_NUMBER_RE = SCHEME_SIMPLE_NUMBER_RE + '[+\\-]' + SCHEME_SIMPLE_NUMBER_RE + 'i';
   var BUILTINS = {
-    built_in:
+    'builtin-name':
       'case-lambda call/cc class define-class exit-handler field import ' +
       'inherit init-field interface let*-values let-values let/ec mixin ' +
       'opt-lambda override protect provide public rename require ' +
@@ -49,7 +49,7 @@ function(hljs) {
   };
 
   var SHEBANG = {
-    className: 'shebang',
+    className: 'meta',
     begin: '^#!',
     end: '$'
   };
@@ -95,7 +95,7 @@ function(hljs) {
   };
 
   var QUOTED_IDENT = {
-    className: 'variable',
+    className: 'symbol',
     begin: '\'' + SCHEME_IDENT_RE
   };
 
@@ -105,14 +105,13 @@ function(hljs) {
   };
 
   var LIST = {
-    className: 'list',
     variants: [
       { begin: '\\(', end: '\\)' },
       { begin: '\\[', end: '\\]' }
     ],
     contains: [
       {
-        className: 'keyword',
+        className: 'name',
         begin: SCHEME_IDENT_RE,
         lexemes: SCHEME_IDENT_RE,
         keywords: BUILTINS

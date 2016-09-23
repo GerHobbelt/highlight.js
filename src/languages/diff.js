@@ -10,7 +10,7 @@ function(hljs) {
     aliases: ['patch'],
     contains: [
       {
-        className: 'chunk',
+        className: 'meta',
         relevance: 10,
         variants: [
           {begin: /^@@ +\-\d+,\d+ +\+\d+,\d+ +@@$/, end: /$/},
@@ -19,7 +19,7 @@ function(hljs) {
         ]
       },
       {
-        className: 'header',
+        className: 'comment',
         variants: [
           {begin: /[iI]ndex:? /, end: /$/},
           {begin: /=====/, end: /=====$/},
@@ -39,7 +39,7 @@ function(hljs) {
         begin: '^\\-', end: '$'
       },
       {
-        className: 'change',
+        className: 'addition',
         begin: '^\\!', end: '$'
       }
     ]
