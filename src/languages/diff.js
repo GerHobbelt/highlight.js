@@ -6,49 +6,28 @@ Author: Vasily Polovnyov <vast@whiteants.net>
 
 function(hljs) {
   return {
+    aliases: ['patch'],
     contains: [
       {
         className: 'chunk',
-        begin: '^\\@\\@ +\\-\\d+,\\d+ +\\+\\d+,\\d+ +\\@\\@', end: '$',
-        relevance: 10
-      },
-      {
-        className: 'chunk',
-        begin: '^\\*\\*\\* +\\d+,\\d+ +\\*\\*\\*\\*', end: '$',
-        relevance: 10
-      },
-      {
-        className: 'chunk',
-        begin: '^\\-\\-\\- +\\d+,\\d+ +\\-\\-\\-\\-', end: '$',
-        relevance: 10
+        relevance: 10,
+        variants: [
+          {begin: /^\@\@ +\-\d+,\d+ +\+\d+,\d+ +\@\@$/, end: /$/},
+          {begin: /^\*\*\* +\d+,\d+ +\*\*\*\*$/, end: /$/},
+          {begin: /^\-\-\- +\d+,\d+ +\-\-\-\-$/, end: /$/}
+        ]
       },
       {
         className: 'header',
-        begin: '^[Ii]ndex:? ', end: '$'
-      },
-      {
-        className: 'header',
-        begin: '=====', end: '=====$'
-      },
-      {
-        className: 'header',
-        begin: '^\\-\\-\\-', end: '$'
-      },
-      {
-        className: 'header',
-        begin: '^diff \\-\\-git a/', end: '$'
-      },
-      {
-        className: 'header',
-        begin: '^\\*{3} ', end: '$'
-      },
-      {
-        className: 'header',
-        begin: '^\\+\\+\\+', end: '$'
-      },
-      {
-        className: 'header',
-        begin: '\\*{5}', end: '\\*{5}$'
+        variants: [
+          {begin: /[iI]ndex:? /, end: /$/},
+          {begin: /=====/, end: /=====$/},
+          {begin: /^\-\-\-/, end: /$/},
+          {begin: /^diff \-\-git a/, end: /$/},
+          {begin: /^\*{3} /, end: /$/},
+          {begin: /^\+\+\+/, end: /$/},
+          {begin: /\*{5}/, end: /\*{5}$/}
+        ]
       },
       {
         className: 'addition',
