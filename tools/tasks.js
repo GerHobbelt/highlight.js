@@ -1,16 +1,13 @@
 'use strict';
 
 var _        = require('lodash');
-var bluebird = require('bluebird');
 var del      = require('del');
-var fs       = bluebird.promisifyAll(require('fs'));
 var gear     = require('gear');
 var path     = require('path');
 var utility  = require('./utility');
 
-var parseHeader   = utility.parseHeader;
-var getStyleNames = utility.getStyleNames;
-var tasks         = require('gear-lib');
+var parseHeader = utility.parseHeader;
+var tasks       = require('gear-lib');
 
 tasks.clean = function(directories, blobs, done) {
   directories = _.isString(directories) ? [directories] : directories;
@@ -29,7 +26,7 @@ tasks.reorderDeps = function(options, blobs, done) {
   _.each(blobs, function(blob) {
     var basename = path.basename(blob.name),
         fileInfo = parseHeader(blob.result),
-        extra = {blob: blob, processed: false};
+        extra = { blob: blob, processed: false };
 
     buffer[basename] = _.merge(extra, fileInfo || {});
   });
@@ -72,16 +69,15 @@ tasks.template = function(template, blob, done) {
   return done(null, new gear.Blob(content, blob));
 };
 
-tasks.templateAll = function(template, blobs, done) {
-  var names, content;
+tasks.templateAll = function(options, blobs, done) {
+  return options.callback(blobs)
+    .then(function(data) {
+      var template = options.template || data.template,
+          content  = _.template(template)(data);
 
-  names = _.map(blobs, function(blob) {
-    return path.basename(blob.name, '.js');
-  });
-
-  content = _.template(template)({ names: names });
-
-  return done(null, [new blobs[0].constructor(content, blobs)]);
+      return done(null, [new gear.Blob(content)]);
+    })
+    .catch(done);
 };
 tasks.templateAll.type = 'collect';
 
@@ -93,7 +89,7 @@ tasks.rename = function(options, blob, done) {
 
   name = name.replace(ext, options.extname);
 
-  return done(null, new gear.Blob(blob.result, {name: name}));
+  return done(null, new gear.Blob(blob.result, { name: name }));
 };
 
 // Adds the contributors from `AUTHORS.en.txt` onto the `package.json` file
@@ -149,7 +145,8 @@ tasks.replaceSkippingStrings = function(params, blob, done) {
       // We found a starter sequence: either a `//` or a "quote"
       // In the case of `//` our terminator is the end of line.
       // Otherwise it's either a matching quote or an escape symbol.
-      terminator = match[0] !== '//' ? new RegExp('[' + match[0] + '\\\\]') : /$/m;
+      terminator = match[0] !== '//' ? new RegExp('[' + match[0] + '\\\\]')
+                                     : /$/m;
       start      = offset;
       offset    += 1;
 
@@ -209,32 +206,13 @@ tasks.readSnippet = function(options, blob, done) {
   function onRead(error, blob) {
     if(error) return done(error); // ignore missing snippets
 
-    var meta = {name: name + '.js', fileInfo: fileInfo};
+    var meta = { name: name + '.js', fileInfo: fileInfo };
 
     return done(null, new gear.Blob(blob.result, meta));
   }
 
   gear.Blob.readFile(snippetName, 'utf8', onRead, false);
 };
-
-// Translate the template for the demo in `demo/index.html` to a usable HTML
-// file.
-tasks.templateDemo = function(options, blobs, done) {
-  var name        = path.join('demo', 'index.html'),
-      getTemplate = fs.readFileAsync(name);
-
-  bluebird.join(getTemplate, getStyleNames(), function(template, styles) {
-    var content = _.template(template)({
-                    path: path,
-                    blobs: _.compact(blobs),
-                    styles: styles
-                  });
-
-    return done(null, [new gear.Blob(content)]);
-  })
-  .catch(done);
-};
-tasks.templateDemo.type = 'collect';
 
 // Packages up included languages into the core `highlight.js` and moves the
 // result into the `build` directory.
