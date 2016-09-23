@@ -14,7 +14,7 @@ function(hljs) {
     'Copy Send Sized Sync Drop Fn FnMut FnOnce drop Box ToOwned Clone ' +
     'PartialEq PartialOrd Eq Ord AsRef AsMut Into From Default Iterator ' +
     'Extend IntoIterator DoubleEndedIterator ExactSizeIterator Option ' +
-    'Some None Result Ok Err SliceConcatExt String ToString Vec ' +
+    'Result SliceConcatExt String ToString Vec ' +
     // macros
     'assert! assert_eq! bitflags! bytes! cfg! col! concat! concat_idents! ' +
     'debug_assert! debug_assert_eq! env! panic! file! format! format_args! ' +
@@ -34,7 +34,7 @@ function(hljs) {
         'float f32 f64 ' +
         'str char bool',
       literal:
-        'true false',
+        'true false Some None Ok Err',
       built_in:
         BUILTINS
     },
@@ -43,12 +43,12 @@ function(hljs) {
     contains: [
       hljs.C_LINE_COMMENT_MODE,
       BLOCK_COMMENT,
-      hljs.inherit(hljs.QUOTE_STRING_MODE, {illegal: null}),
+      hljs.inherit(hljs.QUOTE_STRING_MODE, {begin: /b?"/, illegal: null}),
       {
         className: 'string',
         variants: [
            { begin: /r(#*)".*?"\1(?!#)/ },
-           { begin: /'\\?(x\w{2}|u\w{4}|U\w{8}|.)'/ },
+           { begin: /b?'\\?(x\w{2}|u\w{4}|U\w{8}|.)'/ }
         ]
       },
       {
@@ -74,7 +74,13 @@ function(hljs) {
       },
       {
         className: 'meta',
-        begin: '#\\!?\\[', end: '\\]'
+        begin: '#\\!?\\[', end: '\\]',
+        contains: [
+          {
+            className: 'meta-string',
+            begin: /"/, end: /"/
+          }
+        ]
       },
       {
         className: 'class',
@@ -84,7 +90,7 @@ function(hljs) {
       },
       {
         className: 'class',
-        beginKeywords: 'trait enum', end: '{',
+        beginKeywords: 'trait enum struct', end: '{',
         contains: [
           hljs.inherit(hljs.UNDERSCORE_TITLE_MODE, {endsParent: true})
         ],

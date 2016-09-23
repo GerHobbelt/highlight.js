@@ -195,5 +195,10 @@ Contributors:
 - Jan Kühle <jkuehle90@gmail.com>
 - Stefan Wienert <stwienert@gmail.com>
 - Nikita Savchenko <zitros.lab@gmail.com>
+- Stefania Mellai <s.mellai@arduino.cc>
 - Nebuleon Fumika <nebuleon.fumika@gmail.com>
 - prince <MC.prince.0203@gmail.com>
+- Brendan Rocks <rocks.brendan@gmail.com>
+- Raphaël Assénat <raph@raphnet.net>
+- Matt Evans <matt@aptech.com>
+- Martin Braun <martin.braun@ettus.com>

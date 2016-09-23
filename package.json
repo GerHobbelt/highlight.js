@@ -6,7 +6,7 @@
     "syntax"
   ],
   "homepage": "https://highlightjs.org/",
-  "version": "9.0.0",
+  "version": "9.1.0",
   "author": {
     "name": "Ivan Sagalaev",
     "email": "maniac@softwaremaniacs.org"
@@ -39,6 +39,7 @@
     "lodash": "^3.3.1",
     "mocha": "^2.0.1",
     "should": "^7.0.1",
-    "tiny-worker": "^1.1.1"
+    "tiny-worker": "^1.1.1",
+    "js-beautify": "^1.5.10"
   }
 }
