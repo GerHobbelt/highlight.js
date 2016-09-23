@@ -1,3 +1,13 @@
+## Version 8.9.1
+
+Some last-minute changes reverted due to strange bug with minified browser build:
+
+- Scala case classes params highlight fixed
+- ECMAScript 6 modules import now do not require closing semicolon
+- ECMAScript 6 classes constructors now highlighted
+- Template string support for Typescript, as for ECMAScript 6
+- License added to not minified browser build
+
 ## Version 8.9.0
 
 New languages:
