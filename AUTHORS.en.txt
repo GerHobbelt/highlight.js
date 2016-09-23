@@ -210,3 +210,7 @@ Contributors:
 - Denis Ciccale <dciccale@gmail.com>
 - Michael Johnston <lastobelus@gmail.com>
 - Taras <oxdef@oxdef.info>
+- Philipp Wolfer <ph.wolfer@gmail.com>
+- Mikko Kouhia <mikko.kouhia@iki.fi>
+- Billy Quith <chinbillybilbo@gmail.com>
+- Herbert Shin <initbar@protonmail.ch>
