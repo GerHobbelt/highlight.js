@@ -10,8 +10,8 @@ function(hljs) {
     keyword:
       'in if for while finally var new function|0 do return void else break catch ' +
       'instanceof with throw case default try this switch continue typeof delete ' +
-      'let yield const class public private get set super ' +
-      'static implements enum export import declare type protected',
+      'let yield const class public private protected get set super ' +
+      'static implements enum export import declare type namespace abstract',
     literal:
       'true false null undefined NaN Infinity',
     built_in:
@@ -35,6 +35,17 @@ function(hljs) {
       },
       hljs.APOS_STRING_MODE,
       hljs.QUOTE_STRING_MODE,
+      { // template string
+        className: 'string',
+        begin: '`', end: '`',
+        contains: [
+          hljs.BACKSLASH_ESCAPE,
+          {
+            className: 'subst',
+            begin: '\\$\\{', end: '\\}'
+          }
+        ]
+      },
       hljs.C_LINE_COMMENT_MODE,
       hljs.C_BLOCK_COMMENT_MODE,
       {
@@ -80,7 +91,6 @@ function(hljs) {
         relevance: 0 // () => {} is more typical in TypeScript
       },
       {
-        className: 'constructor',
         beginKeywords: 'constructor', end: /\{/, excludeEnd: true,
         relevance: 10
       },
