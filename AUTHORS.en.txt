@@ -202,3 +202,11 @@ Contributors:
 - Raphaël Assénat <raph@raphnet.net>
 - Matt Evans <matt@aptech.com>
 - Martin Braun <martin.braun@ettus.com>
+- Boris Cherny <boris@performancejs.com>
+- John Foster <jfoster@esri.com>
+- Robert Dodier <robert.dodier@gmail.com>
+- Anthony Dugois <dev.anthonydugois@gmail.com>
+- Qeole <qeole@outlook.com>
+- Denis Ciccale <dciccale@gmail.com>
+- Michael Johnston <lastobelus@gmail.com>
+- Taras <oxdef@oxdef.info>
