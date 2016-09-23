@@ -166,3 +166,12 @@ Contributors:
 - Raivo Laanemets <raivo@infdot.com>
 - Jan T. Sott <jan.sott@gmail.com>
 - Alexander Kaupanin <kaupanin@gmail.com>
+- Kenneth Fuglsang <kfuglsang@gmail.com>
+- Raivo Laanemets <raivo@infdot.com>
+- David Anson <david@dlaa.me>
+- Louis Barranqueiro <louis.barranqueiro@gmail.com>
+- Tim Schumacher <tim@datenknoten.me>
+- Lucas Werkmeister <mail@lucaswerkmeister.de>
+- Dan Panzarella <alsoelp@gmail.com>
+- Bruno Dias <bruno.r.dias@gmail.com>
+- Jay Strybis <jay.strybis@gmail.com>

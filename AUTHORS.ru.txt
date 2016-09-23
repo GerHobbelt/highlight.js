@@ -162,3 +162,10 @@ URL:   https://highlightjs.org/
 - Сергей Машков <cy6erGn0m@gmail.com>
 - Райво Ляэнеметс <raivo@infdot.com>
 - Александр Каупанин <kaupanin@gmail.com>
+- Кеннет Фаглсанг <kfuglsang@gmail.com>
+- Дэвид Ансон <david@dlaa.me>
+- Льюис Барранкуэйро <louis.barranqueiro@gmail.com>
+- Тим Шумахер <tim@datenknoten.me>
+- Ден Панзарелла <alsoelp@gmail.com>
+- Бруно Диаз <bruno.r.dias@gmail.com>
+- Джей Стрибис <jay.strybis@gmail.com>
