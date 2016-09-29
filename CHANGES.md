@@ -3,8 +3,10 @@
 New languages:
 
 - *Flix* by [Magnus Madsen][]
+- *Logtalk* by [Paulo Moura][]
 
 [Magnus Madsen]: https://github.com/magnus-madsen
+[Paulo Moura]: https://github.com/pmoura
 
 
 ## Version 9.7.0

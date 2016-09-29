@@ -104,7 +104,7 @@ function(hljs) {
   CURLY_BRACKTED_TERMS.contains = inner;
 
   return {
-    aliases: ['lgt'],
+    aliases: ['logtalk', 'lgt'],
     case_insensitive: true,
     contains: inner.concat([
       {begin: /\.$/} // relevance booster
