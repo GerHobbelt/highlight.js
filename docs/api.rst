@@ -1,7 +1,7 @@
 Library API
 ===========
 
-Highilght.js exports a few functions as methods of the ``hljs`` object.
+Highlight.js exports a few functions as methods of the ``hljs`` object.
 
 
 ``highlight(name, value, ignore_illegals, continuation)``
@@ -52,6 +52,10 @@ Applies highlighting to a DOM node containing code.
 This function is the one to use to apply highlighting dynamically after page load
 or within initialization code of third-party Javascript frameworks.
 
+The function uses language detection by default but you can specify the language
+in the ``class`` attribute of the DOM node. See the :doc:`class reference
+</css-classes-reference>` for all available language names and aliases.
+
 
 ``configure(options)``
 ----------------------
@@ -60,7 +64,7 @@ Configures global options:
 
 * ``tabReplace``: a string used to replace TAB characters in indentation.
 * ``useBR``: a flag to generate ``<br>`` tags instead of new-line characters in the output, useful when code is marked up using a non-``<pre>`` container.
-* ``classPrefix``: a sting prefix added before class names in the generated markup, used for backwards compatibility with stylesheets.
+* ``classPrefix``: a string prefix added before class names in the generated markup, used for backwards compatibility with stylesheets.
 * ``languages``: an array of language names and aliases restricting auto detection to only these languages.
 
 Accepts an object representing options with the values to updated. Other options don't change

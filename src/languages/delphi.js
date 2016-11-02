@@ -10,14 +10,28 @@ function(hljs) {
     'xorwrite goto near function end div overload object unit begin string on inline repeat until ' +
     'destructor write message program with read initialization except default nil if case cdecl in ' +
     'downto threadvar of try pascal const external constructor type public then implementation ' +
-    'finally published procedure';
-  var COMMENT =  {
-    className: 'comment',
-    variants: [
-      {begin: /\{/, end: /\}/, relevance: 0},
-      {begin: /\(\*/, end: /\*\)/, relevance: 10}
-    ]
-  };
+    'finally published procedure absolute reintroduce operator as is abstract alias assembler ' +
+    'bitpacked break continue cppdecl cvar enumerator experimental platform deprecated ' +
+    'unimplemented dynamic export far16 forward generic helper implements interrupt iochecks ' +
+    'local name nodefault noreturn nostackframe oldfpccall otherwise saveregisters softfloat ' +
+    'specialize strict unaligned varargs ';
+  var COMMENT_MODES = [
+    hljs.C_LINE_COMMENT_MODE,
+    hljs.COMMENT(
+      /\{/,
+      /\}/,
+      {
+        relevance: 0
+      }
+    ),
+    hljs.COMMENT(
+      /\(\*/,
+      /\*\)/,
+      {
+        relevance: 10
+      }
+    )
+  ];
   var STRING = {
     className: 'string',
     begin: /'/, end: /'/,
@@ -43,20 +57,19 @@ function(hljs) {
         begin: /\(/, end: /\)/,
         keywords: KEYWORDS,
         contains: [STRING, CHAR_STRING]
-      },
-      COMMENT
-    ]
+      }
+    ].concat(COMMENT_MODES)
   };
   return {
+    aliases: ['dpr', 'dfm', 'pas', 'pascal', 'freepascal', 'lazarus', 'lpr', 'lfm'],
     case_insensitive: true,
     keywords: KEYWORDS,
-    illegal: /("|\$[G-Zg-z]|\/\*|<\/)/,
+    illegal: /"|\$[G-Zg-z]|\/\*|<\/|\|/,
     contains: [
-      COMMENT, hljs.C_LINE_COMMENT_MODE,
       STRING, CHAR_STRING,
       hljs.NUMBER_MODE,
       CLASS,
       FUNCTION
-    ]
+    ].concat(COMMENT_MODES)
   };
 }
