@@ -1,3 +1,8 @@
+New languages:
+
+- *Epp* by [Ben Ford][]
+
+
 ## Version 9.9.0
 
 New languages
