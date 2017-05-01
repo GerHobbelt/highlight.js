@@ -2,6 +2,7 @@
 Language: Protocol Buffers
 Author: Dan Tao <daniel.tao@gmail.com>
 Description: Protocol buffer message definition format
+Category: protocols
 */
 
 function(hljs) {
@@ -33,7 +34,6 @@ function(hljs) {
         keywords: 'rpc returns'
       },
       {
-        className: 'constant',
         begin: /^\s*[A-Z_]+/,
         end: /\s*=/, excludeEnd: true
       }
