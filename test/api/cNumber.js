@@ -1,7 +1,7 @@
 'use strict';
 
 let _       = require('lodash');
-let hljs    = require('../../build');
+let hljs    = require('../../build/node/lib');
 let utility = require('../utility');
 
 const pattern      = new RegExp(`${hljs.C_NUMBER_RE}$`);

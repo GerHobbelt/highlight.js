@@ -1,26 +1,22 @@
 language: node_js
 node_js:
-  - "4"
-  - "5"
+  - 4
+  - 5
+  - 6
+  - 7
+  - latest
 env:
   -
-  - BROWSER=1
-  - BROWSER=1 NOCOMPRESS=1
+  - NOCOMPRESS=1
+#  - BROWSER=1
+#  - BROWSER=1 NOCOMPRESS=1
 script:
   - |
-    export BUILD_PARAMS=""
-
-    if [ "x$BROWSER" = "x1" ]; then
-      export BUILD_PARAMS="$BUILD_PARAMS -t browser"
-    else
-      export BUILD_PARAMS="$BUILD_PARAMS -t node"
-    fi
-
     if [ "x$NOCOMPRESS" = "x1" ]; then
-      export BUILD_PARAMS="$BUILD_PARAMS -n"
+      npm run build
+    else
+      npm run build_minified
     fi
-
-    node tools/build.js $BUILD_PARAMS
 
     if [ "x$BROWSER" = "x1" ]; then
       npm run test-browser

@@ -4,7 +4,7 @@ let _        = require('lodash');
 let bluebird = require('bluebird');
 let fs       = bluebird.promisifyAll(require('fs'));
 let glob     = require('glob');
-let hljs     = require('../../build');
+let hljs     = require('../../build/node/lib');
 let path     = require('path');
 let utility  = require('../utility');
 

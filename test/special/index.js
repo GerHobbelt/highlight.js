@@ -2,7 +2,7 @@
 
 let _        = require('lodash');
 let bluebird = require('bluebird');
-let hljs     = require('../../build');
+let hljs     = require('../../build/node/lib');
 let jsdomEnv = bluebird.promisify(require('jsdom').env);
 let readFile = bluebird.promisify(require('fs').readFile);
 let utility  = require('../utility');

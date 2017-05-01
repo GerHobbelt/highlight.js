@@ -1,6 +1,6 @@
 'use strict';
 
-let hljs   = require('../../build');
+let hljs   = require('../../build/node/lib');
 let should = require('should');
 
 describe('.highlight()', function() {

@@ -1,6 +1,6 @@
 'use strict';
 
-let hljs = require('../../build');
+let hljs = require('../../build/node/lib');
 
 const pattern = new RegExp(`^${hljs.UNDERSCORE_IDENT_RE}$`);
 

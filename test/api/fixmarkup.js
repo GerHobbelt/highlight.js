@@ -1,7 +1,7 @@
 'use strict';
 
 let should = require('should');
-let hljs   = require('../../build');
+let hljs   = require('../../build/node/lib');
 
 describe('.fixmarkup()', function() {
   after(function() {
