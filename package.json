@@ -22,6 +22,7 @@
   },
   "main": "./lib/index.js",
   "scripts": {
+    "build": "node tools/build.js",
     "test": "./node_modules/.bin/mocha test/",
     "test-browser": "./node_modules/.bin/mocha test/browser/"
   },
