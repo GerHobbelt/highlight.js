@@ -12,14 +12,13 @@ this is done during the build process and details differ for different build tar
 
   function(hljs) {
     return {
-      defaultMode: {
-        contains: [ ..., hljs.NUMBER_MODE, ... ]
-      }
+      keywords: 'foo bar',
+      contains: [ ..., hljs.NUMBER_MODE, ... ]
     }
   }
-  
+
 The name of the file is used as a short language identifier and should be usable as a class name in HTML and CSS.
-  
+
 
 2. Provide meta data
 --------------------
@@ -63,13 +62,15 @@ and test if it's properly detected and doesn't break detection of other language
 4. Write class reference
 ------------------------
 
-Class reference lives in the file ``classref.txt``. Describe shortly names of all meaningful modes used in your language definition.
+Class reference lives in the :doc:`CSS classes reference </css-classes-reference>`..
+Describe shortly names of all meaningful modes used in your language definition.
 
 
-5. Add yourself to AUTHORS.*.txt
---------------------------------
+5. Add yourself to AUTHORS.*.txt and CHANGES.md
+-----------------------------------------------
 
 If you're a new contributor add yourself to the authors list. Feel free to use either English and/or Russian version.
+Also it will be good to update CHANGES.md.
 
 
 6. Create a pull request

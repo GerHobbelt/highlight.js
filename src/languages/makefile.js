@@ -7,9 +7,10 @@ function(hljs) {
   var VARIABLE = {
     className: 'variable',
     begin: /\$\(/, end: /\)/,
-    contains: hljs.BACKSLASH_ESCAPE
-  }
+    contains: [hljs.BACKSLASH_ESCAPE]
+  };
   return {
+    aliases: ['mk', 'mak'],
     contains: [
       hljs.HASH_COMMENT_MODE,
       {
@@ -23,7 +24,7 @@ function(hljs) {
             relevance: 0,
             contains: [
               VARIABLE
-            ],
+            ]
           }
         }
       },
@@ -34,7 +35,7 @@ function(hljs) {
       {
         className: 'phony',
         begin: /^\.PHONY:/, end: /$/,
-        keywords: '.PHONY', lexems: /[\.\w]+/
+        keywords: '.PHONY', lexemes: /[\.\w]+/
       },
       {
         begin: /^\t+/, end: /$/,

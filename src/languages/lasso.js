@@ -48,7 +48,7 @@ function(hljs) {
       className: 'markup',
       end: '\\[/noprocess\\]',
       returnEnd: true,
-      contains: [ HTML_COMMENT ]
+      contains: [HTML_COMMENT]
     }
   };
   var LASSO_START = {
@@ -63,7 +63,8 @@ function(hljs) {
     hljs.C_LINE_COMMENT_MODE,
     {
       className: 'javadoc',
-      begin: '/\\*\\*!', end: '\\*/'
+      begin: '/\\*\\*!', end: '\\*/',
+      contains: [hljs.PHRASAL_WORDS_MODE]
     },
     hljs.C_BLOCK_COMMENT_MODE,
     hljs.inherit(hljs.C_NUMBER_MODE, {begin: hljs.C_NUMBER_RE + '|-?(infinity|nan)\\b'}),
@@ -75,12 +76,15 @@ function(hljs) {
     },
     {
       className: 'variable',
-      begin: '[#$]' + LASSO_IDENT_RE
-    },
-    {
-      className: 'variable',
-      begin: '#', end: '\\d+',
-      illegal: '\\W'
+      variants: [
+        {
+          begin: '[#$]' + LASSO_IDENT_RE
+        },
+        {
+          begin: '#', end: '\\d+',
+          illegal: '\\W'
+        }
+      ]
     },
     {
       className: 'tag',
@@ -89,39 +93,48 @@ function(hljs) {
     },
     {
       className: 'attribute',
-      begin: '\\.\\.\\.|-' + hljs.UNDERSCORE_IDENT_RE
+      variants: [
+        {
+          begin: '-' + hljs.UNDERSCORE_IDENT_RE,
+          relevance: 0
+        },
+        {
+          begin: '(\\.\\.\\.)'
+        }
+      ]
     },
     {
       className: 'subst',
-      begin: '->\\s*',
-      contains: [ LASSO_DATAMEMBER ]
-    },
-    {
-      className: 'subst',
-      begin: ':=|[-+*/%=<>&|!?\\\\]+',
-      relevance: 0
+      variants: [
+        {
+          begin: '->\\s*',
+          contains: [LASSO_DATAMEMBER]
+        },
+        {
+          begin: ':=|/(?!\\w)=?|[-+*%=<>&|!?\\\\]+',
+          relevance: 0
+        }
+      ]
     },
     {
       className: 'built_in',
       begin: '\\.\\.?',
       relevance: 0,
-      contains: [ LASSO_DATAMEMBER ]
+      contains: [LASSO_DATAMEMBER]
     },
     {
       className: 'class',
-      beginWithKeyword: true, keywords: 'define',
+      beginKeywords: 'define',
       returnEnd: true, end: '\\(|=>',
       contains: [
-        {
-          className: 'title',
-          begin: hljs.UNDERSCORE_IDENT_RE + '(=(?!>))?'
-        }
+        hljs.inherit(hljs.TITLE_MODE, {begin: hljs.UNDERSCORE_IDENT_RE + '(=(?!>))?'})
       ]
     }
   ];
   return {
+    aliases: ['ls', 'lassoscript'],
     case_insensitive: true,
-    lexems: LASSO_IDENT_RE + '|&[lg]t;',
+    lexemes: LASSO_IDENT_RE + '|&[lg]t;',
     keywords: LASSO_KEYWORDS,
     contains: [
       {
@@ -132,7 +145,8 @@ function(hljs) {
           className: 'markup',
           end: '\\[|' + LASSO_ANGLE_RE,
           returnEnd: true,
-          contains: [ HTML_COMMENT ]
+          relevance: 0,
+          contains: [HTML_COMMENT]
         }
       },
       LASSO_NOPROCESS,
@@ -142,7 +156,7 @@ function(hljs) {
         begin: '\\[no_square_brackets',
         starts: {
           end: '\\[/no_square_brackets\\]', // not implemented in the language
-          lexems: LASSO_IDENT_RE + '|&[lg]t;',
+          lexemes: LASSO_IDENT_RE + '|&[lg]t;',
           keywords: LASSO_KEYWORDS,
           contains: [
             {
@@ -153,7 +167,7 @@ function(hljs) {
                 className: 'markup',
                 end: LASSO_ANGLE_RE,
                 returnEnd: true,
-                contains: [ HTML_COMMENT ]
+                contains: [HTML_COMMENT]
               }
             },
             LASSO_NOPROCESS,

@@ -16,13 +16,13 @@ from functools import partial
 
 REPLACES = {
     'case_insensitive': 'cI',
-    'lexems': 'l',
+    'lexemes': 'l',
     'contains': 'c',
     'keywords': 'k',
     'subLanguage': 'sL',
     'className': 'cN',
     'begin': 'b',
-    'beginWithKeyword': 'bWK',
+    'beginKeywords': 'bK',
     'end': 'e',
     'endsWithParent': 'eW',
     'illegal': 'i',
@@ -31,6 +31,7 @@ REPLACES = {
     'returnBegin': 'rB',
     'returnEnd': 'rE',
     'relevance': 'r',
+    'variants': 'v',
 
     'IDENT_RE': 'IR',
     'UNDERSCORE_IDENT_RE': 'UIR',
@@ -38,26 +39,38 @@ REPLACES = {
     'C_NUMBER_RE': 'CNR',
     'BINARY_NUMBER_RE': 'BNR',
     'RE_STARTERS_RE': 'RSR',
+    'BACKSLASH_ESCAPE': 'BE',
     'APOS_STRING_MODE': 'ASM',
     'QUOTE_STRING_MODE': 'QSM',
-    'BACKSLASH_ESCAPE': 'BE',
+    'PHRASAL_WORDS_MODE': 'PWM',
     'C_LINE_COMMENT_MODE': 'CLCM',
-    'C_BLOCK_COMMENT_MODE': 'CBLCLM',
+    'C_BLOCK_COMMENT_MODE': 'CBCM',
     'HASH_COMMENT_MODE': 'HCM',
+    'NUMBER_MODE': 'NM',
     'C_NUMBER_MODE': 'CNM',
     'BINARY_NUMBER_MODE': 'BNM',
-    'NUMBER_MODE': 'NM',
+    'CSS_NUMBER_MODE': 'CSSNM',
+    'REGEXP_MODE': 'RM',
+    'TITLE_MODE': 'TM',
+    'UNDERSCORE_TITLE_MODE': 'UTM',
 
     'beginRe': 'bR',
     'endRe': 'eR',
     'illegalRe': 'iR',
-    'lexemsRe': 'lR',
+    'lexemesRe': 'lR',
     'terminators': 't',
     'terminator_end': 'tE',
 }
 
 CATEGORIES = {
-    'common': ['bash', 'java', 'ini', 'sql', 'diff', 'php', 'cs', 'cpp', 'ruby', 'python', 'css', 'perl', 'xml', 'javascript', 'http', 'json'],
+    'common': [
+        'apache', 'nginx',
+        'java', 'cs', 'cpp', 'objectivec',
+        'ini', 'diff', 'bash', 'makefile',
+        'sql', 'php', 'ruby', 'python', 'perl',
+        'css', 'xml', 'javascript', 'coffeescript', 'http', 'json',
+        'markdown',
+    ],
 }
 
 def lang_name(filename):
@@ -100,8 +113,11 @@ def compress_content(tools_path, content, filetype='js'):
             content = mapnonstrings(content, partial(re.sub, r'\b%s\b' % s, r))
         content = re.sub(r'(block|parentNode)\.cN', r'\1.className', content)
 
-    args = ['java', '-jar', os.path.join(tools_path, 'yuicompressor.jar'), '--type', filetype]
-    p = subprocess.Popen(args, stdin=subprocess.PIPE, stdout=subprocess.PIPE)
+    try:
+        args = ['java', '-jar', os.path.join(tools_path, 'yuicompressor.jar'), '--type', filetype]
+        p = subprocess.Popen(args, stdin=subprocess.PIPE, stdout=subprocess.PIPE)
+    except FileNotFoundError as e:
+        raise RuntimeError('Couldn\'t find "%s" which is required for compression to work. You can skip compression with the `-n` option.' % args[0]) from e
     p.stdin.write(content.encode('utf-8'))
     p.stdin.close()
     content = p.stdout.read().decode('utf-8')
@@ -175,11 +191,10 @@ def wrap_language(filename, content, compressed):
     '''
     name = lang_name(filename)
     if compressed:
-        name = ('["%s"]' if '-' in name or name[0].isdigit() else '.%s') % name
         content = content.rstrip(';')
-        wrap = 'hljs.LANGUAGES%s=%s(hljs);'
+        wrap = 'hljs.registerLanguage("%s",%s);'
     else:
-        wrap = 'hljs.LANGUAGES[\'%s\'] = %s(hljs);\n'
+        wrap = '\nhljs.registerLanguage(\'%s\', %s);\n'
     return wrap % (name, content)
 
 def glue_files(hljs_filename, language_filenames, compressed):
@@ -194,9 +209,23 @@ def glue_files(hljs_filename, language_filenames, compressed):
         file_func = strip_read
     return ''.join([hljs] + [wrap_language(f, file_func(f), compressed) for f in language_filenames])
 
-def build_browser(root, build_path, filenames, options, is_amd=False):
+def copy_docs(root, build_path):
+    build_docs_path = os.path.join(build_path, 'docs')
+    os.makedirs(build_docs_path)
+
+    docs_path = os.path.join(root, 'docs')
+    filenames = os.listdir(docs_path)
+    for filename in filenames:
+        if '.rst' in filename:
+            shutil.copyfile(
+                os.path.join(docs_path, filename),
+                os.path.join(build_docs_path, filename)
+            )
+
+def build_browser(root, build_path, filenames, options, is_amd=False, need_copy_docs=True):
     src_path = os.path.join(root, 'src')
     tools_path = os.path.join(root, 'tools')
+
     print('Building %d files:\n%s' % (len(filenames), '\n'.join(filenames)))
     content = glue_files(os.path.join(src_path, 'highlight.js'), filenames, False)
     if is_amd:
@@ -229,8 +258,12 @@ def build_browser(root, build_path, filenames, options, is_amd=False):
         print('Compressed size:', len(content.encode('utf-8')))
     utf8_open(os.path.join(build_path, 'highlight.pack.js'), 'w').write(content)
 
+    if need_copy_docs:
+        print('Copying docs...')
+        copy_docs(root, build_path)
+
 def build_umd(root, build_path, filenames, options):
-    build_browser(root, build_path, filenames, options, True)
+    build_browser(root, build_path, filenames, options, True, False)
 
 # AMD is treated identical to UMD (which includes AMD)
 def build_amd(root, build_path, filenames, options):
@@ -238,23 +271,35 @@ def build_amd(root, build_path, filenames, options):
 
 def build_node(root, build_path, filenames, options):
     src_path = os.path.join(root, 'src')
+    os.makedirs(os.path.join(build_path, 'lib', 'languages'))
+
     print('Building %d files:' % len(filenames))
     for filename in filenames:
         print(filename)
         content = 'module.exports = %s;' % strip_read(filename)
-        utf8_open(os.path.join(build_path, os.path.basename(filename)), 'w').write(content)
+        utf8_open(os.path.join(build_path, 'lib', 'languages', os.path.basename(filename)), 'w').write(content)
     filename = os.path.join(src_path, 'highlight.js')
     print(filename)
+    core = 'var Highlight = %s;' % strip_read(filename)
+    core += '\nmodule.exports = Highlight;'
+    utf8_open(os.path.join(build_path, 'lib', 'highlight.js'), 'w').write(core)
 
     print('Registering languages with the library...')
-    hljs = 'var hljs = new %s();' % strip_read(filename)
+    hljs = "var Highlight = require('./highlight');\nvar hljs = new Highlight();"
     filenames = map(os.path.basename, filenames)
     for filename in filenames:
-        hljs += '\nhljs.LANGUAGES[\'%s\'] = require(\'./%s\')(hljs);' % (lang_name(filename), filename)
+        hljs += '\nhljs.registerLanguage(\'%s\', require(\'./languages/%s\'));' % (lang_name(filename), filename)
     hljs += '\nmodule.exports = hljs;'
-    utf8_open(os.path.join(build_path, 'highlight.js'), 'w').write(hljs)
+    utf8_open(os.path.join(build_path, 'lib', 'index.js'), 'w').write(hljs)
     if options.compress:
         print('Notice: not compressing files for "node" target.')
+
+    print('Copying over Metafiles...')
+    filenames = ['LICENSE', 'README.md']
+    for filename in filenames:
+        source = os.path.join(root, filename)
+        dest   = os.path.join(build_path, filename)
+        shutil.copyfile(source, dest)
 
     print('Adding package.json...')
     package = json.load(utf8_open(os.path.join(src_path, 'package.json')))
@@ -264,14 +309,19 @@ def build_node(root, build_path, filenames, options):
     content = json.dumps(package, indent=2, ensure_ascii=False)
     utf8_open(os.path.join(build_path, 'package.json'), 'w').write(content)
 
+    print('Copying docs...')
+    copy_docs(root, build_path)
+
 def build_cdn(root, build_path, filenames, options):
     src_path = os.path.join(root, 'src')
     tools_path = os.path.join(root, 'tools')
     if not options.compress:
         print('Notice: forcing compression for "cdn" target')
         options.compress = True
-    build_browser(root, build_path, filenames, options)
+
+    build_browser(root, build_path, filenames, options, False, False)
     os.rename(os.path.join(build_path, 'highlight.pack.js'), os.path.join(build_path, 'highlight.min.js'))
+
     print('Compressing all languages...')
     lang_path = os.path.join(build_path, 'languages')
     os.mkdir(lang_path)
@@ -281,6 +331,7 @@ def build_cdn(root, build_path, filenames, options):
         content = compress_content(tools_path, strip_read(filename))
         content = wrap_language(filename, content, True)
         utf8_open(os.path.join(lang_path, '%s.min.js' % lang_name(filename)), 'w').write(content)
+
     print('Compressing styles...')
     build_style_path = os.path.join(build_path, 'styles')
     src_style_path = os.path.join(src_path, 'styles')

@@ -8,6 +8,7 @@ Description: Matcher for Handlebars as well as EmberJS additions.
 function(hljs) {
   var EXPRESSION_KEYWORDS = 'each in with if else unless bindattr action collection debugger log outlet template unbound view yield';
   return {
+    aliases: ['hbs', 'html.hbs', 'html.handlebars'],
     case_insensitive: true,
     subLanguage: 'xml', subLanguageMode: 'continuous',
     contains: [
@@ -16,7 +17,7 @@ function(hljs) {
         begin: '{{', end: '}}',
         contains: [
           {
-            className: 'begin-block', begin: '\#[a-zA-Z\ \.]+',
+            className: 'begin-block', begin: '\#[a-zA-Z\-\ \.]+',
             keywords: EXPRESSION_KEYWORDS
           },
           {
@@ -24,11 +25,11 @@ function(hljs) {
             begin: '"', end: '"'
           },
           {
-            className: 'end-block', begin: '\\\/[a-zA-Z\ \.]+',
+            className: 'end-block', begin: '\\\/[a-zA-Z\-\ \.]+',
             keywords: EXPRESSION_KEYWORDS
           },
           {
-            className: 'variable', begin: '[a-zA-Z\.]+',
+            className: 'variable', begin: '[a-zA-Z\-\.]+',
             keywords: EXPRESSION_KEYWORDS
           }
         ]
