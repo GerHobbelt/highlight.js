@@ -405,7 +405,7 @@ function() {
     var result = '';
     for(var current = top; current != language; current = current.parent) {
       if (current.className) {
-        result += buildSpan(current.className, result, true);
+        result = buildSpan(current.className, '', true) + result;
       }
     }
     var mode_buffer = '';
