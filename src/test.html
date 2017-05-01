@@ -378,7 +378,8 @@ def somefunc(param1='', param2=0):
         print 'Gre\'ater'
     return (param2 - param1 + 1 + 0b10l) or None
 
-class SomeClass:<br>    pass
+class SomeClass:
+    pass
 
 &gt;&gt;&gt; message = '''interpreter
 ... prompt'''
@@ -603,38 +604,50 @@ datahere</code></pre>
   <tr>
     <th>Scala
     <td class="scala">
-<pre><code>object abstractTypes extends Application {
-  abstract class SeqBuffer {
-    type T; val element: Seq[T]; def length = element.length
-  }
+<pre><code>case class Person(name: String, age: Int)
+
+def absoluteValue(n: Int): Int =
+  if (n < 0) -n else n
+
+val hux = "hux"
+def mux = "mux"
+def qux: String = "qux"
+
+type ξ[A] = (A, A)
+
+trait Hist { lhs =>
+  def ⊕(rhs: Hist): Hist
 }
 
-/** Turn command line arguments to uppercase */
-object Main {
-  def main(args: Array[String]) {
-    val res = for (a &lt;- args) yield a.toUpperCase
-    println("Arguments: " + res.toString)
-  }
+def gsum[A: Ring](as: Seq[A]): A =
+  as.foldLeft(Ring[A].zero)(_ + _)
+
+sealed trait Compass
+case object North extends Compass
+case object South extends Compass
+case object East extends Compass
+case object West extends Compass
+
+trait Cake {
+  type T;
+  val things: Seq[T]
+
+  abstract class Spindler
+
+  def spindle(s: Spindler, ts: Seq[T], reversed: Boolean = false): Seq[T]
 }
 
-/** Maps are easy to use in Scala. */
-object Maps {
-  val colors = Map("red" -&gt; 0xFF0000,
-                   "turquoise" -&gt; 0x00FFFF,
-                   "black" -&gt; 0x000000,
-                   "orange" -&gt; 0xFF8040,
-                   "brown" -&gt; 0x804000)
-  def main(args: Array[String]) {
-    for (name &lt;- args) println(
-      colors.get(name) match {
-        case Some(code) =&gt;
-          name + " has code: " + code
-        case None =&gt;
-          "Unknown color: " + name
-      }
-    )
-  }
-}
+val colors = Map(
+  "red" -&gt; 0xFF0000,
+  "turquoise" -&gt; 0x00FFFF,
+  "black" -&gt; 0x000000,
+  "orange" -&gt; 0xFF8040,
+  "brown" -&gt; 0x804000)
+
+lazy val ns = for {
+  x <- 0 until 100
+  y <- 0 until 100
+} yield (x + y) * 33.33
 </code></pre>
 
   <tr>
@@ -1598,6 +1611,8 @@ public abstract class L2Character extends L2Object {
   @SuppressWarnings( { "nls", "unqualified-field-access", "boxing" })
   public class NotifyAITask implements Runnable {
     private final CtrlEvent _evt;
+
+    List&lt;String&gt; mList = new ArrayList&lt;String&gt;()
 
     public void run() {
       try {
@@ -3693,14 +3708,6 @@ if( propFile.canRead() ) {
 </code></pre>
 
   <tr>
-    <th>Non-pre container
-    <td>
-<div id="codecontainer" class="code">for x in [1, 2, 3]:<br>
-&nbsp;&nbsp;count(x)<br>
-</div>
-<script>hljs.highlightBlock(document.getElementById('codecontainer'), null, true);</script>
-
-  <tr>
     <th>Language alias
     <td>
       <pre><code class="language-js">var x = '&lt;p&gt;this should &lt;b&gt;not&lt;/b&gt; be highlighted as &lt;em&gt;HTML&lt;/em&gt;';</code></pre>
@@ -3714,7 +3721,7 @@ if( propFile.canRead() ) {
   <tr>
     <th>Disabled highlighting
     <td>
-<pre><code class="no-highlight">&lt;div id="contents"&gt;
+<pre><code class="nohighlight">&lt;div id="contents"&gt;
   &lt;p&gt;Hello, World!c
 &lt;/div&gt;
 </code></pre>
