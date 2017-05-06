@@ -164,6 +164,7 @@ URL:   https://highlightjs.org/
 - Эндрю Фармер <ahfarmer@gmail.com>
 - Сергей Машков <cy6erGn0m@gmail.com>
 - Райво Ляэнеметс <raivo@infdot.com>
+- Jan T. Sott <jan.sott@gmail.com>
 - Александр Каупанин <kaupanin@gmail.com>
 - Кеннет Фаглсанг <kfuglsang@gmail.com>
 - Дэвид Ансон <david@dlaa.me>
@@ -232,6 +233,7 @@ URL:   https://highlightjs.org/
 - Александер Лихтер <manniL@gmx.net>
 - Николя Ле Галль <contact@nlegall.fr>
 - Кентон Хамалуик <kentonh@gmail.com>
+- Aaron Dandy <aaron.dandy@live.com>
 - Марвин Сайнат <contact@zgmrvn.com>
 - Михаель Родлер <contact@f0rki.at>
 - Грейт Гай <g8tguy@g8tguy.com>
