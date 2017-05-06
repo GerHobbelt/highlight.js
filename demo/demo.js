@@ -1,3 +1,6 @@
+/* eslint-env jquery, browser */
+/* global hljs */
+
 (function() {
   'use strict';
 
@@ -8,7 +11,7 @@
       $styleContainer    = $('#styles');
 
   function resizeLists() {
-    var screenHeight = $window.height()
+    var screenHeight = $window.height();
 
     $categoryContainer.css('max-height', screenHeight / 4);
     $categoryContainer.perfectScrollbar('update');

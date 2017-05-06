@@ -135,6 +135,7 @@ hljs.registerLanguage('qml', require('./languages/qml'));
 hljs.registerLanguage('r', require('./languages/r'));
 hljs.registerLanguage('rib', require('./languages/rib'));
 hljs.registerLanguage('roboconf', require('./languages/roboconf'));
+hljs.registerLanguage('routeros', require('./languages/routeros'));
 hljs.registerLanguage('rsl', require('./languages/rsl'));
 hljs.registerLanguage('ruleslanguage', require('./languages/ruleslanguage'));
 hljs.registerLanguage('rust', require('./languages/rust'));

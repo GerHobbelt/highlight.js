@@ -21,7 +21,7 @@ script:
   - |
     if [ "x$ESLINT" = "x1" ] ; then
       # specific environment for just linting
-      eslint src/ && exit 0
+      eslint src/ demo/ && exit 0
       exit 1
     fi
 

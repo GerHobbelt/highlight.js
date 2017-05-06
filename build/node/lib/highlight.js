@@ -86,7 +86,7 @@ https://highlightjs.org/
     classes = classes.split(/\s+/);
 
     for (i = 0, length = classes.length; i < length; i++) {
-      _class = classes[i]
+      _class = classes[i];
 
       if (isNotHighlighted(_class) || getLanguage(_class)) {
         return _class;
@@ -227,7 +227,7 @@ https://highlightjs.org/
   function compileLanguage(language) {
 
     function reStr(re) {
-        return (re && re.source) || re;
+      return (re && re.source) || re;
     }
 
     function langRe(value, global) {
@@ -290,9 +290,9 @@ https://highlightjs.org/
         mode.contains = [];
       }
       mode.contains = Array.prototype.concat.apply([], mode.contains.map(function(c) {
-        return expand_mode(c === 'self' ? mode : c)
+        return expand_mode(c === 'self' ? mode : c);
       }));
-      mode.contains.forEach(function(c) {compileMode(c, mode);});
+      mode.contains.forEach(function(c) { compileMode(c, mode); });
 
       if (mode.starts) {
         compileMode(mode.starts, parent);
@@ -356,7 +356,7 @@ https://highlightjs.org/
     function buildSpan(classname, insideSpan, leaveOpen, noPrefix) {
       var classPrefix = noPrefix ? '' : options.classPrefix,
           openSpan    = '<span class="' + classPrefix,
-          closeSpan   = leaveOpen ? '' : spanEndTag
+          closeSpan   = leaveOpen ? '' : spanEndTag;
 
       openSpan += classname + '">';
 
@@ -511,7 +511,7 @@ https://highlightjs.org/
     var relevance = 0;
     try {
       var match, count, index = 0;
-      while (true) {
+      for (;;) {
         top.terminators.lastIndex = index;
         match = top.terminators.exec(value);
         if (!match)
@@ -589,12 +589,12 @@ https://highlightjs.org/
     return !(options.tabReplace || options.useBR)
       ? value
       : value.replace(fixMarkupRe, function(match, p1) {
-          if (options.useBR && match === '\n') {
-            return '<br>';
-          } else if (options.tabReplace) {
-            return p1.replace(/\t/g, options.tabReplace);
-          }
-          return '';
+        if (options.useBR && match === '\n') {
+          return '<br>';
+        } else if (options.tabReplace) {
+          return p1.replace(/\t/g, options.tabReplace);
+        }
+        return '';
       });
   }
 

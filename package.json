@@ -24,6 +24,7 @@
   "scripts": {
     "build": "node tools/build.js -t all -n",
     "build_minified": "node tools/build.js -t all",
+    "lint": "eslint src/ demo/",
     "test": "./node_modules/.bin/mocha test/",
     "test-browser": "./node_modules/.bin/mocha test/browser/"
   },
@@ -34,7 +35,7 @@
     "bluebird": "3.5.0",
     "commander": "2.9.0",
     "del": "2.2.2",
-    "eslint": "3.15.0",
+    "eslint": "3.19.0",
     "gear": "0.9.7",
     "gear-lib": "0.9.2",
     "glob": "7.1.1",
@@ -42,7 +43,7 @@
     "lodash": "4.17.4",
     "mocha": "3.3.0",
     "should": "11.2.1",
-    "tiny-worker": "2.1.0",
+    "tiny-worker": "2.1.1",
     "js-beautify": "1.6.12"
   }
 }
