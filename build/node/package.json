@@ -878,7 +878,7 @@
     },
     {
       "name": "Joe Eli McIlvain",
-      "email": "joe.eli.mac@gmail.org"
+      "email": "joe.eli.mac@gmail.com"
     },
     {
       "name": "Stephan Boyer",
@@ -917,12 +917,20 @@
       "email": "kentonh@gmail.com"
     },
     {
+      "name": "Aaron Dandy",
+      "email": "aaron.dandy@live.com"
+    },
+    {
       "name": "Marvin Saignat",
       "email": "contact@zgmrvn.com"
     },
     {
       "name": "Michael Rodler",
       "email": "contact@f0rki.at"
+    },
+    {
+      "name": "G8t Guy",
+      "email": "g8tguy@g8tguy.com"
     },
     {
       "name": "Sergey Sobko",
@@ -1018,9 +1026,9 @@
     "glob": "7.1.1",
     "jsdom": "9.12.0",
     "lodash": "4.17.4",
-    "mocha": "3.3.0",
+    "mocha": "3.4.1",
     "should": "11.2.1",
     "tiny-worker": "2.1.1",
-    "js-beautify": "1.6.12"
+    "js-beautify": "1.6.14"
   }
 }
