@@ -7,8 +7,8 @@ let glob     = bluebird.promisify(require('glob'));
 
 describe('web worker', function() {
   before(function(done) {
-    // Will match both `highlight.pack.js` and `highlight.min.js`
-    const filepath = utility.buildPath('..', 'build', 'browser', 'highlight.*.js');
+    // Will match both `highlight_pack.js` and `highlight.min.js`
+    const filepath = utility.buildPath('..', 'build', 'browser', 'highlight*.js');
 
     return glob(filepath).then(hljsPath => {
       this.worker = new Worker(function() {

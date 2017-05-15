@@ -11,7 +11,7 @@
 // * browser
 //
 //   The default target. This will package up the core `highlight.js` along
-//   with all the language definitions into the file `highlight.pack.js` --
+//   with all the language definitions into the file `highlight_pack.js` --
 //   which will be compressed without including the option to disable it. It
 //   also builds the documentation for our readthedocs page, mentioned
 //   above, along with a local instance of the demo at:

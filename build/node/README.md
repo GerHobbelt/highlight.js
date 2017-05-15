@@ -15,7 +15,7 @@ library along with one of the styles and calling
 
 ```html
 <link rel="stylesheet" href="/path/to/styles/default.css">
-<script src="/path/to/highlight.pack.js"></script>
+<script src="/path/to/highlight_pack.js"></script>
 <script>hljs.initHighlightingOnLoad();</script>
 ```
 
@@ -101,7 +101,7 @@ In worker.js:
 
 ```javascript
 onmessage = function(event) {
-  importScripts('<path>/highlight.pack.js');
+  importScripts('<path>/highlight_pack.js');
   var result = self.hljs.highlightAuto(event.data);
   postMessage(result.value);
 }

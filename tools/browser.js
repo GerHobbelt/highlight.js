@@ -144,8 +144,8 @@ module.exports = function(commander, dir) {
     task: ['log', 'Writing highlight.js pack file.']
   };
 
-  hljsExt = commander.target === 'cdn' ? 'min' : 'pack';
-  output  = path.join(directory.build, `highlight.${hljsExt}.js`);
+  hljsExt = commander.target === 'cdn' ? '.min' : '_pack';
+  output  = path.join(directory.build, `highlight${hljsExt}.js`);
 
   tasks.write = {
     requires: 'writelog',
