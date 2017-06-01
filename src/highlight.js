@@ -42,15 +42,20 @@ https://highlightjs.org/
 
   var spanEndTag = '</span>';
 
-  // Global options used when within external APIs. This is modified when
+  // Default options used when constructing the active options set by
   // calling the `hljs.configure` function.
-  var options = {
+  var default_options = {
     classPrefix: 'hljs-',
     tabReplace: null,
     useBR: false,
     languages: undefined,
-    selector: 'pre code'
+    selector: 'pre code',
+    lineNodes: false
   };
+
+  // Global options used when within external APIs. This is modified when
+  // calling the `hljs.configure` function.
+  var options = inherit(default_options);
 
 
   /* Utility functions */
@@ -665,6 +670,13 @@ https://highlightjs.org/
   }
 
   /*
+  Resets highlight.js global options with values passed in the form of an object.
+  */
+  function reset(user_options) {
+    options = inherit(default_options, user_options);
+  }
+
+  /*
   Updates highlight.js global options with values passed in the form of an object.
   */
   function configure(user_options) {
@@ -714,6 +726,7 @@ https://highlightjs.org/
   hljs.fixMarkup = fixMarkup;
   hljs.highlightBlock = highlightBlock;
   hljs.configure = configure;
+  hljs.reset = reset;
   hljs.initHighlighting = initHighlighting;
   hljs.initHighlightingOnLoad = initHighlightingOnLoad;
   hljs.registerLanguage = registerLanguage;
