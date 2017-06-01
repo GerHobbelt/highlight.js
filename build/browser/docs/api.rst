@@ -66,16 +66,60 @@ Configures global options:
 * ``useBR``: a flag to generate ``<br>`` tags instead of new-line characters in the output, useful when code is marked up using a non-``<pre>`` container.
 * ``classPrefix``: a string prefix added before class names in the generated markup, used for backwards compatibility with stylesheets.
 * ``languages``: an array of language names and aliases restricting auto detection to only these languages.
+* ``selector``: DOM query selector which matches the DOM nodes which should get their content highlighted. (Default value: `pre code`)
+* ``LineNodes``: a flag to generate linenumbers with the highlighted output.
 
-Accepts an object representing options with the values to updated. Other options don't change
+Accepts an object representing options with the values to update. Other options don't change
 ::
 
   hljs.configure({
     tabReplace: '    ', // 4 spaces
     classPrefix: ''     // don't append class prefix
-                        // … other options aren't changed
+                        // � other options aren't changed
   })
   hljs.initHighlighting();
+
+
+
+``reset(options)``
+----------------------
+
+Reset the global options to the default. Use this API when you wish to apply independent options to different highlight operations
+::
+
+  hljs.configure({
+    tabReplace: '    ', // 4 spaces
+    lineNodes: true
+  });
+  hljs.highlightBlock(el_1);
+
+  // independent highlight render: independent of previously
+  // acive highlight global options!
+  hljs.reset();
+  hljs.configure({
+    lineNodes: false,
+    useBR: true
+  });
+  hljs.highlightBlock(el_2);
+
+Those two API calls (``hljs.reset()`` + ``hljs.configure()``) can be combined into a single call by passing the new options in the 
+optional argument
+::
+
+  hljs.configure({
+    tabReplace: '    ', // 4 spaces
+    lineNodes: true
+  });
+  hljs.highlightBlock(el_1);
+
+  // independent highlight render: independent of previously
+  // acive highlight global options!
+  hljs.reset({
+    lineNodes: false,
+    useBR: true
+  });
+  hljs.highlightBlock(el_2);
+
 
 
 ``initHighlighting()``
