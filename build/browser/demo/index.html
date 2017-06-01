@@ -164,6 +164,8 @@
   
   <link rel="alternate stylesheet" title="Vs 15 Light" href="styles\vs15-light.css">
   
+  <link rel="alternate stylesheet" title="Vs 2015" href="styles\vs2015.css">
+  
   <link rel="alternate stylesheet" title="Xcode" href="styles\xcode.css">
   
   <link rel="alternate stylesheet" title="Xt 256" href="styles\xt256.css">
@@ -1163,16 +1165,21 @@ STR
     
     <div class="common">
       <h2>C#</h2>
-      <pre><code class="cs">using System;
+      <pre><code class="cs">using System.IO.Compression;
 
 #pragma warning disable 414, 3021
 
-/// &lt;summary&gt;Main task&lt;/summary&gt;
-async Task&lt;int, int&gt; AccessTheWebAsync()
+namespace MyApplication
 {
-    Console.WriteLine(&quot;Hello, World!&quot;);
-    string urlContents = await getStringTask;
-    return urlContents.Length;
+    [Obsolete(&quot;...&quot;)]
+    class Program : IInterface
+    {
+        public static List&lt;int&gt; JustDoIt(int count)
+        {
+            Console.WriteLine($&quot;Hello {Name}!&quot;);
+            return new List&lt;int&gt;(new int[] { 1, 2, 3 })
+        }
+    }
 }
 </code></pre>
     </div>
@@ -2846,6 +2853,48 @@ deploy /path/to/file.war
     &quot;description&quot;: {&quot;text&quot;: &quot;...&quot;, &quot;sensitive&quot;: false}
   }
 ]
+</code></pre>
+    </div>
+    
+    
+    <div >
+      <h2>Julia REPL</h2>
+      <pre><code class="julia-repl">julia&gt; function foo(x) x + 1 end
+foo (generic function with 1 method)
+
+julia&gt; foo(42)
+43
+
+julia&gt; foo(42) === 43.
+false
+
+
+Here we match all three lines of code:
+
+julia&gt; function foo(x::Float64)
+           42. - x
+       end
+foo (generic function with 2 methods)
+
+julia&gt; for x in Any[1, 2, 3.4]
+          println(&quot;foo($x) = $(foo(x))&quot;)
+       end
+foo(1) = 2
+foo(2) = 3
+foo(3.4) = 38.6
+
+
+... unless it is not properly indented:
+
+julia&gt; function foo(x)
+    x + 1
+end
+
+
+Ordinary Julia code does not get highlighted:
+
+Pkg.add(&quot;Combinatorics&quot;)
+abstract type Foo end
 </code></pre>
     </div>
     
@@ -4897,7 +4946,7 @@ instance of VM_openstack {
     </div>
     
     
-    <div class="common">
+    <div >
       <h2>Microtik RouterOS script</h2>
       <pre><code class="routeros"># Берем список DNS серверов из /ip dns
  # Проверяем их доступность, 
