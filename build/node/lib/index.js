@@ -86,6 +86,7 @@ hljs.registerLanguage('javascript', require('./languages/javascript'));
 hljs.registerLanguage('jboss-cli', require('./languages/jboss-cli'));
 hljs.registerLanguage('json', require('./languages/json'));
 hljs.registerLanguage('julia', require('./languages/julia'));
+hljs.registerLanguage('julia-repl', require('./languages/julia-repl'));
 hljs.registerLanguage('kotlin', require('./languages/kotlin'));
 hljs.registerLanguage('lasso', require('./languages/lasso'));
 hljs.registerLanguage('ldif', require('./languages/ldif'));

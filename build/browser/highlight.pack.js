@@ -1,4 +1,4 @@
-/*! highlight.js v9.11.0 | BSD3 License | git.io/hljslicense */
+/*! highlight.js v9.12.0 | BSD3 License | git.io/hljslicense */
 (function(factory) {
 
   // Find the global object for export to both the browser and web workers.
@@ -44,7 +44,8 @@
     classPrefix: 'hljs-',
     tabReplace: null,
     useBR: false,
-    languages: undefined
+    languages: undefined,
+    selector: 'pre code'
   };
 
 
@@ -674,7 +675,7 @@
       return;
     initHighlighting.called = true;
 
-    var blocks = document.querySelectorAll('pre code');
+    var blocks = document.querySelectorAll(options.selector);
     ArrayProto.forEach.call(blocks, highlightBlock);
   }
 
@@ -2623,13 +2624,14 @@ hljs.registerLanguage('aspectj', function (hljs) {
 
 hljs.registerLanguage('autohotkey', function(hljs) {
   var BACKTICK_ESCAPE = {
-    begin: /`[\s\S]/
+    begin: '`[\\s\\S]'
   };
 
   return {
     case_insensitive: true,
+    aliases: [ 'ahk' ],
     keywords: {
-      keyword: 'Break Continue Else Gosub If Loop Return While',
+      keyword: 'Break Continue Critical Exit ExitApp Gosub Goto New OnExit Pause return SetBatchLines SetTimer Suspend Thread Throw Until ahk_id ahk_class ahk_pid ahk_exe ahk_group',
       literal: 'A|0 true false NOT AND OR',
       built_in: 'ComSpec Clipboard ClipboardAll ErrorLevel',
     },
@@ -2641,16 +2643,26 @@ hljs.registerLanguage('autohotkey', function(hljs) {
       BACKTICK_ESCAPE,
       hljs.inherit(hljs.QUOTE_STRING_MODE, {contains: [BACKTICK_ESCAPE]}),
       hljs.COMMENT(';', '$', {relevance: 0}),
+      hljs.C_BLOCK_COMMENT_MODE,
       {
         className: 'number',
         begin: hljs.NUMBER_RE,
         relevance: 0
       },
       {
-        className: 'variable', // FIXME
-        begin: '%', end: '%',
-        illegal: '\\n',
-        contains: [BACKTICK_ESCAPE]
+        className: 'subst', // FIXED
+        begin: '%(?=[a-zA-Z0-9#_$@])', end: '%',
+        illegal: '[^a-zA-Z0-9#_$@]'
+      },
+      {
+        className: 'built_in',
+        begin: '^\\s*\\w+\\s*,'
+        //I don't really know if this is totally relevant
+      },
+      {
+        className: 'meta', 
+        begin: '^\\s*#\w+', end:'$',
+        relevance: 0
       },
       {
         className: 'symbol',
@@ -3451,6 +3463,7 @@ hljs.registerLanguage('clojure', function(hljs) {
   LIST.contains = [hljs.COMMENT('comment', ''), NAME, BODY];
   BODY.contains = DEFAULT_CONTAINS;
   COLLECTION.contains = DEFAULT_CONTAINS;
+  HINT_COL.contains = [COLLECTION];
 
   return {
     aliases: ['clj'],
@@ -4142,12 +4155,11 @@ hljs.registerLanguage('cs', function(hljs) {
     keyword:
       // Normal keywords.
       'abstract as base bool break byte case catch char checked const continue decimal ' +
-      'default delegate do double else enum event explicit extern finally fixed float ' +
-      'for foreach goto if implicit in int interface internal is lock long ' +
+      'default delegate do double enum event explicit extern finally fixed float ' +
+      'for foreach goto if implicit in int interface internal is lock long nameof ' +
       'object operator out override params private protected public readonly ref sbyte ' +
       'sealed short sizeof stackalloc static string struct switch this try typeof ' +
       'uint ulong unchecked unsafe ushort using virtual void volatile while ' +
-      'nameof ' +
       // Contextual keywords.
       'add alias ascending async await by descending dynamic equals from get global group into join ' +
       'let on orderby partial remove select set value var where yield',
@@ -4211,6 +4223,7 @@ hljs.registerLanguage('cs', function(hljs) {
   };
 
   var TYPE_IDENT_RE = hljs.IDENT_RE + '(<' + hljs.IDENT_RE + '(\\s*,\\s*' + hljs.IDENT_RE + ')*>)?(\\[\\])?';
+
   return {
     aliases: ['csharp'],
     keywords: KEYWORDS,
@@ -4244,7 +4257,9 @@ hljs.registerLanguage('cs', function(hljs) {
       {
         className: 'meta',
         begin: '#', end: '$',
-        keywords: {'meta-keyword': 'if else elif endif define undef warning error line region endregion pragma checksum'}
+        keywords: {
+          'meta-keyword': 'if else elif endif define undef warning error line region endregion pragma checksum'
+        }
       },
       STRING,
       hljs.C_NUMBER_MODE,
@@ -4267,15 +4282,23 @@ hljs.registerLanguage('cs', function(hljs) {
         ]
       },
       {
+        // [Attributes("")]
+        className: 'meta',
+        begin: '^\\s*\\[', excludeBegin: true, end: '\\]', excludeEnd: true,
+        contains: [
+          {className: 'meta-string', begin: /"/, end: /"/}
+        ]
+      },
+      {
         // Expression keywords prevent 'keyword Name(...)' from being
         // recognized as a function definition
-        beginKeywords: 'new return throw await',
+        beginKeywords: 'new return throw await else',
         relevance: 0
       },
       {
         className: 'function',
-        begin: '(' + TYPE_IDENT_RE + '\\s+)+' + hljs.IDENT_RE + '\\s*\\(', returnBegin: true, end: /[{;=]/,
-        excludeEnd: true,
+        begin: '(' + TYPE_IDENT_RE + '\\s+)+' + hljs.IDENT_RE + '\\s*\\(', returnBegin: true,
+        end: /[{;=]/, excludeEnd: true,
         keywords: KEYWORDS,
         contains: [
           {
@@ -8310,7 +8333,6 @@ hljs.registerLanguage('julia', function(hljs) {
 
   // placeholder for recursive self-reference
   var DEFAULT = {
-    aliases: ['jldoctest'],
     lexemes: VARIABLE_NAME_RE, keywords: KEYWORDS, illegal: /<\//
   };
 
@@ -8393,6 +8415,30 @@ hljs.registerLanguage('julia', function(hljs) {
   return DEFAULT;
 });
 
+hljs.registerLanguage('julia-repl', function(hljs) {
+  return {
+    contains: [
+      {
+        className: 'meta',
+        begin: /^julia>/,
+        relevance: 10,
+        starts: {
+          // end the highlighting if we are on a new line and the line does not have at
+          // least six spaces in the beginning
+          end: /^(?![ ]{6})/,
+          subLanguage: 'julia'
+      },
+      // jldoctest Markdown blocks are used in the Julia manual and package docs indicate
+      // code snippets that should be verified when the documentation is built. They can be
+      // either REPL-like or script-like, but are usually REPL-like and therefore we apply
+      // julia-repl highlighting to them. More information can be found in Documenter's
+      // manual: https://juliadocs.github.io/Documenter.jl/latest/man/doctests.html
+      aliases: ['jldoctest']
+      }
+    ]
+  }
+});
+
 hljs.registerLanguage('kotlin', function(hljs) {
   var KEYWORDS = {
     keyword:
@@ -8426,17 +8472,17 @@ hljs.registerLanguage('kotlin', function(hljs) {
   // for string templates
   var SUBST = {
     className: 'subst',
-    variants: [
-      {begin: '\\$' + hljs.UNDERSCORE_IDENT_RE},
-      {begin: '\\${', end: '}', contains: [hljs.APOS_STRING_MODE, hljs.C_NUMBER_MODE]}
-    ]
+    begin: '\\${', end: '}', contains: [hljs.APOS_STRING_MODE, hljs.C_NUMBER_MODE]
+  };
+  var VARIABLE = {
+    className: 'variable', begin: '\\$' + hljs.UNDERSCORE_IDENT_RE
   };
   var STRING = {
     className: 'string',
     variants: [
       {
         begin: '"""', end: '"""',
-        contains: [SUBST]
+        contains: [VARIABLE, SUBST]
       },
       // Can't use built-in modes easily, as we want to use STRING in the meta
       // context as 'meta-string' and there's no syntax to remove explicitly set
@@ -8449,7 +8495,7 @@ hljs.registerLanguage('kotlin', function(hljs) {
       {
         begin: '"', end: '"',
         illegal: /\n/,
-        contains: [hljs.BACKSLASH_ESCAPE, SUBST]
+        contains: [hljs.BACKSLASH_ESCAPE, VARIABLE, SUBST]
       }
     ]
   };
@@ -11974,20 +12020,54 @@ hljs.registerLanguage('pony', function(hljs) {
 });
 
 hljs.registerLanguage('powershell', function(hljs) {
+  // https://msdn.microsoft.com/en-us/library/ms714428(v=vs.85).aspx
+  var VALID_VERBS =
+    'Add|Clear|Close|Copy|Enter|Exit|Find|Format|Get|Hide|Join|Lock|' +
+    'Move|New|Open|Optimize|Pop|Push|Redo|Remove|Rename|Reset|Resize|' +
+    'Search|Select|Set|Show|Skip|Split|Step|Switch|Undo|Unlock|' +
+    'Watch|Backup|Checkpoint|Compare|Compress|Convert|ConvertFrom|' +
+    'ConvertTo|Dismount|Edit|Expand|Export|Group|Import|Initialize|' +
+    'Limit|Merge|New|Out|Publish|Restore|Save|Sync|Unpublish|Update|' +
+    'Approve|Assert|Complete|Confirm|Deny|Disable|Enable|Install|Invoke|Register|' +
+    'Request|Restart|Resume|Start|Stop|Submit|Suspend|Uninstall|' +
+    'Unregister|Wait|Debug|Measure|Ping|Repair|Resolve|Test|Trace|Connect|' +
+    'Disconnect|Read|Receive|Send|Write|Block|Grant|Protect|Revoke|Unblock|' +
+    'Unprotect|Use|ForEach|Sort|Tee|Where';
+
+  var COMPARISON_OPERATORS =
+    '-and|-as|-band|-bnot|-bor|-bxor|-casesensitive|-ccontains|-ceq|-cge|-cgt|' +
+    '-cle|-clike|-clt|-cmatch|-cne|-cnotcontains|-cnotlike|-cnotmatch|-contains|' +
+    '-creplace|-csplit|-eq|-exact|-f|-file|-ge|-gt|-icontains|-ieq|-ige|-igt|' +
+    '-ile|-ilike|-ilt|-imatch|-in|-ine|-inotcontains|-inotlike|-inotmatch|' +
+    '-ireplace|-is|-isnot|-isplit|-join|-le|-like|-lt|-match|-ne|-not|' +
+    '-notcontains|-notin|-notlike|-notmatch|-or|-regex|-replace|-shl|-shr|' +
+    '-split|-wildcard|-xor';
+
+  var KEYWORDS = {
+    keyword: 'if else foreach return do while until elseif begin for trap data dynamicparam ' +
+    'end break throw param continue finally in switch exit filter try process catch ' +
+    'hidden static parameter validate[A-Z]+'
+  };
+
   var BACKTICK_ESCAPE = {
     begin: '`[\\s\\S]',
     relevance: 0
   };
+
   var VAR = {
     className: 'variable',
     variants: [
-      {begin: /\$[\w\d][\w\d_:]*/}
+      { begin: /\$\B/ },
+      { className: 'keyword', begin: /\$this/ },
+      { begin: /\$[\w\d][\w\d_:]*/ }
     ]
   };
+
   var LITERAL = {
     className: 'literal',
     begin: /\$(null|true|false)\b/
   };
+
   var QUOTE_STRING = {
     className: 'string',
     variants: [
@@ -12003,6 +12083,7 @@ hljs.registerLanguage('powershell', function(hljs) {
       }
     ]
   };
+
   var APOS_STRING = {
     className: 'string',
     variants: [
@@ -12014,12 +12095,13 @@ hljs.registerLanguage('powershell', function(hljs) {
   var PS_HELPTAGS = {
     className: 'doctag',
     variants: [
-      /* no paramater help tags */ 
+      /* no paramater help tags */
       { begin: /\.(synopsis|description|example|inputs|outputs|notes|link|component|role|functionality)/ },
       /* one parameter help tags */
       { begin: /\.(parameter|forwardhelptargetname|forwardhelpcategory|remotehelprunspace|externalhelp)\s+\S+/ }
     ]
   };
+
   var PS_COMMENT = hljs.inherit(
     hljs.COMMENT(null, null),
     {
@@ -12033,24 +12115,142 @@ hljs.registerLanguage('powershell', function(hljs) {
     }
   );
 
+  var CMDLETS = {
+    className: 'built_in',
+    variants: [
+      { begin: '('.concat(VALID_VERBS, ')+(-)[\\w\\d]+') },
+      // Invalid cmdlets!
+      { className: 'subst', begin: /[\w\d]+(-)[\w\d]+/, relevance: 0 }
+    ]
+  };
+
+  var PS_CLASS = {
+    className: 'class',
+    beginKeywords: 'class enum', end: /[{]/, excludeEnd: true,
+    relevance: 0,
+    contains: [hljs.TITLE_MODE]
+  };
+
+  var PS_FUNCTION = {
+    className: 'keyword',
+    begin: /function\s+/, end: /([^A-Z0-9-])/,
+    excludeEnd: true,
+    relevance: 0,
+    contains: [
+      CMDLETS,
+      // Invalid function names!
+      { className: 'subst', begin: /[\w\d]+/ }
+    ]
+  };
+
+  // Using statment, plus type, plus assembly name.
+  var PS_USING = {
+    className: 'keyword',
+    begin: /using\s/, end: /$/,
+    contains: [
+      QUOTE_STRING,
+      APOS_STRING,
+      { className: 'type', begin: /(assembly|command|module|namespace|type)/ },
+      { className: 'meta', begin: /\S+/ }
+    ]
+  };
+
+  // Comperison operators & function named parameters.
+  var PS_ARGUMENTS = {
+    variants: [
+      // PS literals are pretty verbose so it's a good idea to accent them a bit.
+      { className: 'subst', begin: '('.concat(COMPARISON_OPERATORS, ')\\b') },
+      { className: 'literal', begin: /(-)[\w\d]+/ }
+    ]
+  };
+
+  var STATIC_MEMBER = {
+    className: 'selector-tag',
+    begin: /::\w+\b/, end: /$/,
+    returnBegin: true,
+    contains: [
+      { className: 'attribute', begin: /\w+/, endsParent: true }
+    ]
+  };
+
+  var HASH_SIGNS = {
+    className: 'selector-tag',
+    begin: /\@\B/,
+    relevance: 0
+  };
+
+  var PS_NEW_OBJECT_TYPE = {
+    className: 'built_in',
+    begin: /New-Object\s+\w/, end: /$/,
+    returnBegin: true,
+    contains: [
+      { begin: /$/, endsParent: true },
+      { className: 'meta', begin: /\s([\w\.])+/, endsParent: true }
+    ]
+  };
+
+  // It's a very general rule so I'll narrow it a bit with some strict boundaries
+  // to avoid any possible false-positive collisions!
+  var PS_METHODS = {
+    className: 'name',
+    begin: /[\w]+[ ]??\(/, end: /$/,
+    returnBegin: true,
+    relevance: 0,
+    contains: [
+      {
+        className: 'keyword', begin: '('.concat(
+        KEYWORDS.keyword.toString().replace(/\s/g, '|'
+        ), ')\\b'),
+        endsParent: true,
+        relevance: 0
+      },
+      {
+        className: 'built_in', begin: /[\w]+\b/,
+        endsParent: true,
+        relevance: 0
+      }
+    ]
+  };
+
+  var GENTLEMANS_SET = [
+    STATIC_MEMBER,
+    PS_METHODS,
+    PS_COMMENT,
+    BACKTICK_ESCAPE,
+    hljs.NUMBER_MODE,
+    QUOTE_STRING,
+    APOS_STRING,
+    PS_NEW_OBJECT_TYPE,
+    CMDLETS,
+    VAR,
+    LITERAL,
+    HASH_SIGNS
+  ];
+
+  var PS_TYPE = {
+    className: 'no-markup',
+    begin: /\[/, end: /\]/,
+    excludeBegin: true,
+    excludeEnd: true,
+    relevance: 0,
+    contains: GENTLEMANS_SET.concat(
+      'self',
+      { className: 'meta', begin: /[\.\w\d]+/, relevance: 0 }
+    )
+  };
+
   return {
     aliases: ['ps'],
     lexemes: /-?[A-z\.\-]+/,
     case_insensitive: true,
-    keywords: {
-      keyword: 'if else foreach return function do while until elseif begin for trap data dynamicparam end break throw param continue finally in switch exit filter try process catch',
-      built_in: 'Add-Computer Add-Content Add-History Add-JobTrigger Add-Member Add-PSSnapin Add-Type Checkpoint-Computer Clear-Content Clear-EventLog Clear-History Clear-Host Clear-Item Clear-ItemProperty Clear-Variable Compare-Object Complete-Transaction Connect-PSSession Connect-WSMan Convert-Path ConvertFrom-Csv ConvertFrom-Json ConvertFrom-SecureString ConvertFrom-StringData ConvertTo-Csv ConvertTo-Html ConvertTo-Json ConvertTo-SecureString ConvertTo-Xml Copy-Item Copy-ItemProperty Debug-Process Disable-ComputerRestore Disable-JobTrigger Disable-PSBreakpoint Disable-PSRemoting Disable-PSSessionConfiguration Disable-WSManCredSSP Disconnect-PSSession Disconnect-WSMan Disable-ScheduledJob Enable-ComputerRestore Enable-JobTrigger Enable-PSBreakpoint Enable-PSRemoting Enable-PSSessionConfiguration Enable-ScheduledJob Enable-WSManCredSSP Enter-PSSession Exit-PSSession Export-Alias Export-Clixml Export-Console Export-Counter Export-Csv Export-FormatData Export-ModuleMember Export-PSSession ForEach-Object Format-Custom Format-List Format-Table Format-Wide Get-Acl Get-Alias Get-AuthenticodeSignature Get-ChildItem Get-Command Get-ComputerRestorePoint Get-Content Get-ControlPanelItem Get-Counter Get-Credential Get-Culture Get-Date Get-Event Get-EventLog Get-EventSubscriber Get-ExecutionPolicy Get-FormatData Get-Host Get-HotFix Get-Help Get-History Get-IseSnippet Get-Item Get-ItemProperty Get-Job Get-JobTrigger Get-Location Get-Member Get-Module Get-PfxCertificate Get-Process Get-PSBreakpoint Get-PSCallStack Get-PSDrive Get-PSProvider Get-PSSession Get-PSSessionConfiguration Get-PSSnapin Get-Random Get-ScheduledJob Get-ScheduledJobOption Get-Service Get-TraceSource Get-Transaction Get-TypeData Get-UICulture Get-Unique Get-Variable Get-Verb Get-WinEvent Get-WmiObject Get-WSManCredSSP Get-WSManInstance Group-Object Import-Alias Import-Clixml Import-Counter Import-Csv Import-IseSnippet Import-LocalizedData Import-PSSession Import-Module Invoke-AsWorkflow Invoke-Command Invoke-Expression Invoke-History Invoke-Item Invoke-RestMethod Invoke-WebRequest Invoke-WmiMethod Invoke-WSManAction Join-Path Limit-EventLog Measure-Command Measure-Object Move-Item Move-ItemProperty New-Alias New-Event New-EventLog New-IseSnippet New-Item New-ItemProperty New-JobTrigger New-Object New-Module New-ModuleManifest New-PSDrive New-PSSession New-PSSessionConfigurationFile New-PSSessionOption New-PSTransportOption New-PSWorkflowExecutionOption New-PSWorkflowSession New-ScheduledJobOption New-Service New-TimeSpan New-Variable New-WebServiceProxy New-WinEvent New-WSManInstance New-WSManSessionOption Out-Default Out-File Out-GridView Out-Host Out-Null Out-Printer Out-String Pop-Location Push-Location Read-Host Receive-Job Register-EngineEvent Register-ObjectEvent Register-PSSessionConfiguration Register-ScheduledJob Register-WmiEvent Remove-Computer Remove-Event Remove-EventLog Remove-Item Remove-ItemProperty Remove-Job Remove-JobTrigger Remove-Module Remove-PSBreakpoint Remove-PSDrive Remove-PSSession Remove-PSSnapin Remove-TypeData Remove-Variable Remove-WmiObject Remove-WSManInstance Rename-Computer Rename-Item Rename-ItemProperty Reset-ComputerMachinePassword Resolve-Path Restart-Computer Restart-Service Restore-Computer Resume-Job Resume-Service Save-Help Select-Object Select-String Select-Xml Send-MailMessage Set-Acl Set-Alias Set-AuthenticodeSignature Set-Content Set-Date Set-ExecutionPolicy Set-Item Set-ItemProperty Set-JobTrigger Set-Location Set-PSBreakpoint Set-PSDebug Set-PSSessionConfiguration Set-ScheduledJob Set-ScheduledJobOption Set-Service Set-StrictMode Set-TraceSource Set-Variable Set-WmiInstance Set-WSManInstance Set-WSManQuickConfig Show-Command Show-ControlPanelItem Show-EventLog Sort-Object Split-Path Start-Job Start-Process Start-Service Start-Sleep Start-Transaction Start-Transcript Stop-Computer Stop-Job Stop-Process Stop-Service Stop-Transcript Suspend-Job Suspend-Service Tee-Object Test-ComputerSecureChannel Test-Connection Test-ModuleManifest Test-Path Test-PSSessionConfigurationFile Trace-Command Unblock-File Undo-Transaction Unregister-Event Unregister-PSSessionConfiguration Unregister-ScheduledJob Update-FormatData Update-Help Update-List Update-TypeData Use-Transaction Wait-Event Wait-Job Wait-Process Where-Object Write-Debug Write-Error Write-EventLog Write-Host Write-Output Write-Progress Write-Verbose Write-Warning Add-MDTPersistentDrive Disable-MDTMonitorService Enable-MDTMonitorService Get-MDTDeploymentShareStatistics Get-MDTMonitorData Get-MDTOperatingSystemCatalog Get-MDTPersistentDrive Import-MDTApplication Import-MDTDriver Import-MDTOperatingSystem Import-MDTPackage Import-MDTTaskSequence New-MDTDatabase Remove-MDTMonitorData Remove-MDTPersistentDrive Restore-MDTPersistentDrive Set-MDTMonitorData Test-MDTDeploymentShare Test-MDTMonitorData Update-MDTDatabaseSchema Update-MDTDeploymentShare Update-MDTLinkedDS Update-MDTMedia Update-MDTMedia Add-VamtProductKey Export-VamtData Find-VamtManagedMachine Get-VamtConfirmationId Get-VamtProduct Get-VamtProductKey Import-VamtData Initialize-VamtData Install-VamtConfirmationId Install-VamtProductActivation Install-VamtProductKey Update-VamtProduct',
-      nomarkup: '-ne -eq -lt -gt -ge -le -not -like -notlike -match -notmatch -contains -notcontains -in -notin -replace'
-    },
-    contains: [
-      BACKTICK_ESCAPE,
-      hljs.NUMBER_MODE,
-      QUOTE_STRING,
-      APOS_STRING,
-      LITERAL,
-      VAR,
-      PS_COMMENT
-    ]
+    keywords: KEYWORDS,
+    contains: GENTLEMANS_SET.concat(
+      PS_CLASS,
+      PS_FUNCTION,
+      PS_USING,
+      PS_ARGUMENTS,
+      PS_TYPE
+    )
   };
 });
 
@@ -12915,11 +13115,11 @@ function(hljs) {
   var GLOBAL_COMMANDS = 'global local beep delay put len typeof pick log time set find environment terminal error execute parse resolve toarray tobool toid toip toip6 tonum tostr totime';
 
   // Common commands: Following commands available from most sub-menus:
-  var COMMON_COMMANDS = 'add remove enable disable set get print export edit find run';
+  var COMMON_COMMANDS = 'add remove enable disable set get print export edit find run debug error info warning';
 
   var LITERALS = 'true false yes no nothing nil null';
 
-  var OBJECTS = 'traffic-flow traffic-generator firewall scheduler aaa accounting address-list address align area bandwidth-server bfd bgp bridge client clock community config connection console customer default dhcp-client dhcp-server discovery dns e-mail ethernet filter firewall firmware gps graphing group hardware health hotspot identity igmp-proxy incoming instance interface ip ipsec ipv6 irq l2tp-server lcd ldp logging mac-server mac-winbox mangle manual mirror mme mpls nat nd neighbor network note ntp ospf ospf-v3 ovpn-server page peer pim ping policy pool port ppp pppoe-client pptp-server prefix profile proposal proxy queue radius resource rip ripng route routing screen script security-profiles server service service-port settings shares smb sms sniffer snmp snooper socks sstp-server system tool tracking type upgrade upnp user-manager users user vlan secret vrrp watchdog web-access wireless pptp pppoe lan wan layer7-protocol lease simple';
+  var OBJECTS = 'traffic-flow traffic-generator firewall scheduler aaa accounting address-list address align area bandwidth-server bfd bgp bridge client clock community config connection console customer default dhcp-client dhcp-server discovery dns e-mail ethernet filter firewall firmware gps graphing group hardware health hotspot identity igmp-proxy incoming instance interface ip ipsec ipv6 irq l2tp-server lcd ldp logging mac-server mac-winbox mangle manual mirror mme mpls nat nd neighbor network note ntp ospf ospf-v3 ovpn-server page peer pim ping policy pool port ppp pppoe-client pptp-server prefix profile proposal proxy queue radius resource rip ripng route routing screen script security-profiles server service service-port settings shares smb sms sniffer snmp snooper socks sstp-server system tool tracking type upgrade upnp user-manager users user vlan secret vrrp watchdog web-access wireless pptp pppoe lan wan layer7-protocol lease simple raw';
 
   // print parameters
   // Several parameters are available for print command:
@@ -12963,6 +13163,11 @@ function(hljs) {
   return {
     aliases: ['routeros', 'mikrotik'],
     case_insensitive: true,
+    lexemes: /:?[\w-]+/,
+    keywords: {
+      literal: LITERALS,
+      keyword: STATEMENTS + ' :' + STATEMENTS.split(' ').join(' :') + ' :' + GLOBAL_COMMANDS.split(' ').join(' :'),
+    },
     contains: [
       { // недопустимые конструкции
         variants: [
@@ -12979,34 +13184,10 @@ function(hljs) {
         ],
         illegal: /./,
       },
-      
       hljs.COMMENT('^#', '$'),
       QUOTE_STRING,
       APOS_STRING,
       VAR,
-
-      { 
-        className: 'keyword',
-        relevance: 10,
-        variants: [
-          { begin: ':(' + STATEMENTS.split(' ').join('|') + ')',},
-          { begin: ':(' + GLOBAL_COMMANDS.split(' ').join('|') + ')',},
-        ],
-      },
-
-      { 
-        begin: '\\b(' + STATEMENTS.split(' ').join('|') + ')=[\{\(\<\[]',
-        returnBegin: true,
-        contains: [
-          {
-            className: 'keyword',
-            begin: /[\w-]+\=/,
-            illegal: ' ',
-            relevance: 10,
-          },
-        ], 
-      },  //*/
-
       { // attribute=value
         begin: /[\w-]+\=([^\s\{\}\[\]\(\)]+)/, 
         relevance: 0,
@@ -13222,7 +13403,7 @@ hljs.registerLanguage('rust', function(hljs) {
       {
         className: 'string',
         variants: [
-           { begin: /r(#*)".*?"\1(?!#)/ },
+           { begin: /r(#*)"(.|\n)*?"\1(?!#)/ },
            { begin: /b?'\\?(x\w{2}|u\w{4}|U\w{8}|.)'/ }
         ]
       },
@@ -15073,9 +15254,9 @@ hljs.registerLanguage('swift', function(hljs) {
   var SWIFT_KEYWORDS = {
       keyword: '__COLUMN__ __FILE__ __FUNCTION__ __LINE__ as as! as? associativity ' +
         'break case catch class continue convenience default defer deinit didSet do ' +
-        'dynamic dynamicType else enum extension fallthrough false final for func ' +
+        'dynamic dynamicType else enum extension fallthrough false fileprivate final for func ' +
         'get guard if import in indirect infix init inout internal is lazy left let ' +
-        'mutating nil none nonmutating operator optional override postfix precedence ' +
+        'mutating nil none nonmutating open operator optional override postfix precedence ' +
         'prefix private protocol Protocol public repeat required rethrows return ' +
         'right self Self set static struct subscript super switch throw throws true ' +
         'try try! try? Type typealias unowned var weak where while willSet',
