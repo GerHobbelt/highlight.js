@@ -26,7 +26,18 @@ function(hljs) {
         begin: '^[A-Za-z]',
         end: '\\:',
         excludeEnd: true,
-      }
+      },
+      {
+        className: 'params',
+        end: '(?=%)|$',
+        endsParent: true,
+        contains: [
+          {
+            begin: '\\n '
+          },
+          hljs.BACKSLASH_ESCAPE,
+        ]
+      },
     ]
   }
   var LYRICS = {
@@ -47,6 +58,7 @@ function(hljs) {
           {
             begin: '\\n '
           },
+          hljs.BACKSLASH_ESCAPE,
         ]
       },
     ]
@@ -59,10 +71,14 @@ function(hljs) {
       {
         className: 'attribute',
         begin: '[A-Za-z]',
-        end: '\\:',
+      },
+      {
+        className: 'params',
+        begin: '\\:',
+        excludeBegin: true,
         excludeEnd: true,
         endsWithParent: true,
-      }
+      },
     ]
   }
   return {
@@ -73,8 +89,8 @@ function(hljs) {
       hljs.BACKSLASH_ESCAPE,
       hljs.COMMENT('\\[r\\:','\\]'),
       hljs.COMMENT('\\%[^\\%]','$'),
-      ACCIDENTAL_SYMBOLS,
-      BROKEN_RHYTHM_SYMBOLS,
+      // ACCIDENTAL_SYMBOLS,
+      // BROKEN_RHYTHM_SYMBOLS,
       LYRICS,
       INFORMATION_FIELDS,
       INLINE_INFORMATION_FIELDS,
