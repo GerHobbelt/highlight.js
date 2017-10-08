@@ -17,12 +17,30 @@ function(hljs) {
     begin: '[zZxX]\\d*(?!\\:)',
     className: 'comment'
   }
-  var METADATA2 = {
-    className: 'meta-keyword',
-    begin: '^\\w\\:',
+  var INFORMATION_FIELDS = {
+    begin:'^[A-Za-z]\\:',
+    returnBegin: true,
     contains: [
       {
-        className: 'meta-string',
+        className: 'attribute',
+        begin: '^[A-Za-z]',
+        end: '\\:',
+        excludeEnd: true,
+      }
+    ]
+  }
+  var LYRICS = {
+    begin:'^[Ww+]\\:',
+    returnBegin: true,
+    contains: [
+      {
+        className: 'attribute',
+        begin: '^[A-Za-z+]',
+        end: '\\:',
+        excludeEnd: true,
+      },
+      {
+        className: 'emphasis',
         end: '(?=%)|$',
         endsParent: true,
         contains: [
@@ -33,20 +51,18 @@ function(hljs) {
       },
     ]
   }
-  var METADATA = {
-    className: 'attribute',
-    begin: '[wW+]\\:',
+  var INLINE_INFORMATION_FIELDS = {
+    begin: '\\[[A-Za-z]\\:',
+    returnBegin: true,
+    end: '\\]',
     contains: [
       {
-        className: 'string',
-        end: '(?=%)|$',
-        endsParent: true,
-        contains: [
-          {
-            begin: '\\n '
-          },
-        ]
-      },
+        className: 'attribute',
+        begin: '[A-Za-z]',
+        end: '\\:',
+        excludeEnd: true,
+        endsWithParent: true,
+      }
     ]
   }
   return {
@@ -55,10 +71,12 @@ function(hljs) {
     },
     contains: [
       hljs.COMMENT('\\[r\\:','\\]'),
-      hljs.COMMENT('\\%[^\\%]','$'),
+      hljs.COMMENT('[^\\\\]\\%[^\\%]','$'),
       ACCIDENTAL_SYMBOLS,
       BROKEN_RHYTHM_SYMBOLS,
-      METADATA,
+      LYRICS,
+      INFORMATION_FIELDS,
+      INLINE_INFORMATION_FIELDS,
       {
         className: 'meta',
         begin: '\\%abc',
@@ -68,23 +86,6 @@ function(hljs) {
         className: 'built_in',
         begin:'!',
         end: '!',
-      },
-      {
-        className: 'attribute',
-        begin:'^\\w\\:',
-      },
-      {
-        className: 'meta',
-        begin: '\\[\\w\\:',
-        end: '\\]',
-        contains: [
-          {
-            className: 'meta-string',
-            begin: '[^\\]]',
-            endsWithParent: true,
-            excludeEnd: true,
-          }
-        ]
       },
       {
         className: 'meta',
