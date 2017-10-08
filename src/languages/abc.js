@@ -70,8 +70,9 @@ function(hljs) {
       symbol: '',
     },
     contains: [
+      hljs.BACKSLASH_ESCAPE,
       hljs.COMMENT('\\[r\\:','\\]'),
-      hljs.COMMENT('[^\\\\]\\%[^\\%]','$'),
+      hljs.COMMENT('\\%[^\\%]','$'),
       ACCIDENTAL_SYMBOLS,
       BROKEN_RHYTHM_SYMBOLS,
       LYRICS,
