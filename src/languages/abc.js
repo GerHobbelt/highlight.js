@@ -31,14 +31,37 @@ function(hljs) {
       }
     ]
   }
+
+  var DIRECTIVE = {
+    begin: '^\\%\\%',
+    returnBegin: true,
+    end: '$',
+    contains: [
+      {
+        className: 'attribute',
+        begin: '\\%\\%',
+        end: '\\s',
+        starts: {
+          className: 'params',
+          endsWithParent: true,
+          contains: [
+            hljs.BACKSLASH_ESCAPE,
+            hljs.COMMENT('\\%','$'),
+          ]
+        }
+      },
+    ]
+  }
+
   return {
     keywords: {
       symbol: '',
     },
     contains: [
+      DIRECTIVE,
       hljs.BACKSLASH_ESCAPE,
       hljs.COMMENT('\\[r\\:','\\]'),
-      hljs.COMMENT('\\%[^\\%]','$'),
+      hljs.COMMENT('\\%','$'),
       INFORMATION_FIELDS,
       INLINE_INFORMATION_FIELDS,
       {
@@ -51,18 +74,6 @@ function(hljs) {
         begin:'!',
         end: '!',
       },
-      {
-        className: 'meta',
-        begin: '^\\%\\%',
-        end: '$',
-        contains: [
-          {
-            className: 'meta-string',
-            begin: ' ',
-            end: '$',
-          }
-        ]
-      }
     ]
   }
 }
