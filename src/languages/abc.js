@@ -17,28 +17,6 @@ function(hljs) {
       }
     ]
   }
-  var LYRICS = {
-    begin:'^[Ww+]\\:',
-    returnBegin: true,
-    contains: [
-      {
-        className: 'attribute',
-        begin: '^[A-Za-z+]',
-        end: '\\:',
-        excludeEnd: true,
-      },
-      {
-        className: 'emphasis',
-        end: '(?=%)|$',
-        endsParent: true,
-        contains: [
-          {
-            begin: '\\n '
-          },
-        ]
-      },
-    ]
-  }
   var INLINE_INFORMATION_FIELDS = {
     begin: '\\[[A-Za-z]\\:',
     returnBegin: true,
