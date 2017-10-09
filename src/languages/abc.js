@@ -5,10 +5,6 @@ Category: markup
 */
 
 function(hljs) {
-  var BROKEN_RHYTHM_SYMBOLS = {
-    begin: '[<>]{1,3}',
-    className: 'meta'
-  }
   var RESTS = {
     begin: '[zZxX]\\d*(?!\\:)',
     className: 'comment'
