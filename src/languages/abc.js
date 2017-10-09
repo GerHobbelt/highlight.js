@@ -5,10 +5,6 @@ Category: markup
 */
 
 function(hljs) {
-  var ACCIDENTAL_SYMBOLS = {
-    begin: '[_^]{1,2}|\=',
-    className: 'meta'
-  }
   var BROKEN_RHYTHM_SYMBOLS = {
     begin: '[<>]{1,3}',
     className: 'meta'
@@ -26,18 +22,7 @@ function(hljs) {
         begin: '^[A-Za-z]',
         end: '\\:',
         excludeEnd: true,
-      },
-      {
-        className: 'params',
-        end: '(?=%)|$',
-        endsParent: true,
-        contains: [
-          {
-            begin: '\\n '
-          },
-          hljs.BACKSLASH_ESCAPE,
-        ]
-      },
+      }
     ]
   }
   var LYRICS = {
@@ -58,7 +43,6 @@ function(hljs) {
           {
             begin: '\\n '
           },
-          hljs.BACKSLASH_ESCAPE,
         ]
       },
     ]
@@ -71,14 +55,10 @@ function(hljs) {
       {
         className: 'attribute',
         begin: '[A-Za-z]',
-      },
-      {
-        className: 'params',
-        begin: '\\:',
-        excludeBegin: true,
+        end: '\\:',
         excludeEnd: true,
         endsWithParent: true,
-      },
+      }
     ]
   }
   return {
@@ -89,8 +69,8 @@ function(hljs) {
       hljs.BACKSLASH_ESCAPE,
       hljs.COMMENT('\\[r\\:','\\]'),
       hljs.COMMENT('\\%[^\\%]','$'),
-      // ACCIDENTAL_SYMBOLS,
-      // BROKEN_RHYTHM_SYMBOLS,
+      ACCIDENTAL_SYMBOLS,
+      BROKEN_RHYTHM_SYMBOLS,
       LYRICS,
       INFORMATION_FIELDS,
       INLINE_INFORMATION_FIELDS,
