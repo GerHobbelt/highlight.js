@@ -39,9 +39,6 @@ function(hljs) {
       hljs.BACKSLASH_ESCAPE,
       hljs.COMMENT('\\[r\\:','\\]'),
       hljs.COMMENT('\\%[^\\%]','$'),
-      ACCIDENTAL_SYMBOLS,
-      BROKEN_RHYTHM_SYMBOLS,
-      LYRICS,
       INFORMATION_FIELDS,
       INLINE_INFORMATION_FIELDS,
       {
