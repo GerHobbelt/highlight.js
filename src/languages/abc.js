@@ -82,9 +82,8 @@ function(hljs) {
         end: '$',
       },
       {
-        className: 'built_in',
-        begin:'!',
-        end: '!',
+        className: 'keyword',
+        begin:'!\\S+!',
       },
     ]
   }
