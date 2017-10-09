@@ -5,10 +5,6 @@ Category: markup
 */
 
 function(hljs) {
-  var RESTS = {
-    begin: '[zZxX]\\d*(?!\\:)',
-    className: 'comment'
-  }
   var INFORMATION_FIELDS = {
     begin:'^[A-Za-z]\\:',
     returnBegin: true,
