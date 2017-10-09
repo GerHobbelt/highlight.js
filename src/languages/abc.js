@@ -5,29 +5,42 @@ Category: markup
 */
 
 function(hljs) {
+
   var INFORMATION_FIELDS = {
-    begin:'^[A-Za-z]\\:',
-    returnBegin: true,
-    contains: [
+    variants: [
       {
-        className: 'attribute',
-        begin: '^[A-Za-z]',
-        end: '\\:',
-        excludeEnd: true,
+        begin:'^[A-Za-z\\+]\\:',
+        end: '$'
+      },
+      {
+        begin: '\\[[A-Za-qs-z]',
+        end: '\\]'
       }
-    ]
-  }
-  var INLINE_INFORMATION_FIELDS = {
-    begin: '\\[[A-Za-z]\\:',
+    ],
     returnBegin: true,
-    end: '\\]',
     contains: [
       {
         className: 'attribute',
         begin: '[A-Za-z]',
         end: '\\:',
         excludeEnd: true,
-        endsWithParent: true,
+        starts: {
+          begin: '\\:',
+          starts: {
+            className: 'params',
+            end: '$',
+            endsWithParent: true,
+            excludeEnd: true,
+            contains: [
+              hljs.BACKSLASH_ESCAPE,
+              hljs.COMMENT('\\[r\\:','\\]'),
+              hljs.COMMENT('\\%','$'),
+              {
+                begin: '\\n  '
+              }
+            ]
+          }
+        }
       }
     ]
   }
@@ -63,7 +76,6 @@ function(hljs) {
       hljs.COMMENT('\\[r\\:','\\]'),
       hljs.COMMENT('\\%','$'),
       INFORMATION_FIELDS,
-      INLINE_INFORMATION_FIELDS,
       {
         className: 'meta',
         begin: '\\%abc',
