@@ -35,6 +35,8 @@ function(hljs) {
               hljs.BACKSLASH_ESCAPE,
               hljs.COMMENT('\\[r\\:','\\]'),
               hljs.COMMENT('\\%','$'),
+              hljs.C_LINE_COMMENT_MODE,
+              hljs.C_BLOCK_COMMENT_MODE,
               {
                 begin: '\\n  '
               }
@@ -60,6 +62,8 @@ function(hljs) {
           contains: [
             hljs.BACKSLASH_ESCAPE,
             hljs.COMMENT('\\%','$'),
+            hljs.C_LINE_COMMENT_MODE,
+            hljs.C_BLOCK_COMMENT_MODE,
           ]
         }
       },
@@ -72,6 +76,8 @@ function(hljs) {
       hljs.BACKSLASH_ESCAPE,
       hljs.COMMENT('\\[r\\:','\\]'),
       hljs.COMMENT('\\%','$'),
+      hljs.C_LINE_COMMENT_MODE,
+      hljs.C_BLOCK_COMMENT_MODE,
       INFO_FIELDS,
       {
         className: 'meta',
