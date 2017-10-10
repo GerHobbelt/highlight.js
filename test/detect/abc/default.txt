@@ -1,57 +1,13 @@
 %abc-2.2
 
+%%papersize A4
+
 H:This file contains some example
   English tunes for abc2mtex
-
-hi
-O:E                   % mark all tunes with an E (English) for the index
-
-X:1                   % tune no 1
-T:Dusty Miller, The   % title
-T:Binny's Jig
-C:Trad.               % traditional
-R:DH                  % double hornpipe
-M:3/4                 % meter
+M:6/8                 % default meter for the following tunes
 E:8                   \% note spacing
-I:speed 300           % speed for playabc
-K:G                   % key
 
 B>cd BAG|FA Ac [M:6/8]BA|B>cd BAG|DG GB AG:|\
 Bdd gfg|aA Ac BA|Bdd gfa|gG GB AG:|
-BG G/2G/2G BG|FA Ac BA|BG G/2G/2G BG|DG GB AG:|
 W:Hey, the dusty miller, and his dusty coat;
-W:He will win a shilling, or he spend a groat.
-W:Dusty was the coat, dusty was the colour;
-W:Dusty was the kiss, that I got frae the miller.
-
-\bigskip              % a bit of space
-
-M:6/8                 % default meter for the following tunes
-R:J                   % mark following tunes with a J (jig) for the index
-
-X:2
-T:Old Sir Simon the King
-C:Trad.
-S:Offord MSS          % from Offord manuscript
-N:see also Playford   % notes
-M:9/8
-R:SJ                  % slip jig
-Q:C3=120              % tempo
-Z:originally in C     % transcription notes
-K:G
-D|GFG GAG G2D|GFG GAG F2D|EFE EFE EFG|A2G F2E D2:|
-D|GAG GAB d2D|GAG GAB c2D|[1 EFE EFE EFG|A2G F2E D2:|\
-M:12/8                % change meter for a bar
-[2 E2E EFE E2E EFG|\
-M:9/8                 % change back again
-A2G F2E D2|]
-
-w: syll-a-ble   % is aligned with three notes
-w: syll-a--ble  % is aligned with four notes
-w: syll-a -ble  % (equivalent to the previous line)
-w: time__       % is aligned with three notes
-w: of~the~day   % is treated as one syllable (i.e. aligned with one note)
-                % but appears as three separate words
- gf|e2dc B2A2|B2G2 E2D2|.G2.G2 GABc|d4 B2
-w: Sa-ys my au-l' wan to your aul' wan,
-+: Will~ye come to the Wa-x-ies dar-gle?
++:He will win a shilling, or he spend a groat.
