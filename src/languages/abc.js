@@ -5,6 +5,7 @@ Category: markup
 */
 
 function(hljs) {
+
   function continuation(parentClassName){
     return {
       begin: '\\n(\\+\\:|  )',
@@ -48,11 +49,11 @@ function(hljs) {
   var INFO_FIELDS = {
     variants: [
       {
-        begin: '\\[[A-VX-Za-vx-z]',
+        begin: '\\[[A-VY-Za-vy-z]',
         end: '\\]'
       },
       {
-        begin:'^[A-VX-Za-vx-z\\+]\\:',
+        begin:'^[A-VY-Za-vy-z\\+]\\:',
         end: '$'
       },
     ],
@@ -83,8 +84,39 @@ function(hljs) {
       continuation('params')
     ]
   }
+
+  var REF_FIELD = {
+    className: 'strong',
+    begin:'^[Xx]\\:',
+    end: '$',
+    returnBegin: true,
+    contains: [
+      {
+        className: 'strong',
+        begin: '[Xx]',
+        end: '\\:',
+        excludeEnd: true,
+        starts: {
+          begin: '\\:',
+          starts: {
+            className: 'strong',
+            end: '$',
+            endsWithParent: true,
+            excludeEnd: true,
+            contains: [
+              hljs.BACKSLASH_ESCAPE,
+              hljs.COMMENT('\\[r\\:','\\]'),
+              hljs.COMMENT('\\%','$'),
+              hljs.C_LINE_COMMENT_MODE,
+              hljs.C_BLOCK_COMMENT_MODE,
+            ]
+          }
+        }
+      }
+    ]
+  }
+
   var LYRICS = {
-    className: 'test',
     begin:'^[Ww]\\:',
     end: '$',
     returnBegin: true,
@@ -145,6 +177,7 @@ function(hljs) {
       hljs.COMMENT('\\%','$'),
       hljs.C_LINE_COMMENT_MODE,
       hljs.C_BLOCK_COMMENT_MODE,
+      REF_FIELD,
       LYRICS,
       INFO_FIELDS,
       {
