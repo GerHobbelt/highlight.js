@@ -189,6 +189,10 @@ function(hljs) {
         className: 'keyword',
         begin:'!\\S+!',
       },
+      {
+        className: 'symbol',
+        begin: '[|\\[\\]]',
+      }
     ]
   }
 }
