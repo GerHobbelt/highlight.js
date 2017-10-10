@@ -6,22 +6,22 @@ Category: markup
 
 function(hljs) {
 
-  var INFORMATION_FIELDS = {
+  var INFO_FIELDS = {
     variants: [
+      {
+        begin: '\\[[A-Za-qs-z]',
+        end: '\\]'
+      },
       {
         begin:'^[A-Za-z\\+]\\:',
         end: '$'
       },
-      {
-        begin: '\\[[A-Za-qs-z]',
-        end: '\\]'
-      }
     ],
     returnBegin: true,
     contains: [
       {
         className: 'attribute',
-        begin: '[A-Za-z]',
+        begin: '[A-Za-z+]',
         end: '\\:',
         excludeEnd: true,
         starts: {
@@ -67,15 +67,12 @@ function(hljs) {
   }
 
   return {
-    keywords: {
-      symbol: '',
-    },
     contains: [
       DIRECTIVE,
       hljs.BACKSLASH_ESCAPE,
       hljs.COMMENT('\\[r\\:','\\]'),
       hljs.COMMENT('\\%','$'),
-      INFORMATION_FIELDS,
+      INFO_FIELDS,
       {
         className: 'meta',
         begin: '\\%abc',
