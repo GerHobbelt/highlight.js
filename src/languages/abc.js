@@ -92,14 +92,14 @@ function(hljs) {
     returnBegin: true,
     contains: [
       {
-        className: 'strong',
+        className: 'attribute',
         begin: '[Xx]',
         end: '\\:',
         excludeEnd: true,
         starts: {
           begin: '\\:',
           starts: {
-            className: 'strong',
+            className: 'params',
             end: '$',
             endsWithParent: true,
             excludeEnd: true,
