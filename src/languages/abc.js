@@ -5,15 +5,54 @@ Category: markup
 */
 
 function(hljs) {
+  function continuation(parentClassName){
+    return {
+      begin: '\\n(\\+\\:|  )',
+      end: '$',
+      returnBegin: true,
+      contains: [
+        {
+          className: 'attribute',
+          begin: '\\n\\+',
+          end: '\\:',
+          excludeEnd: true,
+          starts: {
+            begin: '\\:',
+            starts: {
+              className: parentClassName,
+              end: '$',
+              contains: [
+                hljs.BACKSLASH_ESCAPE,
+                hljs.COMMENT('\\%','$'),
+                hljs.C_LINE_COMMENT_MODE,
+                hljs.C_BLOCK_COMMENT_MODE,
+              ]
+            }
+          }
+        },
+        {
+          begin: '\\n  ',
+          className: parentClassName,
+          end: '$',
+          contains: [
+            hljs.BACKSLASH_ESCAPE,
+            hljs.COMMENT('\\%','$'),
+            hljs.C_LINE_COMMENT_MODE,
+            hljs.C_BLOCK_COMMENT_MODE,
+          ]
+        }
+      ]
+    }
+  }
 
   var INFO_FIELDS = {
     variants: [
       {
-        begin: '\\[[A-Za-qs-z]',
+        begin: '\\[[A-VX-Za-vx-z]',
         end: '\\]'
       },
       {
-        begin:'^[A-Za-z\\+]\\:',
+        begin:'^[A-VX-Za-vx-z\\+]\\:',
         end: '$'
       },
     ],
@@ -21,7 +60,7 @@ function(hljs) {
     contains: [
       {
         className: 'attribute',
-        begin: '[A-Za-z+]',
+        begin: '[A-VX-Za-vx-z\\+]',
         end: '\\:',
         excludeEnd: true,
         starts: {
@@ -37,13 +76,41 @@ function(hljs) {
               hljs.COMMENT('\\%','$'),
               hljs.C_LINE_COMMENT_MODE,
               hljs.C_BLOCK_COMMENT_MODE,
-              {
-                begin: '\\n  '
-              }
             ]
           }
         }
-      }
+      },
+      continuation('params')
+    ]
+  }
+  var LYRICS = {
+    className: 'test',
+    begin:'^[Ww]\\:',
+    end: '$',
+    returnBegin: true,
+    contains: [
+      {
+        className: 'attribute',
+        begin: '[Ww]',
+        end: '\\:',
+        excludeEnd: true,
+        starts: {
+          begin: '\\:',
+          starts: {
+            className: 'string',
+            end: '$',
+            // endsWithParent: true,
+            // excludeEnd: true,
+            contains: [
+              hljs.BACKSLASH_ESCAPE,
+              hljs.COMMENT('\\%','$'),
+              hljs.C_LINE_COMMENT_MODE,
+              hljs.C_BLOCK_COMMENT_MODE,
+            ]
+          }
+        }
+      },
+      continuation('string')
     ]
   }
 
@@ -78,6 +145,7 @@ function(hljs) {
       hljs.COMMENT('\\%','$'),
       hljs.C_LINE_COMMENT_MODE,
       hljs.C_BLOCK_COMMENT_MODE,
+      LYRICS,
       INFO_FIELDS,
       {
         className: 'meta',
