@@ -192,7 +192,7 @@ function(hljs) {
       },
       {
         className: 'symbol',
-        begin: '[|\\[\\]]',
+        begin: '\\[?\\|\\]?',
       }
     ]
   }
