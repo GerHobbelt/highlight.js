@@ -180,6 +180,7 @@ function(hljs) {
       REF_FIELD,
       LYRICS,
       INFO_FIELDS,
+      hljs.QUOTE_STRING_MODE,
       {
         className: 'meta',
         begin: '\\%abc',
