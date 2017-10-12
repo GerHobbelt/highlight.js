@@ -2,12 +2,15 @@
 
 %%papersize A4
 
-H:This file contains some example
-  English tunes for abc2mtex
-M:6/8                 % default meter for the following tunes
-E:8                   \% note spacing
+X: 1
+// Comment
+/* block
+comment */
+T: Misirlou    % another comment
+C: N.Roubanis
+   1934
+O: Greece
 
-B>cd BAG|FA Ac [M:6/8]BA|B>cd BAG|DG GB AG:|\
-Bdd gfg|aA Ac BA|Bdd gfa|gG GB AG:|
-W:Hey, the dusty miller, and his dusty coat;
-+:He will win a shilling, or he spend a groat.
+|: "D"D3 E ^F2 G2 [r: remark in the middle of music]| A3B ^c2BA | A8- !trill! | A8 |
+w: 1.~Mi-sir-lou mou i gli-kia sou ma-tia
++: 2.~Mav-ro ma-ta Mi-sir-lou mou tre-lli
