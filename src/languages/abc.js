@@ -46,7 +46,7 @@ function(hljs) {
   var INFO_FIELDS = {
     variants: [
       {
-        begin: '\\[[A-VY-Za-vy-z]',
+        begin: '\\[[A-VY-Za-vy-z]\\:',
         end: '\\]'
       },
       {
