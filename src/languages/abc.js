@@ -22,12 +22,7 @@ function(hljs) {
             starts: {
               className: parentClassName,
               end: '$',
-              contains: [
-                hljs.BACKSLASH_ESCAPE,
-                hljs.COMMENT('\\%','$'),
-                hljs.C_LINE_COMMENT_MODE,
-                hljs.C_BLOCK_COMMENT_MODE,
-              ]
+              contains: COMMENTS,
             }
           }
         },
@@ -35,16 +30,18 @@ function(hljs) {
           begin: '\\n  ',
           className: parentClassName,
           end: '$',
-          contains: [
-            hljs.BACKSLASH_ESCAPE,
-            hljs.COMMENT('\\%','$'),
-            hljs.C_LINE_COMMENT_MODE,
-            hljs.C_BLOCK_COMMENT_MODE,
-          ]
+          contains: COMMENTS,
         }
       ]
     }
   }
+
+  var COMMENTS = [
+    hljs.BACKSLASH_ESCAPE,
+    hljs.COMMENT('\\%','$'),
+    hljs.C_LINE_COMMENT_MODE,
+    hljs.C_BLOCK_COMMENT_MODE,
+  ]
 
   var INFO_FIELDS = {
     variants: [
@@ -71,13 +68,7 @@ function(hljs) {
             end: '$',
             endsWithParent: true,
             excludeEnd: true,
-            contains: [
-              hljs.BACKSLASH_ESCAPE,
-              hljs.COMMENT('\\[r\\:','\\]'),
-              hljs.COMMENT('\\%','$'),
-              hljs.C_LINE_COMMENT_MODE,
-              hljs.C_BLOCK_COMMENT_MODE,
-            ]
+            contains: COMMENTS,
           }
         }
       },
@@ -103,13 +94,7 @@ function(hljs) {
             end: '$',
             endsWithParent: true,
             excludeEnd: true,
-            contains: [
-              hljs.BACKSLASH_ESCAPE,
-              hljs.COMMENT('\\[r\\:','\\]'),
-              hljs.COMMENT('\\%','$'),
-              hljs.C_LINE_COMMENT_MODE,
-              hljs.C_BLOCK_COMMENT_MODE,
-            ]
+            contains: COMMENTS,
           }
         }
       }
@@ -131,14 +116,7 @@ function(hljs) {
           starts: {
             className: 'string',
             end: '$',
-            // endsWithParent: true,
-            // excludeEnd: true,
-            contains: [
-              hljs.BACKSLASH_ESCAPE,
-              hljs.COMMENT('\\%','$'),
-              hljs.C_LINE_COMMENT_MODE,
-              hljs.C_BLOCK_COMMENT_MODE,
-            ]
+            contains: COMMENTS,
           }
         }
       },
@@ -158,12 +136,7 @@ function(hljs) {
         starts: {
           className: 'params',
           endsWithParent: true,
-          contains: [
-            hljs.BACKSLASH_ESCAPE,
-            hljs.COMMENT('\\%','$'),
-            hljs.C_LINE_COMMENT_MODE,
-            hljs.C_BLOCK_COMMENT_MODE,
-          ]
+          contains: COMMENTS,
         }
       },
     ]
