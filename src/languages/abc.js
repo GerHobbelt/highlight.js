@@ -1,7 +1,8 @@
 /*
-Language: ABC
+Language: Abc
 Authors: Andrea Crawford <andrea.crawford13@gmail.com>
 Category: markup
+Description: Abc is a text-based music notation system
 */
 
 function(hljs) {
@@ -39,7 +40,6 @@ function(hljs) {
   var COMMENTS = [
     hljs.BACKSLASH_ESCAPE,
     hljs.COMMENT('\\%','$'),
-    hljs.C_LINE_COMMENT_MODE,
     hljs.C_BLOCK_COMMENT_MODE,
   ]
 
@@ -148,7 +148,6 @@ function(hljs) {
       hljs.BACKSLASH_ESCAPE,
       hljs.COMMENT('\\[r\\:','\\]'),
       hljs.COMMENT('\\%','$'),
-      hljs.C_LINE_COMMENT_MODE,
       hljs.C_BLOCK_COMMENT_MODE,
       REF_FIELD,
       LYRICS,
