@@ -39,7 +39,7 @@ function(hljs) {
 
   var COMMENTS = [
     hljs.BACKSLASH_ESCAPE,
-    hljs.COMMENT('\\%','$'),
+    hljs.COMMENT('\\%[^\\n%]','$'),
     hljs.C_BLOCK_COMMENT_MODE,
   ]
 
@@ -147,7 +147,7 @@ function(hljs) {
       DIRECTIVE,
       hljs.BACKSLASH_ESCAPE,
       hljs.COMMENT('\\[r\\:','\\]'),
-      hljs.COMMENT('\\%','$'),
+      hljs.COMMENT('\\%[^\\n\\%]','$'),
       hljs.C_BLOCK_COMMENT_MODE,
       REF_FIELD,
       LYRICS,
