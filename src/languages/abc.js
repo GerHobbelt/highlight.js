@@ -142,6 +142,13 @@ function(hljs) {
     ]
   }
 
+  var QUOTE_STRING = {
+    className: 'string',
+    begin: '"', end: '"',
+    relevance: 0,
+    contains: [hljs.BACKSLASH_ESCAPE]
+  }
+
   return {
     contains: [
       DIRECTIVE,
@@ -152,7 +159,7 @@ function(hljs) {
       REF_FIELD,
       LYRICS,
       INFO_FIELDS,
-      hljs.QUOTE_STRING_MODE,
+      QUOTE_STRING,
       {
         className: 'meta',
         begin: '\\%abc',
