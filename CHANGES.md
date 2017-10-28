@@ -1,3 +1,12 @@
+## Master (Unreleased)
+
+New styles:
+
+- [*Nord*][nord-highlightjs] by [Arctic Ice Studio][]
+
+[Arctic Ice Studio]: https://github.com/arcticicestudio
+[nord-highlightjs]: https://github.com/arcticicestudio/nord-highlightjs
+
 ## Version 9.12.0
 
 New language:
