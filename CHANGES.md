@@ -37,6 +37,7 @@ New language:
 
 - *MikroTik* RouterOS Scripting language by [Ivan Dementev][].
 - Google *Closure Templates* language by [Chema Balsas][]
+- *OData* by [Stanislaw Swierc][]
 
 New style:
 

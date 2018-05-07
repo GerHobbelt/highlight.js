@@ -48,9 +48,32 @@ function(hljs) {
     ]
   };
 
+  var PS_COMMAND = {
+    className: 'pscommand',
+    begin: /[A-Z][a-z]+-[A-Z][a-z]+[A-Za-z0-9]*/,
+    relevance: 0
+  };
+  
   var LITERAL = {
     className: 'literal',
-    begin: /\$(null|true|false)\b/
+    begin: /\$(null|true|false)\b/,
+    relevance: 10
+  };
+
+  var OPERATORS = {
+    // Operators are unique to PowerShell and should have high relevance.
+    className: 'nomarkup',
+    // Pattern starts with w whitepace to follow pattern set by PARAMETER.
+    begin: /\s-(ne|eq|lt|gt|ge|le|not|like|notlike|match|notmatch|contains|notcontains|in|notin|replace)\b/,
+    relevance: 10
+  };
+
+  var PARAMETER = 
+  {
+    className: 'parameter',
+    // Match command line parameters (-p, -u)
+    begin: /\s-{1,2}\w[\w-]*/,
+    relevance: 0
   };
 
   var QUOTE_STRING = {
@@ -66,25 +89,38 @@ function(hljs) {
         className: 'variable',
         begin: /\$[A-z]/, end: /[^A-z]/
       }
-    ]
+    ],
+    relevance: 0
   };
 
+/*   var SQUAREPARAM = {
+    className: 'squareparam',
+    begin: '/\[/', 
+    end:'/]/,',
+    contains: [
+      PARAMETER,
+      QUOTE_STRING
+    ]    
+  };
+ */  
   var APOS_STRING = {
     className: 'string',
     variants: [
       { begin: /'/, end: /'/ },
       { begin: /@'/, end: /^'@/ }
-    ]
+    ],
+    relevance: 0
   };
 
   var PS_HELPTAGS = {
     className: 'doctag',
     variants: [
-      /* no paramater help tags */
+      /* no parameter help tags */ 
       { begin: /\.(synopsis|description|example|inputs|outputs|notes|link|component|role|functionality)/ },
       /* one parameter help tags */
       { begin: /\.(parameter|forwardhelptargetname|forwardhelpcategory|remotehelprunspace|externalhelp)\s+\S+/ }
-    ]
+    ],
+    relevance: 10
   };
 
   var PS_COMMENT = hljs.inherit(
@@ -96,7 +132,8 @@ function(hljs) {
         /* multi-line comment */
         { begin: /<#/, end: /#>/ }
       ],
-      contains: [PS_HELPTAGS]
+      contains: [PS_HELPTAGS],
+      relevance: 0
     }
   );
   
@@ -312,7 +349,10 @@ function(hljs) {
     VAR,
     LITERAL,
     HASH_SIGNS,
-    VERBS
+    VERBS,
+    OPERATORS,
+    PARAMETER,
+    PS_COMMAND,
   ];
 
   var PS_TYPE = {
@@ -338,6 +378,7 @@ function(hljs) {
       PS_USING,
       PS_ARGUMENTS,
       PS_TYPE
-    )
+    ],
+    relevance: 0
   };
 }
