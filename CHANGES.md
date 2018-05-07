@@ -20,6 +20,7 @@ New languages:
 - *RSL* Added a type and update detect file "default.txt" to enable OSL to be detected  [Renan Lavarec][].
 - *ST* Structured Text language of IEC-61131 standard by [Sehioromano][].
 - *ABAP* by [Cassio Binkowski][]
+- *FASM* (Flat Assembler) by [Tristano Ajmone][]
 
 New styles:
 
@@ -28,6 +29,7 @@ New styles:
 - *ISBL editor light* by [Dmitriy Tarasov][]
 - *ISBL editor dark* by [Dmitriy Tarasov][]
 - *Portugol* by [Marco Antonio Augusto de Andrade][]
+- *FASM* by [Tristano Ajmone][]
 
 Improvements:
 
