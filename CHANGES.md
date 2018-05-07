@@ -27,6 +27,7 @@ New languages:
 - *HCL* by [Brian Hicks][].
 - *Logtalk* by [Paulo Moura][]
 - *GDScript* by [Geequlim][]
+- *Hakaru* by [Rob Zinkov][]
 
 New styles:
 
