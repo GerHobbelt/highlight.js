@@ -239,7 +239,6 @@ URL:   https://highlightjs.org/
 - Грейт Гай <g8tguy@g8tguy.com>
 - Сергей Собко <s.sobko@profitware.ru>
 - Хейл Чан <halechan@qq.com>
-- Мэт Эванс <syrius3@gmail.com>
 - Каспер Андерсен <kma_untrusted@protonmail.com>
 - Филипп А. <flying-sheep@web.de>
 - Гуаннан Вей <guannanwei@outlook.com>
