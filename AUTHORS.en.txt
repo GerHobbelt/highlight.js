@@ -261,3 +261,4 @@ Contributors:
 - Mark Ellis <ellismarkf@gmail.com>
 - Chema Balsas <jbalsas@gmail.com>
 - Stanislaw Swierc <stanislaw.swierc@gmail.com>
+- Mathias Schilling <m@matchilling.com>

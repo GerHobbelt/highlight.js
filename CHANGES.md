@@ -6,13 +6,15 @@ New languages:
 - *SPARQL* RDF Query language by [Mark Ellis][]
 - *Turtle* RDF language by [Mark Ellis][]
 - *DAX* by [Stanislaw Swierc][]
+- *[Botlang][]* Scripting language for conversational chat bots by [Mathias Schilling][].
 
 Improvements:
 
-- *Livescript* boosted relevance to better score language by [Mark Ellis][].
 - [Mark Ellis][] wrote a CLI tool to quickly check for relevance conflicts when
-developing new language support.
+  developing new language support.
 
+[Botlang]: https://botlang.org/
+[Mathias Schilling]: https://github.com/matchilling
 [Stanislaw Swierc]: https://github.com/StanislawSwierc
 [Mark Ellis]: https://github.com/ellismarkf
 

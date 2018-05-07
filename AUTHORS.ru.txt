@@ -256,3 +256,4 @@ URL:   https://highlightjs.org/
 - Мортен Пибелехт <morten.piibeleht@gmail.com>
 - Мартин Клаузен <martin.clausene@gmail.com>
 - Давид Пээк <mail@dpeek.com>
+- Матиас Шиллинг <m@matchilling.com>
