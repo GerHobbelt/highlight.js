@@ -264,3 +264,4 @@ URL:   https://highlightjs.org/
 - Шан Маханама <gambit1024@gmail.com>
 - Дмитрий Тарасов <dimatar@gmail.com>
 - Марко Антонио Аугусто де Андраде <marco.andrade@ifro.edu.br>
+- Сергей Романов <serg4172@mail.ru>
