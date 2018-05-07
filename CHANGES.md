@@ -25,6 +25,7 @@ New styles:
 - *Igor Pro* by [Thomas Braun][]
 - *ISBL editor light* by [Dmitriy Tarasov][]
 - *ISBL editor dark* by [Dmitriy Tarasov][]
+- *Portugol* by [Marco Antonio Augusto de Andrade][]
 
 Improvements:
 

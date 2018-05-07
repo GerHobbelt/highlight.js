@@ -286,3 +286,4 @@ Contributors:
 - Dmitriy Tarasov <dimatar@gmail.com>
 - Meseta <meseta@gmail.com>
 - Renan Lavarec <renan.lavarec@ti-r.com>
+- Marco Antonio Augusto de Andrade <marco.andrade@ifro.edu.br>
