@@ -20,7 +20,9 @@ Improvements:
 
 - [Mark Ellis][] wrote a CLI tool to quickly check for relevance conflicts when
   developing new language support.
+- [Duncan Paterson][] added *XQuery* built-ins, prolog, missing keywords, and fixed parsing of function bodies by 
 
+[Duncan Paterson]: https://github.com/duncdrum
 [Botlang]: https://botlang.org/
 [Mathias Schilling]: https://github.com/matchilling
 [Stanislaw Swierc]: https://github.com/StanislawSwierc

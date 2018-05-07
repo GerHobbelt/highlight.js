@@ -268,3 +268,4 @@ Contributors:
 - Arctic Ice Studio <development@arcticicestudio.com>
 - Thomas Braun <thomas.braun@byte-physics.de>
 - Roman Resh <romanresh@live.com>
+- Duncan Paterson <duncdrum@users.noreply.github.com>
