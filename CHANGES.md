@@ -7,6 +7,7 @@ New languages:
 - *Turtle* RDF language by [Mark Ellis][]
 - *DAX* by [Stanislaw Swierc][]
 - *[Botlang][]* Scripting language for conversational chat bots by [Mathias Schilling][].
+- *Expression 2* by [Simen Wiik][].
 
 Improvements:
 
@@ -17,6 +18,7 @@ Improvements:
 [Mathias Schilling]: https://github.com/matchilling
 [Stanislaw Swierc]: https://github.com/StanislawSwierc
 [Mark Ellis]: https://github.com/ellismarkf
+[Simen Wiik]: https://github.com/revosw
 
 ## Version 9.12.0
 
