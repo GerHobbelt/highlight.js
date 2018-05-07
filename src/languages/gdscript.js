@@ -5,7 +5,7 @@ Contributors: Geequlim
 Description: Language definition for GDScript. This language highlight is forked from python language.
 */
 
-function(hljs) {
+function language_GDSCRIPT(hljs) {
   var PROMPT = {
     className: 'meta',  begin: /^(>>>|\.\.\.) /
   };

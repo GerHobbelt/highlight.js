@@ -5,7 +5,7 @@ Author: Rob Zinkov <rob@zinkov.com>
 Description: Syntax highlighting for the Hakaru probabilistic programming language
 */
 
-function(hljs) {
+function language_HAKARU(hljs) {
   return {
     contains: [
       hljs.HASH_COMMENT_MODE, {

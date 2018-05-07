@@ -3,7 +3,7 @@ Language: Beancount
 Author: Henrique Bastos <henrique@bastos.net>
 Description: Double-Entry Accounting from Text Files
 */
-function(hljs) {
+function language_BEANCOUNT(hljs) {
     var ACCOUNT_RE = '[A-Z][A-Za-z0-9\-]*';
 
     var ACCOUNT = {

@@ -3,7 +3,7 @@ Language: Snort
 Category: Intrusion Detection, Prevention
 */
 
-function(hljs) {
+function language_SNORT(hljs) {
   var KEYWORDS = 'alert log pass activate dynamic drop reject sdrop tcp ip udp icmp ' +
   'msg reference gid sid rev classtype priority metadeta content uricontent ' +
   'nocase threshold type limit track limit by_src by_dst count seconds distance ' +

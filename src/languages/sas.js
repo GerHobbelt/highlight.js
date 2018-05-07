@@ -4,7 +4,7 @@ Author: Mauricio Caceres <mauricio.caceres.bravo@gmail.com>
 Description: Syntax Highlighting for SAS
 */
 
-function(hljs) {
+function language_SAS(hljs) {
 
     // Data step and PROC SQL statements
     var SAS_KEYWORDS = ''+
