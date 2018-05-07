@@ -1,0 +1,129 @@
+/*
+
+Cobalt style (c) Brett Epps <brett.epps@quest.com>
+Based on Cobalt theme from Textmate 1.5.10.
+
+*/
+
+pre code {
+    background: rgb(11, 37, 74);
+    color: rgb(255, 255, 255);
+    display: block;
+    font-family: menlo, monaco, consolas, courier, sans-serif;
+    font-size: 14px;
+    padding: 0.5em;
+}
+
+pre .class .keyword,
+pre .function .keyword {
+    color: rgb(255, 238, 128);
+}
+
+pre .class .title,
+pre .function .title,
+pre .decorator,
+pre .pseudo,
+pre .attr_selector,
+pre .ini .title {
+    color: rgb(255, 221, 0);
+}
+
+pre .variable,
+pre .function .params {
+    color: rgb(204, 204, 204);
+}
+
+pre .string,
+pre .tag .value {
+    color: rgb(58, 217, 0);
+}
+
+pre .keyword,
+pre .important,
+pre .flow {
+    color: rgb(255, 157, 0);
+}
+
+pre .comment,
+pre .javadoc,
+pre .template_comment,
+pre .diff .header {
+    color: rgb(0, 136, 255);
+}
+
+pre .pi,
+pre .doctype {
+    color: rgb(115, 129, 125);
+}
+
+pre .number,
+pre .constant,
+pre .cdata,
+pre .literal {
+    color: rgb(255, 98, 140);
+}
+
+pre .built_in,
+pre .css .value .function,
+pre .winutils {
+    color: rgb(255, 176, 84);
+}
+
+pre .type,
+pre .typename {
+    color: rgb(128, 255, 187);
+}
+
+pre .tag .title,
+pre .tag .attribute,
+pre .css .tag,
+pre .apache .tag {
+    color: rgb(158, 255, 255);
+}
+
+pre .css .id {
+    color: rgb(255, 180, 84);
+}
+
+pre .css .attribute,
+pre .apache .cbracket,
+pre .apache .sqbracket
+pre .envvar {
+    color: rgb(157, 243, 159);
+}
+
+pre .css .value .number,
+pre .css .value .hexcolor,
+pre .package .title {
+    color: rgb(246, 240, 128);
+}
+
+pre .regexp {
+    color: rgb(128, 255, 194);
+}
+
+pre .preprocessor,
+pre .diff .chunk,
+pre .shebang {
+    color: rgb(137, 150, 168);
+}
+
+pre .preprocessor .keyword,
+pre .preprocessor .title {
+    color: rgb(175, 196, 219);
+}
+
+pre .diff .addition {
+    background: rgb(21, 79, 0);
+    color: rgb(248, 248, 248);
+}
+
+pre .diff .deletion {
+    background: rgb(76, 9, 0);
+    color: rgb(248, 248, 248);
+}
+
+pre .diff .change {
+    background: rgb(128, 111, 0);
+    color: rgb(248, 248, 248);
+}
