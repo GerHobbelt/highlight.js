@@ -303,3 +303,4 @@ Contributors:
 - Geequlim <geequlim@gmail.com>
 - Victor Zhou <OiCMudkips@users.noreply.github.com>
 - Rob Zinkov <rob@zinkov.com>
+- Aristides Staffieri <aristides@aristidesstaffieri.com>
