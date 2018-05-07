@@ -269,3 +269,4 @@ Contributors:
 - Thomas Braun <thomas.braun@byte-physics.de>
 - Roman Resh <romanresh@live.com>
 - Duncan Paterson <duncdrum@users.noreply.github.com>
+- Ryan King <hello@ryanking.com>
