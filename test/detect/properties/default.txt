@@ -1,3 +1,20 @@
+#################################################################
+# Example property file
+#################################################################
+
+status=It works!
+
+db.driver=postgresql
+db.host=localhost
+db.port=5432
+db.name=mydb
+db.user=user
+db.password=********
+
+some.guid=e534ff33-2eea-4fc7-ab96-be826d055c25
+
+windows.path=C:\\Users\\me\\Desktop
+
 pi=3.141
 time=01.01.1900
 integer=1337
