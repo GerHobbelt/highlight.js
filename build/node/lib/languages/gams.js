@@ -1,4 +1,4 @@
-module.exports = function (hljs) {
+module.exports = function language_GAMS(hljs) {
   var KEYWORDS = {
     'keyword':
       'abort acronym acronyms alias all and assign binary card diag display ' +
@@ -28,13 +28,15 @@ module.exports = function (hljs) {
     begin: /\(/, end: /\)/,
     excludeBegin: true,
     excludeEnd: true,
+    relevance: 0
   };
   var SYMBOLS = {
     className: 'symbol',
     variants: [
       {begin: /\=[lgenxc]=/},
       {begin: /\$/},
-    ]
+    ],
+    relevance: 0
   };
   var QSTR = { // One-line quoted comment string
     className: 'comment',
@@ -43,7 +45,8 @@ module.exports = function (hljs) {
       {begin: '"', end: '"'},
     ],
     illegal: '\\n',
-    contains: [hljs.BACKSLASH_ESCAPE]
+    contains: [hljs.BACKSLASH_ESCAPE],
+    relevance: 0
   };
   var ASSIGNMENT = {
     begin: '/',
@@ -57,6 +60,7 @@ module.exports = function (hljs) {
       hljs.APOS_STRING_MODE,
       hljs.C_NUMBER_MODE,
     ],
+    relevance: 2
   };
   var DESCTEXT = { // Parameter/set/variable description text
     begin: /[a-z][a-z0-9_]*(\([a-z0-9_, ]*\))?[ \t]+/,
@@ -72,6 +76,7 @@ module.exports = function (hljs) {
         relevance: 0
       },
     ],
+    relevance: 0
   };
 
   return {
@@ -90,7 +95,8 @@ module.exports = function (hljs) {
             className: 'meta-keyword',
             begin: '^\\$[a-z0-9]+',
           }
-        ]
+        ],
+        relevance: 0
       },
       hljs.COMMENT('^\\*', '$'),
       hljs.C_LINE_COMMENT_MODE,
@@ -111,7 +117,8 @@ module.exports = function (hljs) {
           hljs.APOS_STRING_MODE,
           ASSIGNMENT,
           DESCTEXT,
-        ]
+        ],
+        relevance: 0
       },
       { // table environment
         beginKeywords: 'table',
@@ -130,7 +137,8 @@ module.exports = function (hljs) {
           hljs.APOS_STRING_MODE,
           hljs.C_NUMBER_MODE,
           // Table does not contain DESCTEXT or ASSIGNMENT
-        ]
+        ],
+        relevance: 0
       },
       // Function definitions
       {
@@ -145,6 +153,7 @@ module.exports = function (hljs) {
               PARAMS,
               SYMBOLS,
             ],
+        relevance: 0
       },
       hljs.C_NUMBER_MODE,
       SYMBOLS,

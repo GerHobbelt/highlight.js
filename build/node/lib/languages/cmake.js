@@ -1,4 +1,4 @@
-module.exports = function(hljs) {
+module.exports = function language_CMAKE(hljs) {
   return {
     aliases: ['cmake.in'],
     case_insensitive: true,

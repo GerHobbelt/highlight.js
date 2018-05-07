@@ -1,4 +1,4 @@
-module.exports = function(hljs) {
+module.exports = function language_COFFEESCRIPT(hljs) {
   var KEYWORDS = {
     keyword:
       // JS keywords

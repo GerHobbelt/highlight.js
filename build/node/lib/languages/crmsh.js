@@ -1,4 +1,4 @@
-module.exports = function(hljs) {
+module.exports = function language_CRMSH(hljs) {
   var RESOURCES = 'primitive rsc_template';
 
   var COMMANDS = 'group clone ms master location colocation order fencing_topology ' +

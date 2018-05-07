@@ -1,4 +1,4 @@
-module.exports = function(hljs) {
+module.exports = function language_ERLANG_REPL(hljs) {
   return {
     keywords: {
       built_in:
@@ -9,7 +9,7 @@ module.exports = function(hljs) {
     },
     contains: [
       {
-        className: 'meta', begin: '^[0-9]+> ',
+        className: 'prompt', begin: '^[0-9]+> ',
         relevance: 10
       },
       hljs.COMMENT('%', '$'),

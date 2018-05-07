@@ -1,12 +1,12 @@
 {
-  "name": "highlight.js",
+  "name": "@gerhobbelt/highlight.js",
   "description": "Syntax highlighting with language autodetection.",
   "keywords": [
     "highlight",
     "syntax"
   ],
   "homepage": "https://highlightjs.org/",
-  "version": "9.12.0",
+  "version": "9.13.1-7",
   "author": {
     "name": "Ivan Sagalaev",
     "email": "maniac@softwaremaniacs.org"
@@ -23,6 +23,10 @@
     {
       "name": "Oleg Efimov",
       "email": "efimovov@gmail.com"
+    },
+    {
+      "name": "Tristian Kelly",
+      "email": "tristian.kelly560@gmail.com"
     },
     {
       "name": "Peter Leonov",
@@ -141,6 +145,10 @@
       "email": "igor@kalnitsky.org"
     },
     {
+      "name": "Jeremy Hull",
+      "email": "sourdrums@gmail.com"
+    },
+    {
       "name": "Valerii Hiora",
       "email": "valerii.hiora@gmail.com"
     },
@@ -187,6 +195,10 @@
     {
       "name": "Dmytrii Nagirniak",
       "email": "dnagir@gmail.com"
+    },
+    {
+      "name": "Oleg Efimov",
+      "email": "efimovov@gmail.com"
     },
     {
       "name": "Luigi Maselli",
@@ -319,6 +331,10 @@
     {
       "name": "Mehdi Dogguy",
       "email": "mehdi@dogguy.org"
+    },
+    {
+      "name": "Tomas Aparicio",
+      "email": "tomas@aparicio.me"
     },
     {
       "name": "Nicolas Braud-Santoni",
@@ -921,6 +937,10 @@
       "email": "aaron.dandy@live.com"
     },
     {
+      "name": "Ckristian Duran",
+      "email": "ckristian_duran@hotmail.com"
+    },
+    {
       "name": "Marvin Saignat",
       "email": "contact@zgmrvn.com"
     },
@@ -933,6 +953,10 @@
       "email": "g8tguy@g8tguy.com"
     },
     {
+      "name": "Ben Ford",
+      "email": "ben.ford@puppet.com"
+    },
+    {
       "name": "Sergey Sobko",
       "email": "s.sobko@profitware.ru"
     },
@@ -941,12 +965,12 @@
       "email": "halechan@qq.com"
     },
     {
-      "name": "Matt Evans",
-      "email": "syrius3@gmail.com"
-    },
-    {
       "name": "Kasper Andersen",
       "email": "kma_untrusted@protonmail.com"
+    },
+    {
+      "name": "Michael Gerbig",
+      "email": "error418@users.noreply.github.com"
     },
     {
       "name": "Philipp A.",
@@ -1007,8 +1031,131 @@
     {
       "name": "Martin Clausen",
       "email": "martin.clausene@gmail.com"
+    },
+    {
+      "name": "Dirk Schuermans",
+      "email": "dirk@schuermans.me"
+    },
+    {
+      "name": "Björn Sauer",
+      "email": "bjo.sauer@live.de"
+    },
+    {
+      "name": "David Peek",
+      "email": "mail@dpeek.com"
+    },
+    {
+      "name": "Mark Ellis",
+      "email": "ellismarkf@gmail.com"
+    },
+    {
+      "name": "Chema Balsas",
+      "email": "jbalsas@gmail.com"
+    },
+    {
+      "name": "Stanislaw Swierc",
+      "email": "stanislaw.swierc@gmail.com"
+    },
+    {
+      "name": "Mathias Schilling",
+      "email": "m@matchilling.com"
+    },
+    {
+      "name": "Simen Wiik",
+      "email": "simenwiik@hotmail.com"
+    },
+    {
+      "name": "Andrea Crawford",
+      "email": "andrea.crawford13@gmail.com"
+    },
+    {
+      "name": "Tod Beardsley",
+      "email": "tod_beardsley@rapid7.com"
+    },
+    {
+      "name": "Arctic Ice Studio",
+      "email": "development@arcticicestudio.com"
+    },
+    {
+      "name": "Thomas Braun",
+      "email": "thomas.braun@byte-physics.de"
+    },
+    {
+      "name": "Roman Resh",
+      "email": "romanresh@live.com"
+    },
+    {
+      "name": "Duncan Paterson",
+      "email": "duncdrum@users.noreply.github.com"
+    },
+    {
+      "name": "Ryan King",
+      "email": "hello@ryanking.com"
+    },
+    {
+      "name": "Guillaume Maudoux",
+      "email": "layus.on@gmail.com"
+    },
+    {
+      "name": "Kaustav Haldar",
+      "email": "khaldar@uwaterloo.ca"
+    },
+    {
+      "name": "Shan Mahanama",
+      "email": "gambit1024@gmail.com"
+    },
+    {
+      "name": "Eric Bailey",
+      "email": "eric.w.bailey@gmail.com"
+    },
+    {
+      "name": "Drew DeVault",
+      "email": "sir@cmpwn.com"
+    },
+    {
+      "name": "Google Inc. (David Benjamin)",
+      "email": "davidben@google.com"
+    },
+    {
+      "name": "Rene Rivera",
+      "email": "grafikrobot@gmail.com"
+    },
+    {
+      "name": "Patrick Massot",
+      "email": "patrick.massot@free.fr"
+    },
+    {
+      "name": "Jörn Reimerdes",
+      "email": "joern.reimerdes@gmail.com"
+    },
+    {
+      "name": "Dmitriy Tarasov",
+      "email": "dimatar@gmail.com"
+    },
+    {
+      "name": "Meseta",
+      "email": "meseta@gmail.com"
+    },
+    {
+      "name": "Renan Lavarec",
+      "email": "renan.lavarec@ti-r.com"
+    },
+    {
+      "name": "Marco Antonio Augusto de Andrade",
+      "email": "marco.andrade@ifro.edu.br"
+    },
+    {
+      "name": "Sergey Romanov",
+      "email": "serg4172@mail.ru"
+    },
+    {
+      "name": "Cassio Binkowski",
+      "email": "cassioiks@live.com"
     }
   ],
+  "bin": {
+    "hljs": "./tools/build.js"
+  },
   "bugs": {
     "url": "https://github.com/isagalaev/highlight.js/issues"
   },
@@ -1023,24 +1170,39 @@
     "build_minified": "node tools/build.js -t all",
     "lint": "eslint src/ demo/",
     "test": "./node_modules/.bin/mocha test/",
-    "test-browser": "./node_modules/.bin/mocha test/browser/"
+    "test-browser": "./node_modules/.bin/mocha test/browser/",
+    "pub": "npm publish --access public"
   },
   "engines": {
     "node": "*"
   },
   "devDependencies": {
-    "bluebird": "3.5.0",
-    "commander": "2.9.0",
-    "del": "2.2.2",
-    "eslint": "3.19.0",
+    "@segment/to-iso-string": "1.0.1",
+    "bluebird": "3.5.1",
+    "cli-table": "0.3.1",
+    "colors": "1.2.4",
+    "commander": "2.15.1",
+    "del": "3.0.0",
+    "eslint": "4.19.1",
     "gear": "0.9.7",
     "gear-lib": "0.9.2",
     "glob": "7.1.2",
-    "jsdom": "9.12.0",
-    "lodash": "4.17.4",
-    "mocha": "3.4.2",
-    "should": "11.2.1",
-    "tiny-worker": "2.1.1",
-    "js-beautify": "1.6.14"
+    "js-beautify": "1.7.5",
+    "jsdom": "11.10.0",
+    "lodash": "4.17.10",
+    "minimatch": "3.0.4",
+    "mocha": "5.1.1",
+    "pug": "2.0.3",
+    "should": "13.2.1",
+    "tiny-worker": "2.1.2"
+  },
+  "dependencies": {
+    "bluebird": "3.5.1",
+    "commander": "2.15.1",
+    "del": "3.0.0",
+    "gear": "0.9.7",
+    "gear-lib": "0.9.2",
+    "jsdom": "11.10.0",
+    "lodash": "4.17.10"
   }
 }

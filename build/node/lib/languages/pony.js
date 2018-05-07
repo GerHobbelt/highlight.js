@@ -1,4 +1,4 @@
-module.exports = function(hljs) {
+module.exports = function language_PONY(hljs) {
   var KEYWORDS = {
     keyword:
       'actor addressof and as be break class compile_error compile_intrinsic' +

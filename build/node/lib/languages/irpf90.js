@@ -1,4 +1,4 @@
-module.exports = function(hljs) {
+module.exports = function language_IRPF90(hljs) {
   var PARAMS = {
     className: 'params',
     begin: '\\(', end: '\\)'

@@ -1,4 +1,4 @@
-module.exports = function(hljs) {
+module.exports = function language_NGINX(hljs) {
   var VAR = {
     className: 'variable',
     variants: [
@@ -61,7 +61,7 @@ module.exports = function(hljs) {
   };
 
   return {
-    aliases: ['nginxconf'],
+    aliases: ['nginxconf','conf'],
     contains: [
       hljs.HASH_COMMENT_MODE,
       {

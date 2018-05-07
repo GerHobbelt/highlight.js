@@ -42,7 +42,7 @@ http://zenorocha.mit-license.org
 .hljs-title,
 .hljs-name,
 .hljs-type,
-.hljs-attribute,
+.hljs-attr,
 .hljs-symbol,
 .hljs-bullet,
 .hljs-addition,
@@ -73,4 +73,11 @@ http://zenorocha.mit-license.org
 
 .hljs-emphasis {
   font-style: italic;
+}
+
+.hljs-prompt {
+  -ms-user-select: none;
+  -moz-user-select: none;
+  -webkit-user-select: none;
+  user-select: none;
 }

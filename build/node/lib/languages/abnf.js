@@ -1,4 +1,4 @@
-module.exports = function(hljs) {
+module.exports = function language_ABNF(hljs) {
     var regexes = {
         ruleDeclaration: "^[a-zA-Z][a-zA-Z0-9-]*",
         unexpectedChars: "[!@#$^&',?+~`|:]"

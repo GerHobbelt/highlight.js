@@ -1,4 +1,4 @@
-module.exports = function(hljs) {
+module.exports = function language_RIB(hljs) {
   return {
     keywords:
       'ArchiveRecord AreaLightSource Atmosphere Attribute AttributeBegin AttributeEnd Basis ' +

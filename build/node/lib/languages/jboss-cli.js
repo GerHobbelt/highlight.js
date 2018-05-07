@@ -1,4 +1,4 @@
-module.exports = function (hljs) {
+module.exports = function language_JBOSS_CLI(hljs) {
   var PARAM = {
     begin: /[\w-]+ *=/, returnBegin: true,
     relevance: 0,

@@ -8,7 +8,7 @@ module.exports = // We try to support full Ada2012
 // xml (broken by Foo : Bar type), elm (broken by Foo : Bar type), vbscript-html (broken by body keyword)
 // sql (ada default.txt has a lot of sql keywords)
 
-function(hljs) {
+function language_ADA(hljs) {
     // Regular expression for Ada numeric literals.
     // stolen form the VHDL highlighter
 

@@ -1,4 +1,4 @@
-module.exports = function(hljs) {
+module.exports = function language_JSON(hljs) {
   var LITERALS = {literal: 'true false null'};
   var TYPES = [
     hljs.QUOTE_STRING_MODE,

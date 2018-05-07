@@ -1,4 +1,4 @@
-module.exports = function(hljs) {
+module.exports = function language_AXAPTA(hljs) {
   return {
     keywords: 'false int abstract private char boolean static null if for true ' +
       'while long throw finally protected final return void enum else ' +

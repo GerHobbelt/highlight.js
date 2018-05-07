@@ -1,4 +1,4 @@
-module.exports = function(hljs) {
+module.exports = function language_PROCESSING(hljs) {
   return {
     keywords: {
       keyword: 'BufferedReader PVector PFont PImage PGraphics HashMap boolean byte char color ' +

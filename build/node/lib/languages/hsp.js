@@ -1,4 +1,4 @@
-module.exports = function(hljs) {
+module.exports = function language_HSP(hljs) {
   return {
     case_insensitive: true,
     lexemes: /[\w\._]+/,

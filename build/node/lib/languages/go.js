@@ -1,4 +1,4 @@
-module.exports = function(hljs) {
+module.exports = function language_GO(hljs) {
   var GO_KEYWORDS = {
     keyword:
       'break default func interface select case map struct chan else goto package switch ' +

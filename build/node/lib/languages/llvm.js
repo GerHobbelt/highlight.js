@@ -1,4 +1,4 @@
-module.exports = function(hljs) {
+module.exports = function language_LLVM_IR(hljs) {
   var identifier = '([-a-zA-Z$._][\\w\\-$.]*)';
   return {
     //lexemes: '[.%]?' + hljs.IDENT_RE,

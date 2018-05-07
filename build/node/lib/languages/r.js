@@ -1,4 +1,4 @@
-module.exports = function(hljs) {
+module.exports = function language_R(hljs) {
   var IDENT_RE = '([a-zA-Z]|\\.[a-zA-Z.])[a-zA-Z0-9._]*';
 
   return {
@@ -46,6 +46,25 @@ module.exports = function(hljs) {
         // number with leading decimal
         className: 'number',
         begin: "\\.\\d+(?:[eE][+\\-]?\\d*)?i?\\b",
+        relevance: 0
+      },
+      {
+        // higher relevance for unusual operator
+        className: 'built_in',
+        begin: "\\->|<\\-",
+        relevance: 1
+      },
+      {
+        // infix operator
+        className: 'operator',
+        begin: '%',
+        end: '%',
+        illegal: '\\n',
+        relevance: 1
+      },
+      {
+        className: 'built_in',
+        begin: "%%|~|>=|<=|==|!=|\\|\\||&&|=|\\+|\\-|\\*|/|\\^|>|<|!|&|\\||\\$|:",
         relevance: 0
       },
 

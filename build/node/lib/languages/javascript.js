@@ -1,4 +1,4 @@
-module.exports = function(hljs) {
+module.exports = function language_JAVASCRIPT(hljs) {
   var IDENT_RE = '[A-Za-z$_][0-9A-Za-z$_]*';
   var KEYWORDS = {
     keyword:
@@ -20,7 +20,6 @@ module.exports = function(hljs) {
       'module console window document Symbol Set Map WeakSet WeakMap Proxy Reflect ' +
       'Promise'
   };
-  var EXPRESSIONS;
   var NUMBER = {
     className: 'number',
     variants: [
@@ -57,7 +56,7 @@ module.exports = function(hljs) {
   ]);
 
   return {
-    aliases: ['js', 'jsx'],
+    aliases: ['js', 'jsx', 'bodejs'],
     keywords: KEYWORDS,
     contains: [
       {

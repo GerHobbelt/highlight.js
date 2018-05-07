@@ -49,6 +49,7 @@ https://highlightjs.org/
     tabReplace: null,
     useBR: false,
     languages: undefined,
+    langAttribute: true,
     selector: 'pre code',
     lineNodes: false
   };
@@ -472,7 +473,7 @@ https://highlightjs.org/
           if (top.className) {
             result += spanEndTag;
           }
-          if (!top.skip) {
+          if (!top.skip && !top.subLanguage) {
             relevance += top.relevance;
           }
           top = top.parent;
@@ -657,6 +658,8 @@ https://highlightjs.org/
 
     block.innerHTML = result.value;
     block.className = buildClassName(block.className, language, result.language);
+    if (options.langAttribute)
+       block.setAttribute('data-lang', result.language);
     block.result = {
       language: result.language,
       re: result.relevance

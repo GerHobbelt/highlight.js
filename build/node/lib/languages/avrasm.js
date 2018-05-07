@@ -1,4 +1,4 @@
-module.exports = function(hljs) {
+module.exports = function language_AVRASM(hljs) {
   return {
     case_insensitive: true,
     lexemes: '\\.?' + hljs.IDENT_RE,

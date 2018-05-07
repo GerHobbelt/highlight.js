@@ -1,4 +1,4 @@
-module.exports = function(hljs) {
+module.exports = function language_FORTRAN(hljs) {
   var PARAMS = {
     className: 'params',
     begin: '\\(', end: '\\)'

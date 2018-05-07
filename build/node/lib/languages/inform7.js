@@ -1,4 +1,4 @@
-module.exports = function(hljs) {
+module.exports = function language_INFORM7(hljs) {
   var START_BRACKET = '\\[';
   var END_BRACKET = '\\]';
   return {

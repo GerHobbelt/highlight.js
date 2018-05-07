@@ -1,4 +1,4 @@
-module.exports = function(hljs) {
+module.exports = function language_SHELL(hljs) {
   return {
     aliases: ['console'],
     contains: [
@@ -8,7 +8,7 @@ module.exports = function(hljs) {
         starts: {
           end: '$', subLanguage: 'bash'
         }
-      },
+      }
     ]
   }
 };

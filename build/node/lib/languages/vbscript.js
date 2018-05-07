@@ -1,4 +1,4 @@
-module.exports = function(hljs) {
+module.exports = function language_VBSCRIPT(hljs) {
   return {
     aliases: ['vbs'],
     case_insensitive: true,

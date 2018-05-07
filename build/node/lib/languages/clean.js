@@ -1,4 +1,4 @@
-module.exports = function(hljs) {
+module.exports = function language_CLEAN(hljs) {
   return {
     aliases: ['clean','icl','dcl'],
     keywords: {

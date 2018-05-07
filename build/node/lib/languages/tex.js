@@ -1,4 +1,4 @@
-module.exports = function(hljs) {
+module.exports = function language_TEX(hljs) {
   var COMMAND = {
     className: 'tag',
     begin: /\\/,

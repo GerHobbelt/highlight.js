@@ -1,4 +1,4 @@
-module.exports = function(hljs) {
+module.exports = function language_DNSZONE(hljs) {
   return {
     aliases: ['bind', 'zone'],
     keywords: {

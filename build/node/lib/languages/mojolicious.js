@@ -1,4 +1,4 @@
-module.exports = function(hljs) {
+module.exports = function language_MOJOLICIOUS(hljs) {
   return {
     subLanguage: 'xml',
     contains: [

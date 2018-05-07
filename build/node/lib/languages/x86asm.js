@@ -1,4 +1,4 @@
-module.exports = function(hljs) {
+module.exports = function language_X86ASM(hljs) {
   return {
     case_insensitive: true,
     lexemes: '[.%]?' + hljs.IDENT_RE,

@@ -1,4 +1,4 @@
-module.exports = function(hljs) {
+module.exports = function language_N1QL(hljs) {
   return {
     case_insensitive: true,
     contains: [

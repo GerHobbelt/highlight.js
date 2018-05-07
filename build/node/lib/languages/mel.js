@@ -1,4 +1,4 @@
-module.exports = function(hljs) {
+module.exports = function language_MEL(hljs) {
   return {
     keywords:
       'int float string vector matrix if else switch case default while do for in break ' +

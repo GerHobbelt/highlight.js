@@ -112,7 +112,7 @@ module.exports = function(commander, dir) {
   };
   requiresTask = 'packageFiles';
 
-  if(commander.compress || commander.target === 'cdn') {
+  if(commander.compress /* || commander.target === 'cdn' */) {
     tasks.compresslog = {
       requires: requiresTask,
       task: ['log', 'Compressing highlight.js pack file.']
@@ -144,7 +144,7 @@ module.exports = function(commander, dir) {
     task: ['log', 'Writing highlight.js pack file.']
   };
 
-  hljsExt = commander.target === 'cdn' ? '.min' : '_pack';
+  hljsExt = commander.compress ? '.min' : '_pack';
   output  = path.join(directory.build, `highlight${hljsExt}.js`);
 
   tasks.write = {

@@ -1,4 +1,4 @@
-module.exports = function(hljs) {
+module.exports = function language_VBSCRIPT_IN_HTML(hljs) {
   return {
     subLanguage: 'xml',
     contains: [

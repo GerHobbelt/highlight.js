@@ -1,4 +1,4 @@
-module.exports = function(hljs) {
+module.exports = function language_MIZAR(hljs) {
   return {
     keywords:
       'environ vocabularies notations constructors definitions ' +

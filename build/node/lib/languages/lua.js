@@ -1,4 +1,4 @@
-module.exports = function(hljs) {
+module.exports = function language_LUA(hljs) {
   var OPENING_LONG_BRACKET = '\\[=*\\[';
   var CLOSING_LONG_BRACKET = '\\]=*\\]';
   var LONG_BRACKETS = {

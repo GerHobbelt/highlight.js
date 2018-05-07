@@ -1,4 +1,4 @@
-module.exports = function(hljs) {
+module.exports = function language_XML(hljs) {
   var XML_IDENT_RE = '[A-Za-z0-9\\._:-]+';
   var TAG_INTERNALS = {
     endsWithParent: true,
@@ -28,7 +28,7 @@ module.exports = function(hljs) {
     ]
   };
   return {
-    aliases: ['html', 'xhtml', 'rss', 'atom', 'xjb', 'xsd', 'xsl', 'plist'],
+    aliases: ['html', 'xhtml', 'rss', 'atom', 'xjb', 'xsd', 'xsl', 'plist', 'wsf', 'xaml', 'aspx-csharp', 'aspx-vb'],
     case_insensitive: true,
     contains: [
       {
@@ -45,13 +45,29 @@ module.exports = function(hljs) {
         }
       ),
       {
+        className: 'literal',
+        begin: /&\w+;/
+      },
+      {
         begin: '<\\!\\[CDATA\\[', end: '\\]\\]>',
         relevance: 10
       },
       {
-        begin: /<\?(php)?/, end: /\?>/,
+        className: 'meta',
+        begin: /<\?xml/, end: /\?>/, relevance: 10
+      },
+      {
+        begin: /<\?(php|=)?/, end: /\?>/,
         subLanguage: 'php',
-        contains: [{begin: '/\\*', end: '\\*/', skip: true}]
+        contains: [
+          // We don't want the php closing tag ?> to close the PHP block when
+          // inside any of the following blocks:
+          {begin: '/\\*', end: '\\*/', skip: true},
+          {begin: 'b"', end: '"', skip: true},
+          {begin: 'b\'', end: '\'', skip: true},
+          hljs.inherit(hljs.APOS_STRING_MODE, {illegal: null, className: null, contains: null, skip: true}),
+          hljs.inherit(hljs.QUOTE_STRING_MODE, {illegal: null, className: null, contains: null, skip: true})
+        ]
       },
       {
         className: 'tag',
@@ -72,20 +88,24 @@ module.exports = function(hljs) {
       {
         className: 'tag',
         // See the comment in the <style tag about the lookahead pattern
+        begin: '<script(?= runat="server"|>|$)', end: '>',
+        keywords: {name: 'script'},
+        contains: [TAG_INTERNALS],
+        starts: {
+          end: '\<\/script\>', returnEnd: true,
+          subLanguage: ['cs', 'vbscript']
+        }
+      },
+      {
+        className: 'tag',
+        // See the comment in the <style tag about the lookahead pattern
         begin: '<script(?=\\s|>|$)', end: '>',
         keywords: {name: 'script'},
         contains: [TAG_INTERNALS],
         starts: {
           end: '\<\/script\>', returnEnd: true,
-          subLanguage: ['actionscript', 'javascript', 'handlebars', 'xml']
+          subLanguage: ['actionscript', 'javascript', 'handlebars', 'xml', 'vbscript']
         }
-      },
-      {
-        className: 'meta',
-        variants: [
-          {begin: /<\?xml/, end: /\?>/, relevance: 10},
-          {begin: /<\?\w+/, end: /\?>/}
-        ]
       },
       {
         className: 'tag',

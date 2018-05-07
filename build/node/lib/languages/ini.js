@@ -1,4 +1,4 @@
-module.exports = function(hljs) {
+module.exports = function language_INI(hljs) {
   var STRING = {
     className: "string",
     contains: [hljs.BACKSLASH_ESCAPE],
@@ -28,12 +28,12 @@ module.exports = function(hljs) {
         begin: /^\s*\[+/, end: /\]+/
       },
       {
-        begin: /^[a-z0-9\[\]_-]+\s*=\s*/, end: '$',
+        begin: /^[a-z0-9\[\]_\.-]+\s*=\s*/, end: '$',
         returnBegin: true,
         contains: [
           {
             className: 'attr',
-            begin: /[a-z0-9\[\]_-]+/
+            begin: /[a-z0-9\[\]_\.-]+/
           },
           {
             begin: /=/, endsWithParent: true,

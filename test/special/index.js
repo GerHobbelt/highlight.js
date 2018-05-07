@@ -3,8 +3,8 @@
 let _        = require('lodash');
 let bluebird = require('bluebird');
 let hljs     = require('../../build/node/lib');
-let jsdomEnv = bluebird.promisify(require('jsdom').env);
-let readFile = bluebird.promisify(require('fs').readFile);
+let jsdomEnv = require('jsdom').env;
+let readFile = require('fs').readFile;
 let utility  = require('../utility');
 
 describe('special cases tests', function() {

@@ -1,4 +1,4 @@
-module.exports = function(hljs) {
+module.exports = function language_EBNF(hljs) {
     var commentMode = hljs.COMMENT(/\(\*/, /\*\)/);
 
     var nonTerminalMode = {

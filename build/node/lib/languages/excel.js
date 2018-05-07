@@ -1,4 +1,4 @@
-module.exports = function(hljs) {
+module.exports = function language_EXCEL(hljs) {
   return {
     aliases: ['xlsx', 'xls'],
     case_insensitive: true,

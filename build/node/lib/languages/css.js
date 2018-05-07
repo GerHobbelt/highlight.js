@@ -1,4 +1,4 @@
-module.exports = function(hljs) {
+module.exports = function language_CSS(hljs) {
   var IDENT_RE = '[a-zA-Z-][a-zA-Z0-9_-]*';
   var RULE = {
     begin: /[A-Z\_\.\-]+\s*:/, returnBegin: true, end: ';', endsWithParent: true,
@@ -67,6 +67,7 @@ module.exports = function(hljs) {
         keywords: 'font-face page'
       },
       {
+        className: 'keyword',
         begin: '@', end: '[{;]', // at_rule eating first "{" is a good thing
                                  // because it doesn’t let it to be parsed as
                                  // a rule set but instead drops parser into
@@ -74,13 +75,16 @@ module.exports = function(hljs) {
         illegal: /:/, // break on Less variables @var: ...
         contains: [
           {
-            className: 'keyword',
-            begin: /\w+/
-          },
-          {
+            className: 'built_in',
             begin: /\s/, endsWithParent: true, excludeEnd: true,
-            relevance: 0,
             contains: [
+              {
+                className: null,
+                begin: /\(/,
+                end: /\)/,
+                relevance: 0,
+                contains: [RULE]
+              },
               hljs.APOS_STRING_MODE, hljs.QUOTE_STRING_MODE,
               hljs.CSS_NUMBER_MODE
             ]

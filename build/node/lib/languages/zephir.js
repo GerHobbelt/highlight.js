@@ -1,4 +1,4 @@
-module.exports = function(hljs) {
+module.exports = function language_ZEPHIR(hljs) {
   var STRING = {
     className: 'string',
     contains: [hljs.BACKSLASH_ESCAPE],

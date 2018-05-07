@@ -1,4 +1,4 @@
-module.exports = function(hljs) {
+module.exports = function language_VBDOTNET(hljs) {
   return {
     aliases: ['vb'],
     case_insensitive: true,
@@ -22,7 +22,7 @@ module.exports = function(hljs) {
       literal:
         'true false nothing'
     },
-    illegal: '//|{|}|endif|gosub|variant|wend', /* reserved deprecated keywords */
+    illegal: '//|{|}|endif|gosub|variant|wend|^\\$ ', /* reserved deprecated keywords */
     contains: [
       hljs.inherit(hljs.QUOTE_STRING_MODE, {contains: [{begin: '""'}]}),
       hljs.COMMENT(

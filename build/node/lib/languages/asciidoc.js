@@ -1,4 +1,4 @@
-module.exports = function(hljs) {
+module.exports = function language_ASCIIDOC(hljs) {
   return {
     aliases: ['adoc'],
     contains: [

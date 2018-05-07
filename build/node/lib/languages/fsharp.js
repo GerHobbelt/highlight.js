@@ -1,4 +1,4 @@
-module.exports = function(hljs) {
+module.exports = function language_FSHARP(hljs) {
   var TYPEPARAM = {
     begin: '<', end: '>',
     contains: [
@@ -31,7 +31,7 @@ module.exports = function(hljs) {
         className: 'string',
         begin: '"""', end: '"""'
       },
-      hljs.COMMENT('\\(\\*', '\\*\\)'),
+      hljs.COMMENT('\\(\\*[^\\)]', '\\*\\)'),
       {
         className: 'class',
         beginKeywords: 'type', end: '\\(|=|$', excludeEnd: true,

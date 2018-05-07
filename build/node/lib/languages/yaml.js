@@ -1,4 +1,4 @@
-module.exports = function(hljs) {
+module.exports = function language_YAML(hljs) {
   var LITERALS = 'true false yes no null';
 
   var keyPrefix = '^[ \\-]*';

@@ -1,4 +1,4 @@
-module.exports = function(hljs) {
+module.exports = function language_CLOJURE(hljs) {
   var keywords = {
     'builtin-name':
       // Clojure keywords

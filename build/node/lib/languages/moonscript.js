@@ -1,4 +1,4 @@
-module.exports = function(hljs) {
+module.exports = function language_MOONSCRIPT(hljs) {
   var KEYWORDS = {
     keyword:
       // Moonscript keywords

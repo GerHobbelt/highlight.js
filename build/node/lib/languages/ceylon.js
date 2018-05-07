@@ -1,4 +1,4 @@
-module.exports = function(hljs) {
+module.exports = function language_CEYLON(hljs) {
   // 2.3. Identifiers and keywords
   var KEYWORDS =
     'assembly module package import alias class interface object given value ' +

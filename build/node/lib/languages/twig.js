@@ -1,4 +1,4 @@
-module.exports = function(hljs) {
+module.exports = function language_TWIG(hljs) {
   var PARAMS = {
     className: 'params',
     begin: '\\(', end: '\\)'

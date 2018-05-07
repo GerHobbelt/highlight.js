@@ -1,4 +1,4 @@
-module.exports = function(hljs) {
+module.exports = function language_ARMASM(hljs) {
     //local labels: %?[FB]?[AT]?\d{1,2}\w+
   return {
     case_insensitive: true,

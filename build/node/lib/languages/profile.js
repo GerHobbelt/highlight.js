@@ -1,4 +1,4 @@
-module.exports = function(hljs) {
+module.exports = function language_PYTHON_PROFILE(hljs) {
   return {
     contains: [
       hljs.C_NUMBER_MODE,

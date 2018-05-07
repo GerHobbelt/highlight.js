@@ -14,7 +14,7 @@ module.exports = /**
  *   up to the end of line is matched as special token sequence)
  */
 
-function(hljs) {
+function language_D(hljs) {
   /**
    * Language keywords
    *

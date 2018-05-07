@@ -1,4 +1,4 @@
-module.exports = function(hljs) {
+module.exports = function language_SCILAB(hljs) {
 
   var COMMON_CONTAINS = [
     hljs.C_NUMBER_MODE,

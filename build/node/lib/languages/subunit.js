@@ -1,4 +1,4 @@
-module.exports = function(hljs) {
+module.exports = function language_SUBINIT(hljs) {
   var DETAILS = {
     className: 'string',
     begin: '\\[\n(multipart)?', end: '\\]\n'

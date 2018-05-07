@@ -1,9 +1,10 @@
-module.exports = function(hljs) {
+module.exports = function language_PHP(hljs) {
   var VARIABLE = {
+    className: 'symbol',
     begin: '\\$+[a-zA-Z_\x7f-\xff][a-zA-Z0-9_\x7f-\xff]*'
   };
   var PREPROCESSOR = {
-    className: 'meta', begin: /<\?(php)?|\?>/
+    className: 'meta', begin: /<\?(php|=)?|\?>/
   };
   var STRING = {
     className: 'string',
@@ -21,7 +22,7 @@ module.exports = function(hljs) {
   };
   var NUMBER = {variants: [hljs.BINARY_NUMBER_MODE, hljs.C_NUMBER_MODE]};
   return {
-    aliases: ['php3', 'php4', 'php5', 'php6'],
+    aliases: ['php', 'php3', 'php4', 'php5', 'php6', 'php7'],
     case_insensitive: true,
     keywords:
       'and include_once list abstract global private echo interface as static endswitch ' +
@@ -76,10 +77,6 @@ module.exports = function(hljs) {
       },
       VARIABLE,
       {
-        // swallow composed identifiers to avoid parsing them as keywords
-        begin: /(::|->)+[a-zA-Z_\x7f-\xff][a-zA-Z0-9_\x7f-\xff]*/
-      },
-      {
         className: 'function',
         beginKeywords: 'function', end: /[;{]/, excludeEnd: true,
         illegal: '\\$|\\[|%',
@@ -118,6 +115,15 @@ module.exports = function(hljs) {
       },
       {
         begin: '=>' // No markup, just a relevance booster
+      },
+      {
+        // swallow composed identifiers to avoid parsing them as keywords
+        begin: /(::|->)/,
+        excludeBegin: true,
+        contains: [{
+          className: 'attr',
+          begin: /[a-zA-Z_\x7f-\xff][a-zA-Z0-9_\x7f-\xff]*/
+        }]
       },
       STRING,
       NUMBER

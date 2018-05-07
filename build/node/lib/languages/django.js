@@ -1,4 +1,4 @@
-module.exports = function(hljs) {
+module.exports = function language_DJANGO(hljs) {
   var FILTER = {
     begin: /\|[A-Za-z]+:?/,
     keywords: {

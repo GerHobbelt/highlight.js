@@ -1,4 +1,4 @@
-module.exports = function(hljs) {
+module.exports = function language_APPLESCRIPT(hljs) {
   var STRING = hljs.inherit(hljs.QUOTE_STRING_MODE, {illegal: ''});
   var PARAMS = {
     className: 'params',

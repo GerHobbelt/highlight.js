@@ -1,4 +1,4 @@
-module.exports = function(hljs) {
+module.exports = function language_DSCONFIG(hljs) {
   var QUOTED_PROPERTY = {
     className: 'string',
     begin: /"/, end: /"/

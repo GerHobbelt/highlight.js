@@ -1,4 +1,4 @@
-module.exports = function(hljs) {
+module.exports = function language_CAL(hljs) {
   var KEYWORDS =
     'div mod in and or not xor asserterror begin case do downto else end exit for if of repeat then to ' +
     'until while with var';

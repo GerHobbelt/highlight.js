@@ -1,4 +1,4 @@
-module.exports = function(hljs) {
+module.exports = function language_MAKE(hljs) {
   /* Variables: simple (eg $(var)) and special (eg $@) */
   var VARIABLE = {
     className: 'variable',

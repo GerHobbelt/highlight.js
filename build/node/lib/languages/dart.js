@@ -1,4 +1,4 @@
-module.exports = function (hljs) {
+module.exports = function language_DART(hljs) {
   var SUBST = {
     className: 'subst',
     begin: '\\$\\{', end: '}',

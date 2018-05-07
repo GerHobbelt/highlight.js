@@ -1,4 +1,4 @@
-module.exports = function(hljs) {
+module.exports = function language_ELIXIR(hljs) {
   var ELIXIR_IDENT_RE = '[a-zA-Z_][a-zA-Z0-9_]*(\\!|\\?)?';
   var ELIXIR_METHOD_RE = '[a-zA-Z_]\\w*[!?=]?|[-+~]\\@|<<|>>|=~|===?|<=>|[<>]=?|\\*\\*|[-/+%^&*~`|]|\\[\\]=?';
   var ELIXIR_KEYWORDS =
@@ -84,6 +84,11 @@ module.exports = function(hljs) {
         }
       ],
       relevance: 0
+    },
+    {
+      className: 'prompt',
+      begin: /^(iex|\.\.\.)(\([^)>]+\))?>\s?/,
+      relevance: 10
     }
   ];
   SUBST.contains = ELIXIR_DEFAULT_CONTAINS;

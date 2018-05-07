@@ -1,4 +1,4 @@
-module.exports = function(hljs) {
+module.exports = function language_PARSER3(hljs) {
   var CURLY_SUBCOMMENT = hljs.COMMENT(
     '{',
     '}',

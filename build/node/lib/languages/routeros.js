@@ -4,7 +4,7 @@ module.exports = // Colors from RouterOS terminal:
 //   purple       - #99069A
 //   light-brown  - #9A9900
 
-function(hljs) {
+function language_MICROTIK_ROUTER(hljs) {
 
   var STATEMENTS = 'foreach do while for if from to step else on-error and or not in';
 

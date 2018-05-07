@@ -1,5 +1,5 @@
 module.exports = // TODO support filter tags like :javascript, support inline HTML
-function(hljs) {
+function language_HAML(hljs) {
   return {
     case_insensitive: true,
     contains: [

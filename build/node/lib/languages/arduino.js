@@ -1,4 +1,4 @@
-module.exports = function(hljs) {
+module.exports = function language_ARDUINO(hljs) {
   var CPP = hljs.getLanguage('cpp').exports;
 	return {
     keywords: {

@@ -1,4 +1,4 @@
-module.exports = function(hljs) {
+module.exports = function language_HTMLBARS(hljs) {
   var BUILT_INS = 'action collection component concat debugger each each-in else get hash if input link-to loc log mut outlet partial query-params render textarea unbound unless with yield view';
 
   var ATTR_ASSIGNMENT = {

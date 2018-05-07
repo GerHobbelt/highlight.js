@@ -1,4 +1,4 @@
-module.exports = function(hljs) {
+module.exports = function language_THRIFT(hljs) {
   var BUILT_IN_TYPES = 'bool byte i16 i32 i64 double string binary';
   return {
     keywords: {

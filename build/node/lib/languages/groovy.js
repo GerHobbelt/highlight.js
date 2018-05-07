@@ -1,4 +1,4 @@
-module.exports = function(hljs) {
+module.exports = function language_GROOVY(hljs) {
     return {
         keywords: {
             literal : 'true false null',

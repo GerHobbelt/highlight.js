@@ -1,4 +1,4 @@
-module.exports = function(hljs) {
+module.exports = function language_MONKEY(hljs) {
   var NUMBER = {
     className: 'number', relevance: 0,
     variants: [

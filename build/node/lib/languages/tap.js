@@ -1,4 +1,4 @@
-module.exports = function(hljs) {
+module.exports = function language_TAP(hljs) {
   return {
     case_insensitive: true,
     contains: [

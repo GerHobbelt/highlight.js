@@ -1,4 +1,4 @@
-module.exports = function(hljs) {
+module.exports = function language_VERILOG(hljs) {
   var SV_KEYWORDS = {
     keyword:
       'accept_on alias always always_comb always_ff always_latch and assert assign ' +

@@ -1,4 +1,4 @@
-module.exports = function (hljs) {
+module.exports = function language_GHERKIN(hljs) {
   return {
     aliases: ['feature'],
     keywords: 'Feature Background Ability Business\ Need Scenario Scenarios Scenario\ Outline Scenario\ Template Examples Given And Then But When',

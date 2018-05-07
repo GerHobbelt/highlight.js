@@ -1,4 +1,4 @@
-module.exports = function(hljs) {
+module.exports = function language_HANDLEBARS(hljs) {
   var BUILT_INS = {'builtin-name': 'each in with if else unless bindattr action collection debugger log outlet template unbound view yield'};
   return {
     aliases: ['hbs', 'html.hbs', 'html.handlebars'],

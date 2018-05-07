@@ -1,4 +1,4 @@
-module.exports = function(hljs) {
+module.exports = function language_LIVECODE(hljs) {
   var VARIABLE = {
     begin: '\\b[gtps][A-Z]+[A-Za-z0-9_\\-]*\\b|\\$_[A-Z]+',
     relevance: 0

@@ -1,4 +1,4 @@
-module.exports = function(hljs) {
+module.exports = function language_OCAML(hljs) {
   /* missing support for heredoc-like string (OCaml 4.0.2+) */
   return {
     aliases: ['ml'],

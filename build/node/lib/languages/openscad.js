@@ -1,4 +1,4 @@
-module.exports = function(hljs) {
+module.exports = function language_OPENSCAD(hljs) {
 	var SPECIAL_VARS = {
 		className: 'keyword',
 		begin: '\\$(f[asn]|t|vp[rtd]|children)'

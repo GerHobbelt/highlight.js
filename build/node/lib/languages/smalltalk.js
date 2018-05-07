@@ -1,4 +1,4 @@
-module.exports = function(hljs) {
+module.exports = function language_SMALLTALK(hljs) {
   var VAR_IDENT_RE = '[a-z][a-zA-Z0-9_]*';
   var CHAR = {
     className: 'string',

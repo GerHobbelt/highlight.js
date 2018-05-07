@@ -1,4 +1,4 @@
-module.exports = function(hljs) {
+module.exports = function language_MERCURY(hljs) {
   var KEYWORDS = {
     keyword:
       'module use_module import_module include_module end_module initialise ' +

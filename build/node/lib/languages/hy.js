@@ -1,4 +1,4 @@
-module.exports = function(hljs) {
+module.exports = function language_HY(hljs) {
   var keywords = {
     'builtin-name':
       // keywords

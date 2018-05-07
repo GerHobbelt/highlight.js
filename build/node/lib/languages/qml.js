@@ -1,4 +1,4 @@
-module.exports = function(hljs) {
+module.exports = function language_QML(hljs) {
   var KEYWORDS = {
       keyword:
         'in of on if for while finally var new function do return void else break catch ' +

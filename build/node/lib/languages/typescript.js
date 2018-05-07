@@ -1,4 +1,4 @@
-module.exports = function(hljs) {
+module.exports = function language_TYPESCRIPT(hljs) {
   var KEYWORDS = {
     keyword:
       'in if for while finally var new function do return void else break catch ' +
@@ -19,7 +19,7 @@ module.exports = function(hljs) {
   };
 
   return {
-    aliases: ['ts'],
+    aliases: ['ts', 'tsx'],
     keywords: KEYWORDS,
     contains: [
       {
@@ -81,6 +81,20 @@ module.exports = function(hljs) {
                       hljs.C_BLOCK_COMMENT_MODE
                     ]
                   }
+                ]
+              }
+            ]
+          },
+          { // E4X / JSX
+            begin: /</, end: /(\/\w+|\w+\/)>/,
+            subLanguage: 'xml',
+            contains: [
+              {begin: /<\w+\s*\/>/, skip: true},
+              {
+                begin: /<\w+/, end: /(\/\w+|\w+\/)>/, skip: true,
+                contains: [
+                  {begin: /<\w+\s*\/>/, skip: true},
+                  'self'
                 ]
               }
             ]

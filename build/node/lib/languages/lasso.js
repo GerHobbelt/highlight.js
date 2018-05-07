@@ -1,4 +1,4 @@
-module.exports = function(hljs) {
+module.exports = function language_LASSO(hljs) {
   var LASSO_IDENT_RE = '[a-zA-Z_][\\w.]*';
   var LASSO_ANGLE_RE = '<\\?(lasso(script)?|=)';
   var LASSO_CLOSE_RE = '\\]|\\?>';

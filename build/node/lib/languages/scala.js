@@ -1,4 +1,4 @@
-module.exports = function(hljs) {
+module.exports = function language_SCALA(hljs) {
 
   var ANNOTATION = { className: 'meta', begin: '@[A-Za-z]+' };
 

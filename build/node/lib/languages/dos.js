@@ -1,4 +1,4 @@
-module.exports = function(hljs) {
+module.exports = function language_DOSBAT(hljs) {
   var COMMENT = hljs.COMMENT(
     /^\s*@?rem\b/, /$/,
     {

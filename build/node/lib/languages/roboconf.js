@@ -1,4 +1,4 @@
-module.exports = function(hljs) {
+module.exports = function language_ROBOCONF(hljs) {
   var IDENTIFIER = '[a-zA-Z-_][^\\n{]+\\{';
 
   var PROPERTY = {

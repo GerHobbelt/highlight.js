@@ -1,4 +1,4 @@
-module.exports = function(hljs) {
+module.exports = function language_LESS(hljs) {
   var IDENT_RE        = '[\\w-]+'; // yes, Less identifiers may begin with a digit
   var INTERP_IDENT_RE = '(' + IDENT_RE + '|@{' + IDENT_RE + '})';
 

@@ -1,4 +1,4 @@
-module.exports = function(hljs) {
+module.exports = function language_NIX(hljs) {
   var NIX_KEYWORDS = {
     keyword:
       'rec with let in inherit assert if else then',

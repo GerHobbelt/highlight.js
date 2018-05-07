@@ -1,4 +1,4 @@
-module.exports = function(hljs) {
+module.exports = function language_LIVESCRIPT(hljs) {
   var KEYWORDS = {
     keyword:
       // JS keywords
@@ -142,6 +142,10 @@ module.exports = function(hljs) {
         begin: JS_IDENT_RE + ':', end: ':',
         returnBegin: true, returnEnd: true,
         relevance: 0
+      },
+      {
+        begin: '\\|>',
+        relevance: 10,
       }
     ])
   };

@@ -1,4 +1,4 @@
-module.exports = function(hljs) {
+module.exports = function language_ORACLE_RULES(hljs) {
   return {
     keywords: {
        keyword: 'BILL_PERIOD BILL_START BILL_STOP RS_EFFECTIVE_START RS_EFFECTIVE_STOP RS_JURIS_CODE RS_OPCO_CODE ' +

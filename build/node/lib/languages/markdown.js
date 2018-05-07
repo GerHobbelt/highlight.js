@@ -1,4 +1,4 @@
-module.exports = function(hljs) {
+module.exports = function language_MARKDOWN(hljs) {
   return {
     aliases: ['md', 'mkdown', 'mkd'],
     contains: [

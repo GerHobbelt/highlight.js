@@ -1,4 +1,4 @@
-module.exports = function(hljs) {
+module.exports = function language_MAXIMA(hljs) {
   var KEYWORDS = 'if then else elseif for thru do while unless step in and or not';
   var LITERALS = 'true false unknown inf minf ind und %e %i %pi %phi %gamma';
   var BUILTIN_FUNCTIONS =

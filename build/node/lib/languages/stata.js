@@ -1,4 +1,4 @@
-module.exports = function(hljs) {
+module.exports = function language_STATA(hljs) {
   return {
     aliases: ['do', 'ado'],
     case_insensitive: true,

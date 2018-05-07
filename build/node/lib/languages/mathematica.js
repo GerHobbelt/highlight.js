@@ -1,4 +1,4 @@
-module.exports = function(hljs) {
+module.exports = function language_MATHEMATICA(hljs) {
   return {
     aliases: ['mma'],
     lexemes: '(\\$|\\b)' + hljs.IDENT_RE + '\\b',
