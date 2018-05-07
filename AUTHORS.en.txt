@@ -272,3 +272,4 @@ Contributors:
 - Ryan King <hello@ryanking.com>
 - Guillaume Maudoux <layus.on@gmail.com>
 - Kaustav Haldar <khaldar@uwaterloo.ca>
+- Shan Mahanama <gambit1024@gmail.com>

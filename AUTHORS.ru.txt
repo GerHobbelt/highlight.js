@@ -258,3 +258,4 @@ URL:   https://highlightjs.org/
 - Давид Пээк <mail@dpeek.com>
 - Матиас Шиллинг <m@matchilling.com>
 - Роман Реш <romanresh@live.com>
+- Шан Маханама <gambit1024@gmail.com>
