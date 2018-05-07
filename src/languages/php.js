@@ -7,10 +7,11 @@ Category: common
 
 function(hljs) {
   var VARIABLE = {
+    className: 'symbol',
     begin: '\\$+[a-zA-Z_\x7f-\xff][a-zA-Z0-9_\x7f-\xff]*'
   };
   var PREPROCESSOR = {
-    className: 'meta', begin: /<\?(php)?|\?>/
+    className: 'meta', begin: /<\?(php|=)?|\?>/
   };
   var STRING = {
     className: 'string',
@@ -83,10 +84,6 @@ function(hljs) {
       },
       VARIABLE,
       {
-        // swallow composed identifiers to avoid parsing them as keywords
-        begin: /(::|->)+[a-zA-Z_\x7f-\xff][a-zA-Z0-9_\x7f-\xff]*/
-      },
-      {
         className: 'function',
         beginKeywords: 'function', end: /[;{]/, excludeEnd: true,
         illegal: '\\$|\\[|%',
@@ -125,6 +122,15 @@ function(hljs) {
       },
       {
         begin: '=>' // No markup, just a relevance booster
+      },
+      {
+        // swallow composed identifiers to avoid parsing them as keywords
+        begin: /(::|->)/,
+        excludeBegin: true,
+        contains: [{
+          className: 'attr',
+          begin: /[a-zA-Z_\x7f-\xff][a-zA-Z0-9_\x7f-\xff]*/
+        }]
       },
       STRING,
       NUMBER
