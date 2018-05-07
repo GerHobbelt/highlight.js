@@ -2,7 +2,7 @@
 
 let bluebird = require('bluebird');
 let fs       = bluebird.promisifyAll(require('fs'));
-let hljs     = require('../../build');
+let hljs     = require('../../build/node/');
 let path     = require('path');
 let utility  = require('../utility');
 let Table    = require('cli-table');
@@ -10,7 +10,7 @@ let colors   = require('colors/safe');
 
 let resultTable = new Table({
   head: ['expected', 'actual', 'score', '2nd best', 'score'],
-  colWidths: [20,20,10,20, 10],
+  colWidths: [20, 20, 10, 20, 10],
   style: {
     head: ['grey']
   }
@@ -27,7 +27,7 @@ function testAutoDetection(language, index, languages) {
       const expected = language,
             actual   = hljs.highlightAuto(content);
       if (actual.language !== expected && actual.second_best.language !== expected) {
-        return resultTable.push([
+        resultTable.push([
           expected,
           colors.red(actual.language),
           actual.relevance ? actual.relevance : colors.grey('None'),
@@ -35,8 +35,8 @@ function testAutoDetection(language, index, languages) {
           actual.second_best.relevance ? actual.second_best.relevance : colors.grey('None')
         ]);
       }
-      if (actual.language !== expected) {
-        return resultTable.push([
+      else if (actual.language !== expected) {
+        resultTable.push([
           expected,
           colors.yellow(actual.language),
           actual.relevance ? actual.relevance : colors.grey('None'),
