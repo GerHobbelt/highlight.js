@@ -285,3 +285,4 @@ Contributors:
 - Jörn Reimerdes <joern.reimerdes@gmail.com>
 - Dmitriy Tarasov <dimatar@gmail.com>
 - Meseta <meseta@gmail.com>
+- Renan Lavarec <renan.lavarec@ti-r.com>

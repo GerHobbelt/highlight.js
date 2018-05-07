@@ -48,7 +48,7 @@ copyright = u'2012–2017, Ivan Sagalaev'
 # built documents.
 #
 # The short X.Y version.
-version = '9.12'
+version = '9.13'
 # The full version, including alpha/beta/rc tags.
 release = '9.13.0'
 

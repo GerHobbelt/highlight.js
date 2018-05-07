@@ -16,6 +16,8 @@ New languages:
 - *emacs org-mode* A markup language see [https://orgmode.org]
 - *ISBL* built-in language DIRECTUM by [Dmitriy Tarasov][].
 - *GML* Game Markup Language by [Meseta][]
+- *OSL* Open Shading Language originally developed by Sony Pictures Imageworks added by [Renan Lavarec][].
+- *RSL* Added a type and update detect file "default.txt" to enable OSL to be detected  [Renan Lavarec][].
 
 New styles:
 
@@ -44,6 +46,7 @@ Improvements:
 [Drew DeVault]: https://github.com/SirCmpwn
 [Rene Rivera]: https://github.com/grafikrobot
 [Dmitriy Tarasov]: https://github.com/MedvedTMN
+[Renan LAVAREC]: https://github.com/Ti-R
 
 
 ## Version 9.12.0
