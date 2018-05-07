@@ -260,3 +260,4 @@ Contributors:
 - David Peek <mail@dpeek.com>
 - Mark Ellis <ellismarkf@gmail.com>
 - Chema Balsas <jbalsas@gmail.com>
+- Stanislaw Swierc <stanislaw.swierc@gmail.com>

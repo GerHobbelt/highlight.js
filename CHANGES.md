@@ -1,10 +1,11 @@
 ## Version 9.13.0
 
-New language:
+New languages:
 
 - *GraphQL* graph query language by [David Peek][].
 - *SPARQL* RDF Query language by [Mark Ellis][]
 - *Turtle* RDF language by [Mark Ellis][]
+- *DAX* by [Stanislaw Swierc][]
 
 Improvements:
 
@@ -12,6 +13,7 @@ Improvements:
 - [Mark Ellis][] wrote a CLI tool to quickly check for relevance conflicts when
 developing new language support.
 
+[Stanislaw Swierc]: https://github.com/StanislawSwierc
 [Mark Ellis]: https://github.com/ellismarkf
 
 ## Version 9.12.0
