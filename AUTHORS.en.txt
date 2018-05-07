@@ -244,6 +244,7 @@ Contributors:
 - Sergey Sobko <s.sobko@profitware.ru>
 - Hale Chan <halechan@qq.com>
 - Kasper Andersen <kma_untrusted@protonmail.com>
+- Michael Gerbig <error418@users.noreply.github.com>
 - Philipp A. <flying-sheep@web.de>
 - Guannan Wei <guannanwei@outlook.com>
 - Sam Wu <samsam2310@gmail.com>

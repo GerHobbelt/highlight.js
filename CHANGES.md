@@ -127,6 +127,7 @@ New languages:
 
 - *Hy* by [Sergey Sobko][]
 - *Leaf* by [Hale Chan][]
+- *Properties* by [Michael Gerbig][]
 - *N1QL* by [Andres Täht][] and [Rene Saarsoo][]
 
 Improvements:
