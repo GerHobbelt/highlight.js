@@ -13,6 +13,7 @@ New languages:
 - *Oz* Esoteric general-purpose language by [Guillaume Maudoux][].
 - *Jam* Jam/BJam/B2 build language by [Rene Rivera][].
 - *Lean* theorem prover by [Patrick Massot][].
+- *emacs org-mode* A markup language see [https://orgmode.org]
 
 New styles:
 

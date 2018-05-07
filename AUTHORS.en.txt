@@ -1,4 +1,4 @@
-Syntax highlighting with language autodetection.
+ Syntax highlighting with language autodetection.
 
 URL:   https://highlightjs.org/
 
@@ -282,3 +282,4 @@ Contributors:
 - Google Inc. (David Benjamin) <davidben@google.com>
 - Rene Rivera <grafikrobot@gmail.com>
 - Patrick Massot <patrick.massot@free.fr>
+- Jörn Reimerdes <joern.reimerdes@gmail.com>
