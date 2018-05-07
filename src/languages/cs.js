@@ -19,7 +19,11 @@ function language_CSHARP(hljs) {
       'add alias ascending async await by descending dynamic equals from get global group into join ' +
       'let on orderby partial remove select set value var where yield',
     literal:
-      'null false true'
+      'null false true',
+    type:
+      // Known static class
+      'AppDomain Application Assembly Console Contract Convert Encoding Environment File Guid ' +
+      'Path String Task'
   };
   var NUMBERS = {
     className: 'number',
@@ -85,6 +89,26 @@ function language_CSHARP(hljs) {
     ]
   };
 
+  var INTERFACE_MODE = {
+    className: 'class',
+    begin: '\\bI[A-Z]\\w*',
+    relevance: 0
+  };
+  var TYPE_MODE = {
+    className: 'type',
+    begin: '\\b[A-Z]\\w*',
+    relevance: 0
+  };
+  var GENERIC_MODE = {
+    begin: '\\b[A-Z]\\w*<\\w+', returnBegin: true,
+    end: '>', excludeEnd: true,
+    keywords: KEYWORDS,
+    contains: [
+      INTERFACE_MODE,
+      TYPE_MODE
+    ]
+  };
+
   var TYPE_IDENT_RE = hljs.IDENT_RE + '(<' + hljs.IDENT_RE + '(\\s*,\\s*' + hljs.IDENT_RE + ')*>)?(\\[\\])?';
 
   return {
@@ -130,7 +154,9 @@ function language_CSHARP(hljs) {
         beginKeywords: 'class interface', end: /[{;=]/,
         illegal: /[^\s:,]/,
         contains: [
-          hljs.TITLE_MODE,
+          GENERIC_MODE,
+          INTERFACE_MODE,
+          TYPE_MODE,
           hljs.C_LINE_COMMENT_MODE,
           hljs.C_BLOCK_COMMENT_MODE
         ]
@@ -146,12 +172,67 @@ function language_CSHARP(hljs) {
       },
       {
         // [Attributes("")]
-        className: 'meta',
-        begin: '^\\s*\\[', excludeBegin: true, end: '\\]', excludeEnd: true,
+        className: 'type',
+        begin: '^\\s*\\[', excludeBegin: true, end: '[\\(\\]]', excludeEnd: true,
         contains: [
-          {className: 'meta-string', begin: /"/, end: /"/}
+          {
+            className: 'meta-string',
+            begin: /"/, end: /"/
+          }
         ]
       },
+      {
+        // new MaClasse();
+        beginKeywords: 'new', end: '[\\(\\{\\[<]', excludeEnd: true,
+        contains: [
+          GENERIC_MODE,
+          TYPE_MODE
+        ]
+      },
+      {
+        // assignation: MyClass mc =
+        // foreach (MyClass mc in mcList)
+        begin: '\\b[A-Z]\\w*((\\[\\])|\\?)?\\s[a-z]\\w*\\s(=|in)', returnBegin: true,
+        end: '\\s', excludeEnd: true,
+        contains: [
+          GENERIC_MODE,
+          INTERFACE_MODE,
+          TYPE_MODE
+        ]
+      },
+      {
+        // typeof
+        // default
+        begin: '\\b(typeof|default)\\(', returnBegin: true,
+        end: '\\)', excludeEnd: true,
+        keywords: KEYWORDS,
+        contains: [
+          GENERIC_MODE,
+          INTERFACE_MODE,
+          TYPE_MODE
+        ]
+      },
+      {
+        // as
+        begin: '\\sas\\s',
+        keywords: KEYWORDS,
+        contains: [
+          GENERIC_MODE,
+          INTERFACE_MODE,
+          TYPE_MODE
+        ]
+      },
+      {
+        // catch (Exception ex)
+        begin: '\\bcatch\\s*\\(',
+        keywords: KEYWORDS,
+        contains: [
+          GENERIC_MODE,
+          INTERFACE_MODE,
+          TYPE_MODE
+        ]
+      },
+      GENERIC_MODE,
       {
         // Expression keywords prevent 'keyword Name(...)' from being
         // recognized as a function definition
@@ -166,18 +247,21 @@ function language_CSHARP(hljs) {
         contains: [
           {
             begin: hljs.IDENT_RE + '\\s*\\(', returnBegin: true,
-            contains: [hljs.TITLE_MODE],
+            contains: [
+              hljs.TITLE_MODE
+            ],
             relevance: 0
           },
           {
             className: 'params',
-            begin: /\(/, end: /\)/,
+            begin: '\\(', end: '\\)',
             excludeBegin: true,
             excludeEnd: true,
             keywords: KEYWORDS,
             relevance: 0,
             contains: [
-              STRING,
+              INTERFACE_MODE,
+              TYPE_MODE,
               NUMBERS,
               hljs.C_BLOCK_COMMENT_MODE
             ]
