@@ -292,3 +292,4 @@ Contributors:
 - Marco Antonio Augusto de Andrade <marco.andrade@ifro.edu.br>
 - Sergey Romanov <serg4172@mail.ru>
 - Cassio Binkowski <cassioiks@live.com>
+- Raffaele Sgarro <raffaeleSgarro@gmail.com>

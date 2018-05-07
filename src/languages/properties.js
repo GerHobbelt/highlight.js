@@ -1,7 +1,7 @@
 /*
 Language: Java Property Files
 Author: Michael Gerbig <error418@users.noreply.github.com>
-Contributors:
+Contributors: Raffaele Sgarro <raffaeleSgarro@gmail.com>
 Description: language definition for Java Property files
 Category: common, config
 */
