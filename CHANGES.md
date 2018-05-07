@@ -22,6 +22,7 @@ Improvements:
 - [Mark Ellis][] wrote a CLI tool to quickly check for relevance conflicts when
   developing new language support.
 - [Duncan Paterson][] added *XQuery* built-in functions, prolog declarations, as well as parsing of function bodies, computed and direct constructors.
+- Added tsx support to *TypeScript* via [Drew Devault][]
 
 [Duncan Paterson]: https://github.com/duncdrum
 [Botlang]: https://botlang.org/
@@ -33,6 +34,7 @@ Improvements:
 [nord-highlightjs]: https://github.com/arcticicestudio/nord-highlightjs
 [Roman Resh]: https://github.com/romanresh
 [Guillaume Maudoux]: https://github.com/layus
+[Drew DeVault]: https://github.com/SirCmpwn
 
 
 ## Version 9.12.0

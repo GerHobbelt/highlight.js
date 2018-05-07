@@ -277,3 +277,4 @@ Contributors:
 - Kaustav Haldar <khaldar@uwaterloo.ca>
 - Shan Mahanama <gambit1024@gmail.com>
 - Eric Bailey <eric.w.bailey@gmail.com>
+- Drew DeVault <sir@cmpwn.com>
