@@ -1,7 +1,7 @@
 /*
  Language: PowerShell
  Author: David Mohundro <david@mohundro.com>
- Contributors: Nicholas Blumhardt <nblumhardt@nblumhardt.com>, Victor Zhou <OiCMudkips@users.noreply.github.com>, Nicolas Le Gall <contact@nlegall.fr>, G8t Guy <g8tguy@g8tguy.com>
+ Contributors: Nicholas Blumhardt <nblumhardt@nblumhardt.com>, Victor Zhou <OiCMudkips@users.noreply.github.com>, Nicolas Le Gall <contact@nlegall.fr>, G8t Guy <g8tguy@g8tguy.com>, Dirk Schuermans <dirk@schuermans.me>
 */
 
 function(hljs) {
@@ -99,6 +99,108 @@ function(hljs) {
       contains: [PS_HELPTAGS]
     }
   );
+  
+  var VERBS = {
+	className: 'built_in',
+	variants: [
+		{ begin: /Add-/, end: /[^A-z0-9]/ },
+		{ begin: /Approve-/, end: /[^A-z0-9]/ },
+		{ begin: /Assert-/, end: /[^A-z0-9]/ },
+		{ begin: /Backup-/, end: /[^A-z0-9]/ },
+		{ begin: /Block-/, end: /[^A-z0-9]/ },
+		{ begin: /Checkpoint-/, end: /[^A-z0-9]/ },
+		{ begin: /Clear-/, end: /[^A-z0-9]/ },
+		{ begin: /Close-/, end: /[^A-z0-9]/ },
+		{ begin: /Compare-/, end: /[^A-z0-9]/ },
+		{ begin: /Complete-/, end: /[^A-z0-9]/ },
+		{ begin: /Compress-/, end: /[^A-z0-9]/ },
+		{ begin: /Confirm-/, end: /[^A-z0-9]/ },
+		{ begin: /Connect-/, end: /[^A-z0-9]/ },
+		{ begin: /Convert-/, end: /[^A-z0-9]/ },
+		{ begin: /ConvertFrom-/, end: /[^A-z0-9]/ },
+		{ begin: /ConvertTo-/, end: /[^A-z0-9]/ },
+		{ begin: /Copy-/, end: /[^A-z0-9]/ },
+		{ begin: /Debug-/, end: /[^A-z0-9]/ },
+		{ begin: /Deny-/, end: /[^A-z0-9]/ },
+		{ begin: /Disable-/, end: /[^A-z0-9]/ },
+		{ begin: /Disconnect-/, end: /[^A-z0-9]/ },
+		{ begin: /Dismount-/, end: /[^A-z0-9]/ },
+		{ begin: /Edit-/, end: /[^A-z0-9]/ },
+		{ begin: /Enable-/, end: /[^A-z0-9]/ },
+		{ begin: /Enter-/, end: /[^A-z0-9]/ },
+		{ begin: /Exit-/, end: /[^A-z0-9]/ },
+		{ begin: /Expand-/, end: /[^A-z0-9]/ },
+		{ begin: /Export-/, end: /[^A-z0-9]/ },
+		{ begin: /Find-/, end: /[^A-z0-9]/ },
+		{ begin: /Format-/, end: /[^A-z0-9]/ },
+		{ begin: /Get-/, end: /[^A-z0-9]/ },
+		{ begin: /Grant-/, end: /[^A-z0-9]/ },
+		{ begin: /Group-/, end: /[^A-z0-9]/ },
+		{ begin: /Hide-/, end: /[^A-z0-9]/ },
+		{ begin: /Import-/, end: /[^A-z0-9]/ },
+		{ begin: /Initialize-/, end: /[^A-z0-9]/ },
+		{ begin: /Install-/, end: /[^A-z0-9]/ },
+		{ begin: /Invoke-/, end: /[^A-z0-9]/ },
+		{ begin: /Join-/, end: /[^A-z0-9]/ },
+		{ begin: /Limit-/, end: /[^A-z0-9]/ },
+		{ begin: /Lock-/, end: /[^A-z0-9]/ },
+		{ begin: /Measure-/, end: /[^A-z0-9]/ },
+		{ begin: /Merge-/, end: /[^A-z0-9]/ },
+		{ begin: /Mount-/, end: /[^A-z0-9]/ },
+		{ begin: /Move-/, end: /[^A-z0-9]/ },
+		{ begin: /New-/, end: /[^A-z0-9]/ },
+		{ begin: /Open-/, end: /[^A-z0-9]/ },
+		{ begin: /Out-/, end: /[^A-z0-9]/ },
+		{ begin: /Ping-/, end: /[^A-z0-9]/ },
+		{ begin: /Pop-/, end: /[^A-z0-9]/ },
+		{ begin: /Protect-/, end: /[^A-z0-9]/ },
+		{ begin: /Publish-/, end: /[^A-z0-9]/ },
+		{ begin: /Push-/, end: /[^A-z0-9]/ },
+		{ begin: /Read-/, end: /[^A-z0-9]/ },
+		{ begin: /Receive-/, end: /[^A-z0-9]/ },
+		{ begin: /Redo-/, end: /[^A-z0-9]/ },
+		{ begin: /Register-/, end: /[^A-z0-9]/ },
+		{ begin: /Remove-/, end: /[^A-z0-9]/ },
+		{ begin: /Rename-/, end: /[^A-z0-9]/ },
+		{ begin: /Repair-/, end: /[^A-z0-9]/ },
+		{ begin: /Reset-/, end: /[^A-z0-9]/ },
+		{ begin: /Resolve-/, end: /[^A-z0-9]/ },
+		{ begin: /Restore-/, end: /[^A-z0-9]/ },
+		{ begin: /Request-/, end: /[^A-z0-9]/ },
+		{ begin: /Restart-/, end: /[^A-z0-9]/ },
+		{ begin: /Resume-/, end: /[^A-z0-9]/ },
+		{ begin: /Revoke-/, end: /[^A-z0-9]/ },
+		{ begin: /Save-/, end: /[^A-z0-9]/ },
+		{ begin: /Search-/, end: /[^A-z0-9]/ },
+		{ begin: /Select-/, end: /[^A-z0-9]/ },
+		{ begin: /Send-/, end: /[^A-z0-9]/ },
+		{ begin: /Set-/, end: /[^A-z0-9]/ },
+		{ begin: /Show-/, end: /[^A-z0-9]/ },
+		{ begin: /Skip-/, end: /[^A-z0-9]/ },
+		{ begin: /Split-/, end: /[^A-z0-9]/ },
+		{ begin: /Start-/, end: /[^A-z0-9]/ },
+		{ begin: /Step-/, end: /[^A-z0-9]/ },
+		{ begin: /Stop-/, end: /[^A-z0-9]/ },
+		{ begin: /Submit-/, end: /[^A-z0-9]/ },
+		{ begin: /Suspend-/, end: /[^A-z0-9]/ },
+		{ begin: /Switch-/, end: /[^A-z0-9]/ },
+		{ begin: /Sync-/, end: /[^A-z0-9]/ },
+		{ begin: /Test-/, end: /[^A-z0-9]/ },
+		{ begin: /Trace-/, end: /[^A-z0-9]/ },
+		{ begin: /Unblock-/, end: /[^A-z0-9]/ },
+		{ begin: /Undo-/, end: /[^A-z0-9]/ },
+		{ begin: /Uninstall-/, end: /[^A-z0-9]/ },
+		{ begin: /Unlock-/, end: /[^A-z0-9]/ },
+		{ begin: /Unprotect-/, end: /[^A-z0-9]/ },
+		{ begin: /Unpublish-/, end: /[^A-z0-9]/ },
+		{ begin: /Unregister-/, end: /[^A-z0-9]/ },
+		{ begin: /Update-/, end: /[^A-z0-9]/ },
+		{ begin: /Use-/, end: /[^A-z0-9]/ },
+		{ begin: /Wait-/, end: /[^A-z0-9]/ },
+		{ begin: /Watch-/, end: /[^A-z0-9]/ },
+		{ begin: /Write-/, end: /[^A-z0-9]/ }
+	]
+  };
 
   var CMDLETS = {
     className: 'built_in',
@@ -209,7 +311,8 @@ function(hljs) {
     CMDLETS,
     VAR,
     LITERAL,
-    HASH_SIGNS
+    HASH_SIGNS,
+    VERBS
   ];
 
   var PS_TYPE = {
