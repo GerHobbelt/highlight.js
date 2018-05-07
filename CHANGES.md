@@ -19,6 +19,7 @@ New languages:
 - *OSL* Open Shading Language originally developed by Sony Pictures Imageworks added by [Renan Lavarec][].
 - *RSL* Added a type and update detect file "default.txt" to enable OSL to be detected  [Renan Lavarec][].
 - *ST* Structured Text language of IEC-61131 standard by [Sehioromano][].
+- *ABAP* by [Cassio Binkowski][]
 
 New styles:
 
@@ -50,6 +51,7 @@ Improvements:
 [Dmitriy Tarasov]: https://github.com/MedvedTMN
 [Renan LAVAREC]: https://github.com/Ti-R
 [Serhioromano]: https://github.com/serhioromano
+[Cassio Binkowski]: https://github.com/cassioiks
 
 
 ## Version 9.12.0
