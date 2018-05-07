@@ -70,7 +70,7 @@ module.exports = function language_JAVA(hljs) {
         // Expression keywords prevent 'keyword Name(...)' from being
         // recognized as a function definition
         beginKeywords: 'new throw return else',
-        relevance: 0
+        relevance: 2
       },
       {
         className: 'function',
@@ -87,7 +87,7 @@ module.exports = function language_JAVA(hljs) {
             className: 'params',
             begin: /\(/, end: /\)/,
             keywords: KEYWORDS,
-            relevance: 0,
+            relevance: 1,
             contains: [
               hljs.APOS_STRING_MODE,
               hljs.QUOTE_STRING_MODE,

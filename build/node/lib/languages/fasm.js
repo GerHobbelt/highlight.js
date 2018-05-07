@@ -97,7 +97,7 @@ function language_FASM(hljs) {
         ';',
         '$',
         {
-          relevance: 0
+          relevance: 1
         }
       ),
       {
@@ -107,17 +107,17 @@ function language_FASM(hljs) {
           {
             begin: '\\b(?:([0-9][0-9_]*)?\\.[0-9_]*(?:[eE][+-]?[0-9_]+)?|' +
                    '(0[Xx])?[0-9][0-9_]*\\.?[0-9_]*(?:[pP](?:[+-]?[0-9_]+)?)?)\\b',
-            relevance: 0
+            relevance: 1
           },
 
           // Hex number in $
-          { begin: '\\$[0-9][0-9A-Fa-f]*', relevance: 0 },
+          { begin: '\\$[0-9][0-9A-Fa-f]*', relevance: 3 },
 
           // Number in H,D,T,Q,O,B,Y suffix
-          { begin: '\\b(?:[0-9A-Fa-f][0-9A-Fa-f_]*[Hh]|[0-9][0-9_]*[DdTt]?|[0-7][0-7_]*[QqOo]|[0-1][0-1_]*[BbYy])\\b' },
+          { begin: '\\b(?:[0-9A-Fa-f][0-9A-Fa-f_]*[Hh]|[0-9][0-9_]*[DdTt]?|[0-7][0-7_]*[QqOo]|[0-1][0-1_]*[BbYy])\\b', relevance: 3 },
 
           // Number in X,D,T,Q,O,B,Y prefix
-          { begin: '\\b(?:0[Xx][0-9A-Fa-f_]+|0[DdTt][0-9_]+|0[QqOo][0-7_]+|0[BbYy][0-1_]+)\\b'}
+          { begin: '\\b(?:0[Xx][0-9A-Fa-f_]+|0[DdTt][0-9_]+|0[QqOo][0-7_]+|0[BbYy][0-1_]+)\\b', relevance: 3 }
         ]
       },
       // Double quote string
@@ -130,7 +130,7 @@ function language_FASM(hljs) {
           // Backquoted string
           { begin: '`', end: '[^\\\\]`' }
         ],
-        relevance: 0
+        relevance: 1
       },
       {
         className: 'symbol',
@@ -140,19 +140,19 @@ function language_FASM(hljs) {
           // Macro-local label
           { begin: '^\\s*%%[A-Za-z0-9_$#@~.?]*:' }
         ],
-        relevance: 0
+        relevance: 1
       },
       // Macro parameter
       {
         className: 'subst',
         begin: '%[0-9]+',
-        relevance: 0
+        relevance: 2
       },
       // Macro parameter
       {
         className: 'subst',
         begin: '%!\S+',
-        relevance: 0
+        relevance: 3
       },
       {
         className: 'meta',

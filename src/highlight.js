@@ -259,7 +259,7 @@ https://highlightjs.org/
           }
           str.split(' ').forEach(function(kw) {
             var pair = kw.split('|');
-            compiled_keywords[pair[0]] = [className, pair[1] ? Number(pair[1]) : 1];
+            compiled_keywords[pair[0]] = [className, pair[1] ? Number(pair[1]) : 5];
           });
         };
 
@@ -759,29 +759,34 @@ https://highlightjs.org/
 
   // Common modes
   hljs.BACKSLASH_ESCAPE = {
-    begin: '\\\\[\\s\\S]', relevance: 0
+    begin: '\\\\[\\s\\S]', 
+    relevance: 0,
   };
   hljs.APOS_STRING_MODE = {
     className: 'string',
     begin: '\'', end: '\'',
     illegal: '\\n',
-    contains: [hljs.BACKSLASH_ESCAPE]
+    relevance: 1,
+    contains: [hljs.BACKSLASH_ESCAPE],
   };
   hljs.QUOTE_STRING_MODE = {
     className: 'string',
     begin: '"', end: '"',
     illegal: '\\n',
-    contains: [hljs.BACKSLASH_ESCAPE]
+    relevance: 1,
+    contains: [hljs.BACKSLASH_ESCAPE],
   };
   hljs.PHRASAL_WORDS_MODE = {
-    begin: /\b(a|an|the|are|I'm|isn't|don't|doesn't|won't|but|just|should|pretty|simply|enough|gonna|going|wtf|so|such|will|you|your|they|like|more)\b/
+    begin: /\b(a|an|the|are|I'm|isn't|don't|doesn't|won't|but|just|should|pretty|simply|enough|gonna|going|wtf|so|such|will|you|your|they|like|more)\b/,
+    relevance: 0,
   };
   hljs.COMMENT = function (begin, end, inherits) {
     var mode = hljs.inherit(
       {
         className: 'comment',
         begin: begin, end: end,
-        contains: []
+        contains: [],
+        relevance: 1,
       },
       inherits || {}
     );
@@ -789,7 +794,7 @@ https://highlightjs.org/
     mode.contains.push({
       className: 'doctag',
       begin: '(?:TODO|FIXME|NOTE|BUG|XXX):',
-      relevance: 0
+      relevance: 1,
     });
     return mode;
   };
@@ -804,12 +809,12 @@ https://highlightjs.org/
   hljs.C_NUMBER_MODE = {
     className: 'number',
     begin: hljs.C_NUMBER_RE,
-    relevance: 0
+    relevance: 1
   };
   hljs.BINARY_NUMBER_MODE = {
     className: 'number',
     begin: hljs.BINARY_NUMBER_RE,
-    relevance: 0
+    relevance: 1
   };
   hljs.CSS_NUMBER_MODE = {
     className: 'number',
@@ -822,7 +827,7 @@ https://highlightjs.org/
       '|Hz|kHz' +
       '|dpi|dpcm|dppx' +
       ')?',
-    relevance: 0
+    relevance: 1
   };
   hljs.REGEXP_MODE = {
     className: 'regexp',

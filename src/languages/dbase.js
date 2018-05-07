@@ -58,27 +58,27 @@ function language_DBASE(hljs) {
 			{
 				className: 'symbol',
 				begin: /@.+?,.+?\s+?/,
-				relevance: 10
+				relevance: 3
 			},
 			{
 				className: 'symbol',
 				begin: /&\w+\./,
-				relevance: 10
+				relevance: 5
 			},
 			{
 				className: 'literal',
 				begin: /\.not\./,
-				relevance: 10
+				relevance: 5
 			},
 			{
 				className: 'literal',
 				begin: /\.and\./,
-				relevance: 10
+				relevance: 5
 			},
 			{
 				className: 'literal',
 				begin: /\.or\./,
-				relevance: 10
+				relevance: 5
 			},
 			{
 				className: 'literal',

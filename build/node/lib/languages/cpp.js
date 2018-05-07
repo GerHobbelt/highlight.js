@@ -33,7 +33,7 @@ module.exports = function language_CPP(hljs) {
       { begin: '(-?)\\b([\\d\']+(\\.[\\d\']*)?|\\.[\\d\']+)(u|U|l|L|ul|UL|f|F|b|B)' },
       { begin: '(-?)(\\b0[xX][a-fA-F0-9\']+|(\\b[\\d\']+(\\.[\\d\']*)?|\\.[\\d\']+)([eE][-+]?[\\d\']+)?)' }
     ],
-    relevance: 0
+    relevance: 1
   };
 
   var PREPROCESSOR =       {
@@ -46,7 +46,7 @@ module.exports = function language_CPP(hljs) {
     },
     contains: [
       {
-        begin: /\\\n/, relevance: 0
+        begin: /\\\n/, relevance: 3
       },
       hljs.inherit(STRINGS, {className: 'meta-string'}),
       {

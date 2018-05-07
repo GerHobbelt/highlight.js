@@ -23,7 +23,7 @@ function testAutoDetection(language) {
       })
       .each(function(content) {
         const expected = language,
-              actual   = hljs.highlightAuto(content).language;
+              actual   = hljs.highlightAuto(content, [language, 'css', 'javascript', 'html']).language || '(?unidentified?)';
 
         actual.should.equal(expected);
       });

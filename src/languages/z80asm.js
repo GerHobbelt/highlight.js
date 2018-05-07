@@ -33,7 +33,7 @@ function language_Z80ASM(hljs) {
         ')',
         end: '\\s'
       },
-      hljs.COMMENT(';', '$', {relevance: 0}),
+      hljs.COMMENT(';', '$', {relevance: 1}),
       hljs.QUOTE_STRING_MODE,
       {
         className: 'number',

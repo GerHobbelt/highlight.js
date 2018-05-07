@@ -1,4 +1,4 @@
-/*! highlight.js v9.13.1-8 | BSD3 License | git.io/hljslicense */
+/*! highlight.js v9.13.1-9 | BSD3 License | git.io/hljslicense */
 (function(factory) {
 
   // Find the global object for export to both the browser and web workers.
@@ -255,7 +255,7 @@
           }
           str.split(' ').forEach(function(kw) {
             var pair = kw.split('|');
-            compiled_keywords[pair[0]] = [className, pair[1] ? Number(pair[1]) : 1];
+            compiled_keywords[pair[0]] = [className, pair[1] ? Number(pair[1]) : 5];
           });
         };
 
@@ -755,29 +755,34 @@
 
   // Common modes
   hljs.BACKSLASH_ESCAPE = {
-    begin: '\\\\[\\s\\S]', relevance: 0
+    begin: '\\\\[\\s\\S]', 
+    relevance: 0,
   };
   hljs.APOS_STRING_MODE = {
     className: 'string',
     begin: '\'', end: '\'',
     illegal: '\\n',
-    contains: [hljs.BACKSLASH_ESCAPE]
+    relevance: 1,
+    contains: [hljs.BACKSLASH_ESCAPE],
   };
   hljs.QUOTE_STRING_MODE = {
     className: 'string',
     begin: '"', end: '"',
     illegal: '\\n',
-    contains: [hljs.BACKSLASH_ESCAPE]
+    relevance: 1,
+    contains: [hljs.BACKSLASH_ESCAPE],
   };
   hljs.PHRASAL_WORDS_MODE = {
-    begin: /\b(a|an|the|are|I'm|isn't|don't|doesn't|won't|but|just|should|pretty|simply|enough|gonna|going|wtf|so|such|will|you|your|they|like|more)\b/
+    begin: /\b(a|an|the|are|I'm|isn't|don't|doesn't|won't|but|just|should|pretty|simply|enough|gonna|going|wtf|so|such|will|you|your|they|like|more)\b/,
+    relevance: 0,
   };
   hljs.COMMENT = function (begin, end, inherits) {
     var mode = hljs.inherit(
       {
         className: 'comment',
         begin: begin, end: end,
-        contains: []
+        contains: [],
+        relevance: 1,
       },
       inherits || {}
     );
@@ -785,7 +790,7 @@
     mode.contains.push({
       className: 'doctag',
       begin: '(?:TODO|FIXME|NOTE|BUG|XXX):',
-      relevance: 0
+      relevance: 1,
     });
     return mode;
   };
@@ -800,12 +805,12 @@
   hljs.C_NUMBER_MODE = {
     className: 'number',
     begin: hljs.C_NUMBER_RE,
-    relevance: 0
+    relevance: 1
   };
   hljs.BINARY_NUMBER_MODE = {
     className: 'number',
     begin: hljs.BINARY_NUMBER_RE,
-    relevance: 0
+    relevance: 1
   };
   hljs.CSS_NUMBER_MODE = {
     className: 'number',
@@ -818,7 +823,7 @@
       '|Hz|kHz' +
       '|dpi|dpcm|dppx' +
       ')?',
-    relevance: 0
+    relevance: 1
   };
   hljs.REGEXP_MODE = {
     className: 'regexp',
@@ -1404,13 +1409,13 @@ hljs.registerLanguage('abap', function language_ABAP(hljs) {
     	{
     		className: 'comment',
     		begin: '^[*]',
-    		relevance: 0,
+    		relevance: 1,
     		end: '\n'
     	},
     	{
     		className: 'comment',
     		begin: '\b*"',
-    		relevance: 0,
+    		relevance: 1,
     		end: '\n'
     	}
     ]
@@ -1493,6 +1498,7 @@ hljs.registerLanguage('abc', function language_ABC(hljs) {
     begin:'^[Xx]\\:',
     end: '$',
     returnBegin: true,
+    relevance: 3,
     contains: [
       {
         className: 'attribute',
@@ -1516,12 +1522,14 @@ hljs.registerLanguage('abc', function language_ABC(hljs) {
   var LYRICS = {
     begin:'^[Ww]\\:',
     end: '$',
+    relevance: 3,
     returnBegin: true,
     contains: [
       {
         className: 'attribute',
         begin: '[Ww]',
         end: '\\:',
+        relevance: 3,
         excludeEnd: true,
         starts: {
           begin: '\\:',
@@ -1540,11 +1548,13 @@ hljs.registerLanguage('abc', function language_ABC(hljs) {
     begin: '^\\%\\%',
     returnBegin: true,
     end: '$',
+    relevance: 5,
     contains: [
       {
         className: 'attribute',
         begin: '\\%\\%',
         end: '\\s',
+        relevance: 2,
         starts: {
           className: 'params',
           endsWithParent: true,
@@ -1557,7 +1567,7 @@ hljs.registerLanguage('abc', function language_ABC(hljs) {
   var QUOTE_STRING = {
     className: 'string',
     begin: '"', end: '"',
-    relevance: 0,
+    relevance: 1,
     contains: [hljs.BACKSLASH_ESCAPE]
   }
 
@@ -1580,10 +1590,12 @@ hljs.registerLanguage('abc', function language_ABC(hljs) {
       {
         className: 'keyword',
         begin:'!\\S+!',
+        relevance: 2,
       },
       {
         className: 'symbol',
         begin: '\\[?\\|\\]?',
+        relevance: 10,
       }
     ]
   }
@@ -1823,11 +1835,13 @@ function language_ADA(hljs) {
                 // named loops and declare blocks
                 beginKeywords: 'loop for declare others',
                 endsParent: true,
+                relevance: 5,
             },
             {
                 // properly highlight all modifiers
                 className: 'keyword',
-                beginKeywords: 'not null constant access function procedure in out aliased exception'
+                beginKeywords: 'not null constant access function procedure in out aliased exception',
+                relevance: 5,
             },
             {
                 className: 'type',
@@ -1858,7 +1872,7 @@ function language_ADA(hljs) {
             {
                 className: 'string',
                 begin: /"/, end: /"/,
-                contains: [{begin: /""/, relevance: 0}]
+                contains: [{begin: /""/, relevance: 1}]
             },
             // characters ''
             {
@@ -1870,7 +1884,7 @@ function language_ADA(hljs) {
                 // number literals
                 className: 'number',
                 begin: NUMBER_RE,
-                relevance: 0
+                relevance: 0,
             },
             {
                 // Attributes
@@ -1884,7 +1898,8 @@ function language_ADA(hljs) {
                 keywords: 'package body',
                 excludeBegin: true,
                 excludeEnd: true,
-                illegal: BAD_CHARS
+                illegal: BAD_CHARS,
+                relevance: 5,
             },
             {
                 // function/procedure declaration/definition
@@ -1894,6 +1909,7 @@ function language_ADA(hljs) {
                 // we need to re-match the 'function' keyword, so that
                 // the title mode below matches only exactly once
                 returnBegin: true,
+                relevance: 5,
                 contains:
                 [
                     COMMENTS,
@@ -1904,7 +1920,8 @@ function language_ADA(hljs) {
                         end: '(\\(|\\s+|$)',
                         excludeBegin: true,
                         excludeEnd: true,
-                        illegal: BAD_CHARS
+                        illegal: BAD_CHARS,
+                        relevance: 5,
                     },
                     // 'self'
                     // // parameter types
@@ -1918,8 +1935,8 @@ function language_ADA(hljs) {
                         excludeEnd: true,
                         // we are done with functions
                         endsParent: true,
-                        illegal: BAD_CHARS
-
+                        illegal: BAD_CHARS,
+                        relevance: 5,
                     },
                 ]
             },
@@ -1930,7 +1947,8 @@ function language_ADA(hljs) {
                 begin: '\\b(sub)?type\\s+', end: '\\s+',
                 keywords: 'type',
                 excludeBegin: true,
-                illegal: BAD_CHARS
+                illegal: BAD_CHARS,
+                relevance: 3,
             },
 
             // see comment above the definition
@@ -2267,7 +2285,7 @@ hljs.registerLanguage('cpp', function language_CPP(hljs) {
       { begin: '(-?)\\b([\\d\']+(\\.[\\d\']*)?|\\.[\\d\']+)(u|U|l|L|ul|UL|f|F|b|B)' },
       { begin: '(-?)(\\b0[xX][a-fA-F0-9\']+|(\\b[\\d\']+(\\.[\\d\']*)?|\\.[\\d\']+)([eE][-+]?[\\d\']+)?)' }
     ],
-    relevance: 0
+    relevance: 1
   };
 
   var PREPROCESSOR =       {
@@ -2280,7 +2298,7 @@ hljs.registerLanguage('cpp', function language_CPP(hljs) {
     },
     contains: [
       {
-        begin: /\\\n/, relevance: 0
+        begin: /\\\n/, relevance: 3
       },
       hljs.inherit(STRINGS, {className: 'meta-string'}),
       {
@@ -4099,7 +4117,7 @@ hljs.registerLanguage('brainfuck', function language_BRAINFUCK(hljs) {
   var LITERAL = {
     className: 'literal',
     begin: '[\\+\\-]',
-    relevance: 0
+    relevance: 1
   };
   return {
     aliases: ['bf'],
@@ -4109,18 +4127,18 @@ hljs.registerLanguage('brainfuck', function language_BRAINFUCK(hljs) {
         '[\\[\\]\\.,\\+\\-<> \r\n]',
         {
           returnEnd: true,
-          relevance: 0
+          relevance: 1
         }
       ),
       {
         className: 'title',
         begin: '[\\[\\]]',
-        relevance: 0
+        relevance: 1
       },
       {
         className: 'string',
         begin: '[\\.,]',
-        relevance: 0
+        relevance: 1
       },
       {
         // this mode works as the only relevance counter
@@ -6540,27 +6558,27 @@ hljs.registerLanguage('dbase', function language_DBASE(hljs) {
 			{
 				className: 'symbol',
 				begin: /@.+?,.+?\s+?/,
-				relevance: 10
+				relevance: 3
 			},
 			{
 				className: 'symbol',
 				begin: /&\w+\./,
-				relevance: 10
+				relevance: 5
 			},
 			{
 				className: 'literal',
 				begin: /\.not\./,
-				relevance: 10
+				relevance: 5
 			},
 			{
 				className: 'literal',
 				begin: /\.and\./,
-				relevance: 10
+				relevance: 5
 			},
 			{
 				className: 'literal',
 				begin: /\.or\./,
-				relevance: 10
+				relevance: 5
 			},
 			{
 				className: 'literal',
@@ -7931,7 +7949,7 @@ function language_FASM(hljs) {
         ';',
         '$',
         {
-          relevance: 0
+          relevance: 1
         }
       ),
       {
@@ -7941,17 +7959,17 @@ function language_FASM(hljs) {
           {
             begin: '\\b(?:([0-9][0-9_]*)?\\.[0-9_]*(?:[eE][+-]?[0-9_]+)?|' +
                    '(0[Xx])?[0-9][0-9_]*\\.?[0-9_]*(?:[pP](?:[+-]?[0-9_]+)?)?)\\b',
-            relevance: 0
+            relevance: 1
           },
 
           // Hex number in $
-          { begin: '\\$[0-9][0-9A-Fa-f]*', relevance: 0 },
+          { begin: '\\$[0-9][0-9A-Fa-f]*', relevance: 3 },
 
           // Number in H,D,T,Q,O,B,Y suffix
-          { begin: '\\b(?:[0-9A-Fa-f][0-9A-Fa-f_]*[Hh]|[0-9][0-9_]*[DdTt]?|[0-7][0-7_]*[QqOo]|[0-1][0-1_]*[BbYy])\\b' },
+          { begin: '\\b(?:[0-9A-Fa-f][0-9A-Fa-f_]*[Hh]|[0-9][0-9_]*[DdTt]?|[0-7][0-7_]*[QqOo]|[0-1][0-1_]*[BbYy])\\b', relevance: 3 },
 
           // Number in X,D,T,Q,O,B,Y prefix
-          { begin: '\\b(?:0[Xx][0-9A-Fa-f_]+|0[DdTt][0-9_]+|0[QqOo][0-7_]+|0[BbYy][0-1_]+)\\b'}
+          { begin: '\\b(?:0[Xx][0-9A-Fa-f_]+|0[DdTt][0-9_]+|0[QqOo][0-7_]+|0[BbYy][0-1_]+)\\b', relevance: 3 }
         ]
       },
       // Double quote string
@@ -7964,7 +7982,7 @@ function language_FASM(hljs) {
           // Backquoted string
           { begin: '`', end: '[^\\\\]`' }
         ],
-        relevance: 0
+        relevance: 1
       },
       {
         className: 'symbol',
@@ -7974,19 +7992,19 @@ function language_FASM(hljs) {
           // Macro-local label
           { begin: '^\\s*%%[A-Za-z0-9_$#@~.?]*:' }
         ],
-        relevance: 0
+        relevance: 1
       },
       // Macro parameter
       {
         className: 'subst',
         begin: '%[0-9]+',
-        relevance: 0
+        relevance: 2
       },
       // Macro parameter
       {
         className: 'subst',
         begin: '%!\S+',
-        relevance: 0
+        relevance: 3
       },
       {
         className: 'meta',
@@ -14868,7 +14886,7 @@ function language_JADE(hljs) {
         className: 'comment',
         // add identation support
         begin: '^\\s*(//|//-).*$',
-        relevance: 3
+        relevance: 1
       },
       {
         begin: '^\\s*-(?!#)',
@@ -14960,7 +14978,7 @@ function language_JADE(hljs) {
             relevance: 0
           }
         ],
-        relevance: 10
+        relevance: 1
       },
       {
         className: 'bullet',
@@ -15019,7 +15037,7 @@ hljs.registerLanguage('jam', function language_JAM(hljs) {
 		className: 'string',
 		begin: '"', end: '"',
 		contains: [hljs.BACKSLASH_ESCAPE],
-		relevance: 0
+		relevance: 1
 	};
 	var VARIABLE_MODE = {
 		className: 'variable',
@@ -15070,7 +15088,7 @@ hljs.registerLanguage('jam', function language_JAM(hljs) {
 		excludeBegin: true,
 		excludeEnd: true,
 		contains: [VARIABLE_MODE],
-		relevance: 0
+		relevance: 1
 	};
 	var ACTIONS_MODE = {
 		className: 'function',
@@ -15193,7 +15211,7 @@ hljs.registerLanguage('java', function language_JAVA(hljs) {
         // Expression keywords prevent 'keyword Name(...)' from being
         // recognized as a function definition
         beginKeywords: 'new throw return else',
-        relevance: 0
+        relevance: 2
       },
       {
         className: 'function',
@@ -15210,7 +15228,7 @@ hljs.registerLanguage('java', function language_JAVA(hljs) {
             className: 'params',
             begin: /\(/, end: /\)/,
             keywords: KEYWORDS,
-            relevance: 0,
+            relevance: 1,
             contains: [
               hljs.APOS_STRING_MODE,
               hljs.QUOTE_STRING_MODE,
@@ -18555,7 +18573,7 @@ hljs.registerLanguage('mumps', function language_MUMPS(hljs) {
 		className: "string",
 		begin: /"/,
 		end: /"/,
-		relevance: 0,
+		relevance: 1,
 		contains: [
 			{
 				// Escape sequence for " is "" in MUMPS....
@@ -18585,7 +18603,7 @@ hljs.registerLanguage('mumps', function language_MUMPS(hljs) {
 				begin: /\?/,
 				end: /[\s$]/,
 				excludeEnd: true,
-				contains: [MUMPS_STRING]
+				contains: [MUMPS_STRING],
 			},
 			{
 				// These are MUMPS globals - not actually
@@ -18594,7 +18612,7 @@ hljs.registerLanguage('mumps', function language_MUMPS(hljs) {
 				className: "variable",
 				begin: /\^[%a-zA-Z]/,
 				end: /[\(\s$]/,
-				relevance: 8,
+				relevance: 1,
 				excludeEnd: true
 			},
 			{
@@ -18603,7 +18621,7 @@ hljs.registerLanguage('mumps', function language_MUMPS(hljs) {
 				variants: [
 					{
 						begin: /\d+E-?\d+/,
-						relevance: 5
+						relevance: 1
 					},
 					{
 						begin: hljs.NUMBER_RE
@@ -20786,7 +20804,7 @@ function language_PUG(hljs) {
         className: 'comment',
         // add identation support
         begin: '^\\s*(//|//-).*$',
-        relevance: 3
+        relevance: 1
       },
       {
         begin: '^\\s*-(?!#)',
@@ -20878,7 +20896,7 @@ function language_PUG(hljs) {
             relevance: 0
           }
         ],
-        relevance: 10
+        relevance: 1
       },
       {
         className: 'bullet',
@@ -25048,7 +25066,7 @@ hljs.registerLanguage('tsql', function language_T_SQL(hljs) {
   var COMMENT_MODE = hljs.COMMENT('--', '\n|$');
   return {
     case_insensitive: true,
-    illegal: '[^\\s]',
+    illegal: /[<>{}*]/,
     contains: [
       {
         className: 'operator',
@@ -25189,13 +25207,13 @@ hljs.registerLanguage('tsql', function language_T_SQL(hljs) {
             className: 'string',
             begin: '\'', end: '\'',
             contains: [hljs.BACKSLASH_ESCAPE, {begin: '\'\''}],
-            relevance: 0
+            relevance: 1,
           },
           {
             className: 'string',
             begin: '"', end: '"',
             contains: [hljs.BACKSLASH_ESCAPE, {begin: '""'}],
-            relevance: 0
+            relevance: 1,
           },
           {
             className: 'string',
@@ -26369,7 +26387,7 @@ hljs.registerLanguage('z80asm', function language_Z80ASM(hljs) {
         ')',
         end: '\\s'
       },
-      hljs.COMMENT(';', '$', {relevance: 0}),
+      hljs.COMMENT(';', '$', {relevance: 1}),
       hljs.QUOTE_STRING_MODE,
       {
         className: 'number',

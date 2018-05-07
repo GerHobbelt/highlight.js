@@ -74,6 +74,7 @@ module.exports = function language_ABC(hljs) {
     begin:'^[Xx]\\:',
     end: '$',
     returnBegin: true,
+    relevance: 3,
     contains: [
       {
         className: 'attribute',
@@ -97,12 +98,14 @@ module.exports = function language_ABC(hljs) {
   var LYRICS = {
     begin:'^[Ww]\\:',
     end: '$',
+    relevance: 3,
     returnBegin: true,
     contains: [
       {
         className: 'attribute',
         begin: '[Ww]',
         end: '\\:',
+        relevance: 3,
         excludeEnd: true,
         starts: {
           begin: '\\:',
@@ -121,11 +124,13 @@ module.exports = function language_ABC(hljs) {
     begin: '^\\%\\%',
     returnBegin: true,
     end: '$',
+    relevance: 5,
     contains: [
       {
         className: 'attribute',
         begin: '\\%\\%',
         end: '\\s',
+        relevance: 2,
         starts: {
           className: 'params',
           endsWithParent: true,
@@ -138,7 +143,7 @@ module.exports = function language_ABC(hljs) {
   var QUOTE_STRING = {
     className: 'string',
     begin: '"', end: '"',
-    relevance: 0,
+    relevance: 1,
     contains: [hljs.BACKSLASH_ESCAPE]
   }
 
@@ -161,10 +166,12 @@ module.exports = function language_ABC(hljs) {
       {
         className: 'keyword',
         begin:'!\\S+!',
+        relevance: 2,
       },
       {
         className: 'symbol',
         begin: '\\[?\\|\\]?',
+        relevance: 10,
       }
     ]
   }

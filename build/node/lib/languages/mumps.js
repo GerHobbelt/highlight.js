@@ -14,7 +14,7 @@ module.exports = function language_MUMPS(hljs) {
 		className: "string",
 		begin: /"/,
 		end: /"/,
-		relevance: 0,
+		relevance: 1,
 		contains: [
 			{
 				// Escape sequence for " is "" in MUMPS....
@@ -44,7 +44,7 @@ module.exports = function language_MUMPS(hljs) {
 				begin: /\?/,
 				end: /[\s$]/,
 				excludeEnd: true,
-				contains: [MUMPS_STRING]
+				contains: [MUMPS_STRING],
 			},
 			{
 				// These are MUMPS globals - not actually
@@ -53,7 +53,7 @@ module.exports = function language_MUMPS(hljs) {
 				className: "variable",
 				begin: /\^[%a-zA-Z]/,
 				end: /[\(\s$]/,
-				relevance: 8,
+				relevance: 1,
 				excludeEnd: true
 			},
 			{
@@ -62,7 +62,7 @@ module.exports = function language_MUMPS(hljs) {
 				variants: [
 					{
 						begin: /\d+E-?\d+/,
-						relevance: 5
+						relevance: 1
 					},
 					{
 						begin: hljs.NUMBER_RE

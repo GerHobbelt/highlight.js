@@ -19,7 +19,7 @@ function language_PUG(hljs) {
         className: 'comment',
         // add identation support
         begin: '^\\s*(//|//-).*$',
-        relevance: 3
+        relevance: 1
       },
       {
         begin: '^\\s*-(?!#)',
@@ -111,7 +111,7 @@ function language_PUG(hljs) {
             relevance: 0
           }
         ],
-        relevance: 10
+        relevance: 1
       },
       {
         className: 'bullet',

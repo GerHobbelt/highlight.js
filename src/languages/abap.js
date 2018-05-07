@@ -49,13 +49,13 @@ function language_ABAP(hljs) {
     	{
     		className: 'comment',
     		begin: '^[*]',
-    		relevance: 0,
+    		relevance: 1,
     		end: '\n'
     	},
     	{
     		className: 'comment',
     		begin: '\b*"',
-    		relevance: 0,
+    		relevance: 1,
     		end: '\n'
     	}
     ]

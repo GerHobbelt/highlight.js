@@ -8,7 +8,7 @@ function language_T_SQL(hljs) {
   var COMMENT_MODE = hljs.COMMENT('--', '\n|$');
   return {
     case_insensitive: true,
-    illegal: '[^\\s]',
+    illegal: /[<>{}*]/,
     contains: [
       {
         className: 'operator',
@@ -149,13 +149,13 @@ function language_T_SQL(hljs) {
             className: 'string',
             begin: '\'', end: '\'',
             contains: [hljs.BACKSLASH_ESCAPE, {begin: '\'\''}],
-            relevance: 0
+            relevance: 1,
           },
           {
             className: 'string',
             begin: '"', end: '"',
             contains: [hljs.BACKSLASH_ESCAPE, {begin: '""'}],
-            relevance: 0
+            relevance: 1,
           },
           {
             className: 'string',

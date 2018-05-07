@@ -42,7 +42,7 @@ function language_JAM(hljs) {
 		className: 'string',
 		begin: '"', end: '"',
 		contains: [hljs.BACKSLASH_ESCAPE],
-		relevance: 0
+		relevance: 1
 	};
 	var VARIABLE_MODE = {
 		className: 'variable',
@@ -93,7 +93,7 @@ function language_JAM(hljs) {
 		excludeBegin: true,
 		excludeEnd: true,
 		contains: [VARIABLE_MODE],
-		relevance: 0
+		relevance: 1
 	};
 	var ACTIONS_MODE = {
 		className: 'function',

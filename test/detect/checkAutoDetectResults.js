@@ -9,8 +9,8 @@ let Table    = require('cli-table');
 let colors   = require('colors/safe');
 
 let resultTable = new Table({
-  head: ['expected', 'actual', 'score', '2nd best', 'score'],
-  colWidths: [20, 20, 10, 20, 10],
+  head: ['expected', 'score', 'actual', 'score', '2nd best', 'score'],
+  colWidths: [19, 7, 19, 7, 19, 7],
   style: {
     head: ['grey']
   }
@@ -25,23 +25,26 @@ function testAutoDetection(language, index, languages) {
     })
     .forEach(function(content) {
       const expected = language,
-            actual   = hljs.highlightAuto(content);
+            actual   = hljs.highlightAuto(content),
+            specific = hljs.highlight(expected, content);
       if (actual.language !== expected && actual.second_best.language !== expected) {
         resultTable.push([
           expected,
+          specific.relevance,
           colors.red(actual.language),
           actual.relevance ? actual.relevance : colors.grey('None'),
           colors.red(actual.second_best.language),
-          actual.second_best.relevance ? actual.second_best.relevance : colors.grey('None')
+          actual.second_best.relevance ? actual.second_best.relevance : colors.grey('None'),
         ]);
       }
       else if (actual.language !== expected) {
         resultTable.push([
           expected,
+          specific.relevance,
           colors.yellow(actual.language),
           actual.relevance ? actual.relevance : colors.grey('None'),
           colors.yellow(actual.second_best.language),
-          actual.second_best.relevance ? actual.second_best.relevance : colors.grey('None')
+          actual.second_best.relevance ? actual.second_best.relevance : colors.grey('None'),
         ]);
       }
     });

@@ -2,7 +2,7 @@ module.exports = function language_BRAINFUCK(hljs) {
   var LITERAL = {
     className: 'literal',
     begin: '[\\+\\-]',
-    relevance: 0
+    relevance: 1
   };
   return {
     aliases: ['bf'],
@@ -12,18 +12,18 @@ module.exports = function language_BRAINFUCK(hljs) {
         '[\\[\\]\\.,\\+\\-<> \r\n]',
         {
           returnEnd: true,
-          relevance: 0
+          relevance: 1
         }
       ),
       {
         className: 'title',
         begin: '[\\[\\]]',
-        relevance: 0
+        relevance: 1
       },
       {
         className: 'string',
         begin: '[\\.,]',
-        relevance: 0
+        relevance: 1
       },
       {
         // this mode works as the only relevance counter

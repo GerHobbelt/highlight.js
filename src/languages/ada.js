@@ -58,11 +58,13 @@ function language_ADA(hljs) {
                 // named loops and declare blocks
                 beginKeywords: 'loop for declare others',
                 endsParent: true,
+                relevance: 5,
             },
             {
                 // properly highlight all modifiers
                 className: 'keyword',
-                beginKeywords: 'not null constant access function procedure in out aliased exception'
+                beginKeywords: 'not null constant access function procedure in out aliased exception',
+                relevance: 5,
             },
             {
                 className: 'type',
@@ -93,7 +95,7 @@ function language_ADA(hljs) {
             {
                 className: 'string',
                 begin: /"/, end: /"/,
-                contains: [{begin: /""/, relevance: 0}]
+                contains: [{begin: /""/, relevance: 1}]
             },
             // characters ''
             {
@@ -105,7 +107,7 @@ function language_ADA(hljs) {
                 // number literals
                 className: 'number',
                 begin: NUMBER_RE,
-                relevance: 0
+                relevance: 0,
             },
             {
                 // Attributes
@@ -119,7 +121,8 @@ function language_ADA(hljs) {
                 keywords: 'package body',
                 excludeBegin: true,
                 excludeEnd: true,
-                illegal: BAD_CHARS
+                illegal: BAD_CHARS,
+                relevance: 5,
             },
             {
                 // function/procedure declaration/definition
@@ -129,6 +132,7 @@ function language_ADA(hljs) {
                 // we need to re-match the 'function' keyword, so that
                 // the title mode below matches only exactly once
                 returnBegin: true,
+                relevance: 5,
                 contains:
                 [
                     COMMENTS,
@@ -139,7 +143,8 @@ function language_ADA(hljs) {
                         end: '(\\(|\\s+|$)',
                         excludeBegin: true,
                         excludeEnd: true,
-                        illegal: BAD_CHARS
+                        illegal: BAD_CHARS,
+                        relevance: 5,
                     },
                     // 'self'
                     // // parameter types
@@ -153,8 +158,8 @@ function language_ADA(hljs) {
                         excludeEnd: true,
                         // we are done with functions
                         endsParent: true,
-                        illegal: BAD_CHARS
-
+                        illegal: BAD_CHARS,
+                        relevance: 5,
                     },
                 ]
             },
@@ -165,7 +170,8 @@ function language_ADA(hljs) {
                 begin: '\\b(sub)?type\\s+', end: '\\s+',
                 keywords: 'type',
                 excludeBegin: true,
-                illegal: BAD_CHARS
+                illegal: BAD_CHARS,
+                relevance: 3,
             },
 
             // see comment above the definition
