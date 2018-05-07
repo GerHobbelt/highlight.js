@@ -4,7 +4,7 @@ Author: Paulo Moura <pmoura@logtalk.org>
 Description: Logtalk is an object-oriented logic programming language that extends and leverages the Prolog language with a feature set suitable for programming in the large.
 */
 
-function(hljs) {
+function language_LOGTALK(hljs) {
 
   var ATOMS = {
     className: 'atom',
@@ -43,7 +43,7 @@ function(hljs) {
   };
 
   var CURLY_BRACKTED_TERMS = {
-	begin: /\{/, end: /\}/,
+  begin: /\{/, end: /\}/,
     relevance: 0
   };
 
@@ -62,20 +62,20 @@ function(hljs) {
 
   var DIRECTIVE_KEYWORDS = {
     className: 'keyword',
-	keyword: 'object end_object'
-  },
+    keyword: 'object end_object'
+  };
 
   var DIRECTIVES = {
     className: 'preprocessor',
-//	lexemes: /:-\s[a-z][A-Za-z0-9_]*[.(]/,
-	begin: ':-[ ]', end: '\\(|\\./', excludeEnd: true,
-	contains: [DIRECTIVE_KEYWORDS]
+//  lexemes: /:-\s[a-z][A-Za-z0-9_]*[.(]/,
+    begin: ':-[ ]', end: '\\(|\\./', excludeEnd: true,
+    contains: [DIRECTIVE_KEYWORDS]
 //    keywords: DIRECTIVE_KEYWORDS,
 //    variants: [
 //        {beginKeywords: ':-\\s(object|protocol|category)', end: '\\(', excludeEnd: true},
 //        {beginKeywords: ':-\\s(end_object|end_protocol|end_category)', end: '\\.', excludeEnd: true},
-//	],
-//	contains: [ATOMS, NUMBERS, VARIABLES]
+//  ],
+//  contains: [ATOMS, NUMBERS, VARIABLES]
   };
 
 //  var PRED_OP = { // relevance booster
@@ -84,7 +84,7 @@ function(hljs) {
 
   var inner = [
 
-	DIRECTIVES,
+    DIRECTIVES,
     ATOMS,
     QUOTED_ATOMS,
     hljs.BACKSLASH_ESCAPE,
