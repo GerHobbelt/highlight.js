@@ -22,6 +22,7 @@ New languages:
 - *ABAP* by [Cassio Binkowski][]
 - *FASM* (Flat Assembler) by [Tristano Ajmone][]
 - *Epp* by [Ben Ford][]
+- *Robot Framework* by [Harri Paavola][]
 
 New styles:
 
@@ -153,6 +154,7 @@ Improvements:
 [Matt Evans]: https://github.com/matthewevans
 [Joe Blow]: https://github.com/mossarelli
 [Kasper Andersen]: https://github.com/kasma1990
+[Harri Paavola]: https://github.com/Harri
 [Eduard-Mihai Burtescu]: https://github.com/eddyb
 [Andres Täht]: https://github.com/andrestaht
 [Rene Saarsoo]: https://github.com/nene
