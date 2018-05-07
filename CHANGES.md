@@ -26,6 +26,7 @@ New languages:
 - *riscvasm* by [Ckristian Duran][] at [OnChipUIS][]
 - *HCL* by [Brian Hicks][].
 - *Logtalk* by [Paulo Moura][]
+- *GDScript* by [Geequlim][]
 
 New styles:
 
@@ -63,6 +64,7 @@ Improvements:
 [OnChipUIS]: https://github.com/onchipuis
 [Brian Hicks]: https://github.com/BrianHicks
 [Paulo Moura]: https://github.com/pmoura
+[Geequlim]: https://github.com/Geequlim
 
 
 ## Version 9.12.0
