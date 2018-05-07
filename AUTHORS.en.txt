@@ -293,3 +293,4 @@ Contributors:
 - Sergey Romanov <serg4172@mail.ru>
 - Cassio Binkowski <cassioiks@live.com>
 - Raffaele Sgarro <raffaeleSgarro@gmail.com>
+- Brian Hicks <brian@brianthicks.com>

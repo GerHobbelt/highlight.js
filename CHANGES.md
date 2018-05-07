@@ -24,6 +24,7 @@ New languages:
 - *Epp* by [Ben Ford][]
 - *Robot Framework* by [Harri Paavola][]
 - *riscvasm* by [Ckristian Duran][] at [OnChipUIS][]
+- *HCL* by [Brian Hicks][].
 
 New styles:
 
@@ -59,6 +60,7 @@ Improvements:
 [Cassio Binkowski]: https://github.com/cassioiks
 [Ckristian Duran]: https://github.com/ckdur
 [OnChipUIS]: https://github.com/onchipuis
+[Brian Hicks]: https://github.com/BrianHicks
 
 
 ## Version 9.12.0
