@@ -21,6 +21,7 @@ New languages:
 - *ST* Structured Text language of IEC-61131 standard by [Sehioromano][].
 - *ABAP* by [Cassio Binkowski][]
 - *FASM* (Flat Assembler) by [Tristano Ajmone][]
+- *Epp* by [Ben Ford][]
 
 New styles:
 
