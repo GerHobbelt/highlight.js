@@ -1,6 +1,9 @@
 /*
 Language: Solidity
 Author: Kaustav Haldar <khaldar@uwaterloo.ca>
+Contributors: pospi <pospi@spadgos.com>
+Category: blockchain
+Description: Syntax Highlighting for the Solidity Language which is a high-level programming language for the Ethereum blockchain. See http://solidity.readthedocs.io/
 */
 
 function language_SOLIDITY(hljs) {

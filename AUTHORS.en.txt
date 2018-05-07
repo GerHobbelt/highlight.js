@@ -299,3 +299,4 @@ Contributors:
 - Henrique Bastos <henrique@bastos.net>
 - Glen De Cauwsemaecker <contact@glendc.com>
 - Paulo Moura <pmoura@logtalk.org>
+- pospi <pospi@spadgos.com>
