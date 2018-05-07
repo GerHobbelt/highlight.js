@@ -9,8 +9,10 @@ New language:
 Improvements:
 
 - *Livescript* boosted relevance to better score language by [Mark Ellis][].
+- [Mark Ellis][] wrote a CLI tool to quickly check for relevance conflicts when
+developing new language support.
 
-[Mark Ellis]: https://github.com/ellismark
+[Mark Ellis]: https://github.com/ellismarkf
 
 ## Version 9.12.0
 
