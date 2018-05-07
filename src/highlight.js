@@ -440,7 +440,10 @@ https://highlightjs.org/
         return 0;
       }
 
-      var new_mode = subMode(lexeme, top);
+      var new_mode;
+      //if (lexeme !== '') {
+          new_mode = subMode(lexeme, top);
+      //} 
       if (new_mode) {
         if (new_mode.skip) {
           mode_buffer += lexeme;
@@ -519,16 +522,22 @@ https://highlightjs.org/
     var mode_buffer = '';
     var relevance = 0;
     try {
-      var match, count, index = 0;
-      for (;;) {
+      var match, count, zero_limit = 42 /* heuristic; more than 4 is needed to pass the tests */, index = 0;
+
+      // also exit loop when terminator regex matches the empty string:
+      // prevent infinite loop in here, but only after a minimum of 'empty'
+      // cycles have executed as otherwise the output will differ and tests 
+      // will fail!
+      while (zero_limit) {
         top.terminators.lastIndex = index;
         match = top.terminators.exec(value);
-        // also exit loop when terminator regex matches the empty string:
-        // prevent infinite loop in here!
-        if (!match || match[0].length === 0)
+        if (!match)
           break;
         count = processLexeme(value.substring(index, match.index), match[0]);
         index = match.index + count;
+        if (!count /* && !top.parent -- do not use this criterium instead of the large limit or you'll have an infinite loop again! */ ) {
+          zero_limit--;
+        }
       }
       processLexeme(value.substr(index));
       for(current = top; current.parent; current = current.parent) { // close dangling modes
