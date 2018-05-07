@@ -264,3 +264,4 @@ Contributors:
 - Mathias Schilling <m@matchilling.com>
 - Simen Wiik <simenwiik@hotmail.com>
 - Andrea Crawford <andrea.crawford13@gmail.com>
+- Tod Beardsley <tod_beardsley@rapid7.com>
