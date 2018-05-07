@@ -12,6 +12,7 @@ New languages:
 - *CSHTML* by [Roman Resh][]
 - *Oz* Esoteric general-purpose language by [Guillaume Maudoux][].
 - *Jam* Jam/BJam/B2 build language by [Rene Rivera][].
+- *Lean* theorem prover by [Patrick Massot][].
 
 New styles:
 

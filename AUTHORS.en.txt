@@ -280,3 +280,4 @@ Contributors:
 - Drew DeVault <sir@cmpwn.com>
 - Google Inc. (David Benjamin) <davidben@google.com>
 - Rene Rivera <grafikrobot@gmail.com>
+- Patrick Massot <patrick.massot@free.fr>
