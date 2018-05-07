@@ -10,6 +10,7 @@ New languages:
 - *Expression 2* by [Simen Wiik][].
 - *Igor Pro* by [Thomas Braun][]
 - *CSHTML* by [Roman Resh][]
+- *Oz* Esoteric general-purpose language by [Guillaume Maudoux][].
 
 New styles:
 
@@ -31,6 +32,7 @@ Improvements:
 [Arctic Ice Studio]: https://github.com/arcticicestudio
 [nord-highlightjs]: https://github.com/arcticicestudio/nord-highlightjs
 [Roman Resh]: https://github.com/romanresh
+[Guillaume Maudoux]: https://github.com/layus
 
 
 ## Version 9.12.0
