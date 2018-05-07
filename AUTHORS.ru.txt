@@ -262,3 +262,4 @@ URL:   https://highlightjs.org/
 - Матиас Шиллинг <m@matchilling.com>
 - Роман Реш <romanresh@live.com>
 - Шан Маханама <gambit1024@gmail.com>
+- Дмитрий Тарасов <dimatar@gmail.com>

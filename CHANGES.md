@@ -14,11 +14,14 @@ New languages:
 - *Jam* Jam/BJam/B2 build language by [Rene Rivera][].
 - *Lean* theorem prover by [Patrick Massot][].
 - *emacs org-mode* A markup language see [https://orgmode.org]
+- *ISBL* built-in language DIRECTUM by [Dmitriy Tarasov][].
 
 New styles:
 
 - [*Nord*][nord-highlightjs] by [Arctic Ice Studio][]
 - *Igor Pro* by [Thomas Braun][]
+- *ISBL editor light* by [Dmitriy Tarasov][]
+- *ISBL editor dark* by [Dmitriy Tarasov][]
 
 Improvements:
 
@@ -39,6 +42,7 @@ Improvements:
 [Guillaume Maudoux]: https://github.com/layus
 [Drew DeVault]: https://github.com/SirCmpwn
 [Rene Rivera]: https://github.com/grafikrobot
+[Dmitriy Tarasov]: https://github.com/MedvedTMN
 
 
 ## Version 9.12.0

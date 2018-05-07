@@ -283,3 +283,4 @@ Contributors:
 - Rene Rivera <grafikrobot@gmail.com>
 - Patrick Massot <patrick.massot@free.fr>
 - Jörn Reimerdes <joern.reimerdes@gmail.com>
+- Dmitriy Tarasov <dimatar@gmail.com>
