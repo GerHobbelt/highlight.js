@@ -263,3 +263,4 @@ Contributors:
 - Stanislaw Swierc <stanislaw.swierc@gmail.com>
 - Mathias Schilling <m@matchilling.com>
 - Simen Wiik <simenwiik@hotmail.com>
+- Andrea Crawford <andrea.crawford13@gmail.com>
