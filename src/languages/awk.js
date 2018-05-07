@@ -5,7 +5,7 @@ Website: http://matthewdaly.co.uk/
 Description: language definition for Awk scripts
 */
 
-function(hljs) {
+function language_AWK(hljs) {
   var VARIABLE = {
     className: 'variable',
     variants: [

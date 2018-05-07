@@ -5,7 +5,7 @@ Author: Jan Berkel <jan.berkel@gmail.com>
 Contributors: Erik Osheim <d_m@plastic-idolatry.com>
 */
 
-function(hljs) {
+function language_SCALA(hljs) {
 
   var ANNOTATION = { className: 'meta', begin: '@[A-Za-z]+' };
 

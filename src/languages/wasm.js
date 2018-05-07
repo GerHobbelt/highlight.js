@@ -5,7 +5,7 @@ Description: Web Assembly version MVP-13 (RC for v1)
 Category: assembler
 */
 
-function(hljs) {
+function language_WEBASM(hljs) {
   var KEYWORDS = {
     keyword:
       // special "unreachable" that is kind of like branching (trap & crash)

@@ -4,7 +4,7 @@ Description: Prolog is a general purpose logic programming language associated w
 Author: Raivo Laanemets <raivo@infdot.com>
 */
 
-function(hljs) {
+function language_PROLOG(hljs) {
 
   var ATOM = {
 

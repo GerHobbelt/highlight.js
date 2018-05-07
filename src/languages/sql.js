@@ -4,7 +4,7 @@
  Category: common
  */
 
-function(hljs) {
+function language_SQL(hljs) {
   var COMMENT_MODE = hljs.COMMENT('--', '\n|$');
   return {
     case_insensitive: true,

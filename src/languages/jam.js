@@ -4,7 +4,7 @@ Author: Rene Rivera <grafikrobot@gmail.com>
 */
 
 
-function(hljs) {
+function language_JAM(hljs) {
 	var KEYWORD_MODE = {
 		className: 'keyword',
 		beginKeywords: 'local include return break continue for in switch ' +

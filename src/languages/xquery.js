@@ -7,7 +7,7 @@ Refactored to process xml constructor syntax and function-bodies. Added missing 
 Category: functional
 */
 
-function(hljs) {
+function language_XQUERY(hljs) {
   // see https://www.w3.org/TR/xquery/#id-terminal-delimitation
   var KEYWORDS = 'module schema namespace boundary-space preserve no-preserve strip default collation base-uri ordering context decimal-format decimal-separator copy-namespaces empty-sequence except exponent-separator external grouping-separator inherit no-inherit lax minus-sign per-mille percent schema-attribute schema-element strict unordered zero-digit ' +
   'declare import option function validate variable ' +

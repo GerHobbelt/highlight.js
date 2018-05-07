@@ -7,7 +7,7 @@ Description: A semantic, text-based document format that can be exported to HTML
 Category: markup
 */
 
-function(hljs) {
+function language_ASCIIDOC(hljs) {
   return {
     aliases: ['adoc'],
     contains: [

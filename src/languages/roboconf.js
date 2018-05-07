@@ -6,7 +6,7 @@ Description: Syntax highlighting for Roboconf's DSL
 Category: config
 */
 
-function(hljs) {
+function language_ROBOCONF(hljs) {
   var IDENTIFIER = '[a-zA-Z-_][^\\n{]+\\{';
 
   var PROPERTY = {

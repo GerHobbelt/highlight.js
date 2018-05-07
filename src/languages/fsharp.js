@@ -4,7 +4,7 @@ Author: Jonas Follesø <jonas@follesoe.no>
 Contributors: Troy Kershaw <hello@troykershaw.com>, Henrik Feldt <henrik@haf.se>
 Category: functional
 */
-function(hljs) {
+function language_FSHARP(hljs) {
   var TYPEPARAM = {
     begin: '<', end: '>',
     contains: [

@@ -5,7 +5,7 @@ Description: Protocol buffer message definition format
 Category: protocols
 */
 
-function(hljs) {
+function language_PROTOBUF(hljs) {
   var KEYWORDS = {
     keyword:
       'syntax package import option optional required repeated group' +

@@ -6,7 +6,7 @@ Origin: coffeescript.js
 Category: scripting
 */
 
-function(hljs) {
+function language_MOONSCRIPT(hljs) {
   var KEYWORDS = {
     keyword:
       // Moonscript keywords

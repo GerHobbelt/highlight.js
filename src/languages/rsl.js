@@ -5,7 +5,7 @@ Contributors: Shuen-Huei Guan <drake.guan@gmail.com>
 Category: graphics
 */
 
-function(hljs) {
+function language_RSL(hljs) {
   return {
 	aliases: ['rsl'],
     keywords: {

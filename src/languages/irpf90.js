@@ -5,7 +5,7 @@ Description: IRPF90 is an open-source Fortran code generator : http://irpf90.ups
 Category: scientific
 */
 
-function(hljs) {
+function language_IRPF90(hljs) {
   var PARAMS = {
     className: 'params',
     begin: '\\(', end: '\\)'

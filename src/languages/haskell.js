@@ -5,7 +5,7 @@ Contributors: Zena Treep <zena.treep@gmail.com>
 Category: functional
 */
 
-function(hljs) {
+function language_HASKELL(hljs) {
   var COMMENT = {
     variants: [
       hljs.COMMENT('--', '$'),

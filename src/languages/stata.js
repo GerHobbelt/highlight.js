@@ -6,7 +6,7 @@ Description: Syntax highlighting for Stata code. This is a fork and modification
 Category: scientific
 */
 
-function(hljs) {
+function language_STATA(hljs) {
   return {
     aliases: ['do', 'ado'],
     case_insensitive: true,

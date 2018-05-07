@@ -6,7 +6,7 @@ Description: Google go language (golang). For info about language see http://gol
 Category: system
 */
 
-function(hljs) {
+function language_GO(hljs) {
   var GO_KEYWORDS = {
     keyword:
       'break default func interface select case map struct chan else goto package switch ' +

@@ -3,7 +3,7 @@ Language: CSS
 Category: common, css
 */
 
-function(hljs) {
+function language_CSS(hljs) {
   var IDENT_RE = '[a-zA-Z-][a-zA-Z0-9_-]*';
   var RULE = {
     begin: /[A-Z\_\.\-]+\s*:/, returnBegin: true, end: ';', endsWithParent: true,

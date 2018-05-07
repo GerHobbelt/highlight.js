@@ -5,7 +5,7 @@ Description: language used as intermediate representation in the LLVM compiler f
 Category: assembler
 */
 
-function(hljs) {
+function language_LLVM_IR(hljs) {
   var identifier = '([-a-zA-Z$._][\\w\\-$.]*)';
   return {
     //lexemes: '[.%]?' + hljs.IDENT_RE,

@@ -5,7 +5,7 @@ Description: Stylus (https://github.com/LearnBoost/stylus/)
 Category: css
 */
 
-function(hljs) {
+function language_STYLUS(hljs) {
 
   var VARIABLE = {
     className: 'variable',

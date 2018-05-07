@@ -3,7 +3,7 @@ Language: FIX
 Author: Brent Bradbury <brent@brentium.com>
 */
 
-function(hljs) {
+function language_FIX(hljs) {
   return {
     contains: [
     {

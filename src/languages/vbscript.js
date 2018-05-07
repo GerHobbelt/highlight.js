@@ -5,7 +5,7 @@ Contributors: Michal Gabrukiewicz <mgabru@gmail.com>
 Category: scripting
 */
 
-function(hljs) {
+function language_VBSCRIPT(hljs) {
   return {
     aliases: ['vbs'],
     case_insensitive: true,

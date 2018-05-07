@@ -5,7 +5,7 @@ Description: MIPS Assembly (up to MIPS32R2)
 Category: assembler
 */
 
-function(hljs) {
+function language_MIPSASM(hljs) {
     //local labels: %?[FB]?[AT]?\d{1,2}\w+
   return {
     case_insensitive: true,

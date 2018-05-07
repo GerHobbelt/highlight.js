@@ -5,7 +5,7 @@ Contributors: Boone Severson <boone.severson@gmail.com>
 Description: Verilog is a hardware description language used in electronic design automation to describe digital and mixed-signal systems. This highlighter supports Verilog and SystemVerilog through IEEE 1800-2012.
 */
 
-function(hljs) {
+function language_VERILOG(hljs) {
   var SV_KEYWORDS = {
     keyword:
       'accept_on alias always always_comb always_ff always_latch and assert assign ' +

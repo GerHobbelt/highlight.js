@@ -5,7 +5,7 @@ Contributors: Ivan Sagalaev <maniac@softwaremaniacs.org>
 Category: common, config
 */
 
-function(hljs) {
+function language_NGINX(hljs) {
   var VAR = {
     className: 'variable',
     variants: [

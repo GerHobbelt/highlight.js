@@ -6,7 +6,7 @@ Description: TypeScript is a strict superset of JavaScript
 Category: scripting
 */
 
-function(hljs) {
+function language_TYPESCRIPT(hljs) {
   var KEYWORDS = {
     keyword:
       'in if for while finally var new function do return void else break catch ' +

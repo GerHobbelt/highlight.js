@@ -5,7 +5,7 @@ Author: Martin Braun <martin.braun@ettus.com>, Moritz Fischer <moritz.fischer@et
 Category: config
 */
 
-function(hljs) {
+function language_DEVTREE(hljs) {
   var STRINGS = {
     className: 'string',
     variants: [

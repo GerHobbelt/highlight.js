@@ -4,7 +4,7 @@ Author: Damian Mee <mee.damian@gmail.com>
 Website: http://meeDamian.com
 */
 
-function(hljs) {
+function language_GRADLE(hljs) {
   return {
     case_insensitive: true,
     keywords: {

@@ -5,7 +5,7 @@ Author: Sergey Sobko <s.sobko@profitware.ru>
 Category: lisp
 */
 
-function(hljs) {
+function language_HY(hljs) {
   var keywords = {
     'builtin-name':
       // keywords

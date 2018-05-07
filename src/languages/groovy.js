@@ -5,7 +5,7 @@
  Description: Groovy programming language implementation inspired from Vsevolod's Java mode
  */
 
-function(hljs) {
+function language_GROOVY(hljs) {
     return {
         keywords: {
             literal : 'true false null',

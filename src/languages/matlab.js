@@ -5,7 +5,7 @@ Contributors: Eugene Nizhibitsky <nizhibitsky@ya.ru>
 Category: scientific
 */
 
-function(hljs) {
+function language_MATLAB(hljs) {
   var COMMON_CONTAINS = [
     hljs.C_NUMBER_MODE,
     {

@@ -5,7 +5,7 @@ Description: built-in language DIRECTUM
 Category: enterprise
 */
 
-function(hljs) {
+function language_ISBL(hljs) {
 
   // Определение идентификаторов
   var UNDERSCORE_IDENT_RE = '[A-Za-zА-Яа-яёЁ_!][A-Za-zА-Яа-яёЁ_0-9]*';

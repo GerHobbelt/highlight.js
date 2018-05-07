@@ -4,7 +4,7 @@ Author: Bruno Dias <bruno.r.dias@gmail.com>
 Description: Language definition for Inform 7, a DSL for writing parser interactive fiction.
 */
 
-function(hljs) {
+function language_INFORM7(hljs) {
   var START_BRACKET = '\\[';
   var END_BRACKET = '\\]';
   return {

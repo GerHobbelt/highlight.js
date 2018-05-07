@@ -6,7 +6,7 @@
  * Description: Structured Text - one of the 5 languages of IEC-61131 standard for PLC program development.
  */
 
-function(hljs) {
+function language_ST(hljs) {
     return {
         aliases: ['stl', 'scl', 'structured-text'],
         case_insensitive: true,

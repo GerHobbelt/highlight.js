@@ -4,7 +4,7 @@
 Category: functional
  */
 
-function(hljs) {
+function language_ERLANG_REPL(hljs) {
   return {
     keywords: {
       built_in:

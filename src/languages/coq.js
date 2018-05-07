@@ -4,7 +4,7 @@ Author: Stephan Boyer <stephan@stephanboyer.com>
 Category: functional
 */
 
-function(hljs) {
+function language_COQ(hljs) {
   return {
     keywords: {
       keyword:

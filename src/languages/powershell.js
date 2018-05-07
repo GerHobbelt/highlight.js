@@ -4,7 +4,7 @@
  Contributors: Nicholas Blumhardt <nblumhardt@nblumhardt.com>, Victor Zhou <OiCMudkips@users.noreply.github.com>, Nicolas Le Gall <contact@nlegall.fr>, G8t Guy <g8tguy@g8tguy.com>, Dirk Schuermans <dirk@schuermans.me>
 */
 
-function(hljs) {
+function language_POWERSHELL(hljs) {
   // https://msdn.microsoft.com/en-us/library/ms714428(v=vs.85).aspx
   var VALID_VERBS =
     'Add|Clear|Close|Copy|Enter|Exit|Find|Format|Get|Hide|Join|Lock|' +

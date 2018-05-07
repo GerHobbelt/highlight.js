@@ -5,7 +5,7 @@ Description: FANUC TP programming language (TPP).
 */
 
 
-function(hljs) {
+function language_TP(hljs) {
   var TPID = {
     className: 'number',
     begin: '[1-9][0-9]*', /* no leading zeros */

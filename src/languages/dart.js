@@ -6,7 +6,7 @@ Description: Dart is a JavaScript replacement language developed by Google. For 
 Category: scripting
 */
 
-function (hljs) {
+function language_DART(hljs) {
   var SUBST = {
     className: 'subst',
     begin: '\\$\\{', end: '}',

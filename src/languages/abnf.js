@@ -3,7 +3,7 @@ Language: Augmented Backus-Naur Form
 Author: Alex McKibben <alex@nullscope.net>
 */
 
-function(hljs) {
+function language_ABNF(hljs) {
     var regexes = {
         ruleDeclaration: "^[a-zA-Z][a-zA-Z0-9-]*",
         unexpectedChars: "[!@#$^&',?+~`|:]"

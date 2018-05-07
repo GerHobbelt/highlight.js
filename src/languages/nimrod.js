@@ -2,7 +2,7 @@
 Language: Nimrod
 */
 
-function(hljs) {
+function language_NIMROD(hljs) {
   return {
     aliases: ['nim'],
     keywords: {

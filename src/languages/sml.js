@@ -5,7 +5,7 @@ Description: SML language definition.
 Origin: ocaml.js
 Category: functional
 */
-function(hljs) {
+function language_SML(hljs) {
   return {
     aliases: ['ml'],
     keywords: {

@@ -5,7 +5,7 @@ Description: Game Markup Language for GameMaker Studio 2
 Category: scripting
 */
 
-function(hljs) {
+function language_GML(hljs) {
   var GML_KEYWORDS = {
     keywords: 'begin end if then else while do for break continue with until ' +
       'repeat exit and or xor not return mod div switch case default var ' +

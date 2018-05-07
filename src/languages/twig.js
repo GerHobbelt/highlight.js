@@ -6,7 +6,7 @@ Description: Twig is a templating language for PHP
 Category: template
 */
 
-function(hljs) {
+function language_TWIG(hljs) {
   var PARAMS = {
     className: 'params',
     begin: '\\(', end: '\\)'

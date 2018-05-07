@@ -4,7 +4,7 @@ Contributors: Adam Joseph Cook <adam.joseph.cook@gmail.com>
 Description: Syntax highlighter for STEP Part 21 files (ISO 10303-21).
 */
 
-function(hljs) {
+function language_STEP21(hljs) {
   var STEP21_IDENT_RE = '[A-Z_][A-Z0-9_.]*';
   var STEP21_KEYWORDS = {
     keyword: 'HEADER ENDSEC DATA'

@@ -4,7 +4,7 @@ Author: Sergey Bronnikov <sergeyb@bronevichok.ru>
 Website: https://bronevichok.ru/
 */
 
-function(hljs) {
+function language_SUBINIT(hljs) {
   var DETAILS = {
     className: 'string',
     begin: '\\[\n(multipart)?', end: '\\]\n'

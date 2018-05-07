@@ -4,7 +4,7 @@
  Author: Magnus Madsen <mmadsen@uwaterloo.ca>
  */
 
-function (hljs) {
+function language_FLIX(hljs) {
 
     var CHAR = {
         className: 'string',

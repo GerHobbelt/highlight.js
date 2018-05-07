@@ -5,7 +5,7 @@ Contributors: Nicolas Braud-Santoni <nicolas.braud-santoni@ens-cachan.fr>, Micka
 Description: OCaml language definition.
 Category: functional
 */
-function(hljs) {
+function language_OCAML(hljs) {
   /* missing support for heredoc-like string (OCaml 4.0.2+) */
   return {
     aliases: ['ml'],

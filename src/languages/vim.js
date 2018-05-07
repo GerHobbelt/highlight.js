@@ -5,7 +5,7 @@ Description: full keyword and built-in from http://vimdoc.sourceforge.net/htmldo
 Category: scripting
 */
 
-function(hljs) {
+function language_VIM(hljs) {
   return {
     lexemes: /[!#@\w]+/,
     keywords: {

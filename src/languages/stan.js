@@ -5,7 +5,7 @@ Author: Brendan Rocks <rocks.brendan@gmail.com>
 Description: The Stan probabilistic programming language (http://mc-stan.org/).
 */
 
-function(hljs) {
+function language_STAN(hljs) {
   return {
     contains: [
       hljs.HASH_COMMENT_MODE,

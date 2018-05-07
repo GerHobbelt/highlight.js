@@ -4,7 +4,7 @@ Requires: lisp.js
 Author: Jörn Reimerdes <joern.reimerdes@gmail.com>
 Category: common, markup
 */
-function(hljs) {
+function language_EMACS_ORGMODE(hljs) {
   return {
     aliases: ['org', 'org-mode'],
     contains: [

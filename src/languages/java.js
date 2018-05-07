@@ -4,7 +4,7 @@ Author: Vsevolod Solovyov <vsevolod.solovyov@gmail.com>
 Category: common, enterprise
 */
 
-function(hljs) {
+function language_JAVA(hljs) {
   var JAVA_IDENT_RE = '[\u00C0-\u02B8a-zA-Z_$][\u00C0-\u02B8a-zA-Z_$0-9]*';
   var GENERIC_IDENT_RE = JAVA_IDENT_RE + '(<' + JAVA_IDENT_RE + '(\\s*,\\s*' + JAVA_IDENT_RE + ')*>)?';
   GENERIC_IDENT_RE = JAVA_IDENT_RE + '(<' + GENERIC_IDENT_RE + '(\\s*,\\s*' + GENERIC_IDENT_RE + ')*>)?';

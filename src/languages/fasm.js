@@ -33,7 +33,7 @@ Category: assembler
 
 
 
-function(hljs) {
+function language_FASM(hljs) {
   return {
     case_insensitive: true,
     lexemes: '[.%]?' + hljs.IDENT_RE,

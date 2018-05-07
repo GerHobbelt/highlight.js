@@ -5,7 +5,7 @@ Requires: ruby.js
 Description: YAML (Yet Another Markdown Language)
 Category: config
 */
-function(hljs) {
+function language_YAML(hljs) {
   var LITERALS = 'true false yes no null';
 
   var keyPrefix = '^[ \\-]*';

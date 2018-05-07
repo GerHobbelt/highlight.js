@@ -5,7 +5,7 @@ Author: Ivan Sagalaev <maniac@softwaremaniacs.org>
 Category: common, protocols
 */
 
-function(hljs) {
+function language_HTTP(hljs) {
   var VERSION = 'HTTP/[0-9\\.]+';
   return {
     aliases: ['https'],

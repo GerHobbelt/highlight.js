@@ -4,7 +4,7 @@ Author: mucaho <mkucko@gmail.com>
 Description: Mercury is a logic/functional programming language which combines the clarity and expressiveness of declarative programming with advanced static analysis and error detection features.
 */
 
-function(hljs) {
+function language_MERCURY(hljs) {
   var KEYWORDS = {
     keyword:
       'module use_module import_module include_module end_module initialise ' +

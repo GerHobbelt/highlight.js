@@ -5,7 +5,7 @@ Category: common
 Description: Metasploit Framework is an open source penetration testing framework, available at https://metasploit.com
 */
 
-function(hljs) {
+function language_METASPLOIT(hljs) {
   return {
     aliases: ['msf'],
     case_insensitive: false,

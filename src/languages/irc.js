@@ -4,7 +4,7 @@ Author: Nicolas LLOBERA <nllobera@gmail.com>
 Description: language definition for IRC commands
 */
 
-function(hljs) {
+function language_IRC(hljs) {
 
   return {
     keywords: 'NickServ VERIFY REGISTER GROUP',

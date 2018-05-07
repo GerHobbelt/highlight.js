@@ -3,7 +3,7 @@ Language: JavaScript
 Category: common, scripting
 */
 
-function(hljs) {
+function language_JAVASCRIPT(hljs) {
   var IDENT_RE = '[A-Za-z$_][0-9A-Za-z$_]*';
   var KEYWORDS = {
     keyword:

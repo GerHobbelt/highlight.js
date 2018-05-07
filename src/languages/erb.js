@@ -7,7 +7,7 @@ Description: "Bridge" language defining fragments of Ruby in HTML within <% .. %
 Category: template
 */
 
-function(hljs) {
+function language_ERB(hljs) {
   return {
     subLanguage: 'xml',
     contains: [

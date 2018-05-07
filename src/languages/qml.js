@@ -7,7 +7,7 @@ Description: Syntax highlighting for the Qt Quick QML scripting language, based 
 Category: scripting
 */
 
-function(hljs) {
+function language_QML(hljs) {
   var KEYWORDS = {
       keyword:
         'in of on if for while finally var new function do return void else break catch ' +

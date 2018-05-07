@@ -5,7 +5,7 @@ Description: language definition for Elixir source code files (.ex and .exs).  B
 Category: functional
 */
 
-function(hljs) {
+function language_ELIXIR(hljs) {
   var ELIXIR_IDENT_RE = '[a-zA-Z_][a-zA-Z0-9_]*(\\!|\\?)?';
   var ELIXIR_METHOD_RE = '[a-zA-Z_]\\w*[!?=]?|[-+~]\\@|<<|>>|=~|===?|<=>|[<>]=?|\\*\\*|[-/+%^&*~`|]|\\[\\]=?';
   var ELIXIR_KEYWORDS =

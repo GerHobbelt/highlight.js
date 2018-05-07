@@ -3,7 +3,7 @@ Language: Backus–Naur Form
 Author: Oleg Efimov <efimovov@gmail.com>
 */
 
-function(hljs){
+function language_BNF(hljs) {
   return {
     contains: [
       // Attribute

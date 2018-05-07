@@ -5,7 +5,7 @@ Description: OpenSCAD is a language for the 3D CAD modeling software of the same
 Category: scientific
 */
 
-function(hljs) {
+function language_OPENSCAD(hljs) {
 	var SPECIAL_VARS = {
 		className: 'keyword',
 		begin: '\\$(f[asn]|t|vp[rtd]|children)'

@@ -5,7 +5,7 @@ Author: Roman Resh <romanresh@live.com>
 Category: common
 */
 
-function(hljs) {
+function language_CSHTML(hljs) {
     var SPECIAL_SYMBOL_CLASSNAME = "built_in";
 
     var BLOCK_TEXT = {

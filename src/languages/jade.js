@@ -5,7 +5,7 @@ Description: Jade is a high performance template engine heavily influenced by Ha
 */
 
 // TODO work in process: detect indentation (comments, multiline), attributes with classes
-function(hljs) {
+function language_JADE(hljs) {
   return {
     aliases: ['jade'],
     case_insensitive: true,

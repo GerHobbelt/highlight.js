@@ -4,7 +4,7 @@
  */
 
 
-function(hljs) {
+function language_KOTLIN(hljs) {
   var KEYWORDS = {
     keyword:
       'abstract as val var vararg get set class object open private protected public noinline ' +

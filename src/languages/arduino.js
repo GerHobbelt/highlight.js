@@ -5,7 +5,7 @@ Description: The Arduino® Language is a superset of C++. This rules are designe
 Requires: cpp.js
 */
 
-function(hljs) {
+function language_ARDUINO(hljs) {
   var CPP = hljs.getLanguage('cpp').exports;
 	return {
     keywords: {

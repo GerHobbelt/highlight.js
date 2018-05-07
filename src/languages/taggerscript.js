@@ -3,7 +3,7 @@ Language: Tagger Script
 Author: Philipp Wolfer <ph.wolfer@gmail.com>
 Description: Syntax Highlighting for the Tagger Script as used by MusicBrainz Picard.
  */
-function(hljs) {
+function language_TAGGERSCRIPT(hljs) {
 
   var COMMENT = {
     className: 'comment',

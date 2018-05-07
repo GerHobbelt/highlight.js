@@ -5,7 +5,7 @@ Contributors: Roman Shmatov <romanshmatov@gmail.com>, Kasper Andersen <kma_untru
 Category: system
 */
 
-function(hljs) {
+function language_RUST(hljs) {
   var NUM_SUFFIX = '([ui](8|16|32|64|128|size)|f(32|64))\?';
   var KEYWORDS =
     'alignof as be box break const continue crate do else enum extern ' +

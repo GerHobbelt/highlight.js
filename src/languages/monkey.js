@@ -3,7 +3,7 @@ Language: Monkey
 Author: Arthur Bikmullin <devolonter@gmail.com>
 */
 
-function(hljs) {
+function language_MONKEY(hljs) {
   var NUMBER = {
     className: 'number', relevance: 0,
     variants: [

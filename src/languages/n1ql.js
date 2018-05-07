@@ -5,7 +5,7 @@
  Description: Couchbase query language
  */
 
-function(hljs) {
+function language_N1QL(hljs) {
   return {
     case_insensitive: true,
     contains: [

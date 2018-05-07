@@ -4,7 +4,7 @@ Author: Philippe Charriere <ph.charriere@gmail.com>
 Description: a lightweight dynamic language for the JVM, see http://golo-lang.org/
 */
 
-function(hljs) {
+function language_GOLO(hljs) {
     return {
       keywords: {
         keyword:

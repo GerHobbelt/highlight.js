@@ -5,7 +5,7 @@ Website: http://fulc.ru/
 Category: markup
 */
 
-function(hljs) {
+function language_TEX(hljs) {
   var COMMAND = {
     className: 'tag',
     begin: /\\/,

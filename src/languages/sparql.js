@@ -5,7 +5,7 @@ Author: Mark Ellis <mark.ellis@stardog.com>
 Category: common
 */
 
-function(hljs) {
+function language_SPARQL(hljs) {
   var ttl = hljs.getLanguage('ttl').exports;
   var KEYWORDS = {
     meta: 'base|10 prefix|10 @base|10 @prefix|10',

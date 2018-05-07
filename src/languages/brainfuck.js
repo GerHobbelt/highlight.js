@@ -3,7 +3,7 @@ Language: Brainfuck
 Author: Evgeny Stepanischev <imbolk@gmail.com>
 */
 
-function(hljs){
+function language_BRAINFUCK(hljs) {
   var LITERAL = {
     className: 'literal',
     begin: '[\\+\\-]',

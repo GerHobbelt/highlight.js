@@ -5,7 +5,7 @@ Contributors: Shuen-Huei Guan <drake.guan@gmail.com>
 Category: graphics
 */
 
-function(hljs) {
+function language_RIB(hljs) {
   return {
     keywords:
       'ArchiveRecord AreaLightSource Atmosphere Attribute AttributeBegin AttributeEnd Basis ' +

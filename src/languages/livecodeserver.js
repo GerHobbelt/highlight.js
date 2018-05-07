@@ -7,7 +7,7 @@ Date: 2013-06-03
 Category: enterprise
 */
 
-function(hljs) {
+function language_LIVECODE(hljs) {
   var VARIABLE = {
     begin: '\\b[gtps][A-Z]+[A-Za-z0-9_\\-]*\\b|\\$_[A-Z]+',
     relevance: 0

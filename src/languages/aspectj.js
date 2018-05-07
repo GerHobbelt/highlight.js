@@ -3,7 +3,7 @@ Language: AspectJ
 Author: Hakan Ozler <ozler.hakan@gmail.com>
 Description: Syntax Highlighting for the AspectJ Language which is a general-purpose aspect-oriented extension to the Java programming language.
  */
-function (hljs) {
+function language_ASPECTJ(hljs) {
   var KEYWORDS =
     'false synchronized int abstract float private char boolean static null if const ' +
     'for true while long throw strictfp finally protected import native final return void ' +

@@ -4,7 +4,7 @@ Contributors: Guillaume Gomez <guillaume1.gomez@gmail.com>
 Category: common, config
 */
 
-function(hljs) {
+function language_INI(hljs) {
   var STRING = {
     className: "string",
     contains: [hljs.BACKSLASH_ESCAPE],

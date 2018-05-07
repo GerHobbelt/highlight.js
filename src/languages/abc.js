@@ -5,7 +5,7 @@ Category: markup
 Description: Abc is a text-based music notation system
 */
 
-function(hljs) {
+function language_ABC(hljs) {
 
   function continuation(parentClassName){
     return {

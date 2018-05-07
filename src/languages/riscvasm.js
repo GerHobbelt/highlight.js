@@ -6,7 +6,7 @@ Category: assembler
 */
 
 // Based on ARM assembly (like everything in this awful project)
-function(hljs) {
+function language_RISC5ASM(hljs) {
     //local labels: %?[FB]?[AT]?\d{1,2}\w+
   return {
     case_insensitive: true,

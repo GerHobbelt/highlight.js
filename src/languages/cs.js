@@ -5,7 +5,7 @@ Contributor: Nicolas LLOBERA <nllobera@gmail.com>, Pieter Vantorre <pietervantor
 Category: common
 */
 
-function(hljs) {
+function language_CSHARP(hljs) {
   var KEYWORDS = {
     keyword:
       // Normal keywords.

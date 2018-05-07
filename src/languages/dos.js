@@ -4,7 +4,7 @@ Author: Alexander Makarov <sam@rmcreative.ru>
 Contributors: Anton Kochkov <anton.kochkov@gmail.com>
 */
 
-function(hljs) {
+function language_DOSBAT(hljs) {
   var COMMENT = hljs.COMMENT(
     /^\s*@?rem\b/, /$/,
     {

@@ -4,7 +4,7 @@
  Author: John Foster <jfoster@esri.com>
  Description: ArcGIS Arcade is an expression language used in many Esri ArcGIS products such as Pro, Online, Server, Runtime, JavaScript, and Python
 */
-function(hljs) {
+function language_ARCADE(hljs) {
   var IDENT_RE = '[A-Za-z_][0-9A-Za-z_]*';
   var KEYWORDS = {
     keyword:

@@ -4,7 +4,7 @@ Author: Christophe de Dinechin <christophe@taodyne.com>
 Description: An extensible programming language, based on parse tree rewriting (http://xlr.sf.net)
 */
 
-function(hljs) {
+function language_XL(hljs) {
   var BUILTIN_MODULES =
     'ObjectLoader Animate MovieCredits Slides Filters Shading Materials LensFlare Mapping VLCAudioVideo ' +
     'StereoDecoder PointCloud NetworkAccess RemoteControl RegExp ChromaKey Snowfall NodeJS Speech Charts';

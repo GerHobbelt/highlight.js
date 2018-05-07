@@ -4,7 +4,7 @@ Author: Christopher Kaster <ikasoki@gmail.com> (Based on the actionscript.js lan
 Contributors: Kenton Hamaluik <kentonh@gmail.com>
 */
 
-function(hljs) {
+function language_HAXE(hljs) {
   var IDENT_RE = '[a-zA-Z_$][a-zA-Z0-9_$]*';
   var IDENT_FUNC_RETURN_TYPE_RE = '([*]|[a-zA-Z_$][a-zA-Z0-9_$]*)';
 

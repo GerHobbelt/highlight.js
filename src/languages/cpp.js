@@ -5,7 +5,7 @@ Contributors: Evgeny Stepanischev <imbolk@gmail.com>, Zaven Muradyan <megalivoit
 Category: common, system
 */
 
-function(hljs) {
+function language_CPP(hljs) {
   var CPP_PRIMITIVE_TYPES = {
     className: 'keyword',
     begin: '\\b[a-z\\d_]*_t\\b'

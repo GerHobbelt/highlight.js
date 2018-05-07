@@ -3,7 +3,7 @@ Language: Q
 Author: Sergey Vidyuk <svidyuk@gmail.com>
 Description: K/Q/Kdb+ from Kx Systems
 */
-function(hljs) {
+function language_Q(hljs) {
   var Q_KEYWORDS = {
   keyword:
     'do while select delete by update from',

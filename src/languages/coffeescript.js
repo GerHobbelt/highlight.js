@@ -6,7 +6,7 @@ Description: CoffeeScript is a programming language that transcompiles to JavaSc
 Category: common, scripting
 */
 
-function(hljs) {
+function language_COFFEESCRIPT(hljs) {
   var KEYWORDS = {
     keyword:
       // JS keywords

@@ -4,7 +4,7 @@ Author:   Max Mikhailov <seven.phases.max@gmail.com>
 Category: css
 */
 
-function(hljs) {
+function language_LESS(hljs) {
   var IDENT_RE        = '[\\w-]+'; // yes, Less identifiers may begin with a digit
   var INTERP_IDENT_RE = '(' + IDENT_RE + '|@{' + IDENT_RE + '})';
 

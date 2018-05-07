@@ -3,7 +3,7 @@ Language: Basic
 Author: Raphaël Assénat <raph@raphnet.net>
 Description: Based on the BASIC reference from the Tandy 1000 guide
 */
-function(hljs) {
+function language_BASIC(hljs) {
   return {
     case_insensitive: true,
     illegal: '^\.',

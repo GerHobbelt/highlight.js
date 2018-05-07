@@ -6,7 +6,7 @@ Description: language definition for Java Property files
 Category: common, config
 */
 
-function(hljs) {
+function language_JAVA_PROPERTIES(hljs) {
   return {
     contains: [
       hljs.COMMENT(

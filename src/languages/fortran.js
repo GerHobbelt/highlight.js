@@ -4,7 +4,7 @@ Author: Anthony Scemama <scemama@irsamc.ups-tlse.fr>
 Category: scientific
 */
 
-function(hljs) {
+function language_FORTRAN(hljs) {
   var PARAMS = {
     className: 'params',
     begin: '\\(', end: '\\)'

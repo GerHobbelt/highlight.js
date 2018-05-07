@@ -7,7 +7,7 @@
  Category: scientific
  */
 
-function (hljs) {
+function language_GAMS(hljs) {
   var KEYWORDS = {
     'keyword':
       'abort acronym acronyms alias all and assign binary card diag display ' +

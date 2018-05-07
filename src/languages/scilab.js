@@ -6,7 +6,7 @@ Description: Scilab is a port from Matlab
 Category: scientific
 */
 
-function(hljs) {
+function language_SCILAB(hljs) {
 
   var COMMON_CONTAINS = [
     hljs.C_NUMBER_MODE,

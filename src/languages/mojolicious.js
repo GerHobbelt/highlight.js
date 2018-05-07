@@ -5,7 +5,7 @@ Author: Dotan Dimet <dotan@corky.net>
 Description: Mojolicious .ep (Embedded Perl) templates
 Category: template
 */
-function(hljs) {
+function language_MOJOLICIOUS(hljs) {
   return {
     subLanguage: 'xml',
     contains: [

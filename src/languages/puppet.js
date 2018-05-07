@@ -4,7 +4,7 @@ Author: Jose Molina Colmenero <gaudy41@gmail.com>
 Category: config
 */
 
-function(hljs) {
+function language_PUPPET(hljs) {
 
   var PUPPET_KEYWORDS = {
     keyword:

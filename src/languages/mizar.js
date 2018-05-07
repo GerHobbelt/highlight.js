@@ -4,7 +4,7 @@ Author: Kelley van Evert <kelleyvanevert@gmail.com>
 Category: scientific
 */
 
-function(hljs) {
+function language_MIZAR(hljs) {
   return {
     keywords:
       'environ vocabularies notations constructors definitions ' +

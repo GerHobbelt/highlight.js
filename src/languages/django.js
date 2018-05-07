@@ -6,7 +6,7 @@ Contributors: Ilya Baryshev <baryshev@gmail.com>
 Category: template
 */
 
-function(hljs) {
+function language_DJANGO(hljs) {
   var FILTER = {
     begin: /\|[A-Za-z]+:?/,
     keywords: {

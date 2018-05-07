@@ -3,7 +3,7 @@ Language: SCSS
 Author: Kurt Emch <kurt@kurtemch.com>
 Category: css
 */
-function(hljs) {
+function language_SCSS(hljs) {
   var IDENT_RE = '[a-zA-Z-][a-zA-Z0-9_-]*';
   var VARIABLE = {
     className: 'variable',

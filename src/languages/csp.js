@@ -6,7 +6,7 @@ Author: Taras <oxdef@oxdef.info>
 vim: ts=2 sw=2 st=2
 */
 
-function(hljs) {
+function language_CSP(hljs) {
   return {
     case_insensitive: false,
     lexemes: '[a-zA-Z][a-zA-Z0-9_-]*',

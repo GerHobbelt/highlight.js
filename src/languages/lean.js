@@ -5,7 +5,7 @@ Category: scientific
 Description: Language definition for Lean theorem prover
 */
 
-function(hljs) {
+function language_LEAN(hljs) {
   var LEAN_KEYWORDS = {
       keyword:
         'theorem|10 lemma|10 definition def class structure instance ' +

@@ -4,7 +4,7 @@ Author: Vladimir Ermakov <vooon341@gmail.com>
 Category: assembler
 */
 
-function(hljs) {
+function language_AVRASM(hljs) {
   return {
     case_insensitive: true,
     lexemes: '\\.?' + hljs.IDENT_RE,

@@ -6,7 +6,7 @@ Requires: clojure.js
 Category: lisp
 */
 
-function(hljs) {
+function language_CLOJURE_REPL(hljs) {
   return {
     contains: [
       {

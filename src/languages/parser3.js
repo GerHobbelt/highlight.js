@@ -5,7 +5,7 @@ Author: Oleg Volchkov <oleg@volchkov.net>
 Category: template
 */
 
-function(hljs) {
+function language_PARSER3(hljs) {
   var CURLY_SUBCOMMENT = hljs.COMMENT(
     '{',
     '}',

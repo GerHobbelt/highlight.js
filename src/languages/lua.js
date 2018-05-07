@@ -4,7 +4,7 @@ Author: Andrew Fedorov <dmmdrs@mail.ru>
 Category: scripting
 */
 
-function(hljs) {
+function language_LUA(hljs) {
   var OPENING_LONG_BRACKET = '\\[=*\\[';
   var CLOSING_LONG_BRACKET = '\\]=*\\]';
   var LONG_BRACKETS = {

@@ -6,7 +6,7 @@ Description: language definition for Dockerfile files
 Category: config
 */
 
-function(hljs) {
+function language_DOCKER(hljs) {
   return {
     aliases: ['docker'],
     case_insensitive: true,

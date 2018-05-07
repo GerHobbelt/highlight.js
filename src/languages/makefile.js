@@ -5,7 +5,7 @@ Contributors: Joël Porquet <joel@porquet.org>
 Category: common
 */
 
-function(hljs) {
+function language_MAKE(hljs) {
   /* Variables: simple (eg $(var)) and special (eg $@) */
   var VARIABLE = {
     className: 'variable',

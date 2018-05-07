@@ -6,7 +6,7 @@ Contributors:
 Description: Language definition for IEC 61131-3 ST (Structured Text). Textual PLC programming language.
 */
 
-function(hljs) {
+function language_STRUCTUREDTEXT(hljs) {
   var KEYWORDS = 'and or xor not exit return continue of case end_case|10 ' +
     'to by end_for for end_while while do loop end_repeat repeat until ' +
     'end_if|10 if then else elsif mod';

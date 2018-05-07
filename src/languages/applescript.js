@@ -4,7 +4,7 @@ Authors: Nathan Grigg <nathan@nathanamy.org>, Dr. Drang <drdrang@gmail.com>
 Category: scripting
 */
 
-function(hljs) {
+function language_APPLESCRIPT(hljs) {
   var STRING = hljs.inherit(hljs.QUOTE_STRING_MODE, {illegal: ''});
   var PARAMS = {
     className: 'params',

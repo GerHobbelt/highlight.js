@@ -7,7 +7,7 @@ Description: LiveScript is a programming language that transcompiles to JavaScri
 Category: scripting
 */
 
-function(hljs) {
+function language_LIVESCRIPT(hljs) {
   var KEYWORDS = {
     keyword:
       // JS keywords

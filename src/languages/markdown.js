@@ -6,7 +6,7 @@ Website: http://seejohncode.com/
 Category: common, markup
 */
 
-function(hljs) {
+function language_MARKDOWN(hljs) {
   return {
     aliases: ['md', 'mkdown', 'mkd'],
     contains: [

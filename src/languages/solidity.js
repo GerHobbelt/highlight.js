@@ -3,7 +3,7 @@ Language: Solidity
 Author: Kaustav Haldar <khaldar@uwaterloo.ca>
 */
 
-function (hljs) {
+function language_SOLIDITY(hljs) {
   var IDENT_RE = '[A-Za-z$_][0-9A-Za-z$_]*';
 
 	var NUMBER = {

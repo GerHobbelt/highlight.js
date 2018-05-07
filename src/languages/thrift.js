@@ -5,7 +5,7 @@ Description: Thrift message definition format
 Category: protocols
 */
 
-function(hljs) {
+function language_THRIFT(hljs) {
   var BUILT_IN_TYPES = 'bool byte i16 i32 i64 double string binary';
   return {
     keywords: {

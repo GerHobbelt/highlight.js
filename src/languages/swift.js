@@ -6,7 +6,7 @@ Category: system
 */
 
 
-function(hljs) {
+function language_SWIFT(hljs) {
   var SWIFT_KEYWORDS = {
       keyword: '#available #colorLiteral #column #else #elseif #endif #file ' +
         '#fileLiteral #function #if #imageLiteral #line #selector #sourceLocation ' +

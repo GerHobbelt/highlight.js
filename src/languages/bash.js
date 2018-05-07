@@ -5,7 +5,7 @@ Contributrors: Benjamin Pannell <contact@sierrasoftworks.com>
 Category: common
 */
 
-function(hljs) {
+function language_BASH(hljs) {
   var VAR = {
     className: 'variable',
     variants: [

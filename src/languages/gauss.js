@@ -4,7 +4,7 @@ Author: Matt Evans <matt@aptech.com>
 Category: scientific
 Description: GAUSS Mathematical and Statistical language
 */
-function(hljs) {
+function language_GAUSS(hljs) {
   var KEYWORDS = {
     keyword:  'bool break call callexe checkinterrupt clear clearg closeall cls comlog compile ' +
               'continue create debug declare delete disable dlibrary dllcall do dos ed edit else ' +

@@ -5,7 +5,7 @@ Author: Builder's Brewery <buildersbrewery@gmail.com>
 Category: scripting
 */
 
-function(hljs) {
+function language_LSL(hljs) {
 
     var LSL_STRING_ESCAPE_CHARS = {
         className: 'subst',

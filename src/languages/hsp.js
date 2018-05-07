@@ -5,7 +5,7 @@ Website: http://prince.webcrow.jp/
 Category: scripting
 */
 
-function(hljs) {
+function language_HSP(hljs) {
   return {
     case_insensitive: true,
     lexemes: /[\w\._]+/,

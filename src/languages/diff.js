@@ -5,7 +5,7 @@ Author: Vasily Polovnyov <vast@whiteants.net>
 Category: common
 */
 
-function(hljs) {
+function language_DIFF(hljs) {
   return {
     aliases: ['patch'],
     contains: [

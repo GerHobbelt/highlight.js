@@ -22,7 +22,7 @@ Date: 2012-04-08
  *   up to the end of line is matched as special token sequence)
  */
 
-function(hljs) {
+function language_D(hljs) {
   /**
    * Language keywords
    *

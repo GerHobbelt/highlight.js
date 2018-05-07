@@ -4,7 +4,7 @@ Author: Tim Schumacher <tim@datenknoten.me>
 Category: config
 */
 
-function(hljs) {
+function language_DNSZONE(hljs) {
   return {
     aliases: ['bind', 'zone'],
     keywords: {

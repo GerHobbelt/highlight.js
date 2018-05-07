@@ -3,7 +3,7 @@ Language: Caché Object Script
 Author: Nikita Savchenko <zitros.lab@gmail.com>
 Category: enterprise, scripting
 */
-function cos (hljs) {
+function language_COS(hljs) {
 
   var STRINGS = {
     className: 'string',

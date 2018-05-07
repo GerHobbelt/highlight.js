@@ -5,7 +5,7 @@ Author: Peter Piwowarski <oldlaptop654@aol.com>
 Description: The pf.conf(5) format as of OpenBSD 5.6
 */
 
-function(hljs) {
+function language_PF(hljs) {
   var MACRO = {
     className: 'variable',
     begin: /\$[\w\d#@][\w\d_]*/

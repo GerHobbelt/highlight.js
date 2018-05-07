@@ -3,7 +3,7 @@ Language: LDIF
 Contributors: Jacob Childress <jacobc@gmail.com>
 Category: enterprise, config
 */
-function(hljs) {
+function language_LDIF(hljs) {
   return {
     contains: [
       {

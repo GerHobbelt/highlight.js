@@ -5,7 +5,7 @@ Description: Pony is an open-source, object-oriented, actor-model,
              capabilities-secure, high performance programming language.
 */
 
-function(hljs) {
+function language_PONY(hljs) {
   var KEYWORDS = {
     keyword:
       'actor addressof and as be break class compile_error compile_intrinsic' +

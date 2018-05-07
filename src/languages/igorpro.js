@@ -7,7 +7,7 @@
  * Description: Programming language used by Igor Pro (www.igorpro.net)
 */
 
-function(hljs) {
+function language_IGORPRO(hljs) {
 
   var WAVE_DECLARATION = {
     className : 'keyword',
@@ -256,7 +256,7 @@ function(hljs) {
   'viRead viRead viReadSTB viSetAttribute viSetAttributeString viStatusDesc' +
   'viTerminate viTerminate viUnlock viUnmapAddress viUnmapTrigger viUsbControlIn' +
   'viUsbControlOut viUsbControlOut viVxiCommandQuery viWaitOnEvent viWrite wnoise' +
-  'x2pnt x2pnt xcsr zcsr zeta'
+  'x2pnt x2pnt xcsr zcsr zeta',
 
   /* Igor Built-in Functions */
   class: 'APMath Abort AddFIFOData AddFIFOVectData AddMovieAudio AddMovieFrame AdoptFiles' +

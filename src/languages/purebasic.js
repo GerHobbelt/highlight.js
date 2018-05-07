@@ -7,7 +7,7 @@ Credits: I've taken inspiration from the PureBasic language file for GeSHi, crea
 
 // Base deafult colors in PB IDE: background: #FFFFDF; foreground: #000000;
 
-function(hljs) {
+function language_PUREBASIC(hljs) {
   var STRINGS = { // PB IDE color: #0080FF (Azure Radiance)
     className: 'string',
     begin: '(~)?"', end: '"',

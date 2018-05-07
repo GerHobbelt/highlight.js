@@ -3,7 +3,7 @@ Language: Extended Backus-Naur Form
 Author: Alex McKibben <alex@nullscope.net>
 */
 
-function(hljs) {
+function language_EBNF(hljs) {
     var commentMode = hljs.COMMENT(/\(\*/, /\*\)/);
 
     var nonTerminalMode = {

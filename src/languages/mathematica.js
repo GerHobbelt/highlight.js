@@ -4,7 +4,7 @@ Author: Daniel Kvasnicka <dkvasnicka@vendavo.com>
 Category: scientific
 */
 
-function(hljs) {
+function language_MATHEMATICA(hljs) {
   return {
     aliases: ['mma'],
     lexemes: '(\\$|\\b)' + hljs.IDENT_RE + '\\b',

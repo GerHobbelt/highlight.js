@@ -4,7 +4,7 @@ Author: Kenneth Fuglsang Christensen <kfuglsang@gmail.com>
 Description: Provides highlighting of Microsoft Dynamics NAV C/AL code files
 */
 
-function(hljs) {
+function language_CAL(hljs) {
   var KEYWORDS =
     'div mod in and or not xor asserterror begin case do downto else end exit for if of repeat then to ' +
     'until while with var';

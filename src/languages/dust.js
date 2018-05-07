@@ -6,7 +6,7 @@ Description: Matcher for dust.js templates.
 Category: template
 */
 
-function(hljs) {
+function language_DUST(hljs) {
   var EXPRESSION_KEYWORDS = 'if eq ne lt lte gt gte select default math sep';
   return {
     aliases: ['dst'],

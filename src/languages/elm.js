@@ -4,7 +4,7 @@ Author: Janis Voigtlaender <janis.voigtlaender@gmail.com>
 Category: functional
 */
 
-function(hljs) {
+function language_ELM(hljs) {
   var COMMENT = {
     variants: [
       hljs.COMMENT('--', '$'),

@@ -3,7 +3,7 @@ Language: VB.NET
 Author: Poren Chiang <ren.chiang@gmail.com>
 */
 
-function(hljs) {
+function language_VBDOTNET(hljs) {
   return {
     aliases: ['vb'],
     case_insensitive: true,

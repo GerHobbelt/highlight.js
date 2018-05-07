@@ -5,7 +5,7 @@
  Category: config
  */
 
-function (hljs) {
+function language_JBOSS_CLI(hljs) {
   var PARAM = {
     begin: /[\w-]+ *=/, returnBegin: true,
     relevance: 0,

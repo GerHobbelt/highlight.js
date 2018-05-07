@@ -5,7 +5,7 @@ Author: Sergey Bronnikov <sergeyb@bronevichok.ru>
 Website: https://bronevichok.ru/
 */
 
-function(hljs) {
+function language_TAP(hljs) {
   return {
     case_insensitive: true,
     contains: [

@@ -5,7 +5,7 @@ Website: http://thebillwagner.com/
 Description: Language definition for grammar described using ANTLR
 */
 
-function(hljs) {
+function language_ANTLR(hljs) {
   return {
     keywords: ['parser', 'grammar', 'options'],
     aliases: ['antlr'],

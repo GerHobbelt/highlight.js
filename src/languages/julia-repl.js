@@ -21,7 +21,7 @@ Using simply spaces to identify line continuations may get a false-positive if t
 also prints out six spaces, but such cases should be rare.
 */
 
-function(hljs) {
+function language_JULIA_REPL(hljs) {
   return {
     contains: [
       {

@@ -4,7 +4,7 @@ Author: Erik Paluka <erik.paluka@gmail.com>
 Category: graphics
 */
 
-function(hljs) {
+function language_PROCESSING(hljs) {
   return {
     keywords: {
       keyword: 'BufferedReader PVector PFont PImage PGraphics HashMap boolean byte char color ' +

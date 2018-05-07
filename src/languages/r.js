@@ -4,7 +4,7 @@ Author: Joe Cheng <joe@rstudio.org>
 Category: scientific
 */
 
-function(hljs) {
+function language_R(hljs) {
   var IDENT_RE = '([a-zA-Z]|\\.[a-zA-Z.])[a-zA-Z0-9._]*';
 
   return {

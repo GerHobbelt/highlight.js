@@ -5,7 +5,7 @@ Description: Cap’n Proto message definition format
 Category: protocols
 */
 
-function(hljs) {
+function language_CAPNPROTO(hljs) {
   return {
     aliases: ['capnp'],
     keywords: {

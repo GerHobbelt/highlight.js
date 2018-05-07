@@ -5,7 +5,7 @@ Description: built-in language 1C:Enterprise (v7, v8)
 Category: enterprise
 */
 
-function(hljs){
+function language_1C(hljs) {
 
   // общий паттерн для определения идентификаторов
   var UNDERSCORE_IDENT_RE = '[A-Za-zА-Яа-яёЁ_][A-Za-zА-Яа-яёЁ_0-9]+';

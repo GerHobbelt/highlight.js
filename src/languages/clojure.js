@@ -6,7 +6,7 @@ Contributors: Martin Clausen <martin.clausene@gmail.com>
 Category: lisp
 */
 
-function(hljs) {
+function language_CLOJURE(hljs) {
   var keywords = {
     'builtin-name':
       // Clojure keywords

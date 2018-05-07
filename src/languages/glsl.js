@@ -5,7 +5,7 @@ Author: Sergey Tikhomirov <sergey@tikhomirov.io>
 Category: graphics
 */
 
-function(hljs) {
+function language_GLSL(hljs) {
   return {
     keywords: {
       keyword:

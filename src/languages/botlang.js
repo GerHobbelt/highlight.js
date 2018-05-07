@@ -6,7 +6,7 @@ Description: A scripting language for conversational chat bots
 Homepage: https://botlang.org/
 */
 
-function(hljs) {
+function language_BOTLANG(hljs) {
   const BUILT_IN = {
           multipleChoice : {
             className : 'literal',

@@ -4,7 +4,7 @@
  Contributors: Jacob Childress <jacobc@gmail.com>
  Category: enterprise, config
  */
-function(hljs) {
+function language_DSCONFIG(hljs) {
   var QUOTED_PROPERTY = {
     className: 'string',
     begin: /"/, end: /"/

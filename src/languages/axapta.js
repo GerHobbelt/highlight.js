@@ -4,7 +4,7 @@ Author: Dmitri Roudakov <dmitri@roudakov.ru>
 Category: enterprise
 */
 
-function(hljs) {
+function language_AXAPTA(hljs) {
   return {
     keywords: 'false int abstract private char boolean static null if for true ' +
       'while long throw finally protected final return void enum else ' +

@@ -5,7 +5,7 @@ Description: Nix functional language. See http://nixos.org/nix
 */
 
 
-function(hljs) {
+function language_NIX(hljs) {
   var NIX_KEYWORDS = {
     keyword:
       'rec with let in inherit assert if else then',

@@ -4,7 +4,7 @@ Author: Victor Zhou <OiCMudkips@users.noreply.github.com>
 Description: Excel formulae
 */
 
-function(hljs) {
+function language_EXCEL(hljs) {
   return {
     aliases: ['xlsx', 'xls'],
     case_insensitive: true,

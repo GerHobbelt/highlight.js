@@ -3,7 +3,7 @@ Language: Tcl
 Author: Radek Liska <radekliska@gmail.com>
 */
 
-function(hljs) {
+function language_TCL(hljs) {
   return {
     aliases: ['tk'],
     keywords: 'after append apply array auto_execok auto_import auto_load auto_mkindex ' +

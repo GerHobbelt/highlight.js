@@ -6,7 +6,7 @@ Description: Scripting language for the Arma game series
 Requires: cpp.js
 */
 
-function(hljs) {
+function language_SQF(hljs) {
   var CPP = hljs.getLanguage('cpp').exports;
 
   // In SQF, a variable start with _

@@ -4,7 +4,7 @@
  Description: Apache/Nginx Access Logs
  */
 
-function(hljs) {
+function language_ACCESSLOG(hljs) {
   return {
     contains: [
       // IP

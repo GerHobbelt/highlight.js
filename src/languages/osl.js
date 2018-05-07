@@ -5,7 +5,7 @@ Author: Renan Lavarec <renan.lavarec@ti-r.com>
 Category: graphics
 */
 
-function(hljs) {
+function language_OSL(hljs) {
 	var STRINGS = {
     className: 'string',
     variants: [

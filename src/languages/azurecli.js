@@ -2,7 +2,7 @@
 Language: AzureCLI
 Author: Duncan Mackenzie <duncanma@duncanmackenzie.net>
 */
-  function azureCLI(hljs) {
+  function language_azureCLI(hljs) {
     var VAR = {
         className: 'variable',
         variants: [
