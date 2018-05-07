@@ -25,6 +25,7 @@ New languages:
 - *Robot Framework* by [Harri Paavola][]
 - *riscvasm* by [Ckristian Duran][] at [OnChipUIS][]
 - *HCL* by [Brian Hicks][].
+- *Logtalk* by [Paulo Moura][]
 
 New styles:
 
@@ -61,6 +62,7 @@ Improvements:
 [Ckristian Duran]: https://github.com/ckdur
 [OnChipUIS]: https://github.com/onchipuis
 [Brian Hicks]: https://github.com/BrianHicks
+[Paulo Moura]: https://github.com/pmoura
 
 
 ## Version 9.12.0
