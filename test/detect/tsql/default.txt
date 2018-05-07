@@ -1,0 +1,43 @@
+DECLARE @var1 NVARCHAR(30)    
+SET @var1 = 'Some Name'       
+SELECT @var1 = Name       
+  FROM Sales.Store       
+  WHERE CustomerID = 100
+
+
+IF DATEPART(dw, GETDATE()) = 7 OR DATEPART(dw, GETDATE()) = 1
+   PRINT 'It is the weekend.'
+ELSE
+   PRINT 'It is a weekday.'
+
+
+IF DATEPART(dw, GETDATE()) = 7 OR DATEPART(dw, GETDATE()) = 1
+BEGIN
+   PRINT 'It is the weekend.'
+   PRINT 'Get some rest on the weekend!'
+END
+ELSE
+BEGIN
+   PRINT 'It is a weekday.'
+   PRINT 'Get to work on a weekday!'
+END
+
+-- begin transaction
+BEGIN TRAN
+
+BEGIN TRY
+   -- execute each statement
+   INSERT INTO MYTABLE(NAME) VALUES ('ABC')
+   INSERT INTO MYTABLE(NAME) VALUES ('123')
+
+   -- commit the transaction
+   COMMIT TRAN
+END TRY
+BEGIN CATCH
+   -- roll back the transaction because of error
+   ROLLBACK TRAN
+END CATCH
+
+
+SELECT @@TOTAL_ERRORS AS 'Errors', GETDATE() AS 'As of';  
+
