@@ -1,5 +1,7 @@
 /*
-Language: SQL
+Language: T-SQL
+Category: common
+Description: Transact SQL language as used in Microsoft SQL Server product line.
 */
 
 hljs.LANGUAGES.sql = {
