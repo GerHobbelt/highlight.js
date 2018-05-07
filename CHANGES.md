@@ -15,6 +15,7 @@ New languages:
 - *Lean* theorem prover by [Patrick Massot][].
 - *emacs org-mode* A markup language see [https://orgmode.org]
 - *ISBL* built-in language DIRECTUM by [Dmitriy Tarasov][].
+- *GML* Game Markup Language by [Meseta][]
 
 New styles:
 

@@ -284,3 +284,4 @@ Contributors:
 - Patrick Massot <patrick.massot@free.fr>
 - Jörn Reimerdes <joern.reimerdes@gmail.com>
 - Dmitriy Tarasov <dimatar@gmail.com>
+- Meseta <meseta@gmail.com>
