@@ -136,6 +136,7 @@ New languages:
 - *Leaf* by [Hale Chan][]
 - *Properties* by [Michael Gerbig][]
 - *N1QL* by [Andres Täht][] and [Rene Saarsoo][]
+- *Beancount* by [Henrique Bastos][]
 
 Improvements:
 
@@ -167,6 +168,7 @@ Improvements:
 [Ike Ku]: https://github.com/dempfi
 [Guannan Wei]: https://github.com/Kraks
 [Sam Wu]: https://github.com/samsam2310
+[Henrique Bastos]: https://github.com/henriquebastos
 
 
 ## Version 9.9.0

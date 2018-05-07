@@ -265,3 +265,6 @@ URL:   https://highlightjs.org/
 - Дмитрий Тарасов <dimatar@gmail.com>
 - Марко Антонио Аугусто де Андраде <marco.andrade@ifro.edu.br>
 - Сергей Романов <serg4172@mail.ru>
+- Мэт Эванс <syrius3@gmail.com>
+- Каспер Андерсен <kma_untrusted@protonmail.com>
+- Henrique Бастос <henrique@bastos.net>
