@@ -11,6 +11,7 @@ New languages:
 - *Igor Pro* by [Thomas Braun][]
 - *CSHTML* by [Roman Resh][]
 - *Oz* Esoteric general-purpose language by [Guillaume Maudoux][].
+- *Jam* Jam/BJam/B2 build language by [Rene Rivera][].
 
 New styles:
 
@@ -35,6 +36,7 @@ Improvements:
 [Roman Resh]: https://github.com/romanresh
 [Guillaume Maudoux]: https://github.com/layus
 [Drew DeVault]: https://github.com/SirCmpwn
+[Rene Rivera]: https://github.com/grafikrobot
 
 
 ## Version 9.12.0

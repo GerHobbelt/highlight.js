@@ -279,3 +279,4 @@ Contributors:
 - Eric Bailey <eric.w.bailey@gmail.com>
 - Drew DeVault <sir@cmpwn.com>
 - Google Inc. (David Benjamin) <davidben@google.com>
+- Rene Rivera <grafikrobot@gmail.com>
