@@ -11,7 +11,7 @@ module.exports = function language_SQL(hljs) {
           'merge describe use explain help declare prepare execute deallocate release ' +
           'exec unlock purge reset change stop analyze cache flush optimize repair kill ' +
           'install uninstall checksum restore check backup revoke comment with',
-        end: /;/, endsWithParent: true,
+        end: /;|$/, endsWithParent: true,
         lexemes: /[\w\.]+/,
         keywords: {
           keyword:

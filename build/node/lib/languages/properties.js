@@ -1,4 +1,4 @@
-module.exports = function language_JAVA_PROPERTIES(hljs) {
+module.exports = function language_PROPERTIES(hljs) {
   return {
     contains: [
       hljs.COMMENT(

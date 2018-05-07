@@ -6,7 +6,7 @@
     "syntax"
   ],
   "homepage": "https://highlightjs.org/",
-  "version": "9.13.1-7",
+  "version": "9.13.1-8",
   "author": {
     "name": "Ivan Sagalaev",
     "email": "maniac@softwaremaniacs.org"
@@ -1151,6 +1151,54 @@
     {
       "name": "Cassio Binkowski",
       "email": "cassioiks@live.com"
+    },
+    {
+      "name": "Raffaele Sgarro",
+      "email": "raffaeleSgarro@gmail.com"
+    },
+    {
+      "name": "Brian Hicks",
+      "email": "brian@brianthicks.com"
+    },
+    {
+      "name": "Matt Evans",
+      "email": "syrius3@gmail.com"
+    },
+    {
+      "name": "Kasper Andersen",
+      "email": "kma_untrusted@protonmail.com"
+    },
+    {
+      "name": "Henrique Bastos",
+      "email": "henrique@bastos.net"
+    },
+    {
+      "name": "Glen De Cauwsemaecker",
+      "email": "contact@glendc.com"
+    },
+    {
+      "name": "Paulo Moura",
+      "email": "pmoura@logtalk.org"
+    },
+    {
+      "name": "pospi",
+      "email": "pospi@spadgos.com"
+    },
+    {
+      "name": "Geequlim",
+      "email": "geequlim@gmail.com"
+    },
+    {
+      "name": "Victor Zhou",
+      "email": "OiCMudkips@users.noreply.github.com"
+    },
+    {
+      "name": "Rob Zinkov",
+      "email": "rob@zinkov.com"
+    },
+    {
+      "name": "Aristides Staffieri",
+      "email": "aristides@aristidesstaffieri.com"
     }
   ],
   "bin": {

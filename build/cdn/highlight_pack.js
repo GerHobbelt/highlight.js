@@ -1,4 +1,4 @@
-/*! highlight.js v9.13.1-7 | BSD3 License | git.io/hljslicense */
+/*! highlight.js v9.13.1-8 | BSD3 License | git.io/hljslicense */
 (function(factory) {
 
   // Find the global object for export to both the browser and web workers.
@@ -377,7 +377,9 @@
       top.lexemesRe.lastIndex = 0;
       match = top.lexemesRe.exec(mode_buffer);
 
-      while (match) {
+      // also exit loop when terminator regex matches the empty string:
+      // prevent infinite loop in here!
+      while (match && match[0].length > 0) {
         result += escape(mode_buffer.substring(last_index, match.index));
         keyword_match = keywordMatch(top, match);
         if (keyword_match) {
@@ -517,7 +519,9 @@
       for (;;) {
         top.terminators.lastIndex = index;
         match = top.terminators.exec(value);
-        if (!match)
+        // also exit loop when terminator regex matches the empty string:
+        // prevent infinite loop in here!
+        if (!match || match[0].length === 0)
           break;
         count = processLexeme(value.substring(index, match.index), match[0]);
         index = match.index + count;
@@ -555,7 +559,6 @@
   - value (an HTML string with highlighting markup)
   - second_best (object with the same structure for second-best heuristically
     detected language, may be absent)
-
   */
   function highlightAuto(text, languageSubset) {
     languageSubset = languageSubset || options.languages || objectKeys(languages);
@@ -3748,7 +3751,30 @@ hljs.registerLanguage('bash', function language_BASH(hljs) {
         'fc fg float functions getcap getln history integer jobs kill limit log noglob popd print ' +
         'pushd pushln rehash sched setcap setopt stat suspend ttyctl unfunction unhash unlimit ' +
         'unsetopt vared wait whence where which zcompile zformat zftp zle zmodload zparseopts zprof ' +
-        'zpty zregexparse zsocket zstyle ztcp',
+        'zpty zregexparse zsocket zstyle ztcp ' +
+        // Common shell commands
+        // http://ss64.com/bash/
+        //  most used in script
+        'awk basename bash bc cat clear cp csplit cut date dc dd df diff dir dirname dirs egrep env ' +
+        'expand expr fgrep file find fmt fold gawk grep hash head history hostname join ln logname ' +
+        'ls mv nl paste pgrep printenv rcp rev sed select seq sort source split tail tee touch tr tsort ' +
+        'unexpand uniq until watch wc whereis who whoami xargs yes ' +
+        //  admin
+        'cfdisk chgrp chmod chown chroot curl dig dmesg du fdisk fg format free fsck fuser groupadd ' +
+        'groupdel groupmod groupps ifconfig ifdown ifup ip kill killall killproc link lsblk lsof ' +
+        'man mkdir more most mount nc netstat nice nohup nslookup passwd ping pkill ps pv quota reboot ' +
+        'restart rm rmdir rsync scp sdiff shutdown sleep ss ssh start status stop strace su sudo sync ' +
+        'reload time top traceroute umount uname uptime useradd userdel usermod wget users ' +
+        //  archive
+        'bzip2 gzip rar tar unrar xz zip ' +
+        //  package management
+        'apk apt aptitude apt-get deb dnf dpkg rpm yum ' +
+        //  others
+        'cal chkconfig cksum cmp comm complete cron crontab ddrescue diff3 dircolors eject ethtool ' +
+        'expect fdformat ftp help htop iconv import install jobs less locate look lpc lpr lprint ' +
+        'lprintd lprintq lprm mkfifo mkisofs mknod mtools mtr mmv notify-send op pathchk pr printcap ' +
+        'quotacheck ram rename renice remsync screen sftp slocate strip sum timeout times tput tty ' +
+        'units unshar uuencode uudecode vdir vi vmstat write xdg-open',
       _:
         '-ne -eq -lt -gt -f -d -e -s -l -a' // relevance booster
     },
@@ -3822,6 +3848,150 @@ hljs.registerLanguage('basic', function language_BASIC(hljs) {
       }
     ]
   };
+});
+
+hljs.registerLanguage('beancount', function language_BEANCOUNT(hljs) {
+    var ACCOUNT_RE = '[A-Z][A-Za-z0-9\-]*';
+
+    var ACCOUNT = {
+        className: 'type',
+        begin: ACCOUNT_RE + ':',
+        relevance: 0,
+        contains: [
+            {
+                className: 'subst',
+                begin: ACCOUNT_RE + '(:' + ACCOUNT_RE + ')?'
+            }
+        ]
+    }
+
+    var AMOUNT = {
+        className: 'literal',
+        begin: /([\-|\+]?)([\d]+[\.]?[\d]*)/,
+        relevance: 0
+    };
+
+    var COMMAND = {
+        className: 'built_in',
+        begin: '^(include|option|plugin|popmeta|poptag|pushmeta|pushtag)',
+        relevance: 0
+    }
+
+    var COMMENT = hljs.COMMENT(';', '$');
+
+    var COMMODITY_RE = '[A-Z][A-Z0-9\'._-]{0,22}[A-Z0-9]';
+
+    var DATE_RE = '[0-9]{4}[-|/][0-9]{2}[-|/][0-9]{2}';
+
+    var DIRECTIVE_RE = '(balance|commodity|custom|document|event|note|open|pad|price|query)';
+
+    var DIRECTIVE = {
+        begin: '^' + DATE_RE + '\\s+' + DIRECTIVE_RE,
+        returnBegin: true,
+        relevance: 10,
+        contains: [
+            {
+                className: 'type',
+                begin: DATE_RE,
+                end: /\s+/,
+                excludeEnd: true
+            },
+            {
+                className: 'keyword',
+                begin: DIRECTIVE_RE
+            }
+        ]
+    }
+
+    var LINK = {
+        className: 'link',
+        begin: /\^[A-Za-z0-9\-_/.]+/
+    }
+
+    var META = {
+        className: 'meta',
+        begin: /^\s{2,}[a-z][A-Za-z0-9\-_]+:/
+    }
+
+    var ORGMODE = {
+        className: 'section',
+        begin: /^\*\s+?.*/
+    }
+
+    var PRICE = {
+        className: 'name',
+        begin: '@'
+    }
+
+    var STRING = {
+        className: 'string',
+        begin: '"', end: '"',
+        relevance: 0,
+        contains: [hljs.BACKSLASH_ESCAPE]
+    }
+
+    // Note: out of order because depends on STRING.
+    var COST = {
+        className: 'name',
+        begin: '\\{',
+        end: '\\}',
+        contains: [
+            {
+                className: 'literal',
+                begin: DATE_RE
+            },
+            AMOUNT,
+            STRING,
+            // Commodity
+            {
+                className: 'subst',
+                begin: COMMODITY_RE
+            }
+        ]
+    }
+
+    var TAG = {
+        className: ['emphasis'],
+        begin: /#[A-Za-z0-9\-_/.]+/
+    }
+
+    var TRANSACTION = {
+        begin: '^' + DATE_RE + '\\s+.\\s',
+        returnBegin: true,
+        relevance: 10,
+        contains: [
+            {
+                className: 'type',
+                begin: DATE_RE,
+                end: '\\s+',
+                excludeEnd: true
+            },
+            {
+                className: 'variable',
+                begin: '.',
+                endsParent: true
+            }
+        ]
+    }
+
+    return {
+        aliases: ['beancount', 'bean', 'ledger'],
+        contains: [
+            COMMAND,
+            DIRECTIVE,
+            TRANSACTION,
+            COMMENT,
+            META,
+            COST,
+            PRICE,
+            ACCOUNT,
+            ORGMODE,
+            LINK,
+            TAG,
+            STRING,
+            AMOUNT,
+        ]
+    }
 });
 
 hljs.registerLanguage('bnf', function language_BNF(hljs) {
@@ -4962,7 +5132,11 @@ hljs.registerLanguage('cs', function language_CSHARP(hljs) {
       'add alias ascending async await by descending dynamic equals from get global group into join ' +
       'let on orderby partial remove select set value var where yield',
     literal:
-      'null false true'
+      'null false true',
+    type:
+      // Known static class
+      'AppDomain Application Assembly Console Contract Convert Encoding Environment File Guid ' +
+      'Path String Task'
   };
   var NUMBERS = {
     className: 'number',
@@ -5028,6 +5202,26 @@ hljs.registerLanguage('cs', function language_CSHARP(hljs) {
     ]
   };
 
+  var INTERFACE_MODE = {
+    className: 'class',
+    begin: '\\bI[A-Z]\\w*',
+    relevance: 0
+  };
+  var TYPE_MODE = {
+    className: 'type',
+    begin: '\\b[A-Z]\\w*',
+    relevance: 0
+  };
+  var GENERIC_MODE = {
+    begin: '\\b[A-Z]\\w*<\\w+', returnBegin: true,
+    end: '>', excludeEnd: true,
+    keywords: KEYWORDS,
+    contains: [
+      INTERFACE_MODE,
+      TYPE_MODE
+    ]
+  };
+
   var TYPE_IDENT_RE = hljs.IDENT_RE + '(<' + hljs.IDENT_RE + '(\\s*,\\s*' + hljs.IDENT_RE + ')*>)?(\\[\\])?';
 
   return {
@@ -5073,7 +5267,9 @@ hljs.registerLanguage('cs', function language_CSHARP(hljs) {
         beginKeywords: 'class interface', end: /[{;=]/,
         illegal: /[^\s:,]/,
         contains: [
-          hljs.TITLE_MODE,
+          GENERIC_MODE,
+          INTERFACE_MODE,
+          TYPE_MODE,
           hljs.C_LINE_COMMENT_MODE,
           hljs.C_BLOCK_COMMENT_MODE
         ]
@@ -5089,12 +5285,67 @@ hljs.registerLanguage('cs', function language_CSHARP(hljs) {
       },
       {
         // [Attributes("")]
-        className: 'meta',
-        begin: '^\\s*\\[', excludeBegin: true, end: '\\]', excludeEnd: true,
+        className: 'type',
+        begin: '^\\s*\\[', excludeBegin: true, end: '[\\(\\]]', excludeEnd: true,
         contains: [
-          {className: 'meta-string', begin: /"/, end: /"/}
+          {
+            className: 'meta-string',
+            begin: /"/, end: /"/
+          }
         ]
       },
+      {
+        // new MaClasse();
+        beginKeywords: 'new', end: '[\\(\\{\\[<]', excludeEnd: true,
+        contains: [
+          GENERIC_MODE,
+          TYPE_MODE
+        ]
+      },
+      {
+        // assignation: MyClass mc =
+        // foreach (MyClass mc in mcList)
+        begin: '\\b[A-Z]\\w*((\\[\\])|\\?)?\\s[a-z]\\w*\\s(=|in)', returnBegin: true,
+        end: '\\s', excludeEnd: true,
+        contains: [
+          GENERIC_MODE,
+          INTERFACE_MODE,
+          TYPE_MODE
+        ]
+      },
+      {
+        // typeof
+        // default
+        begin: '\\b(typeof|default)\\(', returnBegin: true,
+        end: '\\)', excludeEnd: true,
+        keywords: KEYWORDS,
+        contains: [
+          GENERIC_MODE,
+          INTERFACE_MODE,
+          TYPE_MODE
+        ]
+      },
+      {
+        // as
+        begin: '\\sas\\s',
+        keywords: KEYWORDS,
+        contains: [
+          GENERIC_MODE,
+          INTERFACE_MODE,
+          TYPE_MODE
+        ]
+      },
+      {
+        // catch (Exception ex)
+        begin: '\\bcatch\\s*\\(',
+        keywords: KEYWORDS,
+        contains: [
+          GENERIC_MODE,
+          INTERFACE_MODE,
+          TYPE_MODE
+        ]
+      },
+      GENERIC_MODE,
       {
         // Expression keywords prevent 'keyword Name(...)' from being
         // recognized as a function definition
@@ -5109,18 +5360,21 @@ hljs.registerLanguage('cs', function language_CSHARP(hljs) {
         contains: [
           {
             begin: hljs.IDENT_RE + '\\s*\\(', returnBegin: true,
-            contains: [hljs.TITLE_MODE],
+            contains: [
+              hljs.TITLE_MODE
+            ],
             relevance: 0
           },
           {
             className: 'params',
-            begin: /\(/, end: /\)/,
+            begin: '\\(', end: '\\)',
             excludeBegin: true,
             excludeEnd: true,
             keywords: KEYWORDS,
             relevance: 0,
             contains: [
-              STRING,
+              INTERFACE_MODE,
+              TYPE_MODE,
               NUMBERS,
               hljs.C_BLOCK_COMMENT_MODE
             ]
@@ -8458,6 +8712,101 @@ hljs.registerLanguage('gcode', function language_GCODE(hljs) {
     };
 });
 
+hljs.registerLanguage('gdscript', function language_GDSCRIPT(hljs) {
+  var PROMPT = {
+    className: 'meta',  begin: /^(>>>|\.\.\.) /
+  };
+  var STRING  = {
+    className: 'string',
+    contains: [hljs.BACKSLASH_ESCAPE],
+    variants: [
+      {
+        begin: /(u|b)?r?'''/, end: /'''/,
+        contains: [PROMPT],
+        relevance: 10
+      },
+      {
+        begin: /(u|b)?r?"""/, end: /"""/,
+        contains: [PROMPT],
+        relevance: 10
+      },
+      {
+        begin: /(u|r|ur)'/, end: /'/,
+        relevance: 10
+      },
+      {
+        begin: /(u|r|ur)"/, end: /"/,
+        relevance: 10
+      },
+      {
+        begin: /(b|br)'/, end: /'/
+      },
+      {
+        begin: /(b|br)"/, end: /"/
+      },
+      hljs.APOS_STRING_MODE,
+      hljs.QUOTE_STRING_MODE
+    ]
+  };
+  var NUMBER = {
+    className: 'number', relevance: 0,
+    variants: [
+      {begin: hljs.BINARY_NUMBER_RE + '[lLjJ]?'},
+      {begin: '\\b(0o[0-7]+)[lLjJ]?'},
+      {begin: hljs.C_NUMBER_RE + '[lLjJ]?'}
+    ]
+  };
+  var PARAMS = {
+    className: 'params',
+    begin: /\(/, end: /\)/,
+    contains: ['self', PROMPT, NUMBER, STRING]
+  };
+  return {
+    aliases: ['gd', 'godot', 'gdscript'],
+    keywords: {
+      keyword:
+        'if elif else for in do while switch case break continue pass return class extends tool signal func static const var onready export setget breakpoint self',
+      literal: 'false true null',
+      built_in:
+        'sin cos tan sinh cosh tanh asin acos atan atan2 sqrt fmod fposmod Nil floor ceil round abs sign pow log exp isnan isinf ease decimals lerp stepify dectime randomize randi randf rand_range seed rand_seed deg2rad deg2rad rad2deg linear2db max min clamp nearest_po2 weakref print_stack convert typeof str print printt prints printerr printraw var2str str2var var2bytes bytes2var range load inst2dict dict2inst hash Color8 instance_from_id preload yield assert call new instance '
+        +
+        'AABB AcceptDialog AnimatedSprite AnimatedSprite3D Animation AnimationPlayer AnimationTreePlayer Area Area2D Array AtlasTexture AudioServer AudioServerSW AudioStream AudioStreamMPC AudioStreamOGGVorbis AudioStreamOpus AudioStreamPlayback AudioStreamSpeex BackBufferCopy BakedLight BakedLightInstance BakedLightSampler BaseButton BitMap BoneAttachment bool BoxContainer BoxShape Button ButtonArray ButtonGroup Camera Camera2D CanvasItem CanvasItemMaterial CanvasItemShader CanvasItemShaderGraph CanvasLayer CanvasModulate CapsuleShape CapsuleShape2D CenterContainer CheckBox CheckButton CircleShape2D CollisionObject CollisionObject2D CollisionPolygon CollisionPolygon2D CollisionShape CollisionShape2D Color ColorArray ColorPicker ColorPickerButton ColorRamp ConcavePolygonShape ConcavePolygonShape2D ConeTwistJoint ConfigFile ConfirmationDialog Container Control ConvexPolygonShape ConvexPolygonShape2D CubeMap Curve2D Curve3D DampedSpringJoint2D Dictionary DirectionalLight Directory EditorFileDialog EditorImportPlugin EditorPlugin EditorScenePostImport EditorScript Environment EventPlayer EventStream EventStreamChibi File FileDialog FixedMaterial float Font FuncRef GDFunctionState GDNativeClass GDScript Generic6DOFJoint Geometry GeometryInstance Globals GraphEdit GraphNode GridContainer GridMap GrooveJoint2D HBoxContainer HButtonArray HingeJoint HScrollBar HSeparator HSlider HSplitContainer HTTPClient Image ImageTexture ImmediateGeometry Input InputDefault InputEvent InputEventAction InputEventJoystickButton InputEventJoystickMotion InputEventKey InputEventMouseButton InputEventMouseMotion InputEventScreenDrag InputEventScreenTouch InputMap InstancePlaceholder int IntArray InterpolatedCamera IP IP_Unix ItemList Joint Joint2D KinematicBody KinematicBody2D Label LargeTexture Light Light2D LightOccluder2D LineEdit LineShape2D MainLoop MarginContainer Marshalls Material MaterialShader MaterialShaderGraph Matrix3 Matrix32 MenuButton Mesh MeshDataTool MeshInstance MeshLibrary MultiMesh MultiMeshInstance Mutex Navigation Navigation2D NavigationMesh NavigationMeshInstance NavigationPolygon NavigationPolygonInstance Nil Node Node2D NodePath Object OccluderPolygon2D OmniLight OptionButton OS PackedDataContainer PackedDataContainerRef PackedScene PacketPeer PacketPeerStream PacketPeerUDP Panel PanelContainer ParallaxBackground ParallaxLayer ParticleAttractor2D Particles Particles2D Patch9Frame Path Path2D PathFollow PathFollow2D PathRemap PCKPacker Performance PHashTranslation Physics2DDirectBodyState Physics2DDirectBodyStateSW Physics2DDirectSpaceState Physics2DServer Physics2DServerSW Physics2DShapeQueryParameters Physics2DShapeQueryResult Physics2DTestMotionResult PhysicsBody PhysicsBody2D PhysicsDirectBodyState PhysicsDirectBodyStateSW PhysicsDirectSpaceState PhysicsServer PhysicsServerSW PhysicsShapeQueryParameters PhysicsShapeQueryResult PinJoint PinJoint2D Plane PlaneShape Polygon2D PolygonPathFinder Popup PopupDialog PopupMenu PopupPanel Portal Position2D Position3D ProgressBar ProximityGroup Quad Quat Range RawArray RayCast RayCast2D RayShape RayShape2D RealArray Rect2 RectangleShape2D Reference ReferenceFrame RegEx RemoteTransform2D RenderTargetTexture Resource ResourceImportMetadata ResourceInteractiveLoader ResourceLoader ResourcePreloader ResourceSaver RichTextLabel RID RigidBody RigidBody2D Room RoomBounds Sample SampleLibrary SamplePlayer SamplePlayer2D SceneState SceneTree Script ScrollBar ScrollContainer SegmentShape2D Semaphore Separator Shader ShaderGraph ShaderMaterial Shape Shape2D Skeleton Slider SliderJoint SoundPlayer2D SoundRoomParams Spatial SpatialPlayer SpatialSamplePlayer SpatialSound2DServer SpatialSound2DServerSW SpatialSoundServer SpatialSoundServerSW SpatialStreamPlayer SphereShape SpinBox SplitContainer SpotLight Sprite Sprite3D SpriteBase3D SpriteFrames StaticBody StaticBody2D StreamPeer StreamPeerSSL StreamPeerTCP StreamPlayer String StringArray StyleBox StyleBoxEmpty StyleBoxFlat StyleBoxImageMask StyleBoxTexture SurfaceTool TabContainer Tabs TCP_Server TestCube TextEdit Texture TextureButton TextureFrame TextureProgress Theme Thread TileMap TileSet Timer ToolButton TouchScreenButton Transform Translation TranslationServer Tree TreeItem Tween UndoRedo VBoxContainer VButtonArray Vector2 Vector2Array Vector3 Vector3Array VehicleBody VehicleWheel VideoPlayer VideoStream VideoStreamTheora Viewport ViewportSprite VisibilityEnabler VisibilityEnabler2D VisibilityNotifier VisibilityNotifier2D VisualInstance VisualServer VScrollBar VSeparator VSlider VSplitContainer WeakRef WindowDialog World World2D WorldEnvironment XMLParser YSort ',
+      symbol:
+        'MARGIN_LEFT MARGIN_TOP MARGIN_RIGHT MARGIN_BOTTOM VERTICAL HORIZONTAL HALIGN_LEFT HALIGN_CENTER HALIGN_RIGHT VALIGN_TOP VALIGN_CENTER VALIGN_BOTTOM SPKEY KEY_ESCAPE KEY_TAB KEY_BACKTAB KEY_BACKSPACE KEY_RETURN KEY_ENTER KEY_INSERT KEY_DELETE KEY_PAUSE KEY_PRINT KEY_SYSREQ KEY_CLEAR KEY_HOME KEY_END KEY_LEFT KEY_UP KEY_RIGHT KEY_DOWN KEY_PAGEUP KEY_PAGEDOWN KEY_SHIFT KEY_CONTROL KEY_META KEY_ALT KEY_CAPSLOCK KEY_NUMLOCK KEY_SCROLLLOCK KEY_F1 KEY_F2 KEY_F3 KEY_F4 KEY_F5 KEY_F6 KEY_F7 KEY_F8 KEY_F9 KEY_F10 KEY_F11 KEY_F12 KEY_F13 KEY_F14 KEY_F15 KEY_F16 KEY_KP_ENTER KEY_KP_MULTIPLY KEY_KP_DIVIDE KEY_KP_SUBTRACT KEY_KP_PERIOD KEY_KP_ADD KEY_KP_0 KEY_KP_1 KEY_KP_2 KEY_KP_3 KEY_KP_4 KEY_KP_5 KEY_KP_6 KEY_KP_7 KEY_KP_8 KEY_KP_9 KEY_SUPER_L KEY_SUPER_R KEY_MENU KEY_HYPER_L KEY_HYPER_R KEY_HELP KEY_DIRECTION_L KEY_DIRECTION_R KEY_BACK KEY_FORWARD KEY_STOP KEY_REFRESH KEY_VOLUMEDOWN KEY_VOLUMEMUTE KEY_VOLUMEUP KEY_BASSBOOST KEY_BASSUP KEY_BASSDOWN KEY_TREBLEUP KEY_TREBLEDOWN KEY_MEDIAPLAY KEY_MEDIASTOP KEY_MEDIAPREVIOUS KEY_MEDIANEXT KEY_MEDIARECORD KEY_HOMEPAGE KEY_FAVORITES KEY_SEARCH KEY_STANDBY KEY_OPENURL KEY_LAUNCHMAIL KEY_LAUNCHMEDIA KEY_LAUNCH0 KEY_LAUNCH1 KEY_LAUNCH2 KEY_LAUNCH3 KEY_LAUNCH4 KEY_LAUNCH5 KEY_LAUNCH6 KEY_LAUNCH7 KEY_LAUNCH8 KEY_LAUNCH9 KEY_LAUNCHA KEY_LAUNCHB KEY_LAUNCHC KEY_LAUNCHD KEY_LAUNCHE KEY_LAUNCHF KEY_UNKNOWN KEY_SPACE KEY_EXCLAM KEY_QUOTEDBL KEY_NUMBERSIGN KEY_DOLLAR KEY_PERCENT KEY_AMPERSAND KEY_APOSTROPHE KEY_PARENLEFT KEY_PARENRIGHT KEY_ASTERISK KEY_PLUS KEY_COMMA KEY_MINUS KEY_PERIOD KEY_SLASH KEY_0 KEY_1 KEY_2 KEY_3 KEY_4 KEY_5 KEY_6 KEY_7 KEY_8 KEY_9 KEY_COLON KEY_SEMICOLON KEY_LESS KEY_EQUAL KEY_GREATER KEY_QUESTION KEY_AT KEY_A KEY_B KEY_C KEY_D KEY_E KEY_F KEY_G KEY_H KEY_I KEY_J KEY_K KEY_L KEY_M KEY_N KEY_O KEY_P KEY_Q KEY_R KEY_S KEY_T KEY_U KEY_V KEY_W KEY_X KEY_Y KEY_Z KEY_BRACKETLEFT KEY_BACKSLASH KEY_BRACKETRIGHT KEY_ASCIICIRCUM KEY_UNDERSCORE KEY_QUOTELEFT KEY_BRACELEFT KEY_BAR KEY_BRACERIGHT KEY_ASCIITILDE KEY_NOBREAKSPACE KEY_EXCLAMDOWN KEY_CENT KEY_STERLING KEY_CURRENCY KEY_YEN KEY_BROKENBAR KEY_SECTION KEY_DIAERESIS KEY_COPYRIGHT KEY_ORDFEMININE KEY_GUILLEMOTLEFT KEY_NOTSIGN KEY_HYPHEN KEY_REGISTERED KEY_MACRON KEY_DEGREE KEY_PLUSMINUS KEY_TWOSUPERIOR KEY_THREESUPERIOR KEY_ACUTE KEY_MU KEY_PARAGRAPH KEY_PERIODCENTERED KEY_CEDILLA KEY_ONESUPERIOR KEY_MASCULINE KEY_GUILLEMOTRIGHT KEY_ONEQUARTER KEY_ONEHALF KEY_THREEQUARTERS KEY_QUESTIONDOWN KEY_AGRAVE KEY_AACUTE KEY_ACIRCUMFLEX KEY_ATILDE KEY_ADIAERESIS KEY_ARING KEY_AE KEY_CCEDILLA KEY_EGRAVE KEY_EACUTE KEY_ECIRCUMFLEX KEY_EDIAERESIS KEY_IGRAVE KEY_IACUTE KEY_ICIRCUMFLEX KEY_IDIAERESIS KEY_ETH KEY_NTILDE KEY_OGRAVE KEY_OACUTE KEY_OCIRCUMFLEX KEY_OTILDE KEY_ODIAERESIS KEY_MULTIPLY KEY_OOBLIQUE KEY_UGRAVE KEY_UACUTE KEY_UCIRCUMFLEX KEY_UDIAERESIS KEY_YACUTE KEY_THORN KEY_SSHARP KEY_DIVISION KEY_YDIAERESIS KEY_CODE_MASK KEY_MODIFIER_MASK KEY_MASK_SHIFT KEY_MASK_ALT KEY_MASK_META KEY_MASK_CTRL KEY_MASK_CMD KEY_MASK_KPAD KEY_MASK_GROUP_SWITCH BUTTON_LEFT BUTTON_RIGHT BUTTON_MIDDLE BUTTON_WHEEL_UP BUTTON_WHEEL_DOWN BUTTON_WHEEL_LEFT BUTTON_WHEEL_RIGHT BUTTON_MASK_LEFT BUTTON_MASK_RIGHT BUTTON_MASK_MIDDLE JOY_BUTTON_0 JOY_BUTTON_1 JOY_BUTTON_2 JOY_BUTTON_3 JOY_BUTTON_4 JOY_BUTTON_5 JOY_BUTTON_6 JOY_BUTTON_7 JOY_BUTTON_8 JOY_BUTTON_9 JOY_BUTTON_10 JOY_BUTTON_11 JOY_BUTTON_12 JOY_BUTTON_13 JOY_BUTTON_14 JOY_BUTTON_15 JOY_BUTTON_MAX JOY_SNES_A JOY_SNES_B JOY_SNES_X JOY_SNES_Y JOY_SONY_CIRCLE JOY_SONY_X JOY_SONY_SQUARE JOY_SONY_TRIANGLE JOY_SEGA_B JOY_SEGA_A JOY_SEGA_X JOY_SEGA_Y JOY_XBOX_B JOY_XBOX_A JOY_XBOX_X JOY_XBOX_Y JOY_DS_A JOY_DS_B JOY_DS_X JOY_DS_Y JOY_SELECT JOY_START JOY_DPAD_UP JOY_DPAD_DOWN JOY_DPAD_LEFT JOY_DPAD_RIGHT JOY_L JOY_L2 JOY_L3 JOY_R JOY_R2 JOY_R3 JOY_AXIS_0 JOY_AXIS_1 JOY_AXIS_2 JOY_AXIS_3 JOY_AXIS_4 JOY_AXIS_5 JOY_AXIS_6 JOY_AXIS_7 JOY_AXIS_MAX JOY_ANALOG_0_X JOY_ANALOG_0_Y JOY_ANALOG_1_X JOY_ANALOG_1_Y JOY_ANALOG_2_X JOY_ANALOG_2_Y JOY_ANALOG_L2 JOY_ANALOG_R2 OK FAILED ERR_UNAVAILABLE ERR_UNCONFIGURED ERR_UNAUTHORIZED ERR_PARAMETER_RANGE_ERROR ERR_OUT_OF_MEMORY ERR_FILE_NOT_FOUND ERR_FILE_BAD_DRIVE ERR_FILE_BAD_PATH ERR_FILE_NO_PERMISSION ERR_FILE_ALREADY_IN_USE ERR_FILE_CANT_OPEN ERR_FILE_CANT_WRITE ERR_FILE_CANT_READ ERR_FILE_UNRECOGNIZED ERR_FILE_CORRUPT ERR_FILE_MISSING_DEPENDENCIES ERR_FILE_EOF ERR_CANT_OPEN ERR_CANT_CREATE ERROR_QUERY_FAILED ERR_ALREADY_IN_USE ERR_LOCKED ERR_TIMEOUT ERR_CANT_AQUIRE_RESOURCE ERR_INVALID_DATA ERR_INVALID_PARAMETER ERR_ALREADY_EXISTS ERR_DOES_NOT_EXIST ERR_DATABASE_CANT_READ ERR_DATABASE_CANT_WRITE ERR_COMPILATION_FAILED ERR_METHOD_NOT_FOUND ERR_LINK_FAILED ERR_SCRIPT_FAILED ERR_CYCLIC_LINK ERR_BUSY ERR_HELP ERR_BUG ERR_WTF PROPERTY_HINT_NONE PROPERTY_HINT_RANGE PROPERTY_HINT_EXP_RANGE PROPERTY_HINT_ENUM PROPERTY_HINT_EXP_EASING PROPERTY_HINT_LENGTH PROPERTY_HINT_KEY_ACCEL PROPERTY_HINT_FLAGS PROPERTY_HINT_ALL_FLAGS PROPERTY_HINT_FILE PROPERTY_HINT_DIR PROPERTY_HINT_GLOBAL_FILE PROPERTY_HINT_GLOBAL_DIR PROPERTY_HINT_RESOURCE_TYPE PROPERTY_HINT_MULTILINE_TEXT PROPERTY_HINT_COLOR_NO_ALPHA PROPERTY_HINT_IMAGE_COMPRESS_LOSSY PROPERTY_HINT_IMAGE_COMPRESS_LOSSLESS PROPERTY_USAGE_STORAGE PROPERTY_USAGE_EDITOR PROPERTY_USAGE_NETWORK PROPERTY_USAGE_DEFAULT METHOD_FLAG_NORMAL METHOD_FLAG_EDITOR METHOD_FLAG_NOSCRIPT METHOD_FLAG_CONST METHOD_FLAG_REVERSE METHOD_FLAG_VIRTUAL METHOD_FLAG_FROM_SCRIPT METHOD_FLAGS_DEFAULT TYPE_NIL TYPE_BOOL TYPE_INT TYPE_REAL TYPE_STRING TYPE_VECTOR2 TYPE_RECT2 TYPE_VECTOR3 TYPE_MATRIX32 TYPE_PLANE TYPE_QUAT TYPE_AABB TYPE_MATRIX3 TYPE_TRANSFORM TYPE_COLOR TYPE_IMAGE TYPE_NODE_PATH TYPE_RID TYPE_OBJECT TYPE_INPUT_EVENT TYPE_DICTIONARY TYPE_ARRAY TYPE_RAW_ARRAY TYPE_INT_ARRAY TYPE_REAL_ARRAY TYPE_STRING_ARRAY TYPE_VECTOR2_ARRAY TYPE_VECTOR3_ARRAY TYPE_COLOR_ARRAY TYPE_MAX '
+      },
+    illegal: /(<\/|->|\?)/,
+    contains: [
+      PROMPT,
+      NUMBER,
+      STRING,
+      hljs.HASH_COMMENT_MODE,
+      {
+        variants: [
+          {className: 'function', beginKeywords: 'func', relevance: 10},
+          {className: 'class', beginKeywords: 'class'}
+        ],
+        end: /:/,
+        illegal: /[${=;\n,]/,
+        contains: [
+          hljs.UNDERSCORE_TITLE_MODE,
+          PARAMS,
+          {
+            begin: /->/, endsWithParent: true,
+            keywords: 'None'
+          }
+        ]
+      },
+      {
+        className: 'meta',
+        begin: /^[\t ]*@/, end: /$/
+      },
+      {
+        begin: /\b(print|exec)\(/
+      }
+    ]
+  };
+});
+
 hljs.registerLanguage('gherkin', function language_GHERKIN(hljs) {
   return {
     aliases: ['feature'],
@@ -9782,6 +10131,52 @@ hljs.registerLanguage('groovy', function language_GROOVY(hljs) {
     }
 });
 
+hljs.registerLanguage('hakaru', function language_HAKARU(hljs) {
+  return {
+    contains: [
+      hljs.HASH_COMMENT_MODE, {
+        begin: hljs.UNDERSCORE_IDENT_RE,
+        lexemes: hljs.UNDERSCORE_IDENT_RE,
+        keywords: {
+          keyword:
+            'import data match if else array def fn plate chain return' +
+            'expect observe disintegrate integrate summate from of to' +
+            'nat int prob real array pair maybe either' +
+            'normal bern uniform gamma beta categorical poisson' +
+            'dirac weight factor counting lebesgue',
+          literal:
+            'true false'
+        },
+        relevance: 0
+      },
+      {
+        // explicit integer
+        className: 'number',
+        begin: "\\d+(?:[eE][+\\-]?\\d*)?L\\b",
+        relevance: 0
+      },
+      {
+        // number with trailing decimal
+        className: 'number',
+        begin: "\\d+\\.(?!\\d)(?:i\\b)?",
+        relevance: 0
+      },
+      {
+        // number
+        className: 'number',
+        begin: "\\d+(?:\\.\\d*)?(?:[eE][+\\-]?\\d*)?i?\\b",
+        relevance: 0
+      },
+      {
+        // number with leading decimal
+        className: 'number',
+        begin: "\\.\\d+(?:[eE][+\\-]?\\d*)?i?\\b",
+        relevance: 0
+      }
+    ]
+  };
+});
+
 hljs.registerLanguage('haml', // TODO support filter tags like :javascript, support inline HTML
 function language_HAML(hljs) {
   return {
@@ -10154,6 +10549,68 @@ hljs.registerLanguage('haxe', function language_HAXE(hljs) {
       }
     ],
     illegal: /<\//
+  };
+});
+
+hljs.registerLanguage('hcl', function language_HCL(hljs) {
+  var PATH = {
+    begin: /[A-Z\_\.\-]+\s*:/
+  };
+
+  BACKTICK_STRING = {
+    className: 'string',
+    begin: /[`"]/, end: /[`"]/
+  };
+
+  KEYWORD = {
+    className: 'keyword',
+    begin: /[A-Za-z\_\.\-]+\s*/
+  };
+
+  LITERAL = {
+    className: 'literal',
+    begin: /(true|false|null)/
+  };
+
+  SUBST_CONTAINS = [
+    hljs.C_NUMBER_MODE,
+    LITERAL,
+    BACKTICK_STRING
+  ];
+
+  return {
+    aliases: [
+      'tf' // Terraform configuration files
+    ],
+    contains: [
+      hljs.C_LINE_COMMENT_MODE,
+      hljs.C_BLOCK_COMMENT_MODE,
+      hljs.HASH_COMMENT_MODE,
+      hljs.C_NUMBER_MODE,
+      KEYWORD,
+      LITERAL,
+      {
+        className: 'string',
+        contains: [
+          {
+            // HIL blocks, as used in Terraform
+            className: 'subst',
+            begin: /\$\{/, end: /\}/,
+            contains: SUBST_CONTAINS
+          },
+          {
+            // Go template blocks, as used in Converge
+            className: 'subst',
+            begin: /\{\{/, end: /\}\}/,
+            contains: SUBST_CONTAINS
+          }
+        ],
+        variants: [
+          { begin: /"/, end: /"/ },
+          { begin: "<<EOF", end: "EOF" } // TODO: "EOF" should be any string, but I'm not sure how to do this?
+        ]
+      }
+    ]
   };
 });
 
@@ -10993,6 +11450,61 @@ hljs.registerLanguage('ini', function language_INI(hljs) {
           }
         ]
       }
+    ]
+  };
+});
+
+hljs.registerLanguage('ion', function language_ION(hljs) {
+  var VAR = {
+    className: 'variable',
+    variants: [
+      {begin: /\$[\w\d?][\w\d_?]*/},
+      {begin: /\$\{[\w\d?][\w\d_?]*}/}
+    ]
+  };
+  var QUOTE_STRING = {
+    className: 'string',
+    variants: [
+        {begin: /"/, end: /"/},
+        {begin: /'/, end: /'/}
+    ],
+    contains: [
+      hljs.BACKSLASH_ESCAPE,
+      VAR,
+      {
+        className: 'variable',
+        begin: /\$\{/, end: /\}/,
+        contains: [hljs.BACKSLASH_ESCAPE]
+      },
+      {
+        className: 'variable',
+        begin: /\$/,
+        contains: [hljs.BACKSLASH_ESCAPE]
+      }
+    ]
+  };
+
+  return {
+    keywords: {
+      keyword:
+        'if else end for in fn let drop',
+      built_in:
+        'help echo cd ls rm mkdir read grep cat cp mv'
+    },
+    contains: [
+      {
+        className: 'function',
+        beginKeywords: 'fn', endKeywords: 'end',
+        contains: [
+          hljs.inherit(hljs.TITLE_MODE, {
+            begin: /\ [\w_]+/,
+            endsParent: true
+          })
+        ]
+      },
+      hljs.HASH_COMMENT_MODE,
+      QUOTE_STRING,
+      VAR
     ]
   };
 });
@@ -14720,7 +15232,7 @@ hljs.registerLanguage('javascript', function language_JAVASCRIPT(hljs) {
       'import from as'
     ,
     literal:
-      'true false null undefined NaN Infinity',
+      'true false null undefined NaN Infinity -Infinity',
     built_in:
       'eval isFinite isNaN parseFloat parseInt decodeURI decodeURIComponent ' +
       'encodeURI encodeURIComponent escape unescape Object Function Boolean Error ' +
@@ -16317,6 +16829,114 @@ hljs.registerLanguage('llvm', function language_LLVM_IR(hljs) {
   };
 });
 
+hljs.registerLanguage('logtalk', function language_LOGTALK(hljs) {
+
+  var ATOMS = {
+    className: 'atom',
+    begin: /[a-z][A-Za-z0-9_]*/,
+    relevance: 0
+  };
+
+  var QUOTED_ATOMS = {
+    className: 'string',
+    begin: /'/, end: /'/,
+    contains: [hljs.BACKSLASH_ESCAPE],
+    illegal: /\n/,
+    relevance: 0
+  };
+
+  var VARIABLES = {
+    className: 'variable',
+    begin: /[A-Z_][A-Za-z0-9_]*/,
+    relevance: 0
+  };
+
+  var NUMBERS = {
+    className: 'number',
+    begin: /0\'.|0b[0-1]+|0o[0-7]+|0x[0-9a-fA-F]+|[0-9]+(\.[0-9]+)?([eE]([-+])?[0-9]+)?/,
+    relevance: 0
+  };
+
+  var PARENTED = {
+    begin: /\(/, end: /\)/,
+    relevance: 0
+  };
+
+  var LISTS = {
+    begin: /\[/, end: /\]/,
+    relevance: 0
+  };
+
+  var CURLY_BRACKTED_TERMS = {
+  begin: /\{/, end: /\}/,
+    relevance: 0
+  };
+
+  var LINE_COMMENTS = {
+    className: 'comment',
+    begin: /%/, end: /$/
+  };
+
+//  var BLOCK_COMMENTS = hljs.COMMENT('/\\*', '\\*/');
+
+  var BACKTICK_STRINGS = {
+    className: 'string',
+    begin: /`/, end: /`/,
+    contains: [hljs.BACKSLASH_ESCAPE]
+  };
+
+  var DIRECTIVE_KEYWORDS = {
+    className: 'keyword',
+    keyword: 'object end_object'
+  };
+
+  var DIRECTIVES = {
+    className: 'preprocessor',
+//  lexemes: /:-\s[a-z][A-Za-z0-9_]*[.(]/,
+    begin: ':-[ ]', end: '\\(|\\./', excludeEnd: true,
+    contains: [DIRECTIVE_KEYWORDS]
+//    keywords: DIRECTIVE_KEYWORDS,
+//    variants: [
+//        {beginKeywords: ':-\\s(object|protocol|category)', end: '\\(', excludeEnd: true},
+//        {beginKeywords: ':-\\s(end_object|end_protocol|end_category)', end: '\\.', excludeEnd: true},
+//  ],
+//  contains: [ATOMS, NUMBERS, VARIABLES]
+  };
+
+//  var PRED_OP = { // relevance booster
+//    begin: /:-/
+//  };
+
+  var inner = [
+
+    DIRECTIVES,
+    ATOMS,
+    QUOTED_ATOMS,
+    hljs.BACKSLASH_ESCAPE,
+    VARIABLES,
+    NUMBERS,
+    PARENTED,
+//    PRED_OP,
+    LISTS,
+    CURLY_BRACKTED_TERMS,
+    LINE_COMMENTS,
+    hljs.C_BLOCK_COMMENT_MODE,
+    BACKTICK_STRINGS
+  ];
+
+  PARENTED.contains = inner;
+  LISTS.contains = inner;
+  CURLY_BRACKTED_TERMS.contains = inner;
+
+  return {
+    aliases: ['logtalk', 'lgt'],
+    case_insensitive: true,
+    contains: inner.concat([
+      {begin: /\.$/} // relevance booster
+    ])
+  };
+});
+
 hljs.registerLanguage('lsl', function language_LSL(hljs) {
 
     var LSL_STRING_ESCAPE_CHARS = {
@@ -17908,6 +18528,129 @@ hljs.registerLanguage('moonscript', function language_MOONSCRIPT(hljs) {
       }
     ])
   };
+});
+
+hljs.registerLanguage('mumps', function language_MUMPS(hljs) {
+	
+	var MUMPS_KEYWORDS = "b break c close d do e else f for g goto h halt hang i if " +
+		"j job k kill l lock m merge n new o open q quit r read s set u use v view " +
+		"w write x xecute";
+
+	var MUMPS_BUILT_INS = "$a $ascii $c $char $d $data $device $ec $ecode $es $estack " +
+		"$et $etrap $e $extract $f $find $fn $fnumber $g $get $h $horolog $i $io " +
+		"$j $job $justify $k $key $l $length $n $name $o $order $p $piece $principal " +
+		"$ql $qlength $qs $qsubscript $q $query $quit $r $random $reference $s $select " +
+		"$storage $st $stack $sy $system $t $test $text $tr $translate $v $view $x $y";
+
+	var MUMPS_STRING = {
+		className: "string",
+		begin: /"/,
+		end: /"/,
+		relevance: 0,
+		contains: [
+			{
+				// Escape sequence for " is "" in MUMPS....
+				begin: /""/
+			}
+		]
+	};
+
+	return {
+		aliases: ["m", "cache", "caché", "gtm", "gt.m"],
+		case_insensitive: true, // TODO this makes everything case insensitive, but it's only commands and built-ins that are
+		lexemes: /\$[a-zA-Z]+/, // TODO this does not account for keywords used as variables or $$order
+		keywords: {
+			// Because MUMPS keywords are actually not reserved, we need to special case them as modes
+			built_in: MUMPS_BUILT_INS
+		},
+		illegal: /^\s*$/,
+		contains: [
+			hljs.COMMENT(/;/, /$/),
+			MUMPS_STRING,
+			{
+				// These are actually NOT regular expressions but
+				// rather MUMPS patterns. MUMPS has no support for regexps. 
+				// However, MUMPS patterns are used for essentially the same
+				// purposes as regexps so it's fairly close.
+				className: "regexp",
+				begin: /\?/,
+				end: /[\s$]/,
+				excludeEnd: true,
+				contains: [MUMPS_STRING]
+			},
+			{
+				// These are MUMPS globals - not actually
+				// "global" variables but rather variables
+				// written to disk as part of the database.
+				className: "variable",
+				begin: /\^[%a-zA-Z]/,
+				end: /[\(\s$]/,
+				relevance: 8,
+				excludeEnd: true
+			},
+			{
+				className: "number",
+				relevance: 0,
+				variants: [
+					{
+						begin: /\d+E-?\d+/,
+						relevance: 5
+					},
+					{
+						begin: hljs.NUMBER_RE
+					}
+				]
+			},
+			{
+				//begin: /(\s(?!$)\s)+/,
+				begin: /[\s]{2,}/,
+				//end: /[\s:$]/,
+				end: /$/,
+				className: "anotherTest",
+				contains: [
+					{
+						className: "keyword",
+						begin: new RegExp("(" + MUMPS_KEYWORDS.split(" ").join("|") + ")"),
+						//endsWithParent: true,
+						end: /[\s:$]/,
+						endsParent: true,
+						excludeEnd: true
+					}
+				]
+			},
+			{
+				begin: /^[\s\.]*/,
+				end: /[\s:$]/,
+				className: "test",
+				contains: [
+					{
+						className: "keyword",
+						begin: new RegExp("\\b(" + MUMPS_KEYWORDS.split(" ").join("|") + ")\\b"),
+						end: /[\s:$]/,
+						endsParent: true,
+						excludeEnd: true,
+						returnEnd: true
+					},
+				]
+			},
+			/*
+			{
+				begin: /^(?!h\b)/,
+				//begin: new RegExp("^(?!" + MUMPS_KEYWORDS.split(" ").join("\\b|") + ")"),
+				end: /$/,
+				returnStart: true,
+				className: "functest",
+				contains: [
+					{
+						className: "function",
+						begin: /^[%a-zA-Z]/,
+						endsWithParent: true
+					}
+				]
+			}
+			*/
+		]
+	};
 });
 
 hljs.registerLanguage('n1ql', function language_N1QL(hljs) {
@@ -19902,7 +20645,7 @@ hljs.registerLanguage('prolog', function language_PROLOG(hljs) {
   };
 });
 
-hljs.registerLanguage('properties', function language_JAVA_PROPERTIES(hljs) {
+hljs.registerLanguage('properties', function language_PROPERTIES(hljs) {
   return {
     contains: [
       hljs.COMMENT(
@@ -21323,6 +22066,132 @@ hljs.registerLanguage('rust', function language_RUST(hljs) {
   };
 });
 
+hljs.registerLanguage('sas', function language_SAS(hljs) {
+
+    // Data step and PROC SQL statements
+    var SAS_KEYWORDS = ''+
+        'do if then else end until while '+
+        ''+
+        'abort array attrib by call cards cards4 catname continue '+
+        'datalines datalines4 delete delim delimiter display dm drop '+
+        'endsas error file filename footnote format goto in infile '+
+        'informat input keep label leave length libname link list '+
+        'lostcard merge missing modify options output out page put '+
+        'redirect remove rename replace retain return select set skip '+
+        'startsas stop title update waitsas where window x systask '+
+        ''+
+        'add and alter as cascade check create delete describe '+
+        'distinct drop foreign from group having index insert into in '+
+        'key like message modify msgtype not null on or order primary '+
+        'references reset restrict select set table unique update '+
+        'validate view where';
+
+    // Built-in SAS functions
+    var SAS_FUN = ''+
+        'abs|addr|airy|arcos|arsin|atan|attrc|attrn|band|'+
+        'betainv|blshift|bnot|bor|brshift|bxor|byte|cdf|ceil|'+
+        'cexist|cinv|close|cnonct|collate|compbl|compound|'+
+        'compress|cos|cosh|css|curobs|cv|daccdb|daccdbsl|'+
+        'daccsl|daccsyd|dacctab|dairy|date|datejul|datepart|'+
+        'datetime|day|dclose|depdb|depdbsl|depdbsl|depsl|'+
+        'depsl|depsyd|depsyd|deptab|deptab|dequote|dhms|dif|'+
+        'digamma|dim|dinfo|dnum|dopen|doptname|doptnum|dread|'+
+        'dropnote|dsname|erf|erfc|exist|exp|fappend|fclose|'+
+        'fcol|fdelete|fetch|fetchobs|fexist|fget|fileexist|'+
+        'filename|fileref|finfo|finv|fipname|fipnamel|'+
+        'fipstate|floor|fnonct|fnote|fopen|foptname|foptnum|'+
+        'fpoint|fpos|fput|fread|frewind|frlen|fsep|fuzz|'+
+        'fwrite|gaminv|gamma|getoption|getvarc|getvarn|hbound|'+
+        'hms|hosthelp|hour|ibessel|index|indexc|indexw|input|'+
+        'inputc|inputn|int|intck|intnx|intrr|irr|jbessel|'+
+        'juldate|kurtosis|lag|lbound|left|length|lgamma|'+
+        'libname|libref|log|log10|log2|logpdf|logpmf|logsdf|'+
+        'lowcase|max|mdy|mean|min|minute|mod|month|mopen|'+
+        'mort|n|netpv|nmiss|normal|note|npv|open|ordinal|'+
+        'pathname|pdf|peek|peekc|pmf|point|poisson|poke|'+
+        'probbeta|probbnml|probchi|probf|probgam|probhypr|'+
+        'probit|probnegb|probnorm|probt|put|putc|putn|qtr|'+
+        'quote|ranbin|rancau|ranexp|rangam|range|rank|rannor|'+
+        'ranpoi|rantbl|rantri|ranuni|repeat|resolve|reverse|'+
+        'rewind|right|round|saving|scan|sdf|second|sign|'+
+        'sin|sinh|skewness|soundex|spedis|sqrt|std|stderr|'+
+        'stfips|stname|stnamel|substr|sum|symget|sysget|'+
+        'sysmsg|sysprod|sysrc|system|tan|tanh|time|timepart|'+
+        'tinv|tnonct|today|translate|tranwrd|trigamma|'+
+        'trim|trimn|trunc|uniform|upcase|uss|var|varfmt|'+
+        'varinfmt|varlabel|varlen|varname|varnum|varray|'+
+        'varrayx|vartype|verify|vformat|vformatd|vformatdx|'+
+        'vformatn|vformatnx|vformatw|vformatwx|vformatx|'+
+        'vinarray|vinarrayx|vinformat|vinformatd|vinformatdx|'+
+        'vinformatn|vinformatnx|vinformatw|vinformatwx|'+
+        'vinformatx|vlabel|vlabelx|vlength|vlengthx|vname|'+
+        'vnamex|vtype|vtypex|weekday|year|yyq|zipfips|zipname|'+
+        'zipnamel|zipstate';
+
+    // Built-in macro functions
+    var SAS_MACRO_FUN = 'bquote|nrbquote|cmpres|qcmpres|compstor|'+
+        'datatyp|display|do|else|end|eval|global|goto|'+
+        'if|index|input|keydef|label|left|length|let|'+
+        'local|lowcase|macro|mend|nrbquote|nrquote|'+
+        'nrstr|put|qcmpres|qleft|qlowcase|qscan|'+
+        'qsubstr|qsysfunc|qtrim|quote|qupcase|scan|str|'+
+        'substr|superq|syscall|sysevalf|sysexec|sysfunc|'+
+        'sysget|syslput|sysprod|sysrc|sysrput|then|to|'+
+        'trim|unquote|until|upcase|verify|while|window';
+
+    return {
+        aliases: ['sas', 'SAS'],
+        case_insensitive: true, // SAS is case-insensitive
+        keywords: {
+            literal:
+                'null missing _all_ _automatic_ _character_ _infile_ '+
+                '_n_ _name_ _null_ _numeric_ _user_ _webout_',
+            meta:
+                SAS_KEYWORDS
+        },
+        contains: [
+            {
+                // Distinct highlight for proc <proc>, data, run, quit
+                className: 'keyword',
+                begin: /^\s*(proc [\w\d_]+|data|run|quit)[\s\;]/
+            },
+            {
+                // Macro variables
+                className: 'variable',
+                begin: /\&[a-zA-Z_\&][a-zA-Z0-9_]*\.?/
+            },
+            {
+                // Special emphasis for datalines|cards
+                className: 'emphasis',
+                begin: /^\s*datalines|cards.*;/,
+                end: /^\s*;\s*$/
+            },
+            {   // Built-in macro variables take precedence
+                className: 'built_in',
+                begin: '%(' + SAS_MACRO_FUN + ')'
+            },
+            {
+                // User-defined macro functions highlighted after
+                className: 'name',
+                begin: /%[a-zA-Z_][a-zA-Z_0-9]*/
+            },
+            {
+                className: 'meta',
+                begin: '[^%](' + SAS_FUN + ')[\(]'
+            },
+            {
+                className: 'string',
+                variants: [
+                    hljs.APOS_STRING_MODE,
+                    hljs.QUOTE_STRING_MODE
+                ]
+            },
+            hljs.COMMENT('\\*', ';'),
+            hljs.C_BLOCK_COMMENT_MODE
+        ]
+    };
+});
+
 hljs.registerLanguage('scala', function language_SCALA(hljs) {
 
   var ANNOTATION = { className: 'meta', begin: '@[A-Za-z]+' };
@@ -21919,6 +22788,44 @@ hljs.registerLanguage('sml', function language_SML(hljs) {
       }
     ]
   };
+});
+
+hljs.registerLanguage('snort', function language_SNORT(hljs) {
+  var KEYWORDS = 'alert log pass activate dynamic drop reject sdrop tcp ip udp icmp ' +
+  'msg reference gid sid rev classtype priority metadeta content uricontent ' +
+  'nocase threshold type limit track limit by_src by_dst count seconds distance ' +
+  'within depth offset rawbytes http_client_body http_cookie http_raw_cookie ' +
+  'http_header http_raw_header http_method http_uri http_raw_uri http_stat_code ' +
+  'http_stat_msg http_encode fast_pattern urilen isdataat pcre pkt_data file_data ' +
+  'base64_decode base64_data byte_test byte_jump byte_extract ftpbounce asn1 ' +
+  'cvs dce_iface dce opnum dce_stub_data sip_method sip_stat_code sip_header ' +
+  'sip_body gtp_type gtp_info gtp_version ssl_version ssl_state fragoffset ttl tos id ' +
+  'ipopts fragbits dsize flags flow flowbits seq ack window itype icode icmp_id icmp_seq ' +
+  'rpc ip_proto sameip stream_reassemble stream_size logto session resp react tag activates ' +
+  'activated_by replace detection_filter metadata'
+
+  var BUILTINS = '$AIM_SERVERS $DNS_SERVERS $DNS_SERVERS_AD $EXTERNAL_NET $FILE_DATA_PORTS ' +
+  '$GTP_PORTS $HOME_NET $HTTP_PORTS $HTTP_SERVERS $ORACLE_PORTS $SHELLCODE_PORTS ' +
+  '$SIP_PORTS $SIP_SERVERS $SMTP_SERVERS $SNMP_SERVERS $SNORT_BPF $SQL_SERVERS ' +
+  '$SSH_PORTS $SSH_SERVERS $TELNET_SERVERS'
+
+  var LITERALS = 'http any'
+
+  return {
+    case_insensitive: false,
+    keywords: {
+      keyword: KEYWORDS,
+      built_in: BUILTINS,
+      literal: LITERALS
+    },
+    contains: [
+      {
+        className: 'parens',
+        begin: /\(/, end: /\)/,
+        keywords: KEYWORDS
+      }
+    ]
+  }
 });
 
 hljs.registerLanguage('solidity', function language_SOLIDITY(hljs) {
@@ -22638,7 +23545,7 @@ hljs.registerLanguage('sql', function language_SQL(hljs) {
           'merge describe use explain help declare prepare execute deallocate release ' +
           'exec unlock purge reset change stop analyze cache flush optimize repair kill ' +
           'install uninstall checksum restore check backup revoke comment with',
-        end: /;/, endsWithParent: true,
+        end: /;|$/, endsWithParent: true,
         lexemes: /[\w\.]+/,
         keywords: {
           keyword:
@@ -24124,6 +25031,177 @@ hljs.registerLanguage('tp', function language_TP(hljs) {
         className: 'variable',
         begin: '\\$[A-Za-z0-9_]+'
       }
+    ]
+  };
+});
+
+hljs.registerLanguage('tsql', function language_T_SQL(hljs) {
+  var COMMENT_MODE = hljs.COMMENT('--', '\n|$');
+  return {
+    case_insensitive: true,
+    illegal: '[^\\s]',
+    contains: [
+      {
+        className: 'operator',
+        begin: '(begin|start|commit|rollback|savepoint|lock|alter|create|drop|rename|call|delete|do|handler|insert|load|replace|select|truncate|update|set|show|pragma|grant)\\b', 
+        end: /;|$/, endsWithParent: true,
+        lexemes: /[\w\.]+/,
+        keywords: {
+          'keyword': 
+            'partial global month ' +
+            'current_timestamp using go revoke ' +
+            'smallint indicator end-exec disconnect ' +
+            'zone with character assertion to ' +
+            'add current_user usage input local ' +
+            'alter match collate real then ' +
+            'rollback get read timestamp ' +
+            'session_user integer bit unique ' +
+            'day minute desc insert execute ' +
+            'ilike|2 level decimal drop ' +
+            'continue isolation found where ' +
+            'constraints domain right national ' +
+            'module transaction relative second ' +
+            'connect escape close system_user for ' +
+            'deferred section cast current sqlstate ' +
+            'allocate intersect deallocate numeric ' +
+            'public preserve full goto initially ' +
+            'asc no key output collation group ' +
+            'by union session both last ' +
+            'language constraint column of space ' +
+            'foreign deferrable prior connection ' +
+            'unknown action commit view ' +
+            'first into float year primary ' +
+            'cascaded except restrict set references ' +
+            'names table open select ' +
+            'size are rows from prepare ' +
+            'distinct leading create only next ' +
+            'inner authorization schema corresponding ' +
+            'option declare precision immediate else ' +
+            'timezone_minute external varying translation ' +
+            'true case exception hour ' +
+            'default double scroll value cursor ' +
+            'descriptor values dec fetch procedure ' +
+            'delete false int is describe ' +
+            'char as at varchar ' +
+            'trailing absolute current_time end ' +
+            'grant privileges when check ' +
+            'write current_date pad begin temporary ' +
+            'exec time update catalog user sql ' +
+            'date on identity timezone_hour natural ' +
+            'whenever interval work order cascade ' +
+            'diagnostics nchar having left call ' +
+            'do handler load replace truncate ' +
+            'start lock show pragma ' +
+            'bigint tinyint money smallmoney datetime ' +
+            'smalldatetime text nvarchar|2 ntext|2 binary ' +
+            'varbinary|2 image sql_variant|2 uniqueidentifier|2 ' +
+            'admin after alias array backup ' +
+            'before blob boolean breadth break ' +
+            'browse bulk check checkpoint class ' +
+            'clob clustered coalesce completion compute ' +
+            'constructor contains containstable convert ' +
+            'cube current_path|2 current_role|2 cycle data ' +
+            'database dbcc deny depth deref destroy ' +
+            'destructor deterministic dictionary disk ' +
+            'distributed dummy dump dynamic each ' +
+            'equals errlvl every exit file fillfactor ' +
+            'free freetext freetexttable function general ' +
+            'grouping holdlock host identity_insert|2 ' +
+            'identitycol|2 if ignore index initialize ' +
+            'inout iterate kill large lateral ' +
+            'localtime localtimestamp locator map modifies ' +
+            'modify nclob new nocheck nonclustered ' +
+            'none nullif object off offsets old ' +
+            'opendatasource|2 openquery|2 openrowset|2 openxml|2 ' +
+            'operation ordinality out over parameter ' +
+            'parameters path percent plan postfix ' +
+            'precision prefix preorder prepare preserve ' +
+            'primary print prior proc raiserror reads ' +
+            'readtext reconfigure recursive ref referencing ' +
+            'replication restore result return returns ' +
+            'rollup routine row rowguidcol|2 rule save ' +
+            'savepoint scope search sequence sets ' +
+            'setuser shutdown specific specifictype|2 ' +
+            'sqlexception sqlwarning state statement static ' +
+            'statistics structure terminate textsize than ' +
+            'top tran treat trigger tsequal under ' +
+            'unnest updatetext use variable waitfor ' +
+            'while without writetext uncommitted nocount',
+          'aggregate': 
+            'count sum min max avg',
+          'function': 
+            '@@datefirst|5 @@options|5 @@dbts|5 ' +
+            '@@remserver|5 @@langid|5 @@servername|5 @@language|5 ' +
+            '@@servicename|5 @@lock_timeout|5 @@spid|5 ' +
+            '@@max_connections|5 @@textsize|5 @@max_precision|5 ' +
+            '@@version|5 @@nestlevel|5 @@cursor_rows|5 ' +
+            '@@fetch_status|5 dateadd|2 datediff|2 datename|2 ' +
+            'datepart|2 getdate|2 getutcdate|2 abs degrees ' +
+            'rand acos exp round asin floor ' +
+            'sign atan log sin atn2 log10 ' +
+            'square ceiling pi sqrt cos power ' +
+            'tan cot radians col_length|2 ' +
+            'fn_listextendedproperty|5 col_name|2 fulltextcatalogproperty|5 ' +
+            'columnproperty|5 fulltextserviceproperty|5 databaseproperty|5 ' +
+            'index_col|2 databasepropertyex|5 indexkey_property|5 db_id|2 ' +
+            'indexproperty|5 db_name|2 object_id|2 file_id|2 ' +
+            'object_name|2 file_name|2 objectproperty|2 filegroup_id|2 ' +
+            '@@procid|5 filegroup_name|2 sql_variant_property|5 ' +
+            'filegroupproperty|5 typeproperty|2 fileproperty|2 ' +
+            'fn_trace_geteventinfo|5 is_srvrolemember|5 fn_trace_getfilterinfo|5 ' +
+            'suser_sid|2 fn_trace_getinfo|5 suser_sname|2 fn_trace_gettable|5 ' +
+            'user_id|2 has_dbaccess|2 is_member|2 ascii|2 soundex|2 ' +
+            'patindex|2 charindex|2 str difference quotename|2 ' +
+            'stuff replicate|2 substring len reverse ' +
+            'unicode lower upper ltrim rtrim app_name|2 ' +
+            'collationproperty|5 @@error|5 fn_helpcollations|5 ' +
+            'fn_servershareddrives|5 fn_virtualfilestats|5 formatmessage|5 ' +
+            'getansinull|5 host_id|2 host_name|2 ident_current|2 ' +
+            'ident_incr|2 ident_seed|2 @@identity|5 isdate ' +
+            'isnumeric parsename|2 permissions @@rowcount|5 ' +
+            'rowcount_big|2 scope_identity|2 serverproperty|5 ' +
+            'sessionproperty|5 stats_date|2 @@trancount|5 user_name ' +
+            '@@connections|5 @@pack_received|5 @@cpu_busy|5 @@pack_sent|5 ' +
+            '@@timeticks|5 @@idle|5 @@total_errors|5 @@io_busy|5 ' +
+            '@@total_read|5 @@packet_errors|5 @@total_write|5 textptr|2 ' +
+            'textvalid|2 binary_checksum|2 checksum|2 checksum_agg|2 ' +
+            'stdev stdevp count_big|2 var grouping varp',
+          'procedure': 
+            'fn_helpcollations|5 fn_listextendedproperty|5 ' +
+            'fn_servershareddrives|5 fn_trace_geteventinfo|5 ' +
+            'fn_trace_getfilterinfo|5 fn_trace_getinfo|5 fn_trace_gettable|5 ' +
+            'fn_virtualfilestats|5',
+          'operator': 
+            'all and any between cross exists ' +
+            'in join like not null or outer some',
+        },
+        contains: [
+          {
+            className: 'string',
+            begin: '\'', end: '\'',
+            contains: [hljs.BACKSLASH_ESCAPE, {begin: '\'\''}],
+            relevance: 0
+          },
+          {
+            className: 'string',
+            begin: '"', end: '"',
+            contains: [hljs.BACKSLASH_ESCAPE, {begin: '""'}],
+            relevance: 0
+          },
+          {
+            className: 'string',
+            begin: '`', end: '`',
+            contains: [hljs.BACKSLASH_ESCAPE]
+          },
+          hljs.C_NUMBER_MODE,
+          hljs.C_BLOCK_COMMENT_MODE,
+          COMMENT_MODE,
+          hljs.HASH_COMMENT_MODE
+        ]
+      },
+      hljs.C_BLOCK_COMMENT_MODE,
+      COMMENT_MODE,
+      hljs.HASH_COMMENT_MODE
     ]
   };
 });

@@ -381,7 +381,9 @@ https://highlightjs.org/
       top.lexemesRe.lastIndex = 0;
       match = top.lexemesRe.exec(mode_buffer);
 
-      while (match) {
+      // also exit loop when terminator regex matches the empty string:
+      // prevent infinite loop in here!
+      while (match && match[0].length > 0) {
         result += escape(mode_buffer.substring(last_index, match.index));
         keyword_match = keywordMatch(top, match);
         if (keyword_match) {
@@ -521,7 +523,9 @@ https://highlightjs.org/
       for (;;) {
         top.terminators.lastIndex = index;
         match = top.terminators.exec(value);
-        if (!match)
+        // also exit loop when terminator regex matches the empty string:
+        // prevent infinite loop in here!
+        if (!match || match[0].length === 0)
           break;
         count = processLexeme(value.substring(index, match.index), match[0]);
         index = match.index + count;
@@ -559,7 +563,6 @@ https://highlightjs.org/
   - value (an HTML string with highlighting markup)
   - second_best (object with the same structure for second-best heuristically
     detected language, may be absent)
-
   */
   function highlightAuto(text, languageSubset) {
     languageSubset = languageSubset || options.languages || objectKeys(languages);
