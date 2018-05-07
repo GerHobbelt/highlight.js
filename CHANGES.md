@@ -8,10 +8,12 @@ New languages:
 - *DAX* by [Stanislaw Swierc][]
 - *[Botlang][]* Scripting language for conversational chat bots by [Mathias Schilling][].
 - *Expression 2* by [Simen Wiik][].
+- *Igor Pro* by [Thomas Braun][]
 
 New styles:
 
 - [*Nord*][nord-highlightjs] by [Arctic Ice Studio][]
+- *Igor Pro* by [Thomas Braun][]
 
 Improvements:
 

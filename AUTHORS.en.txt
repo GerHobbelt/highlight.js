@@ -266,3 +266,4 @@ Contributors:
 - Andrea Crawford <andrea.crawford13@gmail.com>
 - Tod Beardsley <tod_beardsley@rapid7.com>
 - Arctic Ice Studio <development@arcticicestudio.com>
+- Thomas Braun <thomas.braun@byte-physics.de>
