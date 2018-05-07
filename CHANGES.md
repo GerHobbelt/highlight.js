@@ -48,9 +48,10 @@ New language:
 - Google *Closure Templates* language by [Chema Balsas][]
 - *OData* by [Stanislaw Swierc][]
 
-New style:
+New styles:
 
 - *VisualStudio 2015 Dark* by [Nicolas LLOBERA][]
+- *Lightfair* by [Tristian Kelly][]
 
 Improvements:
 
@@ -67,6 +68,7 @@ Improvements:
   consistently with other kinds.
 - [Alejandro Alonso][] updated *Swift* keywords.
 
+[Tristian Kelly]: https://github.com/TristianK3604
 [Tsuyusato Kitsune]: https://github.com/MakeNowJust
 [Alex Arslan]: https://github.com/ararslan
 [Morten Piibeleht]: https://github.com/mortenpi
