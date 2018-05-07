@@ -4,14 +4,16 @@ Category: common
 Description: Transact SQL language as used in Microsoft SQL Server product line.
 */
 
-hljs.LANGUAGES.sql = {
-  case_insensitive: true,
-  defaultMode: {
+function language_T_SQL(hljs) {
+  var COMMENT_MODE = hljs.COMMENT('--', '\n|$');
+  return {
+    case_insensitive: true,
     illegal: '[^\\s]',
     contains: [
       {
         className: 'operator',
-        begin: '(begin|start|commit|rollback|savepoint|lock|alter|create|drop|rename|call|delete|do|handler|insert|load|replace|select|truncate|update|set|show|pragma|grant)\\b', end: ';|$',
+        begin: '(begin|start|commit|rollback|savepoint|lock|alter|create|drop|rename|call|delete|do|handler|insert|load|replace|select|truncate|update|set|show|pragma|grant)\\b', 
+        end: ';|$',
         keywords: {
           'keyword': {
             'partial': 1, 'global': 1, 'month': 1,
@@ -92,9 +94,13 @@ hljs.LANGUAGES.sql = {
             'statistics': 1, 'structure': 1, 'terminate': 1, 'textsize': 1, 'than': 1,
             'top': 1, 'tran': 1, 'treat': 1, 'trigger': 1, 'tsequal': 1, 'under': 1,
             'unnest': 1, 'updatetext': 1, 'use': 1, 'variable': 1, 'waitfor': 1,
-            'while': 1, 'without': 1, 'writetext': 1, 'uncommitted': 1, 'nocount': 1},
-          'aggregate': {'count': 1, 'sum': 1, 'min': 1, 'max': 1, 'avg': 1},
-          'function': {'@@datefirst': 5, '@@options': 5, '@@dbts': 5,
+            'while': 1, 'without': 1, 'writetext': 1, 'uncommitted': 1, 'nocount': 1
+          },
+          'aggregate': {
+            'count': 1, 'sum': 1, 'min': 1, 'max': 1, 'avg': 1
+          },
+          'function': {
+            '@@datefirst': 5, '@@options': 5, '@@dbts': 5,
             '@@remserver': 5, '@@langid': 5, '@@servername': 5, '@@language': 5,
             '@@servicename': 5, '@@lock_timeout': 5, '@@spid': 5,
             '@@max_connections': 5, '@@textsize': 5, '@@max_precision': 5,
@@ -129,13 +135,18 @@ hljs.LANGUAGES.sql = {
             '@@timeticks': 5, '@@idle': 5, '@@total_errors': 5, '@@io_busy': 5,
             '@@total_read': 5, '@@packet_errors': 5, '@@total_write': 5, 'textptr': 2,
             'textvalid': 2, 'binary_checksum': 2, 'checksum': 2, 'checksum_agg': 2,
-            'stdev': 1, 'stdevp': 1, 'count_big': 2, 'var': 1, 'grouping': 1, 'varp': 1},
-          'procedure': {'fn_helpcollations': 5, 'fn_listextendedproperty': 5,
+            'stdev': 1, 'stdevp': 1, 'count_big': 2, 'var': 1, 'grouping': 1, 'varp': 1
+          },
+          'procedure': {
+            'fn_helpcollations': 5, 'fn_listextendedproperty': 5,
             'fn_servershareddrives': 5, 'fn_trace_geteventinfo': 5,
             'fn_trace_getfilterinfo': 5, 'fn_trace_getinfo': 5, 'fn_trace_gettable': 5,
-            'fn_virtualfilestats': 5},
-          'operator': {'all': 1, 'and': 1, 'any': 1, 'between': 1, 'cross': 1, 'exists': 1,
-            'in': 1, 'join': 1, 'like': 1, 'not': 1, 'null': 1, 'or': 1, 'outer': 1, 'some': 1}
+            'fn_virtualfilestats': 5
+          },
+          'operator': {
+            'all': 1, 'and': 1, 'any': 1, 'between': 1, 'cross': 1, 'exists': 1,
+            'in': 1, 'join': 1, 'like': 1, 'not': 1, 'null': 1, 'or': 1, 'outer': 1, 'some': 1
+          }
         },
         contains: [
           {
@@ -160,10 +171,9 @@ hljs.LANGUAGES.sql = {
         ]
       },
       hljs.C_BLOCK_COMMENT_MODE,
-      {
-        className: 'comment',
-        begin: '--', end: '$'
-      }
+      COMMENT_MODE,
+      hljs.HASH_COMMENT_MODE
     ]
-  }
-};
+  };
+}
+
