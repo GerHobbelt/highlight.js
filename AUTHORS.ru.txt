@@ -257,3 +257,4 @@ URL:   https://highlightjs.org/
 - Мартин Клаузен <martin.clausene@gmail.com>
 - Давид Пээк <mail@dpeek.com>
 - Матиас Шиллинг <m@matchilling.com>
+- Роман Реш <romanresh@live.com>

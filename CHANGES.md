@@ -9,6 +9,7 @@ New languages:
 - *[Botlang][]* Scripting language for conversational chat bots by [Mathias Schilling][].
 - *Expression 2* by [Simen Wiik][].
 - *Igor Pro* by [Thomas Braun][]
+- *CSHTML* by [Roman Resh][]
 
 New styles:
 
@@ -27,6 +28,7 @@ Improvements:
 [Simen Wiik]: https://github.com/revosw
 [Arctic Ice Studio]: https://github.com/arcticicestudio
 [nord-highlightjs]: https://github.com/arcticicestudio/nord-highlightjs
+[Roman Resh]: https://github.com/romanresh
 
 
 ## Version 9.12.0
