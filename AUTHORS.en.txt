@@ -238,6 +238,7 @@ Contributors:
 - Nicolas Le Gall <contact@nlegall.fr>
 - Kenton Hamaluik <kentonh@gmail.com>
 - Aaron Dandy <aaron.dandy@live.com>
+- Ckristian Duran <ckristian_duran@hotmail.com>
 - Marvin Saignat <contact@zgmrvn.com>
 - Michael Rodler <contact@f0rki.at>
 - G8t Guy <g8tguy@g8tguy.com>

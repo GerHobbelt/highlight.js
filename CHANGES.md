@@ -23,6 +23,7 @@ New languages:
 - *FASM* (Flat Assembler) by [Tristano Ajmone][]
 - *Epp* by [Ben Ford][]
 - *Robot Framework* by [Harri Paavola][]
+- *riscvasm* by [Ckristian Duran][] at [OnChipUIS][]
 
 New styles:
 
@@ -56,6 +57,8 @@ Improvements:
 [Renan LAVAREC]: https://github.com/Ti-R
 [Serhioromano]: https://github.com/serhioromano
 [Cassio Binkowski]: https://github.com/cassioiks
+[Ckristian Duran]: https://github.com/ckdur
+[OnChipUIS]: https://github.com/onchipuis
 
 
 ## Version 9.12.0
