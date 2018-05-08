@@ -21,7 +21,7 @@
   "license": "BSD-3-Clause",
   "repository": {
     "type": "git",
-    "url": "git://github.com/isagalaev/highlight.js.git"
+    "url": "git://github.com/GerHobbelt/highlight.js.git"
   },
   "main": "./lib/index.js",
   "scripts": {
@@ -33,7 +33,7 @@
     "pub": "npm publish --access public"
   },
   "engines": {
-    "node": "*"
+    "node": ">=4"
   },
   "devDependencies": {
     "@segment/to-iso-string": "1.0.1",
@@ -54,14 +54,5 @@
     "pug": "2.0.3",
     "should": "13.2.1",
     "tiny-worker": "2.1.2"
-  },
-  "dependencies": {
-    "bluebird": "3.5.1",
-    "commander": "2.15.1",
-    "del": "3.0.0",
-    "gear": "0.9.7",
-    "gear-lib": "0.9.2",
-    "jsdom": "11.10.0",
-    "lodash": "4.17.10"
   }
 }

@@ -1,6 +1,12 @@
-# Highlight.js
+# Highlight.js ([forked](https://github.com/isagalaev/highlight.js))
 
-[![Build Status](https://travis-ci.org/isagalaev/highlight.js.svg?branch=master)](https://travis-ci.org/isagalaev/highlight.js) [![GitHub issues](https://img.shields.io/github/issues/isagalaev/highlight.js.svg)](https://github.com/isagalaev/highlight.js/issues) [![GitHub forks](https://img.shields.io/github/forks/isagalaev/highlight.js.svg)](https://github.com/isagalaev/highlight.js/network) [![GitHub stars](https://img.shields.io/github/stars/isagalaev/highlight.js.svg)](https://github.com/isagalaev/highlight.js/stargazers) [![GitHub license](https://img.shields.io/github/license/isagalaev/highlight.js.svg)](https://github.com/isagalaev/highlight.js/blob/master/LICENSE) [![GitHub (pre-)release](https://img.shields.io/github/release/qubyte/rubidium/all.svg)](https://github.com/isagalaev/highlight.js/releases)
+[![Build Status](https://travis-ci.org/GerHobbelt/highlight.js.svg?branch=master)](https://travis-ci.org/GerHobbelt/highlight.js) 
+[![GitHub issues](https://img.shields.io/github/issues/isagalaev/highlight.js.svg)](https://github.com/isagalaev/highlight.js/issues) 
+[![GitHub forks](https://img.shields.io/github/forks/GerHobbelt/highlight.js.svg)](https://github.com/GerHobbelt/highlight.js/network) 
+[![GitHub stars](https://img.shields.io/github/stars/GerHobbelt/highlight.js.svg)](https://github.com/GerHobbelt/highlight.js/stargazers) 
+[![GitHub license](https://img.shields.io/github/license/GerHobbelt/highlight.js.svg)](https://github.com/GerHobbelt/highlight.js/blob/master/LICENSE) 
+[![GitHub (pre-)release](https://img.shields.io/github/release/qubyte/rubidium/all.svg)](https://github.com/GerHobbelt/highlight.js/releases)
+
 
 Highlight.js is a syntax highlighter written in JavaScript. It works in
 the browser as well as on the server. It works with pretty much any
@@ -68,6 +74,7 @@ $('div.code').each(function(i, block) {
 
 For other options refer to the documentation for [`configure`][4].
 
+
 ### Additional initialization when utilising TurboLinks.
 
 If you are using highlight.js with the [TurboLinks](https://github.com/turbolinks/turbolinks) library you will need to ALSO include the following initilization:
@@ -80,6 +87,7 @@ document.addEventListener('turbolinks:load', function () {
 ```
 
 This will ensure that your code is highlighted when TurboLinks loads the page.
+
 
 ## Web Workers
 
@@ -169,20 +177,20 @@ r.js -o name=hljs paths.hljs=/path/to/highlight out=highlight.js
 You can import Highlight.js as a CommonJS-module:
 
 ```bash
-npm install highlight.js --save
+npm install @gerhobbelt/highlight.js --save
 ```
 
 In your application:
 
 ```javascript
-import hljs from 'highlight.js';
+import hljs from '@gerhobbelt/highlight.js';
 ```
 
 The default import imports all languages! Therefore it is likely to be more efficient to import only the library and the languages you need:
 
 ```javascript
-import hljs from 'highlight.js/lib/highlight';
-import javascript from 'highlight.js/lib/languages/javascript';
+import hljs from '@gerhobbelt/highlight.js/lib/highlight';
+import javascript from '@gerhobbelt/highlight.js/lib/languages/javascript';
 hljs.registerLanguage('javascript', javascript);
 ```
 
@@ -191,6 +199,7 @@ hljs.registerLanguage('javascript', javascript);
 
 Highlight.js is released under the BSD License. See [LICENSE][7] file
 for details.
+
 
 ## Links
 
@@ -207,5 +216,5 @@ Authors and contributors are listed in the [AUTHORS.en.txt][8] file.
 [4]: http://highlightjs.readthedocs.io/en/latest/api.html#configure-options
 [5]: https://highlightjs.org/download/
 [6]: http://highlightjs.readthedocs.io/en/latest/building-testing.html
-[7]: https://github.com/isagalaev/highlight.js/blob/master/LICENSE
-[8]: https://github.com/isagalaev/highlight.js/blob/master/AUTHORS.en.txt
+[7]: https://github.com/GerHobbelt/highlight.js/blob/master/LICENSE
+[8]: https://github.com/GerHobbelt/highlight.js/blob/master/AUTHORS.en.txt
