@@ -6,7 +6,7 @@
     "syntax"
   ],
   "homepage": "https://highlightjs.org/",
-  "version": "9.13.1-12",
+  "version": "9.13.1-13",
   "author": {
     "name": "Ivan Sagalaev",
     "email": "maniac@softwaremaniacs.org"
@@ -1209,7 +1209,7 @@
     "type": "git",
     "url": "git://github.com/GerHobbelt/highlight.js.git"
   },
-  "main": "./lib/index.js",
+  "main": "./build/node/lib/index.js",
   "scripts": {
     "build": "node tools/build.js -t all -n",
     "build_minified": "node tools/build.js -t all",
