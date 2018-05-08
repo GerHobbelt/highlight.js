@@ -6,7 +6,7 @@
     "syntax"
   ],
   "homepage": "https://highlightjs.org/",
-  "version": "9.13.1-13",
+  "version": "9.13.1-14",
   "author": {
     "name": "Ivan Sagalaev",
     "email": "maniac@softwaremaniacs.org"
@@ -22,8 +22,8 @@
   },
   "main": "./build/node/lib/index.js",
   "scripts": {
-    "build": "node tools/build.js -t all -n",
-    "build_minified": "node tools/build.js -t all",
+    "build": "node tools/build.js -t all -n -d",
+    "build_minified": "node tools/build.js -t all -d",
     "lint": "eslint src/ demo/",
     "test": "./node_modules/.bin/mocha test/",
     "test-browser": "./node_modules/.bin/mocha test/browser/",
