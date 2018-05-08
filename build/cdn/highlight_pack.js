@@ -1,4 +1,4 @@
-/*! highlight.js v9.13.1-11 | BSD3 License | git.io/hljslicense */
+/*! highlight.js v9.13.1-12 | BSD3 License | git.io/hljslicense */
 (function(factory) {
 
   // Find the global object for export to both the browser and web workers.

@@ -13,6 +13,7 @@ the browser as well as on the server. It works with pretty much any
 markup, doesn’t depend on any framework and has automatic language
 detection.
 
+
 ## Getting Started
 
 The bare minimum for using highlight.js on a web page is linking to the
@@ -22,6 +23,7 @@ library along with one of the styles and calling
 ```html
 <link rel="stylesheet" href="/path/to/styles/default.css">
 <script src="/path/to/highlight_pack.js"></script>
+<!-- highlight library packs pre-built for various targets are available in /build/<env>/ -->
 <script>hljs.initHighlightingOnLoad();</script>
 ```
 
@@ -153,7 +155,8 @@ build specific to browsers rather than something meant for a server.
 Head over to the [download page][5] for all the options.
 
 **Don't link to GitHub directly.** The library is not supposed to work straight
-from the source, it requires building. If none of the pre-packaged options
+from the source, it requires building. If none of the pre-packaged options 
+available in the /build/ directories
 work for you refer to the [building documentation][6].
 
 **The CDN-hosted package doesn't have all the languages.** Otherwise it'd be
@@ -189,8 +192,8 @@ import hljs from '@gerhobbelt/highlight.js';
 The default import imports all languages! Therefore it is likely to be more efficient to import only the library and the languages you need:
 
 ```javascript
-import hljs from '@gerhobbelt/highlight.js/lib/highlight';
-import javascript from '@gerhobbelt/highlight.js/lib/languages/javascript';
+import hljs from '@gerhobbelt/highlight.js/build/node/lib/highlight';
+import javascript from '@gerhobbelt/highlight.js/build/node/lib/languages/javascript';
 hljs.registerLanguage('javascript', javascript);
 ```
 
