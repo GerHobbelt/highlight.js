@@ -4,6 +4,9 @@ node_js:
   - 5
   - 6
   - 7
+  - 8
+  - 9
+  - 10
   - node
 
 env:
@@ -14,15 +17,14 @@ env:
 
 matrix:
   include:
-    - node_js: 6
+    - node_js: 8
       env: ESLINT=1
 
 script:
   - |
     if [ "x$ESLINT" = "x1" ] ; then
       # specific environment for just linting
-      eslint src/ demo/ && exit 0
-      exit 1
+      npm run lint
     fi
 
     if [ "x$NOCOMPRESS" = "x1" ]; then

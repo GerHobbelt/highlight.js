@@ -443,7 +443,7 @@ https://highlightjs.org/
       var new_mode;
       //if (lexeme !== '') {
           new_mode = subMode(lexeme, top);
-      //} 
+      //}
       if (new_mode) {
         if (new_mode.skip) {
           mode_buffer += lexeme;
@@ -526,7 +526,7 @@ https://highlightjs.org/
 
       // also exit loop when terminator regex matches the empty string:
       // prevent infinite loop in here, but only after a minimum of 'empty'
-      // cycles have executed as otherwise the output will differ and tests 
+      // cycles have executed as otherwise the output will differ and tests
       // will fail!
       while (zero_limit) {
         top.terminators.lastIndex = index;
@@ -671,7 +671,7 @@ https://highlightjs.org/
     block.innerHTML = result.value;
     block.className = buildClassName(block.className, language, result.language);
     if (options.langAttribute)
-       block.setAttribute('data-lang', result.language);
+      block.setAttribute('data-lang', result.language);
     block.result = {
       language: result.language,
       re: result.relevance
@@ -759,7 +759,7 @@ https://highlightjs.org/
 
   // Common modes
   hljs.BACKSLASH_ESCAPE = {
-    begin: '\\\\[\\s\\S]', 
+    begin: '\\\\[\\s\\S]',
     relevance: 0,
   };
   hljs.APOS_STRING_MODE = {

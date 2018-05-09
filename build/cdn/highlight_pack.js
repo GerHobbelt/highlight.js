@@ -1,4 +1,4 @@
-/*! highlight.js v9.13.1-14 | BSD3 License | git.io/hljslicense */
+/*! highlight.js v9.13.1-15 | BSD3 License | git.io/hljslicense */
 (function(factory) {
 
   // Find the global object for export to both the browser and web workers.
@@ -439,7 +439,7 @@
       var new_mode;
       //if (lexeme !== '') {
           new_mode = subMode(lexeme, top);
-      //} 
+      //}
       if (new_mode) {
         if (new_mode.skip) {
           mode_buffer += lexeme;
@@ -522,7 +522,7 @@
 
       // also exit loop when terminator regex matches the empty string:
       // prevent infinite loop in here, but only after a minimum of 'empty'
-      // cycles have executed as otherwise the output will differ and tests 
+      // cycles have executed as otherwise the output will differ and tests
       // will fail!
       while (zero_limit) {
         top.terminators.lastIndex = index;
@@ -667,7 +667,7 @@
     block.innerHTML = result.value;
     block.className = buildClassName(block.className, language, result.language);
     if (options.langAttribute)
-       block.setAttribute('data-lang', result.language);
+      block.setAttribute('data-lang', result.language);
     block.result = {
       language: result.language,
       re: result.relevance
@@ -755,7 +755,7 @@
 
   // Common modes
   hljs.BACKSLASH_ESCAPE = {
-    begin: '\\\\[\\s\\S]', 
+    begin: '\\\\[\\s\\S]',
     relevance: 0,
   };
   hljs.APOS_STRING_MODE = {
