@@ -92,7 +92,11 @@ function(hljs) {
             },
             {
                 className: 'function',
-                begin: /\.(add|call|contains|del|endswith|extend|filter|find|findindex|get|has|id|indexof|keys|len|lower|map|pop|push|remove|set|sort|splice|startswith|test|unwrap|upper|values|wrap)/,
+                begin: new RegExp(
+                    '\\.(add|call|contains|del|endswith|extend|filter|find|' +
+                    'findindex|get|has|id|indexof|keys|len|lower|map|pop|' +
+                    'push|remove|set|sort|splice|startswith|test|unwrap|' +
+                    'upper|values|wrap)'),
             },
             {
                 className: 'attr',
