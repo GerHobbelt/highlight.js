@@ -1,0 +1,8 @@
+// Return nodes info
+nodes_info();
+
+// Returns user name info
+.users.map(|user| {
+    user.name;
+});
+
