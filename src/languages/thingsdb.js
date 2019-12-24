@@ -79,10 +79,10 @@ function(hljs) {
             {
                 className: 'function',
                 begin: new RegExp(
-                    '\\.(add|call|contains|del|doc|endswith|extend|filter|find|' +
-                    'findindex|get|has|id|indexof|keys|len|lower|map|pop|' +
-                    'push|remove|set|sort|splice|startswith|test|unwrap|' +
-                    'upper|values|wrap)'),
+                    '\\.\\s*(len|call|doc|code|msg|extend|filter|find|' +
+                    'findindex|indexof|map|pop|push|remove|sort|splice|' +
+                    'add|has|contains|endswith|lower|startswith|test|upper|' +
+                    'del|get|id|keys|set|values|wrap|unwrap)\\s*(?=\\()'),
             },
             {
                 className: 'attr',
@@ -92,10 +92,6 @@ function(hljs) {
                 className: 'variable',
                 begin: /[A-Za-z_][0-9A-Za-z_]*/
             },
-            {
-                begin: /\b(print|exec)\(/ // don’t highlight keywords-turned-functions in Python 3
-            }
         ],
-
     };
   }
