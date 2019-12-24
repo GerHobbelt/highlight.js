@@ -6,3 +6,6 @@ nodes_info();
     user.name;
 });
 
+// Should highlight findindex
+[1, 2, 3].findindex(2);
+
