@@ -5,16 +5,39 @@ Category: common, scripting
 Website: https://thingsdb.net
 */
 
-function(hljs) {
+export default function(hljs) {
+
+    var SUBST = {
+        className: 'subst',
+        begin: /\{/, end: /\}/,
+    };
+
+    var LITERAL_BRACKET = {
+        begin: /\{\{/,
+        relevance: 0
+    };
+
     var STRINGS = {
         className: 'string',
-        variants: [{
-            begin: '"', end: '"',
-            illegal: '\\n',
-        }, {
+        variants: [
+          {
             begin: '\'', end: '\'',
-            illegal: '\\n',
-        }]
+            contains: [],
+            relevance: 10
+          },
+          {
+            begin: '"', end: '"',
+            contains: [],
+            relevance: 10
+          },
+          {
+            begin: '`', end: '`',
+            contains: [LITERAL_BRACKET, SUBST],
+            relevance: 10
+          },
+          hljs.APOS_STRING_MODE,
+          hljs.QUOTE_STRING_MODE
+        ]
     };
 
     var NUMBERS = {
@@ -112,4 +135,4 @@ function(hljs) {
             },
         ],
     };
-  }
+}
