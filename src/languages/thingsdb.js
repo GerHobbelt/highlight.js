@@ -102,7 +102,7 @@ export default function(hljs) {
                     'del_expired|del_node|del_token|del_user|grant|' +
                     'has_collection|has_node|has_token|has_user|' +
                     'new_collection|new_node|new_token|new_user|' +
-                    'rename_collection|rename_user|revoke|set_password|' +
+                    'rename_collection|rename_user|restore|revoke|set_password|' +
                     'user_info|users_info|' +
                     /* procedure functions */
                     'del_procedure|has_procedure|new_procedure|' +
