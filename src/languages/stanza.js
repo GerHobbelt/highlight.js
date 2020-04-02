@@ -81,14 +81,15 @@ export default function(hljs) {
   //     keywords: BUILTINS
   // };
 
-  var COMMENT = [
+  var COMMENT_MODES = [
     hljs.COMMENT(
       ';',
       '$',
       {
         relevance: 0
       }
-    )
+    ),
+    hljs.COMMENT(';<*>', ';<*>')
   ];
 
   return {
@@ -96,6 +97,6 @@ export default function(hljs) {
     lexemes: STANZA_IDENT_RE,
     keywords: KEYWORDS,
     illegal: /\S/,
-    contains: [NUMBER, CHAR, STRING, COMMENT]
+      contains: [NUMBER, CHAR, STRING].concat(COMMENT_MODES)
   };
 }
