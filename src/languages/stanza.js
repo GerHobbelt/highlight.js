@@ -22,33 +22,36 @@ export default function(hljs) {
 
   var KEYWORDS = {
     keyword:
-      'defpackage import public protected private doc deftype defchild' +
-      'val var defn defn* defmulti defmethod defmethod* fn fn*' + 
-      'multi begin let match branch new as as? set do' + 
-      'prim tuple quote none of and or ->' + 
-      'cap void ? new struct addr addr! deref' + 
-      'slot field do call-c prim sizeof tagof' + 
-      'letexp and or set labels block goto return' + 
-      'let if match func' + 
-      'extern extern-fn byte int long float double' +
-      'ptr ref ?',
+      'defpackage import public protected private doc deftype defchild ' +
+      'val var ' +
+      'defn defmulti defmethod fn ' +
+      'defn* defmethod* fn* ' + 
+      'multi begin let match branch new as as? set do ' + 
+      'prim tuple quote none of and or -> ' + 
+      'cap void ? new struct addr addr! deref ' + 
+      'slot field do call-c prim sizeof tagof ' + 
+      'letexp and or set labels block goto return ' + 
+      'let if match func ' + 
+      'extern extern-fn byte int long float double ' +
+      'ptr ref ? ' +
+      'defstruct',
 
     built_in:
-      'True False Byte Int Long Float Double Char String' +
-      'Box Fn Type Symbol Tuple List' +
-      'Comparable Equalable Lengthable Hashable IndexedCollection' +
-      'Array CharArray ByteArray IntArray LongArray FloatArray DoubleArray' +
-      'InputStream OutputStream FileOutputStream FileInputStream' +
-      'StringInputStream Printable IndentedStream' +
-      'Seqable Seq Collection' +
-      'BufferedInputStream RandomAccessFile ByteBuffer StringBuffer' +
-      'Exception IOException' +
-      'Maybe None One' +
-      'Range KeyValue' +
-      'Token FileInfo' +
-      'Random Process Timer' +
-      'Unique Finalizer' +
-      'Vector Queue HashTable HashSet IntTable IntSet',
+      'True False Byte Int Long Float Double Char String ' +
+      'Box Fn Type Symbol Tuple List ' +
+      'Comparable Equalable Lengthable Hashable IndexedCollection ' +
+      'Array CharArray ByteArray IntArray LongArray FloatArray DoubleArray ' +
+      'InputStream OutputStream FileOutputStream FileInputStream ' +
+      'StringInputStream Printable IndentedStream ' +
+      'Seqable Seq Collection ' +
+      'BufferedInputStream RandomAccessFile ByteBuffer StringBuffer ' +
+      'Exception IOException ' +
+      'Maybe None One ' +
+      'Range KeyValue ' +
+      'Token FileInfo ' +
+      'Random Process Timer ' +
+      'Unique Finalizer ' +
+      'Vector Queue HashTable HashSet IntTable IntSet ',
 
     literal:
       'false true'

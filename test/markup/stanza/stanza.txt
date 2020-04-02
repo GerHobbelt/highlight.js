@@ -1,3 +1,9 @@
+; string
+val s = "abc"
+; char
+val c = 'a'
+; boolean
+val t = true
 ; no argument function
 defn f () -> Int : 1 + 1
 ; one argument function
@@ -9,10 +15,8 @@ defn f (a:HashTable<Int>) : a + a
 ; defmulti
 defmulti f (a:Int) -> Int
 ; defmulti
-defmulti<?T>  f (a:T) -> T
-; string
-val s = "abc"
-; char
-val c = 'a'
-; boolean
-val t = true
+defmulti<?T> f (a:T) -> T
+; defstruct
+defstruct Point :
+  x : Int
+  y : Int
