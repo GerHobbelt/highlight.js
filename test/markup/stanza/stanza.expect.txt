@@ -1,0 +1,18 @@
+<span class="hljs-comment">; no argument function</span>
+<span class="hljs-keyword">defn</span> f () -&gt; <span class="hljs-built_in">Int</span> : <span class="hljs-number">1</span> + <span class="hljs-number">1</span>
+<span class="hljs-comment">; one argument function</span>
+<span class="hljs-keyword">defn</span> f (a:<span class="hljs-built_in">Int</span>) : a + a
+<span class="hljs-comment">; two argument function</span>
+<span class="hljs-keyword">defn</span> f (a:<span class="hljs-built_in">Int</span>,b:<span class="hljs-built_in">Int</span>) : a + b
+<span class="hljs-comment">; parameterize argument function</span>
+<span class="hljs-keyword">defn</span> f (a:<span class="hljs-built_in">HashTable</span>&lt;<span class="hljs-built_in">Int</span>&gt;) : a + a
+<span class="hljs-comment">; defmulti</span>
+<span class="hljs-keyword">defmulti</span> f (a:<span class="hljs-built_in">Int</span>) -&gt; <span class="hljs-built_in">Int</span>
+<span class="hljs-comment">; defmulti</span>
+<span class="hljs-keyword">defmulti</span>&lt;?T&gt;  f (a:T) -&gt; T
+<span class="hljs-comment">; string</span>
+val s = <span class="hljs-string">"abc"</span>
+<span class="hljs-comment">; char</span>
+val c = <span class="hljs-string">'a'</span>
+<span class="hljs-comment">; boolean</span>
+val t = <span class="hljs-literal">true</span>
