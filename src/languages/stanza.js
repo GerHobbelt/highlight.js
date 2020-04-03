@@ -9,7 +9,7 @@ Category: lisp
 */
 
 export default function(hljs) {
-  var STANZA_IDENT_RE = '[^\\(\\)\\:\\<\\>\\[\\]\\{\\}",\'`;#|\\\\\\s]+';
+  var STANZA_IDENT_RE = '[^\\(\\)\\:\\&\\|\\<\\>\\[\\]\\{\\}",\'`;#|\\\\\\s]+';
 
   var NUMBER = {
     className: 'number', relevance: 0,
@@ -57,12 +57,31 @@ export default function(hljs) {
       'false true'
   };
 
-  var STRING = hljs.QUOTE_STRING_MODE;
-
-  var LITERAL = {
-    className: 'literal',
-    begin: '(true|false)'
-  };
+  // var STRING = hljs.QUOTE_STRING_MODE;
+     var STRING = {
+         className: 'string',
+         contains: [hljs.BACKSLASH_ESCAPE],
+         variants: [
+             {begin: /"/, end: /"/},
+             // {begin: /\\<.*>/, endSameAsBegin: true}
+             {begin: /\\<.*>/, end: /<.*>/}
+             // {begin: /\\<\w+>(?:.|\n)*?<\1>/,
+             //  returnBegin: true,
+             //  contains: [
+             //      { begin: /\\</ },
+             //      { begin: /\w+>/,
+             //        endSameAsBegin: true,
+             //        contains: [hljs.BACKSLASH_ESCAPE],
+             //      }
+             //      ]
+             //}
+         ]
+     };
+   
+  // var LITERAL = {
+  //   className: 'literal',
+  //   begin: '(true|false)'
+  // };
 
   var CHAR = {
     className: 'string',
@@ -82,14 +101,8 @@ export default function(hljs) {
   // };
 
   var COMMENT_MODES = [
-    hljs.COMMENT(
-      ';',
-      '$',
-      {
-        relevance: 0
-      }
-    ),
-    hljs.COMMENT(';<*>', ';<*>')
+    hljs.COMMENT(';<[a-zA-Z]*>.*$', ';.*<[a-zA-Z]*>$', { relevance: 0 }),
+    hljs.COMMENT(';',               '$',               { relevance: 1 })
   ];
 
   return {
@@ -97,6 +110,6 @@ export default function(hljs) {
     lexemes: STANZA_IDENT_RE,
     keywords: KEYWORDS,
     illegal: /\S/,
-      contains: [NUMBER, CHAR, STRING].concat(COMMENT_MODES)
+    contains: [NUMBER, CHAR, STRING].concat(COMMENT_MODES)
   };
 }
