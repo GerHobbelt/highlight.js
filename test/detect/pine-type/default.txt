@@ -1,0 +1,4 @@
+series(float)
+string
+color
+plotarrow(series: series(float), title: string, colorup: color, colordown: color, transp: int, offset: int, minheight: int, maxheight: int, editable: bool, show_last: int, display: int) -> void

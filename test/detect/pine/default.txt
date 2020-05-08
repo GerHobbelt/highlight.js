@@ -1,0 +1,24 @@
+N = 5
+ma = close
+// ma = (close + close[1] + close[2] + close[3] + close[4]) / 5
+for i = 1 to N
+    ma := ma + close[i] 
+  
+longCondition = crossover(sma(close, 14), sma(close, 28))
+if (longCondition)
+    strategy.entry("My Long Entry Id", strategy.long)
+    
+mn(x, y) => 
+updown(s, m) =>
+    isEqual = s == s[1]
+    isGrowing = s > s[1]
+    ud = isEqual ?
+            0 :
+            isGrowing ?
+                (nz(ud[1]) <= 0 ?
+                        1 :
+                    nz(ud[1])+1) :
+                (nz(ud[1]) >= 0 ?
+                    -1 :
+                    nz(ud[1])-1)
+        
