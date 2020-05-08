@@ -260,7 +260,7 @@ export default function(hljs) {
   };
 
   return {
-    aliases: ['csharp', 'c#'],
+    aliases: ['cs', 'c#'],
     keywords: KEYWORDS,
     illegal: /::/,
     contains: [
