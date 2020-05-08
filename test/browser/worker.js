@@ -1,3 +1,4 @@
+/* globals hljs importScripts */
 'use strict';
 
 const Worker = require('tiny-worker');
@@ -19,7 +20,9 @@ describe('web worker', function() {
       };
     });
 
-    const done = new Promise(resolve => this.worker.onmessage = resolve);
+    const done = new Promise(resolve => {
+      this.worker.onmessage = resolve;
+    });
     this.worker.postMessage({
       action: 'importScript',
       script: this.hljsPath

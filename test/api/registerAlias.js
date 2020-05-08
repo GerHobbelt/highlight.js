@@ -1,7 +1,6 @@
 'use strict';
 
 const hljs = require('../../build');
-const should = require('should');
 
 describe('.registerAlias()', () => {
   it('should get an existing language by alias', () => {

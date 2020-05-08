@@ -1,6 +1,6 @@
 'use strict';
 
-const { promisify } = require('util');
+const should = require("should");
 
 const { newTestCase, defaultCase, buildFakeDOM } = require('./test_case');
 

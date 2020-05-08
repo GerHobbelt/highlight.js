@@ -1,4 +1,5 @@
 const hljs = require('../../build');
+const should = require("should");
 
 describe("bugs", function() {
   // CONTEXT: https://github.com/highlightjs/highlight.js/pull/2219
@@ -29,7 +30,7 @@ describe("bugs", function() {
         );
       hljs.debugMode();
       should(() => {
-        hljs.highlight('test-language', 'The number is 123_longint yes.').value;
+        return hljs.highlight('test-language', 'The number is 123_longint yes.').value;
       }).throw(Error, {
         message: "0 width match regex",
         languageName: "test-language"

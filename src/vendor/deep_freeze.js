@@ -5,7 +5,7 @@ export default function deepFreeze(o) {
   var objIsFunction = typeof o === 'function';
 
   Object.getOwnPropertyNames(o).forEach(function(prop) {
-    if (o.hasOwnProperty(prop) &&
+    if (Object.prototype.hasOwnProperty.call(o, prop) &&
     o[prop] !== null &&
     (typeof o[prop] === "object" || typeof o[prop] === "function") &&
     // IE11 fix: https://github.com/highlightjs/highlight.js/issues/2318

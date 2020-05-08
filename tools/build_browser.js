@@ -85,8 +85,12 @@ function installDemoStyles() {
   mkdir("demo/styles");
 
   glob.sync("*", { cwd: "./src/styles" }).forEach((file) => {
-    if (file.endsWith(".css")) { install_cleancss(`./src/styles/${file}`, `demo/styles/${file}`); } else // images, backgrounds, etc
-    { install(`./src/styles/${file}`, `demo/styles/${file}`); }
+    if (file.endsWith(".css")) {
+      install_cleancss(`./src/styles/${file}`, `demo/styles/${file}`);
+    } else {
+    // images, backgrounds, etc
+      install(`./src/styles/${file}`, `demo/styles/${file}`);
+    }
   });
 }
 

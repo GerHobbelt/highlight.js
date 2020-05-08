@@ -35,7 +35,7 @@ async function buildCDN(options) {
   // it really makes no sense to embed ALL languages with the CDN build, it's
   // more likely we want to embed NONE and have completely separate run-time
   // loading of some sort
-  if (embedLanguages.length == languages.length) {
+  if (embedLanguages.length === languages.length) {
     embedLanguages = [];
   }
 
@@ -85,8 +85,12 @@ function installStyles() {
   mkdir("styles");
 
   glob.sync("*", { cwd: "./src/styles" }).forEach((file) => {
-    if (file.endsWith(".css")) { install_cleancss(`./src/styles/${file}`, `styles/${file.replace(".css", ".min.css")}`); } else // images, backgrounds, etc
-    { install(`./src/styles/${file}`, `styles/${file}`); }
+    if (file.endsWith(".css")) {
+      install_cleancss(`./src/styles/${file}`, `styles/${file.replace(".css", ".min.css")}`);
+    } else {
+    // images, backgrounds, etc
+      install(`./src/styles/${file}`, `styles/${file}`);
+    }
   });
 }
 

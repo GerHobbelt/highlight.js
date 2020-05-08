@@ -44,7 +44,7 @@ function testAutoDetection(language, index, languages) {
         ]);
       }
       // equal relevance is flagged
-      if (actual.relevance == actual.second_best.relevance) {
+      if (actual.relevance === actual.second_best.relevance) {
         return resultTable.push([
           expected,
           actual.language,

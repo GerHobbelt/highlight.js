@@ -48,7 +48,6 @@
   }
 
   function initCategories() {
-    var $categories, categoryNames;
     var categories = {};
 
     $languages.each(function(i, div) {
@@ -61,7 +60,7 @@
       });
     });
 
-    categoryNames = Object.keys(categories);
+    const categoryNames = Object.keys(categories);
 
     categoryNames.sort(function(a, b) {
       a = categoryKey(a);
@@ -75,7 +74,7 @@
       );
     });
 
-    $categories = $categoryContainer.find('li');
+    const $categories = $categoryContainer.find('li');
 
     $categories.click(function() {
       var $category = $(this);
@@ -96,13 +95,11 @@
   }
 
   function initStyles() {
-    var $styles;
-
     $linkTitle.each(function(i, link) {
       $styleContainer.append('<li>' + link.title + '</li>');
     });
 
-    $styles = $styleContainer.find('li');
+    const $styles = $styleContainer.find('li');
 
     $styles.click(function() {
       var $style = $(this);

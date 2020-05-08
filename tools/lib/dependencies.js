@@ -17,7 +17,7 @@ const reorderDependencies = (languages) => {
     }
   }
   return resolver.sort().map((name) =>
-    languages.find((l) => l.name == name)
+    languages.find((l) => l.name === name)
   );
 };
 
@@ -35,7 +35,7 @@ const languagesByGroup = (languages, groupIdentifier) => {
   return languages.filter((el) => el.categories.includes(groupName));
 };
 // :common is a group identifier, "common" is the group name
-const isGroup = (id) => id[0] == ":";
+const isGroup = (id) => id[0] === ":";
 
 /**
  * Filters languages by a list of languages or categories
@@ -49,7 +49,7 @@ const isGroup = (id) => id[0] == ":";
  * @returns {array<Language>} filtered list if languages
 */
 const filter = (allLanguages, includes) => {
-  if (includes == undefined || includes.length == 0) { return reorderDependencies(allLanguages); }
+  if (includes == null || includes.length === 0) { return reorderDependencies(allLanguages); }
 
   let languages = [];
   for (const item of includes) {
@@ -57,7 +57,7 @@ const filter = (allLanguages, includes) => {
       languages = languages.concat(languagesByGroup(allLanguages, item));
     } else {
       const languageName = item;
-      const found = allLanguages.find((el) => el.name == languageName);
+      const found = allLanguages.find((el) => el.name === languageName);
       if (found) { languages.push(found); } else {
         console.error(`[ERROR] Language '${languageName}' could not be found.`);
         process.exit(1);
@@ -68,9 +68,9 @@ const filter = (allLanguages, includes) => {
   // resolve requires
   for (const lang of languages) {
     lang.requires.forEach(needed => {
-      if (!languages.find((el) => el.name == needed)) {
+      if (!languages.find((el) => el.name === needed)) {
         console.info(`[INFO] Adding ${needed}... ${lang.name} requires ${needed}.`);
-        languages.push(allLanguages.find((el) => el.name == needed));
+        languages.push(allLanguages.find((el) => el.name === needed));
       }
     });
   }

@@ -89,7 +89,7 @@ async function doTarget(target, buildDir) {
 
 async function doBuild() {
   log("Starting build.");
-  if (commander.target == "all") {
+  if (commander.target === "all") {
     await clean(dir.buildRoot);
     for (const target of TARGETS) {
       log(`** Building ${target.toUpperCase()}. **`);

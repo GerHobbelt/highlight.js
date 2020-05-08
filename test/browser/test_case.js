@@ -1,22 +1,24 @@
-const {promisify} = require('util');
+const { promisify } = require('util');
 const { JSDOM } = require('jsdom');
-const utility  = require('../utility');
-const glob     = promisify(require('glob'));
-const fs       = require('fs');
+const utility = require('../utility');
+const glob = promisify(require('glob'));
+const fs = require('fs');
 
 // default to the minified library if it was built, otherwise fallback to
 // the non-minified
 async function findLibrary() {
-  const files = ['highlight.min.js', 'highlight.js']
+  const files = ['highlight.min.js', 'highlight.js'];
 
-  for (let file of files) {
+  for (const file of files) {
     try {
-      let path = utility.buildPath('..', 'build', file);
+      const path = utility.buildPath('..', 'build', file);
       await fs.promises.stat(path);
       return path;
-    } catch {}
+    } catch (ex) {
+      // nothing
+    }
   }
-  throw "could not find library in `build`"
+  throw new Error("could not find library in `build`");
 }
 
 function newTestCase(opts) {
@@ -31,7 +33,7 @@ function newTestCase(opts) {
     this.hljs.highlightBlock(this.block);
     const actual = this.block.innerHTML;
     actual.should.equal(test.expect);
-  }
+  };
   return test;
 }
 
@@ -40,10 +42,10 @@ const buildFakeDOM = async function(data) {
   const hljsPath = await glob(filePath);
   const hljsFiles = await hljsPath.map(path => fs.readFileSync(path, 'utf8'));
   const hljsScript = await hljsFiles.map(file => `<script>${file}</script>`).join("");
-  const { window} = await new JSDOM(hljsScript + data.html, { runScripts: "dangerously" });
+  const { window } = await new JSDOM(hljsScript + data.html, { runScripts: "dangerously" });
 
   this.block = window.document.querySelector('pre code');
-  this.hljs  = window.hljs;
+  this.hljs = window.hljs;
 };
 
 const defaultCase = newTestCase({

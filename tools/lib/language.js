@@ -1,5 +1,4 @@
 const fs = require("fs");
-const fsProm = require("fs").promises;
 const Terser = require("terser");
 const glob = require("glob");
 const path = require("path");
@@ -58,10 +57,9 @@ class Language {
   }
 
   static fromFile(filename) {
+    let file = `./src/languages/${filename}`;
     if (path.isAbsolute(filename) || filename.startsWith(".")) {
-      var file = filename;
-    } else {
-      var file = `./src/languages/${filename}`;
+      file = filename;
     }
     return new Language(
       path.basename(filename).replace(".js", ""),

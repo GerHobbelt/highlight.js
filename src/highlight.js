@@ -247,7 +247,6 @@ const HLJS = function(hljs) {
     function doBeginMatch(match) {
       var lexeme = match[0];
       var new_mode = match.rule;
-      var mode;
 
       const resp = new Response(new_mode);
       // first internal before callbacks, then the public ones
@@ -273,7 +272,7 @@ const HLJS = function(hljs) {
           mode_buffer = lexeme;
         }
       }
-      mode = startNewMode(new_mode);
+      startNewMode(new_mode);
       // if (mode["after:begin"]) {
       //   let resp = new Response(mode);
       //   mode["after:begin"](match, resp);
@@ -427,7 +426,7 @@ const HLJS = function(hljs) {
       console.error(LANGUAGE_NOT_FOUND.replace("{}", languageName));
       return {
         relevance: 0,
-        value: escape(value)
+        value: escape(codeToHighlight)
       };
     }
 
@@ -439,8 +438,6 @@ const HLJS = function(hljs) {
     processContinuations();
     var mode_buffer = '';
     var relevance = 0;
-    var match;
-    var processedCount;
     var index = 0;
     var iterations = 0;
     var continueScanAtSamePosition = false;
@@ -736,7 +733,9 @@ const HLJS = function(hljs) {
     if (typeof list === 'string') {
       list = [alias];
     }
-    list.forEach(alias => aliases[alias] = languageName);
+    list.forEach(alias => {
+      aliases[alias] = languageName;
+    });
   }
 
   function autoDetection(name) {
