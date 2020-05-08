@@ -14,7 +14,7 @@ Parser Engine:
 Deprecations:
 
 - `lexemes` is now deprecated in favor of `keywords.$pattern` key (#2519) [Josh Goebel][]
-- `endSameAsBegin` is now deprecated. (#2261) [Josh Goebel][]
+- (deprecation) `endSameAsBegin` is now deprecated. (#2261) [Josh Goebel][]
 
 Language Improvements:
 
