@@ -121,14 +121,23 @@ export default function(hljs) {
       className: 'type',
       begin: '!<' + URI_CHARACTERS + ">"
     },
-    { // primary tags
-      className: 'type',
-      begin: '!' + URI_CHARACTERS
-    },
-    { // secondary tags
-      className: 'type',
-      begin: '!!' + URI_CHARACTERS
-    },
+      { // named tags
+        className: 'type',
+        begin: '!\\w+!' + URI_CHARACTERS,
+      },
+      // https://yaml.org/spec/1.2/spec.html#id2784064
+      { // verbatim tags
+        className: 'type',
+        begin: '!<' + URI_CHARACTERS + ">",
+      },
+      { // primary tags
+        className: 'type',
+        begin: '!' + URI_CHARACTERS,
+      },
+      { // secondary tags
+        className: 'type',
+        begin: '!!' + URI_CHARACTERS,
+      },
     { // fragment id &ref
       className: 'meta',
       begin: '&' + hljs.UNDERSCORE_IDENT_RE + '$'
