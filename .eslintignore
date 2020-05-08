@@ -1,2 +1,3 @@
 src/languages
+build/
 *.min.js

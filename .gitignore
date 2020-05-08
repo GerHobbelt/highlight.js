@@ -14,3 +14,7 @@ extra/
 
 # misc
 /work
+
+# build/distro output
+/build/
+
