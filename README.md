@@ -1,9 +1,9 @@
-# Highlight.js ([forked](https://github.com/isagalaev/highlight.js))
+# Highlight.js ([forked](https://github.com/GerHobbelt/highlight.js))
 
 [![Build Status](https://travis-ci.org/GerHobbelt/highlight.js.svg?branch=master)](https://travis-ci.org/GerHobbelt/highlight.js) 
-[![GitHub issues](https://img.shields.io/github/issues/isagalaev/highlight.js.svg)](https://github.com/isagalaev/highlight.js/issues) 
+[![GitHub issues](https://img.shields.io/github/issues/GerHobbelt/highlight.js.svg)](https://github.com/GerHobbelt/highlight.js/issues) 
 [![GitHub forks](https://img.shields.io/github/forks/GerHobbelt/highlight.js.svg)](https://github.com/GerHobbelt/highlight.js/network) 
-[![GitHub stars](https://img.shields.io/github/stars/GerHobbelt/highlight.js.svg)](https://github.com/GerHobbelt/highlight.js/stargazers) 
+[![Build Status](https://travis-ci.org/GerHobbelt/highlight.js.svg?branch=master)](https://travis-ci.org/GerHobbelt/highlight.js)
 [![GitHub license](https://img.shields.io/github/license/GerHobbelt/highlight.js.svg)](https://github.com/GerHobbelt/highlight.js/blob/master/LICENSE) 
 [![GitHub (pre-)release](https://img.shields.io/github/release/qubyte/rubidium/all.svg)](https://github.com/GerHobbelt/highlight.js/releases)
 
@@ -219,5 +219,5 @@ Authors and contributors are listed in the [AUTHORS.en.txt][8] file.
 [4]: http://highlightjs.readthedocs.io/en/latest/api.html#configure-options
 [5]: https://highlightjs.org/download/
 [6]: http://highlightjs.readthedocs.io/en/latest/building-testing.html
-[7]: https://github.com/GerHobbelt/highlight.js/blob/master/LICENSE
-[8]: https://github.com/GerHobbelt/highlight.js/blob/master/AUTHORS.en.txt
+[7]: https://github.com/highlightjs/highlight.js/blob/master/LICENSE
+[8]: https://github.com/highlightjs/highlight.js/blob/master/AUTHORS.en.txt
