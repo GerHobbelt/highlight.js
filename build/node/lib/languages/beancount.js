@@ -15,7 +15,7 @@ module.exports = function language_BEANCOUNT(hljs) {
 
     var AMOUNT = {
         className: 'literal',
-        begin: /([\-|\+]?)([\d]+[\.]?[\d]*)/,
+        begin: /([\-\|\+]?)([\d]+[.]?[\d]*)/,
         relevance: 0
     };
 

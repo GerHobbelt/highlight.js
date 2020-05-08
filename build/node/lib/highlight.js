@@ -645,6 +645,7 @@ https://highlightjs.org/
 
     if (options.useBR) {
       node = document.createElementNS('http://www.w3.org/1999/xhtml', 'div');
+      // eslint-disable-next-line   no-useless-escape
       node.innerHTML = block.innerHTML.replace(/\n/g, '').replace(/<br[ \/]*>/g, '\n');
     } else {
       node = block;

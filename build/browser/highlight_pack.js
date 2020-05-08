@@ -641,6 +641,7 @@
 
     if (options.useBR) {
       node = document.createElementNS('http://www.w3.org/1999/xhtml', 'div');
+      // eslint-disable-next-line   no-useless-escape
       node.innerHTML = block.innerHTML.replace(/\n/g, '').replace(/<br[ \/]*>/g, '\n');
     } else {
       node = block;
@@ -3894,7 +3895,7 @@ hljs.registerLanguage('beancount', function language_BEANCOUNT(hljs) {
 
     var AMOUNT = {
         className: 'literal',
-        begin: /([\-|\+]?)([\d]+[\.]?[\d]*)/,
+        begin: /([\-\|\+]?)([\d]+[.]?[\d]*)/,
         relevance: 0
     };
 

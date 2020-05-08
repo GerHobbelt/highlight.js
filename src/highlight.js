@@ -309,9 +309,9 @@ https://highlightjs.org/
         mode.contains.map(function(c) {
           return c.beginKeywords ? '\\.?(' + c.begin + ')\\.?' : c.begin;
         })
-        .concat([mode.terminator_end, mode.illegal])
-        .map(reStr)
-        .filter(Boolean);
+          .concat([mode.terminator_end, mode.illegal])
+          .map(reStr)
+          .filter(Boolean);
       mode.terminators = terminators.length ? langRe(terminators.join('|'), true) : {exec: function(/*s*/) {return null;}};
     }
 
@@ -357,7 +357,7 @@ https://highlightjs.org/
 
     function keywordMatch(mode, match) {
       var match_str = language.case_insensitive ? match[0].toLowerCase() : match[0];
-      return mode.keywords.hasOwnProperty(match_str) && mode.keywords[match_str];
+      return Object.prototype.hasOwnProperty.call(mode.keywords, match_str) && mode.keywords[match_str];
     }
 
     function buildSpan(classname, insideSpan, leaveOpen, noPrefix) {
@@ -405,8 +405,8 @@ https://highlightjs.org/
       }
 
       var result = explicit ?
-                   highlight(top.subLanguage, mode_buffer, true, continuations[top.subLanguage]) :
-                   highlightAuto(mode_buffer, top.subLanguage.length ? top.subLanguage : undefined);
+        highlight(top.subLanguage, mode_buffer, true, continuations[top.subLanguage]) :
+        highlightAuto(mode_buffer, top.subLanguage.length ? top.subLanguage : undefined);
 
       // Counting embedded language score towards the host language may be disabled
       // with zeroing the containing mode relevance. Usecase in point is Markdown that
@@ -442,7 +442,7 @@ https://highlightjs.org/
 
       var new_mode;
       //if (lexeme !== '') {
-          new_mode = subMode(lexeme, top);
+      new_mode = subMode(lexeme, top);
       //}
       if (new_mode) {
         if (new_mode.skip) {
