@@ -11,15 +11,11 @@ async function buildNodeIndex(languages) {
   const footer = "module.exports = hljs;";
 
   const registration = languages.map((lang) => {
-    try{
     let require = `require('./languages/${lang.name}')`;
     if (lang.loader) {
       require = require += `.${lang.loader}`;
     }
     return `hljs.registerLanguage('${lang.name}', ${require});`;
-  } catch (ex) {
-    console.error("Exception:", ex, lang)
-  }
   });
 
   // legacy
@@ -33,13 +29,17 @@ async function buildNodeIndex(languages) {
 }
 
 async function buildNodeLanguage(language) {
-  const input = { ...config.rollup.node.input, input: language.path, onwarn: function (data) {
-    if (data.code === 'EMPTY_BUNDLE') {
-      throw Error(`Language '${data.chunkName}' does NOT properly export the language definition (\`export default function() { return { <definition> }; }\`). Please fix this problem.`);
+  const input = {
+    ...config.rollup.node.input,
+    input: language.path,
+    onwarn: function(data) {
+      if (data.code === 'EMPTY_BUNDLE') {
+        throw Error(`Language '${data.chunkName}' does NOT properly export the language definition (\`export default function() { return { <definition> }; }\`). Please fix this problem.`);
+      }
+      console.error(`Warning: language '${data.chunkName}': ${data.code} :: ${data.message}`);
     }
-    console.error(`Warning: language '${data.chunkName}': ${data.code} :: ${data.message}`);
-  } };
-  const output = { ...config.rollup.node.output, file: `${process.env.BUILD_DIR}/lib/languages/${language.name}.js`};
+  };
+  const output = { ...config.rollup.node.output, file: `${process.env.BUILD_DIR}/lib/languages/${language.name}.js` };
   await rollupWrite(input, output);
 }
 
