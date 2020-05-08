@@ -2,8 +2,8 @@
 
 var all = 'keywords here';
 
-var output = '', line = '';
-all.forEach(function (item) {
+var output = ''; var line = '';
+all.forEach(function(item) {
   if (12 + 1 + line.length + 1 + item.length + 4 > 120) {
     output += "\n" + "            '" + line + " ' +";
     line = '';

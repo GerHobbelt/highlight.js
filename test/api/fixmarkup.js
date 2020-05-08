@@ -1,7 +1,7 @@
 'use strict';
 
 const should = require('should');
-const hljs   = require('../../build');
+const hljs = require('../../build');
 
 describe('.fixmarkup()', () => {
   after(() => {
@@ -22,7 +22,6 @@ describe('.fixmarkup()', () => {
     hljs.configure({ useBR: true });
     const value = '{ <span class="hljs-attr">"some"</span>: \n <span class="hljs-string">"json"</span> }';
     const result = hljs.fixMarkup(value);
-
 
     result.should.equal(
       '{ <span class="hljs-attr">"some"</span>: <br> <span class="hljs-string">"json"</span> }'

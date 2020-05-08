@@ -1,6 +1,6 @@
 'use strict';
 
-const hljs   = require('../../build');
+const hljs = require('../../build');
 const should = require('should');
 
 describe('.getLanguage()', () => {
@@ -39,6 +39,6 @@ describe('.getLanguage()', () => {
 
     result.should.be.instanceOf(Object);
     result.should.have.property('aliases').with.containEql('cs');
-    should.strictEqual(result, hljs.getLanguage('csharp'))
+    should.strictEqual(result, hljs.getLanguage('csharp'));
   });
 });

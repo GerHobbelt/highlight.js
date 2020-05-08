@@ -1,14 +1,14 @@
 'use strict';
 
-let bluebird = require('bluebird');
-let fs       = bluebird.promisifyAll(require('fs'));
-let hljs     = require('../../build/node/');
-let path     = require('path');
-let utility  = require('../utility');
-let Table    = require('cli-table');
-let colors   = require('colors/safe');
+const bluebird = require('bluebird');
+const fs = bluebird.promisifyAll(require('fs'));
+const hljs = require('../../build/node/');
+const path = require('path');
+const utility = require('../utility');
+const Table = require('cli-table');
+const colors = require('colors/safe');
 
-let resultTable = new Table({
+const resultTable = new Table({
   head: ['expected', 'score', 'actual', 'score', '2nd best', 'score'],
   colWidths: [19, 7, 19, 7, 19, 7],
   style: {
@@ -24,9 +24,9 @@ function testAutoDetection(language, index, languages) {
       return fs.readFileSync(filename, 'utf-8');
     })
     .forEach(function(content) {
-      const expected = language,
-            actual   = hljs.highlightAuto(content),
-            specific = hljs.highlight(expected, content);
+      const expected = language;
+      const actual = hljs.highlightAuto(content);
+      const specific = hljs.highlight(expected, content);
       if (actual.language !== expected && actual.second_best.language !== expected) {
         resultTable.push([
           expected,
@@ -34,17 +34,16 @@ function testAutoDetection(language, index, languages) {
           colors.red(actual.language),
           actual.relevance ? actual.relevance : colors.grey('None'),
           colors.red(actual.second_best.language),
-          actual.second_best.relevance ? actual.second_best.relevance : colors.grey('None'),
+          actual.second_best.relevance ? actual.second_best.relevance : colors.grey('None')
         ]);
-      }
-      else if (actual.language !== expected) {
+      } else if (actual.language !== expected) {
         resultTable.push([
           expected,
           specific.relevance,
           colors.yellow(actual.language),
           actual.relevance ? actual.relevance : colors.grey('None'),
           colors.yellow(actual.second_best.language),
-          actual.second_best.relevance ? actual.second_best.relevance : colors.grey('None'),
+          actual.second_best.relevance ? actual.second_best.relevance : colors.grey('None')
         ]);
       }
     });
@@ -55,12 +54,10 @@ console.log('Checking auto-highlighting for ' + colors.grey(languages.length) + 
 languages.forEach(testAutoDetection);
 
 if (resultTable.length < 1) {
-  console.log(colors.green('SUCCESS') + ' - ' + colors.green(languages.length) + ' of ' + colors.gray(languages.length) + ' languages passed auto-highlight check!')
+  console.log(colors.green('SUCCESS') + ' - ' + colors.green(languages.length) + ' of ' + colors.gray(languages.length) + ' languages passed auto-highlight check!');
 } else {
   console.log(
-    colors.red('FAILURE') + ' - ' + colors.red(resultTable.length) + ' of ' + colors.gray(languages.length) + ' languages failed auto-highlight check.' + 
+    colors.red('FAILURE') + ' - ' + colors.red(resultTable.length) + ' of ' + colors.gray(languages.length) + ' languages failed auto-highlight check.' +
     '\n' +
     resultTable.toString());
 }
-
-

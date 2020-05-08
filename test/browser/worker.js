@@ -1,8 +1,8 @@
 'use strict';
 
-const Worker   = require('tiny-worker');
+const Worker = require('tiny-worker');
 
-const { defaultCase, findLibrary } = require('./test_case')
+const { defaultCase, findLibrary } = require('./test_case');
 
 describe('web worker', function() {
   before(async function() {

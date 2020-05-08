@@ -1,12 +1,12 @@
 'use strict';
 
-const hljs     = require('../../build');
+const hljs = require('../../build');
 const { JSDOM } = require('jsdom');
 const { readFile } = require('fs').promises;
-const utility  = require('../utility');
+const utility = require('../utility');
 
 describe('special cases tests', () => {
-  before(async () => {
+  before(async() => {
     const filename = utility.buildPath('fixtures', 'index.html');
     const page = await readFile(filename, 'utf-8');
     const { window } = await new JSDOM(page);
@@ -24,7 +24,7 @@ describe('special cases tests', () => {
     // Setup hljs for non-`<pre><code>` tests
     hljs.configure({ useBR: true });
 
-    let blocks = document.querySelectorAll('.code');
+    const blocks = document.querySelectorAll('.code');
     blocks.forEach(hljs.highlightBlock);
   });
 
@@ -35,5 +35,5 @@ describe('special cases tests', () => {
   require('./subLanguages');
   require('./buildClassName');
   require('./useBr');
-  require('./endsWithParentVariants')
+  require('./endsWithParentVariants');
 });

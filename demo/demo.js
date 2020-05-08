@@ -6,11 +6,11 @@
 
   hljs.debugMode();
 
-  var $window            = $(window),
-      $languages         = $('#languages div'),
-      $linkTitle         = $('link[title]'),
-      $categoryContainer = $('#categories'),
-      $styleContainer    = $('#styles');
+  var $window = $(window);
+  var $languages = $('#languages div');
+  var $linkTitle = $('link[title]');
+  var $categoryContainer = $('#categories');
+  var $styleContainer = $('#styles');
 
   function resizeLists() {
     var screenHeight = $window.height();
@@ -71,7 +71,7 @@
 
     categoryNames.forEach(function(c) {
       $categoryContainer.append(
-        '<li data-category="' + c + '">' + c + ' (' + categories[c] +')</li>'
+        '<li data-category="' + c + '">' + c + ' (' + categories[c] + ')</li>'
       );
     });
 
