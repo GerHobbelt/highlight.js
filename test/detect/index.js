@@ -23,10 +23,15 @@ function testAutoDetection(language, { detectPath }) {
         const filename = path.join(languagePath, example);
 
         const content = await fs.readFile(filename, 'utf-8');
-        const detectedLanguage = hljs.highlightAuto(content).language;
+        //try {
+          const detectedLanguage = hljs.highlightAuto(content).language;
 
-        detectedLanguage.should.equal(language,
-          `${path.basename(filename)} should be detected as ${language}, but was ${detectedLanguage}`);
+          detectedLanguage.should.equal(language,
+            `${path.basename(filename)} should be detected as ${language}, but was ${detectedLanguage}`);
+        //} catch (ex) {
+        //  console.error("EX:", ex, { name: ex.languageName, rule: ex.badRule, match: ex.match, ruleStr: ex.badRule && ex.badRule.end.toString() });
+        //  throw ex;
+        //}
       }));
   });
 }

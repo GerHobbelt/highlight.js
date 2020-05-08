@@ -347,10 +347,13 @@ const HLJS = function(hljs) {
         // spit the "skipped" character that our regex choked on back into the output sequence
         mode_buffer += codeToHighlight.slice(match.index, match.index + 1);
         if (!SAFE_MODE) {
-          const err = new Error('0 width match regex');
-          err.languageName = languageName;
-          err.badRule = lastMatch.rule;
-          throw err;
+          if (!lastMatch.rule.end || lastMatch.rule.end.toString() !== '/\\B|\\b/') {
+            const err = new Error('0 width match regex');
+            err.languageName = languageName;
+            err.badRule = lastMatch.rule;
+            err.match = match;
+            throw err;
+          }
         }
         return 1;
       }
@@ -539,6 +542,9 @@ const HLJS = function(hljs) {
     languageSubset.filter(getLanguage).filter(autoDetection).forEach(function(name) {
       var current = _highlight(name, code, false);
       current.language = name;
+
+      // console.error("highlightAuto:", { name, L: current.language, r: current.relevance, L1: result.language, r1: result.relevance, L2: secondBest.language, r2: secondBest.relevance });
+
       if (current.relevance > secondBest.relevance) {
         secondBest = current;
       }
