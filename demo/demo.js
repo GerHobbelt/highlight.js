@@ -1,16 +1,17 @@
+/* globals hljs $ */
 (function() {
   'use strict';
 
   hljs.debugMode();
 
-  var $window            = $(window),
-      $languages         = $('#languages div'),
-      $linkTitle         = $('link[title]'),
-      $categoryContainer = $('#categories'),
-      $styleContainer    = $('#styles');
+  var $window = $(window);
+  var $languages = $('#languages div');
+  var $linkTitle = $('link[title]');
+  var $categoryContainer = $('#categories');
+  var $styleContainer = $('#styles');
 
   function resizeLists() {
-    var screenHeight = $window.height()
+    var screenHeight = $window.height();
 
     $categoryContainer.css('max-height', screenHeight / 4);
     $categoryContainer.perfectScrollbar('update');
@@ -45,7 +46,6 @@
   }
 
   function initCategories() {
-    var $categories, categoryNames;
     var categories = {};
 
     $languages.each(function(i, div) {
@@ -58,7 +58,7 @@
       });
     });
 
-    categoryNames = Object.keys(categories);
+    const categoryNames = Object.keys(categories);
 
     categoryNames.sort(function(a, b) {
       a = categoryKey(a);
@@ -68,11 +68,11 @@
 
     categoryNames.forEach(function(c) {
       $categoryContainer.append(
-        '<li data-category="' + c + '">' + c + ' (' + categories[c] +')</li>'
+        '<li data-category="' + c + '">' + c + ' (' + categories[c] + ')</li>'
       );
     });
 
-    $categories = $categoryContainer.find('li');
+    const $categories = $categoryContainer.find('li');
 
     $categories.click(function() {
       var $category = $(this);
@@ -93,13 +93,11 @@
   }
 
   function initStyles() {
-    var $styles;
-
     $linkTitle.each(function(i, link) {
       $styleContainer.append('<li>' + link.title + '</li>');
     });
 
-    $styles = $styleContainer.find('li');
+    const $styles = $styleContainer.find('li');
 
     $styles.click(function() {
       var $style = $(this);

@@ -1,18 +1,17 @@
 const hljs = require('../../build');
+const should = require("should");
 
-describe("bugs", function () {
-
+describe("bugs", function() {
   // CONTEXT: https://github.com/highlightjs/highlight.js/pull/2219
   describe("a grammar with a mode that makes a 0 width match", () => {
     it("should instead count it as a 1 character match", () => {
       hljs.safeMode();
       hljs.registerLanguage('test-language', (hljs) => {
-
         // broken regex from old Fortran ruleset
         const NUMBER = {
           className: "number",
-          begin: '(?=\\b|\\+|\\-|\\.)(?=\\.\\d|\\d)(?:\\d+)?(?:\\.?\\d*)(?:[de][+-]?\\d+)?\\b\\.?',
-        }
+          begin: '(?=\\b|\\+|\\-|\\.)(?=\\.\\d|\\d)(?:\\d+)?(?:\\.?\\d*)(?:[de][+-]?\\d+)?\\b\\.?'
+        };
 
         return {
           contains: [NUMBER]
@@ -25,16 +24,17 @@ describe("bugs", function () {
         // But the key thing is the "1" is registered as a match for the rule
         // instead of disappearing from the output completely, which is what
         // would happen previously.
-        'The number is <span class="hljs-number">1</span>23_longint yes.'
+          'The number is <span class="hljs-number">1</span>23_longint yes.'
         // Incorrect prior output:
         // 'The number is <span class="hljs-number"></span>23_longint yes.'
-      )
+        );
       hljs.debugMode();
       should(() => {
-        hljs.highlight('test-language', 'The number is 123_longint yes.').value
-       }).throw(Error, {
-         message: "0 width match regex",
-         languageName: "test-language"})
-    })
-  })
-})
+        return hljs.highlight('test-language', 'The number is 123_longint yes.').value;
+      }).throw(Error, {
+        message: "0 width match regex",
+        languageName: "test-language"
+      });
+    });
+  });
+});

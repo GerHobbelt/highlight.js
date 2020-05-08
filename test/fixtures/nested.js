@@ -5,8 +5,8 @@ module.exports = function(hljs) {
   var LIST = {
     className: 'list',
     variants: [
-      {begin: /\(/, end: /\)/},
-      {begin: /\[/, end: /\]/}
+      { begin: /\(/, end: /\)/ },
+      { begin: /\[/, end: /\]/ }
     ],
     contains: [BODY]
   };
@@ -14,5 +14,5 @@ module.exports = function(hljs) {
   return {
     disableAutodetect: true,
     contains: [LIST]
-  }
+  };
 };

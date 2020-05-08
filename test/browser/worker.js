@@ -1,8 +1,9 @@
+/* globals hljs importScripts */
 'use strict';
 
-const Worker   = require('tiny-worker');
+const Worker = require('tiny-worker');
 
-const { defaultCase, findLibrary } = require('./test_case')
+const { defaultCase, findLibrary } = require('./test_case');
 
 describe('web worker', function() {
   before(async function() {
@@ -19,7 +20,9 @@ describe('web worker', function() {
       };
     });
 
-    const done = new Promise(resolve => this.worker.onmessage = resolve);
+    const done = new Promise(resolve => {
+      this.worker.onmessage = resolve;
+    });
     this.worker.postMessage({
       action: 'importScript',
       script: this.hljsPath

@@ -7,7 +7,6 @@ var COMMON_KEYWORDS = 'of and for in not or if then'.split(' ');
 // compilation
 
 export function compileLanguage(language) {
-
   function langRe(value, global) {
     return new RegExp(
       regex.source(value),
@@ -237,23 +236,16 @@ export function compileLanguage(language) {
         mode.begin = '\\b(' + mode.beginKeywords.split(' ').join('|') + ')(?=\\b|\\s)';
         mode.__beforeBegin = skipIfhasPrecedingOrTrailingDot;
       }
-      if (!mode.begin)
-        mode.begin = /\B|\b/;
+      if (!mode.begin) { mode.begin = /\B|\b/; }
       mode.beginRe = langRe(mode.begin);
-      if (mode.endSameAsBegin)
-        mode.end = mode.begin;
-      if (!mode.end && !mode.endsWithParent)
-        mode.end = /\B|\b/;
-      if (mode.end)
-        mode.endRe = langRe(mode.end);
+      if (mode.endSameAsBegin) { mode.end = mode.begin; }
+      if (!mode.end && !mode.endsWithParent) { mode.end = /\B|\b/; }
+      if (mode.end) { mode.endRe = langRe(mode.end); }
       mode.terminator_end = regex.source(mode.end) || '';
-      if (mode.endsWithParent && parent.terminator_end)
-        mode.terminator_end += (mode.end ? '|' : '') + parent.terminator_end;
+      if (mode.endsWithParent && parent.terminator_end) { mode.terminator_end += (mode.end ? '|' : '') + parent.terminator_end; }
     }
-    if (mode.illegal)
-      mode.illegalRe = langRe(mode.illegal);
-    if (mode.relevance == null)
-      mode.relevance = 1;
+    if (mode.illegal) { mode.illegalRe = langRe(mode.illegal); }
+    if (mode.relevance == null) { mode.relevance = 1; }
     if (!mode.contains) {
       mode.contains = [];
     }

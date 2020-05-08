@@ -18,6 +18,8 @@ module.exports = {
         "sourceType": "module"
     },
     "rules": {
+      "no-unused-vars": "warn",
+
       "array-callback-return": "error",
       "block-scoped-var": "error",
       // we like our semi-colons
@@ -31,7 +33,7 @@ module.exports = {
       // sometimes we declare variables with extra spacing
       "indent": ["error", 2, {"VariableDeclarator":2}],
       // seems like a good idea not to use explicit undefined
-      "no-undefined": "error",
+      "no-undefined": "warn",
 
       // TODO maybe
       "camelcase": "off", // TODO: turn on later

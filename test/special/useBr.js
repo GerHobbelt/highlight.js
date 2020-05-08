@@ -4,8 +4,8 @@ const utility = require('../utility');
 
 describe('use br', () => {
   before(() => {
-    const filename = utility.buildPath('fixtures', 'expect', 'useBr.txt'),
-          testHTML = document.querySelectorAll('#use-br .hljs');
+    const filename = utility.buildPath('fixtures', 'expect', 'useBr.txt');
+    const testHTML = document.querySelectorAll('#use-br .hljs');
 
     return utility.setupFile(filename, 'utf-8', this, testHTML);
   });

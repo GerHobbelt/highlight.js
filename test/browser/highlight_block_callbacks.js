@@ -1,14 +1,14 @@
 'use strict';
 
-const {promisify} = require('util');
-
-const {newTestCase, defaultCase, buildFakeDOM } = require('./test_case')
+const should = require("should");
+const { newTestCase, defaultCase, buildFakeDOM } = require('./test_case');
 
 class ContentAdder {
   constructor(params) {
-    this.content = params.content
+    this.content = params.content;
   }
-  'before:highlightBlock'({block,language}) {
+
+  'before:highlightBlock'({ block, language }) {
     block.innerHTML += this.content;
   }
 }
@@ -22,37 +22,36 @@ describe('callback system', function() {
     });
     await buildFakeDOM.bind(this)(testCase);
 
-    this.hljs.addPlugin(new ContentAdder({content:" = 5;"}))
+    this.hljs.addPlugin(new ContentAdder({ content: " = 5;" }));
     this.hljs.highlightBlock(this.block);
     const actual = this.block.innerHTML;
     actual.should.equal(testCase.expect);
-
-  })
-})
+  });
+});
 
 describe('before:highlightBlock', function() {
   it('is called', async function() {
     await buildFakeDOM.bind(this)(defaultCase);
     var called = false;
     this.hljs.addPlugin({
-      'before:highlightBlock': ({block, result}) => {
+      'before:highlightBlock': ({ block, result }) => {
         called = true;
       }
     });
     this.hljs.highlightBlock(this.block);
     called.should.equal(true);
-  })
+  });
   it('can modify block content before highlight', async function() {
     const testCase = newTestCase({
       code: "This is the original content.",
       language: "javascript"
-    })
+    });
     await buildFakeDOM.bind(this)(testCase);
 
     this.hljs.addPlugin({
-      'before:highlightBlock': ({block, language}) => {
-        language.should.equal("javascript")
-        block.innerHTML = "var a;"
+      'before:highlightBlock': ({ block, language }) => {
+        language.should.equal("javascript");
+        block.innerHTML = "var a;";
       }
     });
 
@@ -61,28 +60,27 @@ describe('before:highlightBlock', function() {
     actual.should.equal(
       `<span class="hljs-keyword">var</span> a;`);
   });
-
-})
+});
 
 describe('after:highlightBlock', function() {
   it('is called', async function() {
     await buildFakeDOM.bind(this)(defaultCase);
     var called = false;
     this.hljs.addPlugin({
-      'after:highlightBlock': ({block, result}) => {
+      'after:highlightBlock': ({ block, result }) => {
         called = true;
       }
     });
     this.hljs.highlightBlock(this.block);
     called.should.equal(true);
-  })
+  });
   it('receives result data', async function() {
     await buildFakeDOM.bind(this)(defaultCase);
 
     this.hljs.addPlugin({
-      'after:highlightBlock': ({block, result}) => {
-        result.language.should.equal("javascript")
-        result.relevance.should.above(0)
+      'after:highlightBlock': ({ block, result }) => {
+        result.language.should.equal("javascript");
+        result.relevance.should.above(0);
       }
     });
 
@@ -95,28 +93,27 @@ describe('after:highlightBlock', function() {
     });
     await buildFakeDOM.bind(this)(test);
     this.hljs.addPlugin({
-      'after:highlightBlock': ({block, result}) => {
-        result.language="basic";
+      'after:highlightBlock': ({ block, result }) => {
+        result.language = "basic";
       }
     });
 
     this.hljs.highlightBlock(this.block);
     should(this.block.outerHTML.includes(`class="hljs basic"`)).equal(true);
-
-  })
+  });
   it('can modify result and affect the render output', async function() {
     var test = newTestCase({
       code: "var a = 4;",
       language: "javascript"
-    })
+    });
     await buildFakeDOM.bind(this)(test);
     this.hljs.addPlugin({
-      'after:highlightBlock': ({block, result}) => {
-        result.value="redacted";
+      'after:highlightBlock': ({ block, result }) => {
+        result.value = "redacted";
       }
     });
 
     this.hljs.highlightBlock(this.block);
     this.block.outerHTML.should.equal(`<code class="javascript hljs">redacted</code>`);
-  })
-})
+  });
+});

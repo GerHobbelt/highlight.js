@@ -195,7 +195,7 @@ const HLJS = function(hljs) {
       if (mode.className) {
         emitter.openNode(mode.className);
       }
-      top = Object.create(mode, {parent: {value: top}});
+      top = Object.create(mode, { parent: { value: top } });
       return top;
     }
 
@@ -204,10 +204,9 @@ const HLJS = function(hljs) {
 
       if (matched) {
         if (mode["on:end"]) {
-          let resp = new Response(mode);
+          const resp = new Response(mode);
           mode["on:end"](match, resp);
-          if (resp.ignore)
-            matched = false;
+          if (resp.ignore) { matched = false; }
         }
 
         if (matched) {
@@ -241,12 +240,11 @@ const HLJS = function(hljs) {
     function doBeginMatch(match) {
       var lexeme = match[0];
       var new_mode = match.rule;
-      var mode;
 
-      let resp = new Response(new_mode);
+      const resp = new Response(new_mode);
       // first internal before callbacks, then the public ones
-      let beforeCallbacks = [new_mode.__beforeBegin, new_mode["on:begin"]];
-      for (let cb of beforeCallbacks) {
+      const beforeCallbacks = [new_mode.__beforeBegin, new_mode["on:begin"]];
+      for (const cb of beforeCallbacks) {
         if (!cb) continue;
         cb(match, resp);
         if (resp.ignore) return doIgnore(lexeme);
@@ -267,7 +265,7 @@ const HLJS = function(hljs) {
           mode_buffer = lexeme;
         }
       }
-      mode = startNewMode(new_mode);
+      startNewMode(new_mode);
       // if (mode["after:begin"]) {
       //   let resp = new Response(mode);
       //   mode["after:begin"](match, resp);
@@ -491,7 +489,7 @@ const HLJS = function(hljs) {
       illegal: false,
       top: PLAINTEXT_LANGUAGE
     };
-    result.emitter.addText(code)
+    result.emitter.addText(code);
     return result;
   }
 
@@ -508,7 +506,7 @@ const HLJS = function(hljs) {
   */
   function highlightAuto(code, languageSubset) {
     languageSubset = languageSubset || options.languages || Object.keys(languages);
-    var result = justTextHighlightResult(code)
+    var result = justTextHighlightResult(code);
     var secondBest = result;
     languageSubset.filter(getLanguage).filter(autoDetection).forEach(function(name) {
       var current = _highlight(name, code, false);
@@ -685,12 +683,14 @@ const HLJS = function(hljs) {
     return languages[name] || languages[aliases[name]];
   }
 
-  function registerAlias(alias, {languageName}) {
+  function registerAlias(alias, { languageName }) {
     let list = alias;
     if (typeof list === 'string') {
-      list = [alias]
+      list = [alias];
     }
-    list.forEach(alias => aliases[alias] = languageName);
+    list.forEach(alias => {
+      aliases[alias] = languageName;
+    });
   }
 
   function autoDetection(name) {

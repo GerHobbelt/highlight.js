@@ -9,8 +9,8 @@ export default {
   },
   plugins: [
     commonjs({
-      include: 'build/**',  // Default: undefined
-      exclude: [ 'node_modules/**' ],  // Default: undefined
+      include: 'build/**', // Default: undefined
+      exclude: ['node_modules/**'] // Default: undefined
     })
   ]
 };

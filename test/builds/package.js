@@ -7,5 +7,5 @@ See .travis.yml
 
 import hljs from '../../build/lib/index.js';
 
-hljs.highlight("cpp","/* test */")
-console.log("Rollup built package works.")
+hljs.highlight("cpp", "/* test */");
+console.log("Rollup built package works.");
