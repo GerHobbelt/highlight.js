@@ -1,11 +1,11 @@
 /*
 Language: CSHTML
-Requires: xml.js, cs.js
+Requires: xml.js, csharp.js
 Author: Roman Resh <romanresh@live.com>
 Category: common
 */
 
-function language_CSHTML(hljs) {
+export default function(hljs) {
     var SPECIAL_SYMBOL_CLASSNAME = "built_in";
 
     var BLOCK_TEXT = {

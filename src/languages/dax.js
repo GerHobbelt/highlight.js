@@ -6,7 +6,7 @@ Website: https://msdn.microsoft.com/en-us/library/ee634217.aspx
 Category: scientific
 */
 
-function language_DAX(hljs) {
+export default function(hljs) {
   var IDENT_RE = '[a-zA-Z][a-zA-Z0-9._]*';
 
   return {

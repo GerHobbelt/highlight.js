@@ -5,7 +5,7 @@ Description: Stock Z80 Assembly using TASM syntax
 Category: assembler
 */
 
-function language_Z80ASM(hljs) {
+export default function(hljs) {
   return {
     case_insensitive: true,
     aliases: ['z80'],

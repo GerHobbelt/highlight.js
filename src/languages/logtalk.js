@@ -4,7 +4,7 @@ Author: Paulo Moura <pmoura@logtalk.org>
 Description: Logtalk is an object-oriented logic programming language that extends and leverages the Prolog language with a feature set suitable for programming in the large.
 */
 
-function language_LOGTALK(hljs) {
+export default function(hljs) {
 
   var ATOMS = {
     className: 'atom',

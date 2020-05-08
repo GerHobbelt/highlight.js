@@ -4,7 +4,7 @@ Author: All-less <all.less.mail@gmail.com>
 Category: misc
 */
 
-function language_TLAPLUS(hljs) {
+export default function(hljs) {
   return {
     keywords: {
       keyword:

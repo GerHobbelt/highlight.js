@@ -4,7 +4,7 @@ Author: Cassio Binkowski <cassioiks@live.com>
 Description: SAP ABAP language description
 */
 
-function language_ABAP(hljs) {
+export default function(hljs) {
   return {
   	case_insensitive: true,
     keywords: {

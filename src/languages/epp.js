@@ -6,7 +6,7 @@ Description: "Bridge" language defining fragments of Puppet in plain text within
 Category: template
 */
 
-function language_EPP(hljs) {
+export default function(hljs) {
   return {
     subLanguage: 'xml',
     contains: [

@@ -5,7 +5,7 @@ Category: integration
 Description: Ballerina language (ballerinalang). For more info about language see https://ballerinalang.org/
 */
 
-function language_BALLERINA(hljs) {
+export default function(hljs) {
   var BALLERINA_KEYWORDS = {
     keyword:
       'package import as public native service resource function connector action struct ' +

@@ -33,7 +33,7 @@ Category: assembler
 
 
 
-function language_FASM(hljs) {
+export default function(hljs) {
   return {
     case_insensitive: true,
     lexemes: '[.%]?' + hljs.IDENT_RE,

@@ -3,7 +3,7 @@ Language: Robot Framework
 Author: Harri Paavola <harri.paavola@gmail.com>
 */
 
-function language_ROBOT_FRAMEWORK(hljs) {
+export default function(hljs) {
   var VAR = {
     className: 'variable',
     begin: /\$\{/,

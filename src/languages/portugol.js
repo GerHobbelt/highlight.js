@@ -5,7 +5,7 @@ Category: pseudocode
 Description: Portugol is pseudocode in Portuguese for Portugol Studio
 */
 
-function language_PORTUGOL(hljs) {
+export default function(hljs) {
 
   var OBJC_KEYWORDS = {
     keyword:

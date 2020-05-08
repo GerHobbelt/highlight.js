@@ -3,7 +3,8 @@ Language: dBase
 Author: Hanna Goodbar <hanna.goodbar@gmail.com>
 Description: Ashton-Tate/Borland dBase IV database application language.
 */
-function language_DBASE(hljs) {
+
+export default function(hljs) {
 	var DBASE_KEYWORDS = {
 		keyword: 'accept activate append application array assist average bar ' +
 			'begin box browse calculate call cancel case change clear close ' +

@@ -4,7 +4,7 @@ Author: Hanna Goodbar <hanna.goodbar@gmail.com>
 Description: IBM User Interface Manager markup language. Modifed from xml.js language file.
 */
 
-function language_IBMUIM(hljs) {
+export default function(hljs) {
 	var XML_IDENT_RE = '[A-Za-z0-9]+';
 	var TAG_INTERNALS = {
 		endsWithParent: true,

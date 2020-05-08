@@ -4,7 +4,7 @@ Author: David Peek <mail@dpeek.com>
 Description: GraphQL schema, query, mutation and subscription
 */
 
-function language_GRAPHQL(hljs) {
+export default function(hljs) {
   return {
     aliases: ['gql'],
     keywords: {

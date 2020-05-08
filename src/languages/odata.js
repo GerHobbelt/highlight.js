@@ -6,7 +6,7 @@ Website: http://www.odata.org/
 Category: common
 */
 
-function language_ODATA(hljs) {
+export default function(hljs) {
   return {
     case_insensitive: false,
     contains: [

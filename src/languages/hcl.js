@@ -5,7 +5,7 @@ Description: Hashicorp Configuration Language. For info about language see https
 Category: config
 */
 
-function language_HCL(hljs) {
+export default function(hljs) {
   var PATH = {
     begin: /[A-Z\_\.\-]+\s*:/
   };

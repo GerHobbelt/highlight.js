@@ -3,8 +3,7 @@ Language: Jam
 Author: Rene Rivera <grafikrobot@gmail.com>
 */
 
-
-function language_JAM(hljs) {
+export default function(hljs) {
 	var KEYWORD_MODE = {
 		className: 'keyword',
 		beginKeywords: 'local include return break continue for in switch ' +

@@ -5,7 +5,7 @@ Category: system
 Description: Non-relational database and programming language. See http://mumps.sourceforge.net/docs.html or https://www.fisglobal.com/Solutions/Services/Database-Engine for more information
 */
 
-function language_MUMPS(hljs) {
+export default function(hljs) {
 	
 	var MUMPS_KEYWORDS = "b break c close d do e else f for g goto h halt hang i if " +
 		"j job k kill l lock m merge n new o open q quit r read s set u use v view " +

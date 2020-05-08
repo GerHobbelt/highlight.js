@@ -4,7 +4,7 @@ Author: Mark Ellis <mark.ellis@stardog.com>
 Category: common
 */
 
-function language_TURTLE(hljs) {
+export default function(hljs) {
   var KEYWORDS = {
     meta: 'base|10 prefix|10 @base|10 @prefix|10',
     literal: 'true|0 false|0',

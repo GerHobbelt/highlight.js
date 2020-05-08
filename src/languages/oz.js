@@ -10,7 +10,7 @@ Description: Oz is a multi-paradigm language that is designed for advanced,
   interfaces.
 */
 
-function language_OZ(hljs) {
+export default function(hljs) {
   var COMMENT = {
     variants: [
       hljs.COMMENT('%', '$'),

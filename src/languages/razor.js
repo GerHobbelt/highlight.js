@@ -1,10 +1,10 @@
 /*
  * Language: razor
- * Requires: xml.js, cs.js
+ * Requires: xml.js, csharp.js
  * Author: Nicolas LLOBERA <nicolas@bananeatomic.fr>
 */
 
-function(hljs) {
+export default function(hljs) {
 
     var razor_comment = hljs.COMMENT(
         '@\\*', '\\*@', { relevance: 10 }

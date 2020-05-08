@@ -4,7 +4,7 @@ Author:: Ryan King <rtking@bu.edu>
 Description: ATS language definition.
 Category: functional
 */
-function language_ATS2(hljs) {
+export default function(hljs) {
     var NUMBERS = {
         className: 'number',
         variants: [

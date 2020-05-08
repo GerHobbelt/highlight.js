@@ -3,7 +3,7 @@
  Contributors: Johannes Wienke <languitar@semipol.de>
  */
 
-function language_CYPHER(hljs) {
+export default function(hljs) {
   return {
     case_insensitive: true,
     keywords: {

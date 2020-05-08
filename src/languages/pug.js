@@ -5,7 +5,7 @@ Description: Pug is a high performance template engine heavily influenced by Ham
 */
 
 // TODO work in process: detect indentation (comments, multiline), attributes with classes
-function language_PUG(hljs) {
+export default function(hljs) {
   return {
     aliases: ['pug'],
     case_insensitive: true,

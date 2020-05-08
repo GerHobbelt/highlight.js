@@ -4,7 +4,7 @@
  Category: common
  */
 
-function(hljs) {
+export default function(hljs) {
   return {
     case_insensitive: true,
     contains: [
@@ -2689,4 +2689,5 @@ function(hljs) {
     }
     ]
   };
-}
+};
+

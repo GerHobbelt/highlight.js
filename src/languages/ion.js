@@ -4,7 +4,7 @@ Author: glendc <contact@glendc.com>
 Category: scripting
 */
 
-function language_ION(hljs) {
+export default function(hljs) {
   var VAR = {
     className: 'variable',
     variants: [

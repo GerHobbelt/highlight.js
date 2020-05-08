@@ -5,7 +5,7 @@ Description: The pattern matching swiss knife http://virustotal.github.io/yara//
 Category: security
 */
 
-function language_YARA(hljs) {
+export default function(hljs) {
   var YARA_KEYWORDS = {
     keyword:
       'all and any ascii at condition contains entrypoint false filesize ' +

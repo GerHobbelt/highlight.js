@@ -6,7 +6,7 @@ Category: blockchain
 Description: Syntax Highlighting for the Solidity Language which is a high-level programming language for the Ethereum blockchain. See http://solidity.readthedocs.io/
 */
 
-function language_SOLIDITY(hljs) {
+export default function(hljs) {
   var IDENT_RE = '[A-Za-z$_][0-9A-Za-z$_]*';
 
 	var NUMBER = {

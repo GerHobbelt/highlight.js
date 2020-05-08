@@ -7,7 +7,7 @@
  * Description: Programming language used by Igor Pro (www.igorpro.net)
 */
 
-function language_IGORPRO(hljs) {
+export default function(hljs) {
 
   var WAVE_DECLARATION = {
     className : 'keyword',
