@@ -13,12 +13,28 @@ const reorderDependencies = (languages) => {
   for (const lang of languages) {
     resolver.add(lang.name);
     for (const required of lang.requires) {
+    if (!required) {
+      throw new Error(`Erroneous 'requires' language set '${lang.requires}' for language '${lang.name}': please fix its definition.`);
+    }
       resolver.setDependency(lang.name, required);
     }
   }
-  return resolver.sort().map((name) =>
-    languages.find((l) => l.name === name)
+  let rv = resolver.sort().map((name) => {
+    let rv = (languages.find((l) => l.name === name))
+    if (!rv) {
+    for (const lang of languages) {
+      for (const required of lang.requires) {
+      if (required === name) {
+        throw new Error(`Language '${name}' is not defined, yet required by the '${lang.name}' language definition file. Please fix this omission.`);
+      }
+    }
+  }
+        throw new Error(`Language '${name}' is not defined, yet required by another language definition file. Please fix this omission.`);
+    }
+    return rv;
+  }
   );
+  return rv;
 };
 
 /**
@@ -49,7 +65,9 @@ const isGroup = (id) => id[0] === ":";
  * @returns {array<Language>} filtered list if languages
 */
 const filter = (allLanguages, includes) => {
-  if (includes == null || includes.length === 0) { return reorderDependencies(allLanguages); }
+  if (includes == null || includes.length === 0) { 
+    return reorderDependencies(allLanguages); 
+  }
 
   let languages = [];
   for (const item of includes) {
@@ -58,7 +76,9 @@ const filter = (allLanguages, includes) => {
     } else {
       const languageName = item;
       const found = allLanguages.find((el) => el.name === languageName);
-      if (found) { languages.push(found); } else {
+      if (found) { 
+        languages.push(found);
+         } else {
         console.error(`[ERROR] Language '${languageName}' could not be found.`);
         process.exit(1);
       }
