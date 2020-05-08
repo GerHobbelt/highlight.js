@@ -179,7 +179,7 @@ https://highlightjs.org/
     }
 
     function open(node) {
-      function attr_str(a) {return ' ' + a.nodeName + '="' + escape(a.value).replace('"', '&quot;') + '"';}
+      function attr_str(a) {return ' ' + a.nodeName + '=\'' + escape(a.value).replace('\'', '&#39;') + '\'';}
       result += '<' + tag(node) + ArrayProto.map.call(node.attributes, attr_str).join('') + '>';
     }
 
@@ -362,10 +362,10 @@ https://highlightjs.org/
 
     function buildSpan(classname, insideSpan, leaveOpen, noPrefix) {
       var classPrefix = noPrefix ? '' : options.classPrefix,
-          openSpan    = '<span class="' + classPrefix,
+          openSpan    = '<span class=\'' + classPrefix,
           closeSpan   = leaveOpen ? '' : spanEndTag;
 
-      openSpan += classname + '">';
+      openSpan += classname + '\'>';
 
       return openSpan + insideSpan + closeSpan;
     }
