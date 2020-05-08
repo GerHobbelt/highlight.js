@@ -27,6 +27,9 @@ function testLanguage(language, {testDir}) {
         Promise.all([sourceFile, expectedFile]).then(function([source, expected]) {
           const actual = hljs.highlight(language, source).value;
 
+          if (actual !== expected)
+          console.log('----------------START---------------\n', actual, '\n------------------------------------------------\n', 
+            expected, '\n---------------END-------------------\n');
           actual.trim().should.equal(expected.trim());
           done();
         }).catch(function(err) { return done(err) });

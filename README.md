@@ -1,6 +1,14 @@
-# Highlight.js
+# Highlight.js ([forked](https://github.com/GerHobbelt/highlight.js))
 
-[![Build Status](https://travis-ci.org/highlightjs/highlight.js.svg?branch=master)](https://travis-ci.org/highlightjs/highlight.js) [![Greenkeeper badge](https://badges.greenkeeper.io/highlightjs/highlight.js.svg)](https://greenkeeper.io/) [![install size](https://packagephobia.now.sh/badge?p=highlight.js)](https://packagephobia.now.sh/result?p=highlight.js)
+[![Build Status](https://travis-ci.org/GerHobbelt/highlight.js.svg?branch=master)](https://travis-ci.org/GerHobbelt/highlight.js) 
+[![GitHub issues](https://img.shields.io/github/issues/GerHobbelt/highlight.js.svg)](https://github.com/GerHobbelt/highlight.js/issues) 
+[![GitHub forks](https://img.shields.io/github/forks/GerHobbelt/highlight.js.svg)](https://github.com/GerHobbelt/highlight.js/network) 
+[![Build Status](https://travis-ci.org/GerHobbelt/highlight.js.svg?branch=master)](https://travis-ci.org/GerHobbelt/highlight.js) 
+[![Greenkeeper badge](https://badges.greenkeeper.io/GerHobbelt/highlight.js.svg)](https://greenkeeper.io/) 
+[![install size](https://packagephobia.now.sh/badge?p=highlight.js)](https://packagephobia.now.sh/result?p=highlight.js)
+[![GitHub license](https://img.shields.io/github/license/GerHobbelt/highlight.js.svg)](https://github.com/GerHobbelt/highlight.js/blob/master/LICENSE) 
+[![GitHub (pre-)release](https://img.shields.io/github/release/qubyte/rubidium/all.svg)](https://github.com/GerHobbelt/highlight.js/releases)
+
 
 Highlight.js is a syntax highlighter written in JavaScript. It works in
 the browser as well as on the server. It works with pretty much any
@@ -24,6 +32,7 @@ library along with one of the styles and calling
 ```html
 <link rel="stylesheet" href="/path/to/styles/default.css">
 <script src="/path/to/highlight.min.js"></script>
+<!-- highlight library packs pre-built for various targets are available in /build/<env>/ -->
 <script>hljs.initHighlightingOnLoad();</script>
 ```
 
@@ -92,6 +101,20 @@ document.querySelectorAll('div.code').forEach((block) => {
 ```
 
 For other options refer to the documentation for [`configure`][4].
+
+
+### Additional initialization when utilising TurboLinks.
+
+If you are using highlight.js with the [TurboLinks](https://github.com/turbolinks/turbolinks) library you will need to ALSO include the following initilization:
+
+```
+document.addEventListener('turbolinks:load', function () {
+    hljs.initHighlighting.called = false;
+    hljs.initHighlighting();
+});
+```
+
+This will ensure that your code is highlighted when TurboLinks loads the page.
 
 
 ## Web Workers
@@ -181,7 +204,8 @@ build specific to browsers rather than something meant for a server.
 
 
 **Do not link to GitHub directly.** The library is not supposed to work straight
-from the source, it requires building. If none of the pre-packaged options
+from the source, it requires building. If none of the pre-packaged options 
+available in the /build/ directories
 work for you refer to the [building documentation][6].
 
 **On Almond.** You need to use the optimizer to give the module a name. For
@@ -244,9 +268,9 @@ There is also an npm package [@highlightjs/cdn-assets](https://www.npmjs.com/pac
 Highlight.js can also be used on the server. The package with all supported languages can be installed from NPM or Yarn:
 
 ```bash
-npm install highlight.js
+npm install @gerhobbelt/highlight.js --save
 # or
-yarn add highlight.js
+yarn add @gerhobbelt/highlight.js
 ```
 
 Alternatively, you can build it from [source](#source):

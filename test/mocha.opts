@@ -4,3 +4,4 @@
 --bail
 --check-leaks
 --inline-diffs
+--globals document

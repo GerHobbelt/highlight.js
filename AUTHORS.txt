@@ -49,6 +49,7 @@ Contributors:
 - Loren Segal <lsegal@soen.ca>
 - Andrew Fedorov <dmmdrs@mail.ru>
 - Igor Kalnitsky <igor@kalnitsky.org>
+- Jeremy Hull <sourdrums@gmail.com>
 - Valerii Hiora <valerii.hiora@gmail.com>
 - Nikolay Zakharov <nikolay.desh@gmail.com>
 - Dmitry Kovega <arhibot@gmail.com>
@@ -61,6 +62,7 @@ Contributors:
 - Alexander Myadzel <myadzel@gmail.com>
 - Evgeny Stepanischev <imbolk@gmail.com>
 - Dmytrii Nagirniak <dnagir@gmail.com>
+- Oleg Efimov <efimovov@gmail.com>
 - Luigi Maselli <grigio.org@gmail.com>
 - Denis Bardadym <bardadymchik@gmail.com>
 - Aahan Krish <geekpanth3r@gmail.com>
@@ -94,6 +96,7 @@ Contributors:
 - Kelley van Evert <kelleyvanevert@gmail.com>
 - Kurt Emch <kurt@kurtemch.com>
 - Mehdi Dogguy <mehdi@dogguy.org>
+- Tomas Aparicio <tomas@aparicio.me>
 - Nicolas Braud-Santoni <nicolas.braud-santoni@ens-cachan.fr>
 - Ralf Bitter <rabit@revigniter.com>
 - Sylvestre Ledru <sylvestre.ledru@scilab-enterprises.com>
@@ -173,6 +176,8 @@ Contributors:
 - Andrew Farmer <ahfarmer@gmail.com>
 - Sergey Mashkov <cy6erGn0m@gmail.com>
 - Raivo Laanemets <raivo@infdot.com>
+- Jan T. Sott <jan.sott@gmail.com>
+- Alexander Kaupanin <kaupanin@gmail.com>
 - Kenneth Fuglsang <kfuglsang@gmail.com>
 - David Anson <david@dlaa.me>
 - Louis Barranqueiro <louis.barranqueiro@gmail.com>
@@ -230,7 +235,7 @@ Contributors:
 - Gavin Siu <gavsiu@gmail.com>
 - Builder's Brewery <buildersbrewery@gmail.com>
 - Sergey Bronnikov <sergeyb@bronevichok.ru>
-- Joe Eli McIlvain <joe.eli.mac@gmail.org>
+- Joe Eli McIlvain <joe.eli.mac@gmail.com>
 - Stephan Boyer <stephan@stephanboyer.com>
 - Alex McKibben <alex@nullscope.net>
 - Daniel Gamage <hellodanielgamage@gmail.com>
@@ -240,11 +245,16 @@ Contributors:
 - Alexander Lichter <manniL@gmx.net>
 - Nicolas Le Gall <contact@nlegall.fr>
 - Kenton Hamaluik <kentonh@gmail.com>
+- Aaron Dandy <aaron.dandy@live.com>
+- Ckristian Duran <ckristian_duran@hotmail.com>
 - Marvin Saignat <contact@zgmrvn.com>
 - Michael Rodler <contact@f0rki.at>
+- G8t Guy <g8tguy@g8tguy.com>
+- Ben Ford <ben.ford@puppet.com>
 - Sergey Sobko <s.sobko@profitware.ru>
 - Hale Chan <halechan@qq.com>
 - Kasper Andersen <kma_untrusted@protonmail.com>
+- Michael Gerbig <error418@users.noreply.github.com>
 - Philipp A. <flying-sheep@web.de>
 - Guannan Wei <guannanwei@outlook.com>
 - Sam Wu <samsam2310@gmail.com>
@@ -260,8 +270,48 @@ Contributors:
 - Nicolas LLOBERA <nllobera@gmail.com>
 - Morten Piibeleht <morten.piibeleht@gmail.com>
 - Martin Clausen <martin.clausene@gmail.com>
+- Dirk Schuermans <dirk@schuermans.me>
+- Björn Sauer <bjo.sauer@live.de>
+- David Peek <mail@dpeek.com>
+- Mark Ellis <ellismarkf@gmail.com>
+- Chema Balsas <jbalsas@gmail.com>
+- Stanislaw Swierc <stanislaw.swierc@gmail.com>
+- Mathias Schilling <m@matchilling.com>
+- Simen Wiik <simenwiik@hotmail.com>
+- Andrea Crawford <andrea.crawford13@gmail.com>
+- Tod Beardsley <tod_beardsley@rapid7.com>
 - Arctic Ice Studio <development@arcticicestudio.com>
+- Thomas Braun <thomas.braun@byte-physics.de>
+- Roman Resh <romanresh@live.com>
+- Duncan Paterson <duncdrum@users.noreply.github.com>
+- Ryan King <hello@ryanking.com>
+- Guillaume Maudoux <layus.on@gmail.com>
+- Kaustav Haldar <khaldar@uwaterloo.ca>
+- Shan Mahanama <gambit1024@gmail.com>
+- Eric Bailey <eric.w.bailey@gmail.com>
+- Drew DeVault <sir@cmpwn.com>
 - Google Inc. (David Benjamin) <davidben@google.com>
+- Rene Rivera <grafikrobot@gmail.com>
+- Patrick Massot <patrick.massot@free.fr>
+- Jörn Reimerdes <joern.reimerdes@gmail.com>
+- Dmitriy Tarasov <dimatar@gmail.com>
+- Meseta <meseta@gmail.com>
+- Renan Lavarec <renan.lavarec@ti-r.com>
+- Marco Antonio Augusto de Andrade <marco.andrade@ifro.edu.br>
+- Sergey Romanov <serg4172@mail.ru>
+- Cassio Binkowski <cassioiks@live.com>
+- Raffaele Sgarro <raffaeleSgarro@gmail.com>
+- Brian Hicks <brian@brianthicks.com>
+- Matt Evans <syrius3@gmail.com>
+- Kasper Andersen <kma_untrusted@protonmail.com>
+- Henrique Bastos <henrique@bastos.net>
+- Glen De Cauwsemaecker <contact@glendc.com>
+- Paulo Moura <pmoura@logtalk.org>
+- pospi <pospi@spadgos.com>
+- Geequlim <geequlim@gmail.com>
+- Victor Zhou <OiCMudkips@users.noreply.github.com>
+- Rob Zinkov <rob@zinkov.com>
+- Aristides Staffieri <aristides@aristidesstaffieri.com>
 - Ahmad Awais <me@AhmadAwais.com>
 - Duncan Paterson <duncan@exist-db.org>
 - Tristian Kelly <tristian.kelly560@gmail.com>

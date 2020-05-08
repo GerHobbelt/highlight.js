@@ -77,8 +77,10 @@ Configures global options:
 * ``languages``: an array of language names and aliases restricting auto detection to only these languages.
 * ``languageDetectRe``: a regex to configure how CSS class names map to language (allows class names like say `color-as-php` vs the default of `language-php`, etc.)
 * ``noHighlightRe``: a regex to configure which CSS classes are to be skipped completely.
+* ``selector``: DOM query selector which matches the DOM nodes which should get their content highlighted. (Default value: `pre code`)
+* ``LineNodes``: a flag to generate linenumbers with the highlighted output.
 
-Accepts an object representing options with the values to updated. Other options don't change
+Accepts an object representing options with the values to update. Other options don't change
 ::
 
   hljs.configure({
@@ -87,6 +89,48 @@ Accepts an object representing options with the values to updated. Other options
                         // … other options aren't changed
   });
   hljs.initHighlighting();
+
+
+
+``reset(options)``
+----------------------
+
+Reset the global options to the default. Use this API when you wish to apply independent options to different highlight operations
+::
+
+  hljs.configure({
+    tabReplace: '    ', // 4 spaces
+    lineNodes: true
+  });
+  hljs.highlightBlock(el_1);
+
+  // independent highlight render: independent of previously
+  // acive highlight global options!
+  hljs.reset();
+  hljs.configure({
+    lineNodes: false,
+    useBR: true
+  });
+  hljs.highlightBlock(el_2);
+
+Those two API calls (``hljs.reset()`` + ``hljs.configure()``) can be combined into a single call by passing the new options in the 
+optional argument
+::
+
+  hljs.configure({
+    tabReplace: '    ', // 4 spaces
+    lineNodes: true
+  });
+  hljs.highlightBlock(el_1);
+
+  // independent highlight render: independent of previously
+  // acive highlight global options!
+  hljs.reset({
+    lineNodes: false,
+    useBR: true
+  });
+  hljs.highlightBlock(el_2);
+
 
 
 ``initHighlighting()``

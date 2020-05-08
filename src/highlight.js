@@ -36,9 +36,9 @@ const HLJS = function(hljs) {
 
   var LANGUAGE_NOT_FOUND = "Could not find the language '{}', did you forget to load/include a language module?";
 
-  // Global options used when within external APIs. This is modified when
+  // Default options used when constructing the active options set by
   // calling the `hljs.configure` function.
-  var options = {
+  var default_options = {
     noHighlightRe: /^(no-?highlight)$/i,
     languageDetectRe: /\blang(?:uage)?-([\w-]+)\b/i,
     classPrefix: 'hljs-',
@@ -47,8 +47,15 @@ const HLJS = function(hljs) {
     languages: null,
     // beta configuration options, subject to change, welcome to discuss
     // https://github.com/highlightjs/highlight.js/issues/1086
+    langAttribute: true,
+    selector: 'pre code',
+    lineNodes: false,
     __emitter: TokenTreeEmitter
   };
+
+  // Global options used when within external APIs. This is modified when
+  // calling the `hljs.configure` function.
+  var options = inherit(default_options);
 
   /* Utility functions */
 
@@ -416,9 +423,13 @@ const HLJS = function(hljs) {
     }
 
     var language = getLanguage(languageName);
+    // when the specified language is not supported by us, simple return the HTML-escaped input:
     if (!language) {
       console.error(LANGUAGE_NOT_FOUND.replace("{}", languageName));
-      throw new Error('Unknown language: "' + languageName + '"');
+      return {
+        relevance: 0,
+        value: escape(value)
+      };
     }
 
     compileLanguage(language);
@@ -599,6 +610,7 @@ const HLJS = function(hljs) {
 
     if (options.useBR) {
       node = document.createElement('div');
+      // eslint-disable-next-line   no-useless-escape
       node.innerHTML = block.innerHTML.replace(/\n/g, '').replace(/<br[ /]*>/g, '\n');
     } else {
       node = block;
@@ -612,12 +624,22 @@ const HLJS = function(hljs) {
       resultNode.innerHTML = result.value;
       result.value = mergeStreams(originalStream, nodeStream(resultNode), text);
     }
+    if (options.lineNodes) {
+      var resultPre = document.createElement('pre');
+      resultPre.innerHTML = result.value;
+      var linesPre = document.createElement('pre');
+      var lines = escape(text.trimRight()).replace(/^.*?(\n|$)/gm, '<span class="line">$&</span>');
+      linesPre.innerHTML = lines;
+      result.value = mergeStreams(nodeStream(linesPre), nodeStream(resultPre), text);
+    }
     result.value = fixMarkup(result.value);
 
     fire("after:highlightBlock", { block: block, result: result });
 
     block.innerHTML = result.value;
     block.className = buildClassName(block.className, language, result.language);
+    if (options.langAttribute)
+      block.setAttribute('data-lang', result.language);
     block.result = {
       language: result.language,
       re: result.relevance
@@ -628,6 +650,13 @@ const HLJS = function(hljs) {
         re: result.second_best.relevance
       };
     }
+  }
+
+  /*
+  Resets highlight.js global options with values passed in the form of an object.
+  */
+  function reset(userOptions) {
+    options = inherit(default_options, userOptions);
   }
 
   /*
@@ -644,7 +673,7 @@ const HLJS = function(hljs) {
     if (initHighlighting.called) return;
     initHighlighting.called = true;
 
-    var blocks = document.querySelectorAll('pre code');
+    var blocks = document.querySelectorAll(options.selector);
     ArrayProto.forEach.call(blocks, highlightBlock);
   }
 
@@ -738,6 +767,7 @@ const HLJS = function(hljs) {
     fixMarkup,
     highlightBlock,
     configure,
+    reset,
     initHighlighting,
     initHighlightingOnLoad,
     registerLanguage,

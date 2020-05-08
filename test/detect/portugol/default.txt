@@ -1,0 +1,20 @@
+programa
+{
+  funcao inicio()
+  {
+    inteiro age = 12
+    cadeia name
+    caracter sex = 'F'
+    logico pay = verdadeiro
+
+    escreva("Enter name: ")
+    leia(name)
+    escreva("Name: ", name)
+
+    se (age > 18 ou age == 18){
+      escreva("Of age")
+    } senao se (age < 18){
+      escreva("Minor")
+    }
+  }
+}

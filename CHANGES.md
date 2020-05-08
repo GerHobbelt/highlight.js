@@ -572,15 +572,88 @@ Improvements:
 [Jimmy Wärting]: https://github.com/jimmywarting
 [Marcos Cáceres]: https://github.com/marcoscaceres
 
+## Version 9.13.0
+
+New languages:
+
+- *GraphQL* graph query language by [David Peek][].
+- *SPARQL* RDF Query language by [Mark Ellis][]
+- *Turtle* RDF language by [Mark Ellis][]
+- *DAX* by [Stanislaw Swierc][]
+- *[Botlang][]* Scripting language for conversational chat bots by [Mathias Schilling][].
+- *Expression 2* by [Simen Wiik][].
+- *Igor Pro* by [Thomas Braun][]
+- *CSHTML* by [Roman Resh][]
+- *Oz* Esoteric general-purpose language by [Guillaume Maudoux][].
+- *Jam* Jam/BJam/B2 build language by [Rene Rivera][].
+- *Lean* theorem prover by [Patrick Massot][].
+- *emacs org-mode* A markup language see [https://orgmode.org]
+- *ISBL* built-in language DIRECTUM by [Dmitriy Tarasov][].
+- *GML* Game Markup Language by [Meseta][]
+- *OSL* Open Shading Language originally developed by Sony Pictures Imageworks added by [Renan Lavarec][].
+- *RSL* Added a type and update detect file "default.txt" to enable OSL to be detected  [Renan Lavarec][].
+- *ST* Structured Text language of IEC-61131 standard by [Sehioromano][].
+- *ABAP* by [Cassio Binkowski][]
+- *FASM* (Flat Assembler) by [Tristano Ajmone][]
+- *Epp* by [Ben Ford][]
+- *Robot Framework* by [Harri Paavola][]
+- *riscvasm* by [Ckristian Duran][] at [OnChipUIS][]
+- *HCL* by [Brian Hicks][].
+- *Logtalk* by [Paulo Moura][]
+- *GDScript* by [Geequlim][]
+- *Hakaru* by [Rob Zinkov][]
+
+New styles:
+
+- [*Nord*][nord-highlightjs] by [Arctic Ice Studio][]
+- *Igor Pro* by [Thomas Braun][]
+- *ISBL editor light* by [Dmitriy Tarasov][]
+- *ISBL editor dark* by [Dmitriy Tarasov][]
+- *Portugol* by [Marco Antonio Augusto de Andrade][]
+- *FASM* by [Tristano Ajmone][]
+
+Improvements:
+
+- [Mark Ellis][] wrote a CLI tool to quickly check for relevance conflicts when
+  developing new language support.
+- [Duncan Paterson][] added *XQuery* built-in functions, prolog declarations, as well as parsing of function bodies, computed and direct constructors.
+- Added tsx support to *TypeScript* via [Drew Devault][]
+
+[Duncan Paterson]: https://github.com/duncdrum
+[Botlang]: https://botlang.org/
+[Mathias Schilling]: https://github.com/matchilling
+[Stanislaw Swierc]: https://github.com/StanislawSwierc
+[Mark Ellis]: https://github.com/ellismarkf
+[Simen Wiik]: https://github.com/revosw
+[Arctic Ice Studio]: https://github.com/arcticicestudio
+[nord-highlightjs]: https://github.com/arcticicestudio/nord-highlightjs
+[Roman Resh]: https://github.com/romanresh
+[Guillaume Maudoux]: https://github.com/layus
+[Drew DeVault]: https://github.com/SirCmpwn
+[Rene Rivera]: https://github.com/grafikrobot
+[Dmitriy Tarasov]: https://github.com/MedvedTMN
+[Renan LAVAREC]: https://github.com/Ti-R
+[Serhioromano]: https://github.com/serhioromano
+[Cassio Binkowski]: https://github.com/cassioiks
+[Ckristian Duran]: https://github.com/ckdur
+[OnChipUIS]: https://github.com/onchipuis
+[Brian Hicks]: https://github.com/BrianHicks
+[Paulo Moura]: https://github.com/pmoura
+[Geequlim]: https://github.com/Geequlim
+
+
 ## Version 9.12.0
 
 New language:
 
 - *MikroTik* RouterOS Scripting language by [Ivan Dementev][].
+- Google *Closure Templates* language by [Chema Balsas][]
+- *OData* by [Stanislaw Swierc][]
 
-New style:
+New styles:
 
 - *VisualStudio 2015 Dark* by [Nicolas LLOBERA][]
+- *Lightfair* by [Tristian Kelly][]
 
 Improvements:
 - *Crystal* updated with new keywords and syntaxes by [Tsuyusato Kitsune][].
@@ -596,6 +669,7 @@ Improvements:
   consistently with other kinds.
 - [Alejandro Alonso][] updated *Swift* keywords.
 
+[Tristian Kelly]: https://github.com/TristianK3604
 [Tsuyusato Kitsune]: https://github.com/MakeNowJust
 [Alex Arslan]: https://github.com/ararslan
 [Morten Piibeleht]: https://github.com/mortenpi
@@ -637,7 +711,9 @@ New languages:
 
 - *Hy* by [Sergey Sobko][]
 - *Leaf* by [Hale Chan][]
+- *Properties* by [Michael Gerbig][]
 - *N1QL* by [Andres Täht][] and [Rene Saarsoo][]
+- *Beancount* by [Henrique Bastos][]
 
 Improvements:
 
@@ -661,6 +737,7 @@ Improvements:
 [Matt Evans]: https://github.com/matthewevans
 [Joe Blow]: https://github.com/mossarelli
 [Kasper Andersen]: https://github.com/kasma1990
+[Harri Paavola]: https://github.com/Harri
 [Eduard-Mihai Burtescu]: https://github.com/eddyb
 [Andres Täht]: https://github.com/andrestaht
 [Rene Saarsoo]: https://github.com/nene
@@ -668,6 +745,7 @@ Improvements:
 [Ike Ku]: https://github.com/dempfi
 [Guannan Wei]: https://github.com/Kraks
 [Sam Wu]: https://github.com/samsam2310
+[Henrique Bastos]: https://github.com/henriquebastos
 
 
 ## Version 9.9.0
@@ -715,6 +793,11 @@ Improvements:
 [Jan T. Sott]: https://github.com/idleberg
 [Alexander Lichter]: https://github.com/manniL
 
+New styles:
+
+- *VS 15* in both Dark and Light variants by [Aaron Dandy][]
+
+[Aaron Dandy]: https://github.com/aarondandy
 
 ## Version 9.7.0
 
