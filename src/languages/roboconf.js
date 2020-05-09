@@ -11,12 +11,13 @@ export default function(hljs) {
 
   var PROPERTY = {
     className: 'attribute',
-    begin: /[a-zA-Z-_]+/, end: /\s*:/, excludeEnd: true,
+    begin: /[a-zA-Z-_]+/,
+    end: /\s*:/,
+    excludeEnd: true,
     starts: {
       end: ';',
       relevance: 0,
-      contains: [
-        {
+      contains: [{
           className: 'variable',
           begin: /\.[a-zA-Z-_]+/
         },

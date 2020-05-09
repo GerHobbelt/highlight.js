@@ -61,15 +61,19 @@ export default function(hljs) {
     built_in: ECMAScript.BUILT_INS.concat(LIVESCRIPT_BUILT_INS).join(" ")
   };
   var JS_IDENT_RE = '[A-Za-z$_](?:\-[0-9A-Za-z$_]|[0-9A-Za-z$_])*';
-  var TITLE = hljs.inherit(hljs.TITLE_MODE, {begin: JS_IDENT_RE});
+  var TITLE = hljs.inherit(hljs.TITLE_MODE, {
+    begin: JS_IDENT_RE
+  });
   var SUBST = {
     className: 'subst',
-    begin: /#\{/, end: /}/,
+    begin: /#\{/,
+    end: /}/,
     keywords: KEYWORDS
   };
   var SUBST_SIMPLE = {
     className: 'subst',
-    begin: /#[A-Za-z$_]/, end: /(?:\-[0-9A-Za-z$_]|[0-9A-Za-z$_])*/,
+    begin: /#[A-Za-z$_]/,
+    end: /(?:\-[0-9A-Za-z$_]|[0-9A-Za-z$_])*/,
     keywords: KEYWORDS
   };
   var EXPRESSIONS = [
@@ -78,38 +82,45 @@ export default function(hljs) {
       className: 'number',
       begin: '(\\b0[xX][a-fA-F0-9_]+)|(\\b\\d(\\d|_\\d)*(\\.(\\d(\\d|_\\d)*)?)?(_*[eE]([-+]\\d(_\\d|\\d)*)?)?[_a-z]*)',
       relevance: 0,
-      starts: {end: '(\\s*/)?', relevance: 0} // a number tries to eat the following slash to prevent treating it as a regexp
+      starts: {
+        end: '(\\s*/)?',
+        relevance: 0
+      } // a number tries to eat the following slash to prevent treating it as a regexp
     },
     {
       className: 'string',
-      variants: [
-        {
-          begin: /'''/, end: /'''/,
+      variants: [{
+          begin: /'''/,
+          end: /'''/,
           contains: [hljs.BACKSLASH_ESCAPE]
         },
         {
-          begin: /'/, end: /'/,
+          begin: /'/,
+          end: /'/,
           contains: [hljs.BACKSLASH_ESCAPE]
         },
         {
-          begin: /"""/, end: /"""/,
+          begin: /"""/,
+          end: /"""/,
           contains: [hljs.BACKSLASH_ESCAPE, SUBST, SUBST_SIMPLE]
         },
         {
-          begin: /"/, end: /"/,
+          begin: /"/,
+          end: /"/,
           contains: [hljs.BACKSLASH_ESCAPE, SUBST, SUBST_SIMPLE]
         },
         {
-          begin: /\\/, end: /(\s|$)/,
+          begin: /\\/,
+          end: /(\s|$)/,
           excludeEnd: true
         }
       ]
     },
     {
       className: 'regexp',
-      variants: [
-        {
-          begin: '//', end: '//[gim]*',
+      variants: [{
+          begin: '//',
+          end: '//[gim]*',
           contains: [SUBST, hljs.HASH_COMMENT_MODE]
         },
         {
@@ -123,8 +134,10 @@ export default function(hljs) {
       begin: '@' + JS_IDENT_RE
     },
     {
-      begin: '``', end: '``',
-      excludeBegin: true, excludeEnd: true,
+      begin: '``',
+      end: '``',
+      excludeBegin: true,
+      excludeEnd: true,
       subLanguage: 'javascript'
     }
   ];
@@ -132,16 +145,16 @@ export default function(hljs) {
 
   var PARAMS = {
     className: 'params',
-    begin: '\\(', returnBegin: true,
+    begin: '\\(',
+    returnBegin: true,
     /* We need another contained nameless mode to not have every nested
     pair of parens to be called "params" */
-    contains: [
-      {
-        begin: /\(/, end: /\)/,
-        keywords: KEYWORDS,
-        contains: ['self'].concat(EXPRESSIONS)
-      }
-    ]
+    contains: [{
+      begin: /\(/,
+      end: /\)/,
+      keywords: KEYWORDS,
+      contains: ['self'].concat(EXPRESSIONS)
+    }]
   };
 
   var SYMBOLS = {
@@ -161,15 +174,17 @@ export default function(hljs) {
         className: 'function',
         contains: [TITLE, PARAMS],
         returnBegin: true,
-        variants: [
-          {
-            begin: '(' + JS_IDENT_RE + '\\s*(?:=|:=)\\s*)?(\\(.*\\))?\\s*\\B\\->\\*?', end: '\\->\\*?'
+        variants: [{
+            begin: '(' + JS_IDENT_RE + '\\s*(?:=|:=)\\s*)?(\\(.*\\))?\\s*\\B\\->\\*?',
+            end: '\\->\\*?'
           },
           {
-            begin: '(' + JS_IDENT_RE + '\\s*(?:=|:=)\\s*)?!?(\\(.*\\))?\\s*\\B[-~]{1,2}>\\*?', end: '[-~]{1,2}>\\*?'
+            begin: '(' + JS_IDENT_RE + '\\s*(?:=|:=)\\s*)?!?(\\(.*\\))?\\s*\\B[-~]{1,2}>\\*?',
+            end: '[-~]{1,2}>\\*?'
           },
           {
-            begin: '(' + JS_IDENT_RE + '\\s*(?:=|:=)\\s*)?(\\(.*\\))?\\s*\\B!?[-~]{1,2}>\\*?', end: '!?[-~]{1,2}>\\*?'
+            begin: '(' + JS_IDENT_RE + '\\s*(?:=|:=)\\s*)?(\\(.*\\))?\\s*\\B!?[-~]{1,2}>\\*?',
+            end: '!?[-~]{1,2}>\\*?'
           }
         ]
       },
@@ -178,8 +193,7 @@ export default function(hljs) {
         beginKeywords: 'class',
         end: '$',
         illegal: /[:="\[\]]/,
-        contains: [
-          {
+        contains: [{
             beginKeywords: 'extends',
             endsWithParent: true,
             illegal: /[:="\[\]]/,
@@ -189,8 +203,10 @@ export default function(hljs) {
         ]
       },
       {
-        begin: JS_IDENT_RE + ':', end: ':',
-        returnBegin: true, returnEnd: true,
+        begin: JS_IDENT_RE + ':',
+        end: ':',
+        returnBegin: true,
+        returnEnd: true,
         relevance: 0
       }
     ])

@@ -10,15 +10,15 @@ export default function(hljs) {
   var OPENING_LONG_BRACKET = '\\[=*\\[';
   var CLOSING_LONG_BRACKET = '\\]=*\\]';
   var LONG_BRACKETS = {
-    begin: OPENING_LONG_BRACKET, end: CLOSING_LONG_BRACKET,
+    begin: OPENING_LONG_BRACKET,
+    end: CLOSING_LONG_BRACKET,
     contains: ['self']
   };
   var COMMENTS = [
     hljs.COMMENT('--(?!' + OPENING_LONG_BRACKET + ')', '$'),
     hljs.COMMENT(
       '--' + OPENING_LONG_BRACKET,
-      CLOSING_LONG_BRACKET,
-      {
+      CLOSING_LONG_BRACKET, {
         contains: [LONG_BRACKETS],
         relevance: 10
       }
@@ -47,15 +47,18 @@ export default function(hljs) {
         'string sub upper len gfind rep find match char dump gmatch reverse byte format gsub lower ' +
         'table setn insert getn foreachi maxn foreach concat sort remove'
     },
-    contains: COMMENTS.concat([
-      {
+    contains: COMMENTS.concat([{
         className: 'function',
-        beginKeywords: 'function', end: '\\)',
+        beginKeywords: 'function',
+        end: '\\)',
         contains: [
-          hljs.inherit(hljs.TITLE_MODE, {begin: '([_a-zA-Z]\\w*\\.)*([_a-zA-Z]\\w*:)?[_a-zA-Z]\\w*'}),
+          hljs.inherit(hljs.TITLE_MODE, {
+            begin: '([_a-zA-Z]\\w*\\.)*([_a-zA-Z]\\w*:)?[_a-zA-Z]\\w*'
+          }),
           {
             className: 'params',
-            begin: '\\(', endsWithParent: true,
+            begin: '\\(',
+            endsWithParent: true,
             contains: COMMENTS
           }
         ].concat(COMMENTS)
@@ -65,7 +68,8 @@ export default function(hljs) {
       hljs.QUOTE_STRING_MODE,
       {
         className: 'string',
-        begin: OPENING_LONG_BRACKET, end: CLOSING_LONG_BRACKET,
+        begin: OPENING_LONG_BRACKET,
+        end: CLOSING_LONG_BRACKET,
         contains: [LONG_BRACKETS],
         relevance: 5
       }

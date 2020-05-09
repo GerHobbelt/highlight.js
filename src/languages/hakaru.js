@@ -12,14 +12,12 @@ export default function(hljs) {
         begin: hljs.UNDERSCORE_IDENT_RE,
         lexemes: hljs.UNDERSCORE_IDENT_RE,
         keywords: {
-          keyword:
-            'import data match if else array def fn plate chain return' +
+          keyword: 'import data match if else array def fn plate chain return' +
             'expect observe disintegrate integrate summate from of to' +
             'nat int prob real array pair maybe either' +
             'normal bern uniform gamma beta categorical poisson' +
             'dirac weight factor counting lebesgue',
-          literal:
-            'true false'
+          literal: 'true false'
         },
         relevance: 0
       },

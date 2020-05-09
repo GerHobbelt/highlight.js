@@ -14,15 +14,18 @@ export default function(hljs) {
     begin: '(\\$' + IDENT_RE + ')\\b'
   };
   var HEXCOLOR = {
-    className: 'number', begin: '#[0-9A-Fa-f]+'
+    className: 'number',
+    begin: '#[0-9A-Fa-f]+'
   };
   var DEF_INTERNALS = {
     className: 'attribute',
-    begin: '[A-Z\\_\\.\\-]+', end: ':',
+    begin: '[A-Z\\_\\.\\-]+',
+    end: ':',
     excludeEnd: true,
     illegal: '[^\\s]',
     starts: {
-      endsWithParent: true, excludeEnd: true,
+      endsWithParent: true,
+      excludeEnd: true,
       contains: [
         HEXCOLOR,
         hljs.CSS_NUMBER_MODE,
@@ -30,7 +33,8 @@ export default function(hljs) {
         hljs.APOS_STRING_MODE,
         hljs.C_BLOCK_COMMENT_MODE,
         {
-          className: 'meta', begin: '!important'
+          className: 'meta',
+          begin: '!important'
         }
       ]
     }
@@ -43,15 +47,19 @@ export default function(hljs) {
       hljs.C_LINE_COMMENT_MODE,
       hljs.C_BLOCK_COMMENT_MODE,
       {
-        className: 'selector-id', begin: '\\#[A-Za-z0-9_-]+',
+        className: 'selector-id',
+        begin: '\\#[A-Za-z0-9_-]+',
         relevance: 0
       },
       {
-        className: 'selector-class', begin: '\\.[A-Za-z0-9_-]+',
+        className: 'selector-class',
+        begin: '\\.[A-Za-z0-9_-]+',
         relevance: 0
       },
       {
-        className: 'selector-attr', begin: '\\[', end: '\\]',
+        className: 'selector-attr',
+        begin: '\\[',
+        end: '\\]',
         illegal: '$'
       },
       {
@@ -77,7 +85,8 @@ export default function(hljs) {
         begin: '\\b(whitespace|wait|w-resize|visible|vertical-text|vertical-ideographic|uppercase|upper-roman|upper-alpha|underline|transparent|top|thin|thick|text|text-top|text-bottom|tb-rl|table-header-group|table-footer-group|sw-resize|super|strict|static|square|solid|small-caps|separate|se-resize|scroll|s-resize|rtl|row-resize|ridge|right|repeat|repeat-y|repeat-x|relative|progress|pointer|overline|outside|outset|oblique|nowrap|not-allowed|normal|none|nw-resize|no-repeat|no-drop|newspaper|ne-resize|n-resize|move|middle|medium|ltr|lr-tb|lowercase|lower-roman|lower-alpha|loose|list-item|line|line-through|line-edge|lighter|left|keep-all|justify|italic|inter-word|inter-ideograph|inside|inset|inline|inline-block|inherit|inactive|ideograph-space|ideograph-parenthesis|ideograph-numeric|ideograph-alpha|horizontal|hidden|help|hand|groove|fixed|ellipsis|e-resize|double|dotted|distribute|distribute-space|distribute-letter|distribute-all-lines|disc|disabled|default|decimal|dashed|crosshair|collapse|col-resize|circle|char|center|capitalize|break-word|break-all|bottom|both|bolder|bold|block|bidi-override|below|baseline|auto|always|all-scroll|absolute|table|table-cell)\\b'
       },
       {
-        begin: ':', end: ';',
+        begin: ':',
+        end: ';',
         contains: [
           VARIABLE,
           HEXCOLOR,
@@ -85,7 +94,8 @@ export default function(hljs) {
           hljs.QUOTE_STRING_MODE,
           hljs.APOS_STRING_MODE,
           {
-            className: 'meta', begin: '!important'
+            className: 'meta',
+            begin: '!important'
           }
         ]
       },
@@ -98,11 +108,11 @@ export default function(hljs) {
         keywords: '@page @font-face'
       },
       {
-        begin: '@', end: '[{;]',
+        begin: '@',
+        end: '[{;]',
         returnBegin: true,
         keywords: AT_MODIFIERS,
-        contains: [
-          {
+        contains: [{
             begin: AT_IDENTIFIER,
             className: "keyword"
           },

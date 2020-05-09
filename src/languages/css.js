@@ -6,14 +6,15 @@ Website: https://developer.mozilla.org/en-US/docs/Web/CSS
 
 export default function(hljs) {
   var FUNCTION_LIKE = {
-    begin: /[\w-]+\(/, returnBegin: true,
-    contains: [
-      {
+    begin: /[\w-]+\(/,
+    returnBegin: true,
+    contains: [{
         className: 'built_in',
         begin: /[\w-]+/
       },
       {
-        begin: /\(/, end: /\)/,
+        begin: /\(/,
+        end: /\)/,
         contains: [
           hljs.APOS_STRING_MODE,
           hljs.QUOTE_STRING_MODE,
@@ -24,9 +25,12 @@ export default function(hljs) {
   }
   var ATTRIBUTE = {
     className: 'attribute',
-    begin: /\S/, end: ':', excludeEnd: true,
+    begin: /\S/,
+    end: ':',
+    excludeEnd: true,
     starts: {
-      endsWithParent: true, excludeEnd: true,
+      endsWithParent: true,
+      excludeEnd: true,
       contains: [
         FUNCTION_LIKE,
         hljs.CSS_NUMBER_MODE,
@@ -34,10 +38,12 @@ export default function(hljs) {
         hljs.APOS_STRING_MODE,
         hljs.C_BLOCK_COMMENT_MODE,
         {
-          className: 'number', begin: '#[0-9A-Fa-f]+'
+          className: 'number',
+          begin: '#[0-9A-Fa-f]+'
         },
         {
-          className: 'meta', begin: '!important'
+          className: 'meta',
+          begin: '!important'
         }
       ]
     }
@@ -48,7 +54,10 @@ export default function(hljs) {
   var AT_PROPERTY_RE = /@\-?\w[\w]*(\-\w+)*/ // @-webkit-keyframes
   var IDENT_RE = '[a-zA-Z-][a-zA-Z0-9_-]*';
   var RULE = {
-    begin: /(?:[A-Z\_\.\-]+|--[a-zA-Z0-9_-]+)\s*:/, returnBegin: true, end: ';', endsWithParent: true,
+    begin: /(?:[A-Z\_\.\-]+|--[a-zA-Z0-9_-]+)\s*:/,
+    returnBegin: true,
+    end: ';',
+    endsWithParent: true,
     contains: [
       ATTRIBUTE
     ]
@@ -61,14 +70,17 @@ export default function(hljs) {
     contains: [
       hljs.C_BLOCK_COMMENT_MODE,
       {
-        className: 'selector-id', begin: /#[A-Za-z0-9_-]+/
+        className: 'selector-id',
+        begin: /#[A-Za-z0-9_-]+/
       },
       {
-        className: 'selector-class', begin: /\.[A-Za-z0-9_-]+/
+        className: 'selector-class',
+        begin: /\.[A-Za-z0-9_-]+/
       },
       {
         className: 'selector-attr',
-        begin: /\[/, end: /\]/,
+        begin: /\[/,
+        end: /\]/,
         illegal: '$',
         contains: [
           hljs.APOS_STRING_MODE,
@@ -88,25 +100,26 @@ export default function(hljs) {
         keywords: '@page @font-face'
       },
       {
-        begin: '@', end: '[{;]', // at_rule eating first "{" is a good thing
-                                 // because it doesn’t let it to be parsed as
-                                 // a rule set but instead drops parser into
-                                 // the default mode which is how it should be.
+        begin: '@',
+        end: '[{;]', // at_rule eating first "{" is a good thing
+        // because it doesn’t let it to be parsed as
+        // a rule set but instead drops parser into
+        // the default mode which is how it should be.
         illegal: /:/, // break on Less variables @var: ...
         returnBegin: true,
-        contains: [
-          {
+        contains: [{
             className: 'keyword',
             begin: AT_PROPERTY_RE
           },
           {
-            begin: /\s/, endsWithParent: true, excludeEnd: true,
+            begin: /\s/,
+            endsWithParent: true,
+            excludeEnd: true,
             relevance: 0,
             keywords: AT_MODIFIERS,
-            contains: [
-              {
+            contains: [{
                 begin: /[a-z-]+:/,
-                className:"attribute"
+                className: "attribute"
               },
               hljs.APOS_STRING_MODE,
               hljs.QUOTE_STRING_MODE,
@@ -116,11 +129,13 @@ export default function(hljs) {
         ]
       },
       {
-        className: 'selector-tag', begin: IDENT_RE,
+        className: 'selector-tag',
+        begin: IDENT_RE,
         relevance: 0
       },
       {
-        begin: '{', end: '}',
+        begin: '{',
+        end: '}',
         illegal: /\S/,
         contains: [
           hljs.C_BLOCK_COMMENT_MODE,

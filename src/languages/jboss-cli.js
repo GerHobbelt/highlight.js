@@ -6,18 +6,22 @@
  Category: config
  */
 
-export default function (hljs) {
+export default function(hljs) {
   var PARAM = {
-    begin: /[\w-]+ *=/, returnBegin: true,
+    begin: /[\w-]+ *=/,
+    returnBegin: true,
     relevance: 0,
-    contains: [{className: 'attr', begin: /[\w-]+/}]
+    contains: [{
+      className: 'attr',
+      begin: /[\w-]+/
+    }]
   };
   var PARAMSBLOCK = {
     className: 'params',
     begin: /\(/,
     end: /\)/,
     contains: [PARAM],
-    relevance : 0
+    relevance: 0
   };
   var OPERATION = {
     className: 'function',
@@ -38,9 +42,9 @@ export default function (hljs) {
     keywords: {
       $pattern: '[a-z\-]+',
       keyword: 'alias batch cd clear command connect connection-factory connection-info data-source deploy ' +
-      'deployment-info deployment-overlay echo echo-dmr help history if jdbc-driver-info jms-queue|20 jms-topic|20 ls ' +
-      'patch pwd quit read-attribute read-operation reload rollout-plan run-batch set shutdown try unalias ' +
-      'undeploy unset version xa-data-source', // module
+        'deployment-info deployment-overlay echo echo-dmr help history if jdbc-driver-info jms-queue|20 jms-topic|20 ls ' +
+        'patch pwd quit read-attribute read-operation reload rollout-plan run-batch set shutdown try unalias ' +
+        'undeploy unset version xa-data-source', // module
       literal: 'true false'
     },
     contains: [

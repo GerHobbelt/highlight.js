@@ -8,17 +8,14 @@ Website: http://clean.cs.ru.nl
 export default function(hljs) {
   return {
     name: 'Clean',
-    aliases: ['clean','icl','dcl'],
+    aliases: ['clean', 'icl', 'dcl'],
     keywords: {
-      keyword:
-        'if let in with where case of class instance otherwise ' +
+      keyword: 'if let in with where case of class instance otherwise ' +
         'implementation definition system module from import qualified as ' +
         'special code inline foreign export ccall stdcall generic derive ' +
         'infix infixl infixr',
-      built_in:
-        'Int Real Char Bool',
-      literal:
-        'True False'
+      built_in: 'Int Real Char Bool',
+      literal: 'True False'
     },
     contains: [
 
@@ -28,7 +25,9 @@ export default function(hljs) {
       hljs.QUOTE_STRING_MODE,
       hljs.C_NUMBER_MODE,
 
-      {begin: '->|<-[|:]?|#!?|>>=|\\{\\||\\|\\}|:==|=:|<>'} // relevance booster
+      {
+        begin: '->|<-[|:]?|#!?|>>=|\\{\\||\\|\\}|:==|=:|<>'
+      } // relevance booster
     ]
   };
 }

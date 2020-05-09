@@ -13,11 +13,13 @@ export default function(hljs) {
   };
   var TABLE = {
     className: 'variable',
-    begin: /<(?!\/)/, end: />/
+    begin: /<(?!\/)/,
+    end: />/
   };
   var QUOTE_STRING = {
     className: 'string',
-    begin: /"/, end: /"/
+    begin: /"/,
+    end: /"/
   };
 
   return {
@@ -25,12 +27,12 @@ export default function(hljs) {
     aliases: ['pf.conf'],
     keywords: {
       $pattern: /[a-z0-9_<>-]+/,
-      built_in: /* block match pass are "actions" in pf.conf(5), the rest are
-                 * lexically similar top-level commands.
-                 */
+      built_in:
+        /* block match pass are "actions" in pf.conf(5), the rest are
+         * lexically similar top-level commands.
+         */
         'block match pass load anchor|5 antispoof|10 set table',
-      keyword:
-        'in out log quick on rdomain inet inet6 proto from port os to route ' +
+      keyword: 'in out log quick on rdomain inet inet6 proto from port os to route ' +
         'allow-opts divert-packet divert-reply divert-to flags group icmp-type ' +
         'icmp6-type label once probability recieved-on rtable prio queue ' +
         'tos tag tagged user keep fragment for os drop ' +
@@ -46,8 +48,7 @@ export default function(hljs) {
         'source-track global rule max-src-nodes max-src-states max-src-conn ' +
         'max-src-conn-rate overload flush ' +
         'scrub|5 max-mss min-ttl no-df|10 random-id',
-      literal:
-        'all any no-route self urpf-failed egress|5 unknown'
+      literal: 'all any no-route self urpf-failed egress|5 unknown'
     },
     contains: [
       hljs.HASH_COMMENT_MODE,

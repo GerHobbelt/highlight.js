@@ -25,16 +25,21 @@ export default function(hljs) {
   // Example of single escaped quotes: " "" " and  ' '' '.
   var STRINGS = {
     className: 'string',
-    variants: [
-      {
+    variants: [{
         begin: '"',
         end: '"',
-        contains: [{begin: '""', relevance: 0}]
+        contains: [{
+          begin: '""',
+          relevance: 0
+        }]
       },
       {
         begin: '\'',
         end: '\'',
-        contains: [{begin: '\'\'', relevance: 0}]
+        contains: [{
+          begin: '\'\'',
+          relevance: 0
+        }]
       }
     ]
   };
@@ -43,19 +48,22 @@ export default function(hljs) {
   // https://community.bistudio.com/wiki/PreProcessor_Commands
   var PREPROCESSOR = {
     className: 'meta',
-    begin: /#\s*[a-z]+\b/, end: /$/,
+    begin: /#\s*[a-z]+\b/,
+    end: /$/,
     keywords: {
-      'meta-keyword':
-        'define undef ifdef ifndef else endif include'
+      'meta-keyword': 'define undef ifdef ifndef else endif include'
     },
-    contains: [
-      {
-        begin: /\\\n/, relevance: 0
+    contains: [{
+        begin: /\\\n/,
+        relevance: 0
       },
-      hljs.inherit(STRINGS, {className: 'meta-string'}),
+      hljs.inherit(STRINGS, {
+        className: 'meta-string'
+      }),
       {
         className: 'meta-string',
-        begin: /<[^\n>]*>/, end: /$/,
+        begin: /<[^\n>]*>/,
+        end: /$/,
         illegal: '\\n',
       },
       hljs.C_LINE_COMMENT_MODE,
@@ -68,11 +76,9 @@ export default function(hljs) {
     aliases: ['sqf'],
     case_insensitive: true,
     keywords: {
-      keyword:
-        'case catch default do else exit exitWith for forEach from if ' +
+      keyword: 'case catch default do else exit exitWith for forEach from if ' +
         'private switch then throw to try waitUntil while with',
-      built_in:
-        'abs accTime acos action actionIDs actionKeys actionKeysImages actionKeysNames ' +
+      built_in: 'abs accTime acos action actionIDs actionKeys actionKeysImages actionKeysNames ' +
         'actionKeysNamesArray actionName actionParams activateAddons activatedAddons activateKey ' +
         'add3DENConnection add3DENEventHandler add3DENLayer addAction addBackpack addBackpackCargo ' +
         'addBackpackCargoGlobal addBackpackGlobal addCamShake addCuratorAddons addCuratorCameraArea ' +
@@ -417,8 +423,7 @@ export default function(hljs) {
         'waypointStatements waypointTimeout waypointTimeoutCurrent waypointType waypointVisible ' +
         'weaponAccessories weaponAccessoriesCargo weaponCargo weaponDirection weaponInertia weaponLowered ' +
         'weapons weaponsItems weaponsItemsCargo weaponState weaponsTurret weightRTD WFSideText wind ',
-      literal:
-        'blufor civilian configNull controlNull displayNull east endl false grpNull independent lineBreak ' +
+      literal: 'blufor civilian configNull controlNull displayNull east endl false grpNull independent lineBreak ' +
         'locationNull nil objNull opfor pi resistance scriptNull sideAmbientLife sideEmpty sideLogic ' +
         'sideUnknown taskNull teamMemberNull true west',
     },

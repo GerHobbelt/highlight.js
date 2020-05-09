@@ -15,8 +15,7 @@ export default function(hljs) {
     endsWithParent: true,
     illegal: /</,
     relevance: 0,
-    contains: [
-      {
+    contains: [{
         className: 'attr',
         begin: '[A-Za-z0-9\\._:-]+',
         relevance: 0
@@ -24,17 +23,22 @@ export default function(hljs) {
       {
         begin: /=\s*/,
         relevance: 0,
-        contains: [
-          {
-            className: 'string',
-            endsParent: true,
-            variants: [
-              {begin: /"/, end: /"/},
-              {begin: /'/, end: /'/},
-              {begin: /[^\s"'=<>`]+/}
-            ]
-          }
-        ]
+        contains: [{
+          className: 'string',
+          endsParent: true,
+          variants: [{
+              begin: /"/,
+              end: /"/
+            },
+            {
+              begin: /'/,
+              end: /'/
+            },
+            {
+              begin: /[^\s"'=<>`]+/
+            }
+          ]
+        }]
       }
     ]
   };
@@ -78,12 +82,11 @@ export default function(hljs) {
           // Partial html support not achievable via subLanguage
           {
             className: 'tag',
-            begin: '</?', 
+            begin: '</?',
             end: '/?>',
-            contains: [
-              {
-                className: 'name', 
-                begin: /[^\/><\s]+/, 
+            contains: [{
+                className: 'name',
+                begin: /[^\/><\s]+/,
                 relevance: 0
               },
               TAG_INTERNALS

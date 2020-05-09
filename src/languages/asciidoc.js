@@ -26,8 +26,7 @@ export default function(hljs) {
       // line comment
       hljs.COMMENT(
         '^//',
-        '$',
-        {
+        '$', {
           relevance: 0
         }
       ),
@@ -46,9 +45,12 @@ export default function(hljs) {
       {
         className: 'section',
         relevance: 10,
-        variants: [
-          {begin: '^(={1,5}) .+?( \\1)?$'},
-          {begin: '^[^\\[\\]\\n]+?\\n[=\\-~\\^\\+]{2,}$'},
+        variants: [{
+            begin: '^(={1,5}) .+?( \\1)?$'
+          },
+          {
+            begin: '^[^\\[\\]\\n]+?\\n[=\\-~\\^\\+]{2,}$'
+          },
         ]
       },
       // document attributes
@@ -83,13 +85,12 @@ export default function(hljs) {
       {
         begin: '^\\+{4,}\\n',
         end: '\\n\\+{4,}$',
-        contains: [
-          {
-            begin: '<', end: '>',
-            subLanguage: 'xml',
-            relevance: 0
-          }
-        ],
+        contains: [{
+          begin: '<',
+          end: '>',
+          subLanguage: 'xml',
+          relevance: 0
+        }],
         relevance: 10
       },
       // lists (can only capture indicators)
@@ -110,12 +111,10 @@ export default function(hljs) {
         begin: '\\B\\*(?![\\*\\s])',
         end: '(\\n{2}|\\*)',
         // allow escaped asterisk followed by word char
-        contains: [
-          {
-            begin: '\\\\*\\w',
-            relevance: 0
-          }
-        ]
+        contains: [{
+          begin: '\\\\*\\w',
+          relevance: 0
+        }]
       },
       // inline emphasis
       {
@@ -124,12 +123,10 @@ export default function(hljs) {
         begin: '\\B\'(?![\'\\s])',
         end: '(\\n{2}|\')',
         // allow escaped single quote followed by word char
-        contains: [
-          {
-            begin: '\\\\\'\\w',
-            relevance: 0
-          }
-        ],
+        contains: [{
+          begin: '\\\\\'\\w',
+          relevance: 0
+        }],
         relevance: 0
       },
       // inline emphasis (alt)
@@ -143,9 +140,12 @@ export default function(hljs) {
       // inline smart quotes
       {
         className: 'string',
-        variants: [
-          {begin: "``.+?''"},
-          {begin: "`.+?'"}
+        variants: [{
+            begin: "``.+?''"
+          },
+          {
+            begin: "`.+?'"
+          }
         ]
       },
       // inline code snippets (TODO should get same treatment as strong and emphasis)
@@ -170,8 +170,7 @@ export default function(hljs) {
       {
         begin: '(link:)?(http|https|ftp|file|irc|image:?):\\S+\\[.*?\\]',
         returnBegin: true,
-        contains: [
-          {
+        contains: [{
             begin: '(link|image:?):',
             relevance: 0
           },

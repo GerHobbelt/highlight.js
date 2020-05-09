@@ -14,11 +14,12 @@ export default function(hljs) {
         className: 'section',
         begin: /^\*{1,6} /,
         end: /$/,
-        relevance:0
+        relevance: 0
       },
       // inline html
       {
-        begin: '<', end: '>',
+        begin: '<',
+        end: '>',
         subLanguage: 'xml',
         relevance: 0
       },
@@ -26,74 +27,78 @@ export default function(hljs) {
       {
         className: 'bullet',
         begin: /^\s*([+-]|(\d+\.)|[a-zA-Z]\.)\s+/,
-        relevance:0
+        relevance: 0
       },
       // strong segments
       {
         className: 'strong',
         begin: /\s\*((\S.*?\S)|(\S))\*\s/,
-        relevance:0
+        relevance: 0
       },
       // deleted segments
       {
         className: 'deletion',
         begin: /\s\+((\S.*?\S)|(\S))\+\s/,
-        relevance:0
+        relevance: 0
       },
       // underline segments
       {
         className: 'underline',
         begin: /\s_((\S.*?\S)|(\S))_\s/,
-        relevance:0
+        relevance: 0
       },
       // emphasis segments
       {
         className: 'emphasis',
-        relevance:0,
-        variants: [
-          { begin: /\s\/((\S.*?\S)|(\S))\/\s/ },
-        ]
+        relevance: 0,
+        variants: [{
+          begin: /\s\/((\S.*?\S)|(\S))\/\s/
+        }, ]
       },
       // table rows
       {
         className: 'table',
-        begin: /\|-*\+-*/, end: /\|/ ,
-        relevance:10
-        },
+        begin: /\|-*\+-*/,
+        end: /\|/,
+        relevance: 10
+      },
       {
         className: 'table',
-        begin: /\|/, end: /\|/ ,
-        relevance:0,
-        excludeBegin:false,
-        excludeEnd:false,
+        begin: /\|/,
+        end: /\|/,
+        relevance: 0,
+        excludeBegin: false,
+        excludeEnd: false,
         returnEnd: false,
         returnBegin: true,
-        contians: [
-          {
-             begin: /\|/, end: /\|/,
-             excludeBegin: true, excludeEnd: true,
-             subLanguage: 'orgmode'
-           }
-         ]
+        contians: [{
+          begin: /\|/,
+          end: /\|/,
+          excludeBegin: true,
+          excludeEnd: true,
+          subLanguage: 'orgmode'
+        }]
       },
       // blockquotes
       {
         className: 'quote',
         keywords: 'BEGIN_QUOTE END_QUOTE ',
-        begin: /^#\+BEGIN_QUOTE.*$/, end: /^#\+END_QUOTE.*$/,
+        begin: /^#\+BEGIN_QUOTE.*$/,
+        end: /^#\+END_QUOTE.*$/,
         relevance: 10
       },
       // code snippets
       {
         className: 'code',
         keywords: 'BEGIN_SRC END_SRC BEGIN_EXAMPLE END_EXAMPLE',
-        variants: [
-          {
-            begin: /^#\+BEGIN_SRC/, end: /^#\+END_SRC$/,
+        variants: [{
+            begin: /^#\+BEGIN_SRC/,
+            end: /^#\+END_SRC$/,
             relevance: 10
           },
           {
-            begin: /^#\+BEGIN_EXAMPLE.*$/, end: /^#\+END_EXAMPLE.*$/,
+            begin: /^#\+BEGIN_EXAMPLE.*$/,
+            end: /^#\+END_EXAMPLE.*$/,
             relevance: 10
           },
           {
@@ -108,39 +113,37 @@ export default function(hljs) {
       // attributes
       {
         className: 'attribute',
-        variants: [
-            {
-                begin: /^\s*#\+NAME.*$/,
-                relevance: 10
-            },
-            {
-                begin: /^\s*#\+STARTUP.*$/,
-                relevance: 10
-            },
-            {
-                begin: /^\s*#\+ATTR_ORG.*$/,
-                relevance: 10
-            },
-            {
-                begin: /^\s*#\+RESULTS.*$/,
-                relevance: 10
-            },
-            {
-                begin: /^\s*#\+TBLFM.*$/,
-                relevance: 10
-            },
-     // conflicts with code environment
-     //   {
-     //    begin: /^\s*#\+.*$/,
-     //    relevance: 10
-     //   }
-      ]
+        variants: [{
+            begin: /^\s*#\+NAME.*$/,
+            relevance: 10
+          },
+          {
+            begin: /^\s*#\+STARTUP.*$/,
+            relevance: 10
+          },
+          {
+            begin: /^\s*#\+ATTR_ORG.*$/,
+            relevance: 10
+          },
+          {
+            begin: /^\s*#\+RESULTS.*$/,
+            relevance: 10
+          },
+          {
+            begin: /^\s*#\+TBLFM.*$/,
+            relevance: 10
+          },
+          // conflicts with code environment
+          //   {
+          //    begin: /^\s*#\+.*$/,
+          //    relevance: 10
+          //   }
+        ]
       },
       // Tags
       {
         className: 'tags',
-        variants: [
-          {
+        variants: [{
             begin: /TODO/
           },
           {
@@ -151,38 +154,42 @@ export default function(hljs) {
       // horizontal rules
       {
         className: 'meta',
-        begin: /^-{5,}/, end: /$/
+        begin: /^-{5,}/,
+        end: /$/
       },
 
       // using links - title and link
       {
         begin: /\[\[.+?\][\[\[].*?[\]\]]\]/,
-        relevance:10,
+        relevance: 10,
         returnBegin: true,
-        contains: [
-          {
+        contains: [{
             className: 'link',
-            begin: /\[\[/, end: /\]/,
-            excludeBegin: true, excludeEnd: true
+            begin: /\[\[/,
+            end: /\]/,
+            excludeBegin: true,
+            excludeEnd: true
           },
           {
             className: 'symbol',
-            begin: /\[/, end: /\]\]/,
-            excludeBegin: true, excludeEnd: true
+            begin: /\[/,
+            end: /\]\]/,
+            excludeBegin: true,
+            excludeEnd: true
           }
         ]
       },
       {
         begin: /\[\[[^\n]+\]\]/,
-        relevance:0,
+        relevance: 0,
         returnBegin: true,
-        contains: [
-          {
-            className: 'link',
-            begin: /\[\[/, end: /\]\]/,
-            excludeBegin: true, excludeEnd: true
-          }
-        ]
+        contains: [{
+          className: 'link',
+          begin: /\[\[/,
+          end: /\]\]/,
+          excludeBegin: true,
+          excludeEnd: true
+        }]
       }
     ]
   };

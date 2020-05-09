@@ -10,38 +10,42 @@ export default function(hljs) {
     className: 'tag',
     begin: /\\/,
     relevance: 0,
-    contains: [
-      {
-        className: 'name',
-        variants: [
-          {begin: /[a-zA-Z\u0430-\u044f\u0410-\u042f]+[*]?/},
-          {begin: /[^a-zA-Z\u0430-\u044f\u0410-\u042f0-9]/}
-        ],
-        starts: {
-          endsWithParent: true,
-          relevance: 0,
-          contains: [
-            {
-              className: 'string', // because it looks like attributes in HTML tags
-              variants: [
-                {begin: /\[/, end: /\]/},
-                {begin: /\{/, end: /\}/}
-              ]
-            },
-            {
-              begin: /\s*=\s*/, endsWithParent: true,
-              relevance: 0,
-              contains: [
-                {
-                  className: 'number',
-                  begin: /-?\d*\.?\d+(pt|pc|mm|cm|in|dd|cc|ex|em)?/
-                }
-              ]
-            }
-          ]
+    contains: [{
+      className: 'name',
+      variants: [{
+          begin: /[a-zA-Z\u0430-\u044f\u0410-\u042f]+[*]?/
+        },
+        {
+          begin: /[^a-zA-Z\u0430-\u044f\u0410-\u042f0-9]/
         }
+      ],
+      starts: {
+        endsWithParent: true,
+        relevance: 0,
+        contains: [{
+            className: 'string', // because it looks like attributes in HTML tags
+            variants: [{
+                begin: /\[/,
+                end: /\]/
+              },
+              {
+                begin: /\{/,
+                end: /\}/
+              }
+            ]
+          },
+          {
+            begin: /\s*=\s*/,
+            endsWithParent: true,
+            relevance: 0,
+            contains: [{
+              className: 'number',
+              begin: /-?\d*\.?\d+(pt|pc|mm|cm|in|dd|cc|ex|em)?/
+            }]
+          }
+        ]
       }
-    ]
+    }]
   };
 
   return {
@@ -53,15 +57,19 @@ export default function(hljs) {
         className: 'formula',
         contains: [COMMAND],
         relevance: 0,
-        variants: [
-          {begin: /\$\$/, end: /\$\$/},
-          {begin: /\$/, end: /\$/}
+        variants: [{
+            begin: /\$\$/,
+            end: /\$\$/
+          },
+          {
+            begin: /\$/,
+            end: /\$/
+          }
         ]
       },
       hljs.COMMENT(
         '%',
-        '$',
-        {
+        '$', {
           relevance: 0
         }
       )

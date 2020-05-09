@@ -5,13 +5,12 @@
  Website: https://cucumber.io/docs/gherkin/
  */
 
-export default function (hljs) {
+export default function(hljs) {
   return {
     name: 'Gherkin',
     aliases: ['feature'],
     keywords: 'Feature Background Ability Business\ Need Scenario Scenarios Scenario\ Outline Scenario\ Template Examples Given And Then But When',
-    contains: [
-      {
+    contains: [{
         className: 'symbol',
         begin: '\\*',
         relevance: 0
@@ -21,22 +20,23 @@ export default function (hljs) {
         begin: '@[^@\\s]+'
       },
       {
-        begin: '\\|', end: '\\|\\w*$',
-        contains: [
-          {
-            className: 'string',
-            begin: '[^|]+'
-          }
-        ]
+        begin: '\\|',
+        end: '\\|\\w*$',
+        contains: [{
+          className: 'string',
+          begin: '[^|]+'
+        }]
       },
       {
         className: 'variable',
-        begin: '<', end: '>'
+        begin: '<',
+        end: '>'
       },
       hljs.HASH_COMMENT_MODE,
       {
         className: 'string',
-        begin: '"""', end: '"""'
+        begin: '"""',
+        end: '"""'
       },
       hljs.QUOTE_STRING_MODE
     ]

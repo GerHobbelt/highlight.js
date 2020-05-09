@@ -22,8 +22,8 @@ export default function(hljs) {
   var TEMPLATE_ARGUMENT_RE = '<.*?>';
   var FUNCTION_TYPE_RE = '(' +
     DECLTYPE_AUTO_RE + '|' +
-    optional(NAMESPACE_RE) +'[a-zA-Z_]\\w*' + optional(TEMPLATE_ARGUMENT_RE) +
-  ')';
+    optional(NAMESPACE_RE) + '[a-zA-Z_]\\w*' + optional(TEMPLATE_ARGUMENT_RE) +
+    ')';
   var CPP_PRIMITIVE_TYPES = {
     className: 'keyword',
     begin: '\\b[a-z\\d_]*_t\\b'
@@ -34,14 +34,15 @@ export default function(hljs) {
   var CHARACTER_ESCAPES = '\\\\(x[0-9A-Fa-f]{2}|u[0-9A-Fa-f]{4,8}|[0-7]{3}|\\S)'
   var STRINGS = {
     className: 'string',
-    variants: [
-      {
-        begin: '(u8?|U|L)?"', end: '"',
+    variants: [{
+        begin: '(u8?|U|L)?"',
+        end: '"',
         illegal: '\\n',
         contains: [hljs.BACKSLASH_ESCAPE]
       },
       {
-        begin: '(u8?|U|L)?\'(' + CHARACTER_ESCAPES + "|.)", end: '\'',
+        begin: '(u8?|U|L)?\'(' + CHARACTER_ESCAPES + "|.)",
+        end: '\'',
         illegal: '.'
       },
       hljs.END_SAME_AS_BEGIN({
@@ -53,30 +54,38 @@ export default function(hljs) {
 
   var NUMBERS = {
     className: 'number',
-    variants: [
-      { begin: '\\b(0b[01\']+)' },
-      { begin: '(-?)\\b([\\d\']+(\\.[\\d\']*)?|\\.[\\d\']+)(u|U|l|L|ul|UL|f|F|b|B)' },
-      { begin: '(-?)(\\b0[xX][a-fA-F0-9\']+|(\\b[\\d\']+(\\.[\\d\']*)?|\\.[\\d\']+)([eE][-+]?[\\d\']+)?)' }
+    variants: [{
+        begin: '\\b(0b[01\']+)'
+      },
+      {
+        begin: '(-?)\\b([\\d\']+(\\.[\\d\']*)?|\\.[\\d\']+)(u|U|l|L|ul|UL|f|F|b|B)'
+      },
+      {
+        begin: '(-?)(\\b0[xX][a-fA-F0-9\']+|(\\b[\\d\']+(\\.[\\d\']*)?|\\.[\\d\']+)([eE][-+]?[\\d\']+)?)'
+      }
     ],
     relevance: 0
   };
 
-  var PREPROCESSOR =       {
+  var PREPROCESSOR = {
     className: 'meta',
-    begin: /#\s*[a-z]+\b/, end: /$/,
+    begin: /#\s*[a-z]+\b/,
+    end: /$/,
     keywords: {
-      'meta-keyword':
-        'if else elif endif define undef warning error line ' +
+      'meta-keyword': 'if else elif endif define undef warning error line ' +
         'pragma _Pragma ifdef ifndef include'
     },
-    contains: [
-      {
-        begin: /\\\n/, relevance: 0
+    contains: [{
+        begin: /\\\n/,
+        relevance: 0
       },
-      hljs.inherit(STRINGS, {className: 'meta-string'}),
+      hljs.inherit(STRINGS, {
+        className: 'meta-string'
+      }),
       {
         className: 'meta-string',
-        begin: /<.*?>/, end: /$/,
+        begin: /<.*?>/,
+        end: /$/,
         illegal: '\\n',
       },
       hljs.C_LINE_COMMENT_MODE,
@@ -129,27 +138,35 @@ export default function(hljs) {
     // This mode covers expression context where we can't expect a function
     // definition and shouldn't highlight anything that looks like one:
     // `return some()`, `else if()`, `(x*sum(1, 2))`
-    variants: [
-      {begin: /=/, end: /;/},
-      {begin: /\(/, end: /\)/},
-      {beginKeywords: 'new throw return else', end: /;/}
+    variants: [{
+        begin: /=/,
+        end: /;/
+      },
+      {
+        begin: /\(/,
+        end: /\)/
+      },
+      {
+        beginKeywords: 'new throw return else',
+        end: /;/
+      }
     ],
     keywords: CPP_KEYWORDS,
-    contains: EXPRESSION_CONTAINS.concat([
-      {
-        begin: /\(/, end: /\)/,
-        keywords: CPP_KEYWORDS,
-        contains: EXPRESSION_CONTAINS.concat(['self']),
-        relevance: 0
-      }
-    ]),
+    contains: EXPRESSION_CONTAINS.concat([{
+      begin: /\(/,
+      end: /\)/,
+      keywords: CPP_KEYWORDS,
+      contains: EXPRESSION_CONTAINS.concat(['self']),
+      relevance: 0
+    }]),
     relevance: 0
   };
 
   var FUNCTION_DECLARATION = {
     className: 'function',
     begin: '(' + FUNCTION_TYPE_RE + '[\\*&\\s]+)+' + FUNCTION_TITLE,
-    returnBegin: true, end: /[{;=]/,
+    returnBegin: true,
+    end: /[{;=]/,
     excludeEnd: true,
     keywords: CPP_KEYWORDS,
     illegal: /[^\w\s\*&:<>]/,
@@ -161,13 +178,15 @@ export default function(hljs) {
         relevance: 0,
       },
       {
-        begin: FUNCTION_TITLE, returnBegin: true,
+        begin: FUNCTION_TITLE,
+        returnBegin: true,
         contains: [TITLE_MODE],
         relevance: 0
       },
       {
         className: 'params',
-        begin: /\(/, end: /\)/,
+        begin: /\(/,
+        end: /\)/,
         keywords: CPP_KEYWORDS,
         relevance: 0,
         contains: [
@@ -178,7 +197,8 @@ export default function(hljs) {
           CPP_PRIMITIVE_TYPES,
           // Count matching parentheses.
           {
-            begin: /\(/, end: /\)/,
+            begin: /\(/,
+            end: /\)/,
             keywords: CPP_KEYWORDS,
             relevance: 0,
             contains: [
@@ -211,25 +231,30 @@ export default function(hljs) {
       FUNCTION_DECLARATION,
       EXPRESSION_CONTAINS,
       [
-      PREPROCESSOR,
-      { // containers: ie, `vector <int> rooms (9);`
-        begin: '\\b(deque|list|queue|priority_queue|pair|stack|vector|map|set|bitset|multiset|multimap|unordered_map|unordered_set|unordered_multiset|unordered_multimap|array)\\s*<', end: '>',
-        keywords: CPP_KEYWORDS,
-        contains: ['self', CPP_PRIMITIVE_TYPES]
-      },
-      {
-        begin: hljs.IDENT_RE + '::',
-        keywords: CPP_KEYWORDS
-      },
-      {
-        className: 'class',
-        beginKeywords: 'class struct', end: /[{;:]/,
-        contains: [
-          {begin: /</, end: />/, contains: ['self']}, // skip generic stuff
-          hljs.TITLE_MODE
-        ]
-      }
-    ]),
+        PREPROCESSOR,
+        { // containers: ie, `vector <int> rooms (9);`
+          begin: '\\b(deque|list|queue|priority_queue|pair|stack|vector|map|set|bitset|multiset|multimap|unordered_map|unordered_set|unordered_multiset|unordered_multimap|array)\\s*<',
+          end: '>',
+          keywords: CPP_KEYWORDS,
+          contains: ['self', CPP_PRIMITIVE_TYPES]
+        },
+        {
+          begin: hljs.IDENT_RE + '::',
+          keywords: CPP_KEYWORDS
+        },
+        {
+          className: 'class',
+          beginKeywords: 'class struct',
+          end: /[{;:]/,
+          contains: [{
+              begin: /</,
+              end: />/,
+              contains: ['self']
+            }, // skip generic stuff
+            hljs.TITLE_MODE
+          ]
+        }
+      ]),
     exports: {
       preprocessor: PREPROCESSOR,
       strings: STRINGS,

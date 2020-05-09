@@ -3067,7 +3067,13 @@ export default function(hljs) {
   // string : строки
   var STRINGS = {
     className: "string",
-    variants: [{ begin: '"', end: '"' }, { begin: "'", end: "'" }],
+    variants: [{
+      begin: '"',
+      end: '"'
+    }, {
+      begin: "'",
+      end: "'"
+    }],
   };
 
   // Токены

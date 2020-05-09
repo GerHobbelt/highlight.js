@@ -6,17 +6,17 @@ Author: Gidi Meir Morris <oss@gidi.io>
 Category: functional
 */
 export default function(hljs) {
-  function orReValues(ops){
+  function orReValues(ops) {
     return ops
-    .map(function(op) {
-      return op
-        .split('')
-        .map(function(char) {
-          return '\\' + char;
-        })
-        .join('');
-    })
-    .join('|');
+      .map(function(op) {
+        return op
+          .split('')
+          .map(function(char) {
+            return '\\' + char;
+          })
+          .join('');
+      })
+      .join('|');
   }
 
   var RE_IDENT = '~?[a-z$_][0-9a-zA-Z$_]*';
@@ -29,15 +29,12 @@ export default function(hljs) {
   var RE_OPERATOR_SPACED = "\\s+" + RE_OPERATOR + "\\s+";
 
   var KEYWORDS = {
-    keyword:
-      'and as asr assert begin class constraint do done downto else end exception external ' +
+    keyword: 'and as asr assert begin class constraint do done downto else end exception external ' +
       'for fun function functor if in include inherit initializer ' +
       'land lazy let lor lsl lsr lxor match method mod module mutable new nonrec ' +
       'object of open or private rec sig struct then to try type val virtual when while with',
-    built_in:
-      'array bool bytes char exn|5 float int int32 int64 list lazy_t|5 nativeint|5 ref string unit ',
-    literal:
-      'true false'
+    built_in: 'array bool bytes char exn|5 float int int32 int64 list lazy_t|5 nativeint|5 ref string unit ',
+    literal: 'true false'
   };
 
   var RE_NUMBER = '\\b(0[xX][a-fA-F0-9_]+[Lln]?|' +
@@ -48,8 +45,7 @@ export default function(hljs) {
   var NUMBER_MODE = {
     className: 'number',
     relevance: 0,
-    variants: [
-      {
+    variants: [{
         begin: RE_NUMBER
       },
       {
@@ -63,8 +59,7 @@ export default function(hljs) {
     relevance: 0,
     begin: RE_OPERATOR
   };
-  var LIST_CONTENTS_MODES = [
-    {
+  var LIST_CONTENTS_MODES = [{
       className: 'identifier',
       relevance: 0,
       begin: RE_IDENT
@@ -78,33 +73,29 @@ export default function(hljs) {
     OPERATOR_MODE,
     {
       className: 'module',
-      begin: "\\b" + RE_MODULE_IDENT, returnBegin: true,
+      begin: "\\b" + RE_MODULE_IDENT,
+      returnBegin: true,
       end: "\.",
-      contains: [
-        {
-          className: 'identifier',
-          begin: RE_MODULE_IDENT,
-          relevance: 0
-        }
-      ]
+      contains: [{
+        className: 'identifier',
+        begin: RE_MODULE_IDENT,
+        relevance: 0
+      }]
     }
   ];
 
-  var PARAMS_CONTENTS = [
-    {
-      className: 'module',
-      begin: "\\b" + RE_MODULE_IDENT, returnBegin: true,
-      end: "\.",
-      relevance: 0,
-      contains: [
-        {
-          className: 'identifier',
-          begin: RE_MODULE_IDENT,
-          relevance: 0
-        }
-      ]
-    }
-  ];
+  var PARAMS_CONTENTS = [{
+    className: 'module',
+    begin: "\\b" + RE_MODULE_IDENT,
+    returnBegin: true,
+    end: "\.",
+    relevance: 0,
+    contains: [{
+      className: 'identifier',
+      begin: RE_MODULE_IDENT,
+      relevance: 0
+    }]
+  }];
 
   var PARAMS_MODE = {
     begin: RE_IDENT,
@@ -127,43 +118,37 @@ export default function(hljs) {
     className: 'function',
     relevance: 0,
     keywords: KEYWORDS,
-    variants: [
-      {
+    variants: [{
         begin: '\\s(\\(\\.?.*?\\)|' + RE_IDENT + ')\\s*=>',
         end: '\\s*=>',
         returnBegin: true,
         relevance: 0,
-        contains: [
-          {
-            className: 'params',
-            variants: [
-              {
-                begin: RE_IDENT
-              },
-              {
-                begin: RE_PARAM
-              },
-              {
-                begin: /\(\s*\)/,
-              }
-            ]
-          }
-        ]
+        contains: [{
+          className: 'params',
+          variants: [{
+              begin: RE_IDENT
+            },
+            {
+              begin: RE_PARAM
+            },
+            {
+              begin: /\(\s*\)/,
+            }
+          ]
+        }]
       },
       {
         begin: '\\s\\(\\.?[^;\\|]*\\)\\s*=>',
         end: '\\s=>',
         returnBegin: true,
         relevance: 0,
-        contains: [
-          {
-            className: 'params',
-            relevance: 0,
-            variants: [
-              PARAMS_MODE
-            ]
-          }
-        ]
+        contains: [{
+          className: 'params',
+          relevance: 0,
+          variants: [
+            PARAMS_MODE
+          ]
+        }]
       },
       {
         begin: '\\(\\.\\s' + RE_IDENT + '\\)\\s*=>'
@@ -210,8 +195,7 @@ export default function(hljs) {
     className: 'module-access',
     keywords: KEYWORDS,
     returnBegin: true,
-    variants: [
-      {
+    variants: [{
         begin: "\\b(" + RE_MODULE_IDENT + "\\.)+" + RE_IDENT
       },
       {
@@ -243,7 +227,9 @@ export default function(hljs) {
     keywords: KEYWORDS,
     illegal: '(:\\-|:=|\\${|\\+=)',
     contains: [
-      hljs.COMMENT('/\\*', '\\*/', { illegal: '^(\\#,\\/\\/)' }),
+      hljs.COMMENT('/\\*', '\\*/', {
+        illegal: '^(\\#,\\/\\/)'
+      }),
       {
         className: 'character',
         begin: '\'(\\\\[^\']+|[^\'])\'',
@@ -260,7 +246,7 @@ export default function(hljs) {
         className: 'literal',
         begin: '\\[\\|',
         end: '\\|\\]',
-        relevance:  0,
+        relevance: 0,
         contains: LIST_CONTENTS_MODES
       },
       {
@@ -288,8 +274,7 @@ export default function(hljs) {
         returnBegin: true,
         keywords: KEYWORDS,
         relevance: 0,
-        contains: [
-          {
+        contains: [{
             className: 'module',
             relevance: 0,
             begin: RE_MODULE_IDENT

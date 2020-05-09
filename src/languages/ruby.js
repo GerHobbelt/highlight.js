@@ -10,32 +10,29 @@ Category: common
 export default function(hljs) {
   var RUBY_METHOD_RE = '[a-zA-Z_]\\w*[!?=]?|[-+~]\\@|<<|>>|=~|===?|<=>|[<>]=?|\\*\\*|[-/+%^&*~`|]|\\[\\]=?';
   var RUBY_KEYWORDS = {
-    keyword:
-      'and then defined module in return redo if BEGIN retry end for self when ' +
+    keyword: 'and then defined module in return redo if BEGIN retry end for self when ' +
       'next until do begin unless END rescue else break undef not super class case ' +
       'require yield alias while ensure elsif or include attr_reader attr_writer attr_accessor',
-    literal:
-      'true false nil'
+    literal: 'true false nil'
   };
   var YARDOCTAG = {
     className: 'doctag',
     begin: '@[A-Za-z]+'
   };
   var IRB_OBJECT = {
-    begin: '#<', end: '>'
+    begin: '#<',
+    end: '>'
   };
   var COMMENT_MODES = [
     hljs.COMMENT(
       '#',
-      '$',
-      {
+      '$', {
         contains: [YARDOCTAG]
       }
     ),
     hljs.COMMENT(
       '^\\=begin',
-      '^\\=end',
-      {
+      '^\\=end', {
         contains: [YARDOCTAG],
         relevance: 10
       }
@@ -44,24 +41,57 @@ export default function(hljs) {
   ];
   var SUBST = {
     className: 'subst',
-    begin: '#\\{', end: '}',
+    begin: '#\\{',
+    end: '}',
     keywords: RUBY_KEYWORDS
   };
   var STRING = {
     className: 'string',
     contains: [hljs.BACKSLASH_ESCAPE, SUBST],
-    variants: [
-      {begin: /'/, end: /'/},
-      {begin: /"/, end: /"/},
-      {begin: /`/, end: /`/},
-      {begin: '%[qQwWx]?\\(', end: '\\)'},
-      {begin: '%[qQwWx]?\\[', end: '\\]'},
-      {begin: '%[qQwWx]?{', end: '}'},
-      {begin: '%[qQwWx]?<', end: '>'},
-      {begin: '%[qQwWx]?/', end: '/'},
-      {begin: '%[qQwWx]?%', end: '%'},
-      {begin: '%[qQwWx]?-', end: '-'},
-      {begin: '%[qQwWx]?\\|', end: '\\|'},
+    variants: [{
+        begin: /'/,
+        end: /'/
+      },
+      {
+        begin: /"/,
+        end: /"/
+      },
+      {
+        begin: /`/,
+        end: /`/
+      },
+      {
+        begin: '%[qQwWx]?\\(',
+        end: '\\)'
+      },
+      {
+        begin: '%[qQwWx]?\\[',
+        end: '\\]'
+      },
+      {
+        begin: '%[qQwWx]?{',
+        end: '}'
+      },
+      {
+        begin: '%[qQwWx]?<',
+        end: '>'
+      },
+      {
+        begin: '%[qQwWx]?/',
+        end: '/'
+      },
+      {
+        begin: '%[qQwWx]?%',
+        end: '%'
+      },
+      {
+        begin: '%[qQwWx]?-',
+        end: '-'
+      },
+      {
+        begin: '%[qQwWx]?\\|',
+        end: '\\|'
+      },
       {
         // \B in the beginning suppresses recognition of ?-sequences where ?
         // is the last character of a preceding identifier, as in: `func?4`
@@ -70,10 +100,12 @@ export default function(hljs) {
       { // heredocs
         begin: /<<[-~]?'?(\w+)(?:.|\n)*?\n\s*\1\b/,
         returnBegin: true,
-        contains: [
-          { begin: /<<[-~]?'?/ },
+        contains: [{
+            begin: /<<[-~]?'?/
+          },
           hljs.END_SAME_AS_BEGIN({
-            begin: /(\w+)/, end: /(\w+)/,
+            begin: /(\w+)/,
+            end: /(\w+)/,
             contains: [hljs.BACKSLASH_ESCAPE, SUBST],
           })
         ]
@@ -82,7 +114,9 @@ export default function(hljs) {
   };
   var PARAMS = {
     className: 'params',
-    begin: '\\(', end: '\\)', endsParent: true,
+    begin: '\\(',
+    end: '\\)',
+    endsParent: true,
     keywords: RUBY_KEYWORDS
   };
 
@@ -91,10 +125,13 @@ export default function(hljs) {
     IRB_OBJECT,
     {
       className: 'class',
-      beginKeywords: 'class module', end: '$|;',
+      beginKeywords: 'class module',
+      end: '$|;',
       illegal: /=/,
       contains: [
-        hljs.inherit(hljs.TITLE_MODE, {begin: '[A-Za-z_]\\w*(::\\w+)*(\\?|\\!)?'}),
+        hljs.inherit(hljs.TITLE_MODE, {
+          begin: '[A-Za-z_]\\w*(::\\w+)*(\\?|\\!)?'
+        }),
         {
           begin: '<\\s*',
           contains: [{
@@ -105,9 +142,12 @@ export default function(hljs) {
     },
     {
       className: 'function',
-      beginKeywords: 'def', end: '$|;',
+      beginKeywords: 'def',
+      end: '$|;',
       contains: [
-        hljs.inherit(hljs.TITLE_MODE, {begin: RUBY_METHOD_RE}),
+        hljs.inherit(hljs.TITLE_MODE, {
+          begin: RUBY_METHOD_RE
+        }),
         PARAMS
       ].concat(COMMENT_MODES)
     },
@@ -123,7 +163,9 @@ export default function(hljs) {
     {
       className: 'symbol',
       begin: ':(?!\\s)',
-      contains: [STRING, {begin: RUBY_METHOD_RE}],
+      contains: [STRING, {
+        begin: RUBY_METHOD_RE
+      }],
       relevance: 0
     },
     {
@@ -136,7 +178,8 @@ export default function(hljs) {
     },
     {
       className: 'params',
-      begin: /\|/, end: /\|/,
+      begin: /\|/,
+      end: /\|/,
       keywords: RUBY_KEYWORDS
     },
     { // regexp container
@@ -148,12 +191,26 @@ export default function(hljs) {
           className: 'regexp',
           contains: [hljs.BACKSLASH_ESCAPE, SUBST],
           illegal: /\n/,
-          variants: [
-            {begin: '/', end: '/[a-z]*'},
-            {begin: '%r{', end: '}[a-z]*'},
-            {begin: '%r\\(', end: '\\)[a-z]*'},
-            {begin: '%r!', end: '![a-z]*'},
-            {begin: '%r\\[', end: '\\][a-z]*'}
+          variants: [{
+              begin: '/',
+              end: '/[a-z]*'
+            },
+            {
+              begin: '%r{',
+              end: '}[a-z]*'
+            },
+            {
+              begin: '%r\\(',
+              end: '\\)[a-z]*'
+            },
+            {
+              begin: '%r!',
+              end: '![a-z]*'
+            },
+            {
+              begin: '%r\\[',
+              end: '\\][a-z]*'
+            }
           ]
         }
       ].concat(COMMENT_MODES),
@@ -168,18 +225,19 @@ export default function(hljs) {
   var DEFAULT_PROMPT = "[\\w#]+\\(\\w+\\):\\d+:\\d+>";
   var RVM_PROMPT = "(\\w+-)?\\d+\\.\\d+\\.\\d(p\\d+)?[^>]+>";
 
-  var IRB_DEFAULT = [
-    {
+  var IRB_DEFAULT = [{
       begin: /^\s*=>/,
       starts: {
-        end: '$', contains: RUBY_DEFAULT_CONTAINS
+        end: '$',
+        contains: RUBY_DEFAULT_CONTAINS
       }
     },
     {
       className: 'meta',
-      begin: '^('+SIMPLE_PROMPT+"|"+DEFAULT_PROMPT+'|'+RVM_PROMPT+')',
+      begin: '^(' + SIMPLE_PROMPT + "|" + DEFAULT_PROMPT + '|' + RVM_PROMPT + ')',
       starts: {
-        end: '$', contains: RUBY_DEFAULT_CONTAINS
+        end: '$',
+        contains: RUBY_DEFAULT_CONTAINS
       }
     }
   ];

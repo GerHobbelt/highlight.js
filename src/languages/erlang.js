@@ -10,11 +10,9 @@ export default function(hljs) {
   var BASIC_ATOM_RE = '[a-z\'][a-zA-Z0-9_\']*';
   var FUNCTION_NAME_RE = '(' + BASIC_ATOM_RE + ':' + BASIC_ATOM_RE + '|' + BASIC_ATOM_RE + ')';
   var ERLANG_RESERVED = {
-    keyword:
-      'after and andalso|10 band begin bnot bor bsl bzr bxor case catch cond div end fun if ' +
+    keyword: 'after and andalso|10 band begin bnot bor bsl bzr bxor case catch cond div end fun if ' +
       'let not of orelse|10 query receive rem try when xor',
-    literal:
-      'false true'
+    literal: 'false true'
   };
 
   var COMMENT = hljs.COMMENT('%', '$');
@@ -27,15 +25,18 @@ export default function(hljs) {
     begin: 'fun\\s+' + BASIC_ATOM_RE + '/\\d+'
   };
   var FUNCTION_CALL = {
-    begin: FUNCTION_NAME_RE + '\\(', end: '\\)',
+    begin: FUNCTION_NAME_RE + '\\(',
+    end: '\\)',
     returnBegin: true,
     relevance: 0,
-    contains: [
-      {
-        begin: FUNCTION_NAME_RE, relevance: 0
+    contains: [{
+        begin: FUNCTION_NAME_RE,
+        relevance: 0
       },
       {
-        begin: '\\(', end: '\\)', endsWithParent: true,
+        begin: '\\(',
+        end: '\\)',
+        endsWithParent: true,
         returnEnd: true,
         relevance: 0
         // "contains" defined later
@@ -43,7 +44,8 @@ export default function(hljs) {
     ]
   };
   var TUPLE = {
-    begin: '{', end: '}',
+    begin: '{',
+    end: '}',
     relevance: 0
     // "contains" defined later
   };
@@ -59,13 +61,13 @@ export default function(hljs) {
     begin: '#' + hljs.UNDERSCORE_IDENT_RE,
     relevance: 0,
     returnBegin: true,
-    contains: [
-      {
+    contains: [{
         begin: '#' + hljs.UNDERSCORE_IDENT_RE,
         relevance: 0
       },
       {
-        begin: '{', end: '}',
+        begin: '{',
+        end: '}',
         relevance: 0
         // "contains" defined later
       }
@@ -73,13 +75,16 @@ export default function(hljs) {
   };
 
   var BLOCK_STATEMENTS = {
-    beginKeywords: 'fun receive if try case', end: 'end',
+    beginKeywords: 'fun receive if try case',
+    end: 'end',
     keywords: ERLANG_RESERVED
   };
   BLOCK_STATEMENTS.contains = [
     COMMENT,
     NAMED_FUN,
-    hljs.inherit(hljs.APOS_STRING_MODE, {className: ''}),
+    hljs.inherit(hljs.APOS_STRING_MODE, {
+      className: ''
+    }),
     BLOCK_STATEMENTS,
     FUNCTION_CALL,
     hljs.QUOTE_STRING_MODE,
@@ -106,7 +111,8 @@ export default function(hljs) {
 
   var PARAMS = {
     className: 'params',
-    begin: '\\(', end: '\\)',
+    begin: '\\(',
+    end: '\\)',
     contains: BASIC_MODES
   };
   return {
@@ -114,15 +120,17 @@ export default function(hljs) {
     aliases: ['erl'],
     keywords: ERLANG_RESERVED,
     illegal: '(</|\\*=|\\+=|-=|/\\*|\\*/|\\(\\*|\\*\\))',
-    contains: [
-      {
+    contains: [{
         className: 'function',
-        begin: '^' + BASIC_ATOM_RE + '\\s*\\(', end: '->',
+        begin: '^' + BASIC_ATOM_RE + '\\s*\\(',
+        end: '->',
         returnBegin: true,
         illegal: '\\(|#|//|/\\*|\\\\|:|;',
         contains: [
           PARAMS,
-          hljs.inherit(hljs.TITLE_MODE, {begin: BASIC_ATOM_RE})
+          hljs.inherit(hljs.TITLE_MODE, {
+            begin: BASIC_ATOM_RE
+          })
         ],
         starts: {
           end: ';|\\.',
@@ -132,15 +140,16 @@ export default function(hljs) {
       },
       COMMENT,
       {
-        begin: '^-', end: '\\.',
+        begin: '^-',
+        end: '\\.',
         relevance: 0,
         excludeEnd: true,
         returnBegin: true,
         keywords: {
           $pattern: '-' + hljs.IDENT_RE,
           keyword: '-module -record -undef -export -ifdef -ifndef -author -copyright -doc -vsn ' +
-          '-import -include -include_lib -compile -define -else -endif -file -behaviour ' +
-          '-behavior -spec'
+            '-import -include -include_lib -compile -define -else -endif -file -behaviour ' +
+            '-behavior -spec'
         },
         contains: [PARAMS]
       },
@@ -149,7 +158,9 @@ export default function(hljs) {
       RECORD_ACCESS,
       VAR1, VAR2,
       TUPLE,
-      {begin: /\.$/} // relevance booster
+      {
+        begin: /\.$/
+      } // relevance booster
     ]
   };
 }

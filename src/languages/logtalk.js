@@ -14,7 +14,8 @@ export default function(hljs) {
 
   var QUOTED_ATOMS = {
     className: 'string',
-    begin: /'/, end: /'/,
+    begin: /'/,
+    end: /'/,
     contains: [hljs.BACKSLASH_ESCAPE],
     illegal: /\n/,
     relevance: 0
@@ -33,30 +34,35 @@ export default function(hljs) {
   };
 
   var PARENTED = {
-    begin: /\(/, end: /\)/,
+    begin: /\(/,
+    end: /\)/,
     relevance: 0
   };
 
   var LISTS = {
-    begin: /\[/, end: /\]/,
+    begin: /\[/,
+    end: /\]/,
     relevance: 0
   };
 
   var CURLY_BRACKTED_TERMS = {
-  begin: /\{/, end: /\}/,
+    begin: /\{/,
+    end: /\}/,
     relevance: 0
   };
 
   var LINE_COMMENTS = {
     className: 'comment',
-    begin: /%/, end: /$/
+    begin: /%/,
+    end: /$/
   };
 
-//  var BLOCK_COMMENTS = hljs.COMMENT('/\\*', '\\*/');
+  //  var BLOCK_COMMENTS = hljs.COMMENT('/\\*', '\\*/');
 
   var BACKTICK_STRINGS = {
     className: 'string',
-    begin: /`/, end: /`/,
+    begin: /`/,
+    end: /`/,
     contains: [hljs.BACKSLASH_ESCAPE]
   };
 
@@ -67,20 +73,22 @@ export default function(hljs) {
 
   var DIRECTIVES = {
     className: 'preprocessor',
-//  lexemes: /:-\s[a-z][A-Za-z0-9_]*[.(]/,
-    begin: ':-[ ]', end: '\\(|\\./', excludeEnd: true,
+    //  lexemes: /:-\s[a-z][A-Za-z0-9_]*[.(]/,
+    begin: ':-[ ]',
+    end: '\\(|\\./',
+    excludeEnd: true,
     contains: [DIRECTIVE_KEYWORDS]
-//    keywords: DIRECTIVE_KEYWORDS,
-//    variants: [
-//        {beginKeywords: ':-\\s(object|protocol|category)', end: '\\(', excludeEnd: true},
-//        {beginKeywords: ':-\\s(end_object|end_protocol|end_category)', end: '\\.', excludeEnd: true},
-//  ],
-//  contains: [ATOMS, NUMBERS, VARIABLES]
+    //    keywords: DIRECTIVE_KEYWORDS,
+    //    variants: [
+    //        {beginKeywords: ':-\\s(object|protocol|category)', end: '\\(', excludeEnd: true},
+    //        {beginKeywords: ':-\\s(end_object|end_protocol|end_category)', end: '\\.', excludeEnd: true},
+    //  ],
+    //  contains: [ATOMS, NUMBERS, VARIABLES]
   };
 
-//  var PRED_OP = { // relevance booster
-//    begin: /:-/
-//  };
+  //  var PRED_OP = { // relevance booster
+  //    begin: /:-/
+  //  };
 
   var inner = [
 
@@ -91,7 +99,7 @@ export default function(hljs) {
     VARIABLES,
     NUMBERS,
     PARENTED,
-//    PRED_OP,
+    //    PRED_OP,
     LISTS,
     CURLY_BRACKTED_TERMS,
     LINE_COMMENTS,
@@ -106,8 +114,9 @@ export default function(hljs) {
   return {
     aliases: ['logtalk', 'lgt'],
     case_insensitive: true,
-    contains: inner.concat([
-      {begin: /\.$/} // relevance booster
+    contains: inner.concat([{
+        begin: /\.$/
+      } // relevance booster
     ])
   };
 }

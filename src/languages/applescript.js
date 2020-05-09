@@ -6,17 +6,19 @@ Website: https://developer.apple.com/library/archive/documentation/AppleScript/C
 */
 
 export default function(hljs) {
-  var STRING = hljs.inherit(hljs.QUOTE_STRING_MODE, {illegal: ''});
+  var STRING = hljs.inherit(hljs.QUOTE_STRING_MODE, {
+    illegal: ''
+  });
   var PARAMS = {
     className: 'params',
-    begin: '\\(', end: '\\)',
+    begin: '\\(',
+    end: '\\)',
     contains: ['self', hljs.C_NUMBER_MODE, STRING]
   };
   var COMMENT_MODE_1 = hljs.COMMENT('--', '$');
   var COMMENT_MODE_2 = hljs.COMMENT(
     '\\(\\*',
-    '\\*\\)',
-    {
+    '\\*\\)', {
       contains: ['self', COMMENT_MODE_1] //allow nesting
     }
   );
@@ -30,8 +32,7 @@ export default function(hljs) {
     name: 'AppleScript',
     aliases: ['osascript'],
     keywords: {
-      keyword:
-        'about above after against and around as at back before beginning ' +
+      keyword: 'about above after against and around as at back before beginning ' +
         'behind below beneath beside between but by considering ' +
         'contain contains continue copy div does eighth else end equal ' +
         'equals error every exit fifth first for fourth from front ' +
@@ -41,10 +42,8 @@ export default function(hljs) {
         'sixth some tell tenth that the|0 then third through thru ' +
         'timeout times to transaction try until where while whose with ' +
         'without',
-      literal:
-        'AppleScript false linefeed return pi quote result space tab true',
-      built_in:
-        'alias application boolean class constant date file integer list ' +
+      literal: 'AppleScript false linefeed return pi quote result space tab true',
+      built_in: 'alias application boolean class constant date file integer list ' +
         'number real record string text ' +
         'activate beep count delay launch log offset read round ' +
         'run say summarize write ' +
@@ -57,8 +56,7 @@ export default function(hljs) {
       hljs.C_NUMBER_MODE,
       {
         className: 'built_in',
-        begin:
-          '\\b(clipboard info|the clipboard|info for|list (disks|folder)|' +
+        begin: '\\b(clipboard info|the clipboard|info for|list (disks|folder)|' +
           'mount volume|path to|(close|open for) access|(get|set) eof|' +
           'current date|do shell script|get volume settings|random number|' +
           'set volume|system attribute|system info|time to GMT|' +
@@ -70,13 +68,11 @@ export default function(hljs) {
       },
       {
         className: 'literal',
-        begin:
-          '\\b(text item delimiters|current application|missing value)\\b'
+        begin: '\\b(text item delimiters|current application|missing value)\\b'
       },
       {
         className: 'keyword',
-        begin:
-          '\\b(apart from|aside from|instead of|out of|greater than|' +
+        begin: '\\b(apart from|aside from|instead of|out of|greater than|' +
           "isn't|(doesn't|does not) (equal|come before|come after|contain)|" +
           '(greater|less) than( or equal)?|(starts?|ends|begins?) with|' +
           'contained by|comes (before|after)|a (ref|reference)|POSIX file|' +

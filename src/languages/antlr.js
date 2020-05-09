@@ -17,12 +17,12 @@ export default function(hljs) {
       hljs.HASH_COMMENT_MODE,
       hljs.APOS_STRING_MODE,
       {
-         className: 'title',
-         begin: '^' + hljs.UNDERSCORE_IDENT_RE,
-         relevance: 0
+        className: 'title',
+        begin: '^' + hljs.UNDERSCORE_IDENT_RE,
+        relevance: 0
       },
       {
-          begin: ';|\\||:' // relevance booster
+        begin: ';|\\||:' // relevance booster
       }
     ]
   };

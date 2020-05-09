@@ -12,7 +12,8 @@ export default function(hljs) {
 
   BACKTICK_STRING = {
     className: 'string',
-    begin: /[`"]/, end: /[`"]/
+    begin: /[`"]/,
+    end: /[`"]/
   };
 
   KEYWORD = {
@@ -44,23 +45,29 @@ export default function(hljs) {
       LITERAL,
       {
         className: 'string',
-        contains: [
-          {
+        contains: [{
             // HIL blocks, as used in Terraform
             className: 'subst',
-            begin: /\$\{/, end: /\}/,
+            begin: /\$\{/,
+            end: /\}/,
             contains: SUBST_CONTAINS
           },
           {
             // Go template blocks, as used in Converge
             className: 'subst',
-            begin: /\{\{/, end: /\}\}/,
+            begin: /\{\{/,
+            end: /\}\}/,
             contains: SUBST_CONTAINS
           }
         ],
-        variants: [
-          { begin: /"/, end: /"/ },
-          { begin: "<<EOF", end: "EOF" } // TODO: "EOF" should be any string, but I'm not sure how to do this?
+        variants: [{
+            begin: /"/,
+            end: /"/
+          },
+          {
+            begin: "<<EOF",
+            end: "EOF"
+          } // TODO: "EOF" should be any string, but I'm not sure how to do this?
         ]
       }
     ]

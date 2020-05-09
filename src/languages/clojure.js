@@ -51,14 +51,16 @@ export default function(hljs) {
     relevance: 0
   };
   var NUMBER = {
-    className: 'number', begin: SIMPLE_NUMBER_RE,
+    className: 'number',
+    begin: SIMPLE_NUMBER_RE,
     relevance: 0
   };
-  var STRING = hljs.inherit(hljs.QUOTE_STRING_MODE, {illegal: null});
+  var STRING = hljs.inherit(hljs.QUOTE_STRING_MODE, {
+    illegal: null
+  });
   var COMMENT = hljs.COMMENT(
     ';',
-    '$',
-    {
+    '$', {
       relevance: 0
     }
   );
@@ -67,7 +69,8 @@ export default function(hljs) {
     begin: /\b(true|false|nil)\b/
   };
   var COLLECTION = {
-    begin: '[\\[\\{]', end: '[\\]\\}]'
+    begin: '[\\[\\{]',
+    end: '[\\]\\}]'
   };
   var HINT = {
     className: 'comment',
@@ -79,7 +82,8 @@ export default function(hljs) {
     begin: '[:]{1,2}' + SYMBOL_RE
   };
   var LIST = {
-    begin: '\\(', end: '\\)'
+    begin: '\\(',
+    end: '\\)'
   };
   var BODY = {
     endsWithParent: true,
@@ -87,7 +91,8 @@ export default function(hljs) {
   };
   var NAME = {
     keywords: keywords,
-    className: 'name', begin: SYMBOL_RE,
+    className: 'name',
+    begin: SYMBOL_RE,
     starts: BODY
   };
   var DEFAULT_CONTAINS = [LIST, STRING, HINT, HINT_COL, COMMENT, KEY, COLLECTION, NUMBER, LITERAL, SYMBOL];
@@ -96,16 +101,14 @@ export default function(hljs) {
     beginKeywords: globals,
     lexemes: SYMBOL_RE,
     end: '(\\[|\\#|\\d|"|:|\\{|\\)|\\(|$)',
-    contains: [
-      {
-        className: 'title',
-        begin: SYMBOL_RE,
-        relevance: 0,
-        excludeEnd: true,
-        // we can only have a single title
-        endsParent: true
-      },
-    ].concat(DEFAULT_CONTAINS)
+    contains: [{
+      className: 'title',
+      begin: SYMBOL_RE,
+      relevance: 0,
+      excludeEnd: true,
+      // we can only have a single title
+      endsParent: true
+    }, ].concat(DEFAULT_CONTAINS)
   };
 
   LIST.contains = [hljs.COMMENT('comment', ''), GLOBAL, NAME, BODY];

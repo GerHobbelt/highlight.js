@@ -50,38 +50,47 @@ export default function(hljs) {
   var JS_IDENT_RE = '[A-Za-z$_][0-9A-Za-z$_]*';
   var SUBST = {
     className: 'subst',
-    begin: /#\{/, end: /}/,
+    begin: /#\{/,
+    end: /}/,
     keywords: KEYWORDS
   };
   var EXPRESSIONS = [
     hljs.BINARY_NUMBER_MODE,
-    hljs.inherit(hljs.C_NUMBER_MODE, {starts: {end: '(\\s*/)?', relevance: 0}}), // a number tries to eat the following slash to prevent treating it as a regexp
+    hljs.inherit(hljs.C_NUMBER_MODE, {
+      starts: {
+        end: '(\\s*/)?',
+        relevance: 0
+      }
+    }), // a number tries to eat the following slash to prevent treating it as a regexp
     {
       className: 'string',
-      variants: [
-        {
-          begin: /'''/, end: /'''/,
+      variants: [{
+          begin: /'''/,
+          end: /'''/,
           contains: [hljs.BACKSLASH_ESCAPE]
         },
         {
-          begin: /'/, end: /'/,
+          begin: /'/,
+          end: /'/,
           contains: [hljs.BACKSLASH_ESCAPE]
         },
         {
-          begin: /"""/, end: /"""/,
+          begin: /"""/,
+          end: /"""/,
           contains: [hljs.BACKSLASH_ESCAPE, SUBST]
         },
         {
-          begin: /"/, end: /"/,
+          begin: /"/,
+          end: /"/,
           contains: [hljs.BACKSLASH_ESCAPE, SUBST]
         }
       ]
     },
     {
       className: 'regexp',
-      variants: [
-        {
-          begin: '///', end: '///',
+      variants: [{
+          begin: '///',
+          end: '///',
           contains: [SUBST, hljs.HASH_COMMENT_MODE]
         },
         {
@@ -100,28 +109,34 @@ export default function(hljs) {
     },
     {
       subLanguage: 'javascript',
-      excludeBegin: true, excludeEnd: true,
-      variants: [
-        {
-          begin: '```', end: '```',
+      excludeBegin: true,
+      excludeEnd: true,
+      variants: [{
+          begin: '```',
+          end: '```',
         },
         {
-          begin: '`', end: '`',
+          begin: '`',
+          end: '`',
         }
       ]
     }
   ];
   SUBST.contains = EXPRESSIONS;
 
-  var TITLE = hljs.inherit(hljs.TITLE_MODE, {begin: JS_IDENT_RE});
+  var TITLE = hljs.inherit(hljs.TITLE_MODE, {
+    begin: JS_IDENT_RE
+  });
   var PARAMS_RE = '(\\(.*\\))?\\s*\\B[-=]>';
   var PARAMS = {
     className: 'params',
-    begin: '\\([^\\(]', returnBegin: true,
+    begin: '\\([^\\(]',
+    returnBegin: true,
     /* We need another contained nameless mode to not have every nested
     pair of parens to be called "params" */
     contains: [{
-      begin: /\(/, end: /\)/,
+      begin: /\(/,
+      end: /\)/,
       keywords: KEYWORDS,
       contains: ['self'].concat(EXPRESSIONS)
     }]
@@ -137,7 +152,8 @@ export default function(hljs) {
       hljs.HASH_COMMENT_MODE,
       {
         className: 'function',
-        begin: '^\\s*' + JS_IDENT_RE + '\\s*=\\s*' + PARAMS_RE, end: '[-=]>',
+        begin: '^\\s*' + JS_IDENT_RE + '\\s*=\\s*' + PARAMS_RE,
+        end: '[-=]>',
         returnBegin: true,
         contains: [TITLE, PARAMS]
       },
@@ -145,22 +161,20 @@ export default function(hljs) {
         // anonymous function start
         begin: /[:\(,=]\s*/,
         relevance: 0,
-        contains: [
-          {
-            className: 'function',
-            begin: PARAMS_RE, end: '[-=]>',
-            returnBegin: true,
-            contains: [PARAMS]
-          }
-        ]
+        contains: [{
+          className: 'function',
+          begin: PARAMS_RE,
+          end: '[-=]>',
+          returnBegin: true,
+          contains: [PARAMS]
+        }]
       },
       {
         className: 'class',
         beginKeywords: 'class',
         end: '$',
         illegal: /[:="\[\]]/,
-        contains: [
-          {
+        contains: [{
             beginKeywords: 'extends',
             endsWithParent: true,
             illegal: /[:="\[\]]/,
@@ -170,8 +184,10 @@ export default function(hljs) {
         ]
       },
       {
-        begin: JS_IDENT_RE + ':', end: ':',
-        returnBegin: true, returnEnd: true,
+        begin: JS_IDENT_RE + ':',
+        end: ':',
+        returnBegin: true,
+        returnEnd: true,
         relevance: 0
       }
     ])

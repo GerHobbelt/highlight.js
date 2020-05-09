@@ -35,21 +35,19 @@ export default function(hljs) {
     begin: '\\s*\\w*?:',
     returnBegin: true,
     relevance: 0,
-    contains: [
-      {
-        className: 'symbol',
-        begin: '\\s*?|\\S',
-        end: /:/,
-        relevance: 0,
-        starts: {
-          endsWithParent: true,
-          contains: [
-            IRI_LITERAL,
-            TRIPLE_APOS_STRING,
-          ]
-        }
+    contains: [{
+      className: 'symbol',
+      begin: '\\s*?|\\S',
+      end: /:/,
+      relevance: 0,
+      starts: {
+        endsWithParent: true,
+        contains: [
+          IRI_LITERAL,
+          TRIPLE_APOS_STRING,
+        ]
       }
-    ]
+    }]
   };
 
   var APOS_STRING_LITERAL = JSON.parse(JSON.stringify(hljs.APOS_STRING_MODE));

@@ -94,7 +94,7 @@ export default function(hljs) {
         '/\\*\\*',
         '\\*/', {
           subLanguage: 'markdown',
-          relevance:0
+          relevance: 0
         }
       ),
       hljs.COMMENT(
@@ -104,7 +104,7 @@ export default function(hljs) {
             subLanguage: 'markdown',
             begin: '.',
             end: '$',
-            relevance:0
+            relevance: 0
           }]
         }
       ),

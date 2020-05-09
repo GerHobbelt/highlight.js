@@ -5,12 +5,11 @@ Description: Jade is a high performance template engine heavily influenced by Ha
 */
 
 // TODO work in process: detect indentation (comments, multiline), attributes with classes
-export default function (hljs) {
+export default function(hljs) {
   return {
     aliases: ['jade'],
     case_insensitive: true,
-    contains: [
-      {
+    contains: [{
         className: 'doctype',
         begin: '^!!!( (5|1\\.1|Strict|Frameset|Basic|Mobile|RDFa|XML\\b.*))?$',
         relevance: 10
@@ -40,8 +39,7 @@ export default function (hljs) {
         className: 'tag',
         begin: '^(?!#)\\s*',
         end: '[\\n]+',
-        contains: [
-          {
+        contains: [{
             className: 'value keyword',
             begin: '#{.*}',
             relevance: 1
@@ -75,39 +73,36 @@ export default function (hljs) {
             begin: '\\(\\s*',
             end: '\\s*\\)',
             excludeEnd: true,
-            contains: [
-              {
-                className: 'attribute',
-                begin: '\\w+\\s*\.',
-                end: '\\s+',
-                returnBegin: true,
-                endsWithParent: true,
-                relevance: 0,
-                contains: [
-                  {
-                    className: 'attribute',
-                    begin: '\\w+',
-                    relevance: 0
-                  },
-                  {
-                    className: 'string',
-                    begin: '"',
-                    end: '"',
-                    relevance: 0
-                  },
-                  {
-                    className: 'string',
-                    begin: '\'',
-                    end: '\'',
-                    relevance: 0
-                  },
-                  {
-                    begin: '\\w+',
-                    relevance: 0
-                  }
-                ]
-              },
-            ],
+            contains: [{
+              className: 'attribute',
+              begin: '\\w+\\s*\.',
+              end: '\\s+',
+              returnBegin: true,
+              endsWithParent: true,
+              relevance: 0,
+              contains: [{
+                  className: 'attribute',
+                  begin: '\\w+',
+                  relevance: 0
+                },
+                {
+                  className: 'string',
+                  begin: '"',
+                  end: '"',
+                  relevance: 0
+                },
+                {
+                  className: 'string',
+                  begin: '\'',
+                  end: '\'',
+                  relevance: 0
+                },
+                {
+                  begin: '\\w+',
+                  relevance: 0
+                }
+              ]
+            }, ],
             relevance: 0
           }
         ],

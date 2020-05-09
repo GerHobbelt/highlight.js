@@ -15,25 +15,33 @@ export default function(hljs) {
       hljs.HASH_COMMENT_MODE,
       hljs.QUOTE_STRING_MODE,
       hljs.NUMBER_MODE,
-      { className: 'type',
-        begin: '[^\\w][A-Z][a-z]', end: '\\W',
+      {
+        className: 'type',
+        begin: '[^\\w][A-Z][a-z]',
+        end: '\\W',
         excludeEnd: true
       },
-      { className: 'literal',
-        begin: '[^\\w][A-Z][A-Z]', end: '\\W',
+      {
+        className: 'literal',
+        begin: '[^\\w][A-Z][A-Z]',
+        end: '\\W',
         excludeEnd: true
       },
-      { className: 'variable',
-        begin: '\\$', end: '\\W',
+      {
+        className: 'variable',
+        begin: '\\$',
+        end: '\\W',
         excludeEnd: true
       },
       {
         className: 'keyword',
-        begin: '[.]{2}', end: '\\.',
+        begin: '[.]{2}',
+        end: '\\.',
       },
       {
         className: 'meta',
-        begin: '@', end: '\\W',
+        begin: '@',
+        end: '\\W',
         excludeEnd: true
       }
     ],

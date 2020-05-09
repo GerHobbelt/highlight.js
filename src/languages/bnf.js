@@ -11,15 +11,16 @@ export default function(hljs) {
       // Attribute
       {
         className: 'attribute',
-        begin: /</, end: />/
+        begin: /</,
+        end: />/
       },
       // Specific
       {
         begin: /::=/,
         end: /$/,
-        contains: [
-          {
-            begin: /</, end: />/
+        contains: [{
+            begin: /</,
+            end: />/
           },
           // Common
           hljs.C_LINE_COMMENT_MODE,

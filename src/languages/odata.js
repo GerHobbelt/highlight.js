@@ -20,11 +20,9 @@ export default function(hljs) {
         className: 'string',
         begin: '\'',
         end: '\'',
-        contains: [ 
-          {
-             begin: '\'\'' 
-          } 
-        ],
+        contains: [{
+          begin: '\'\''
+        }],
         relevance: 0
       },
       {
@@ -66,15 +64,15 @@ export default function(hljs) {
       },
       {
         className: "built_in",
-        begin: '\\b('+ 
+        begin: '\\b(' +
           // Built-in functions
           'concat|contains|endswith|indexof|length|startswith|substring|tolower|toupper|trim|date|day|fractionalseconds|hour|' +
           'maxdatetime|mindatetime|minute|month|now|second|time|totaloffsetminutes|totalseconds|year|ceiling|floor|round|cast|' +
-          'isof|geo\\.distance|geo\\.intersects|geo\\.length|'+
+          'isof|geo\\.distance|geo\\.intersects|geo\\.length|' +
           // Lambda operators
           'any|all|' +
           // Aggregation methods
-          'sum|min|max|average|countdistinct|'+
+          'sum|min|max|average|countdistinct|' +
           // Aggregation transformations
           'aggregate|topcount|topsum|toppercent|bottomcount|bottomsum|bottompercent|identity|concat|groupby|filter|expand' +
           ')\\b',

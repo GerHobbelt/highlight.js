@@ -11,7 +11,8 @@ Website: https://www.purebasic.com
 export default function(hljs) {
   var STRINGS = { // PB IDE color: #0080FF (Azure Radiance)
     className: 'string',
-    begin: '(~)?"', end: '"',
+    begin: '(~)?"',
+    end: '"',
     illegal: '\\n'
   };
   var CONSTANTS = { // PB IDE color: #924B72 (Cannon Pink)
@@ -42,7 +43,9 @@ export default function(hljs) {
       'UseModule Wend While With XIncludeFile XOr',
     contains: [
       // COMMENTS | PB IDE color: #00AAAA (Persian Green)
-      hljs.COMMENT(';', '$', {relevance: 0}),
+      hljs.COMMENT(';', '$', {
+        relevance: 0
+      }),
 
       { // PROCEDURES DEFINITIONS
         className: 'function',
@@ -50,8 +53,7 @@ export default function(hljs) {
         end: '\\(',
         excludeEnd: true,
         returnBegin: true,
-        contains: [
-          { // PROCEDURE KEYWORDS | PB IDE color: #006666 (Blue Stone) + Bold
+        contains: [{ // PROCEDURE KEYWORDS | PB IDE color: #006666 (Blue Stone) + Bold
             className: 'keyword',
             begin: '(Procedure|Declare)(C|CDLL|DLL)?',
             excludeEnd: true

@@ -21,8 +21,12 @@ export default function(hljs) {
     },
     contains: [
       BACKTICK_ESCAPE,
-      hljs.inherit(hljs.QUOTE_STRING_MODE, {contains: [BACKTICK_ESCAPE]}),
-      hljs.COMMENT(';', '$', {relevance: 0}),
+      hljs.inherit(hljs.QUOTE_STRING_MODE, {
+        contains: [BACKTICK_ESCAPE]
+      }),
+      hljs.COMMENT(';', '$', {
+        relevance: 0
+      }),
       hljs.C_BLOCK_COMMENT_MODE,
       {
         className: 'number',
@@ -40,19 +44,24 @@ export default function(hljs) {
       },
       {
         className: 'title', //symbol would be most accurate however is higlighted just like built_in and that makes up a lot of AutoHotkey code
-		                        //meaning that it would fail to highlight anything
-        variants: [
-          {begin: '^[^\\n";]+::(?!=)'},
-          {begin: '^[^\\n";]+:(?!=)', relevance: 0} // zero relevance as it catches a lot of things
-                                                    // followed by a single ':' in many languages
+        //meaning that it would fail to highlight anything
+        variants: [{
+            begin: '^[^\\n";]+::(?!=)'
+          },
+          {
+            begin: '^[^\\n";]+:(?!=)',
+            relevance: 0
+          } // zero relevance as it catches a lot of things
+          // followed by a single ':' in many languages
         ]
       },
       {
         className: 'meta',
-        begin: '^\\s*#\\w+', end:'$',
+        begin: '^\\s*#\\w+',
+        end: '$',
         relevance: 0
       },
-	    {
+      {
         className: 'built_in',
         begin: 'A_[a-zA-Z0-9]+'
       },

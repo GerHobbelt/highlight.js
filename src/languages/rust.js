@@ -38,23 +38,28 @@ export default function(hljs) {
     aliases: ['rs'],
     keywords: {
       $pattern: hljs.IDENT_RE + '!?',
-      keyword:
-        KEYWORDS,
-      literal:
-        'true false Some None Ok Err',
-      built_in:
-        BUILTINS
+      keyword: KEYWORDS,
+      literal: 'true false Some None Ok Err',
+      built_in: BUILTINS
     },
     illegal: '</',
     contains: [
       hljs.C_LINE_COMMENT_MODE,
-      hljs.COMMENT('/\\*', '\\*/', {contains: ['self']}),
-      hljs.inherit(hljs.QUOTE_STRING_MODE, {begin: /b?"/, illegal: null}),
+      hljs.COMMENT('/\\*', '\\*/', {
+        contains: ['self']
+      }),
+      hljs.inherit(hljs.QUOTE_STRING_MODE, {
+        begin: /b?"/,
+        illegal: null
+      }),
       {
         className: 'string',
-        variants: [
-           { begin: /r(#*)"(.|\n)*?"\1(?!#)/ },
-           { begin: /b?'\\?(x\w{2}|u\w{4}|U\w{8}|.)'/ }
+        variants: [{
+            begin: /r(#*)"(.|\n)*?"\1(?!#)/
+          },
+          {
+            begin: /b?'\\?(x\w{2}|u\w{4}|U\w{8}|.)'/
+          }
         ]
       },
       {
@@ -63,50 +68,66 @@ export default function(hljs) {
       },
       {
         className: 'number',
-        variants: [
-          { begin: '\\b0b([01_]+)' + NUM_SUFFIX },
-          { begin: '\\b0o([0-7_]+)' + NUM_SUFFIX },
-          { begin: '\\b0x([A-Fa-f0-9_]+)' + NUM_SUFFIX },
-          { begin: '\\b(\\d[\\d_]*(\\.[0-9_]+)?([eE][+-]?[0-9_]+)?)' +
-                   NUM_SUFFIX
+        variants: [{
+            begin: '\\b0b([01_]+)' + NUM_SUFFIX
+          },
+          {
+            begin: '\\b0o([0-7_]+)' + NUM_SUFFIX
+          },
+          {
+            begin: '\\b0x([A-Fa-f0-9_]+)' + NUM_SUFFIX
+          },
+          {
+            begin: '\\b(\\d[\\d_]*(\\.[0-9_]+)?([eE][+-]?[0-9_]+)?)' +
+              NUM_SUFFIX
           }
         ],
         relevance: 0
       },
       {
         className: 'function',
-        beginKeywords: 'fn', end: '(\\(|<)', excludeEnd: true,
+        beginKeywords: 'fn',
+        end: '(\\(|<)',
+        excludeEnd: true,
         contains: [hljs.UNDERSCORE_TITLE_MODE]
       },
       {
         className: 'meta',
-        begin: '#\\!?\\[', end: '\\]',
-        contains: [
-          {
-            className: 'meta-string',
-            begin: /"/, end: /"/
-          }
-        ]
+        begin: '#\\!?\\[',
+        end: '\\]',
+        contains: [{
+          className: 'meta-string',
+          begin: /"/,
+          end: /"/
+        }]
       },
       {
         className: 'class',
-        beginKeywords: 'type', end: ';',
+        beginKeywords: 'type',
+        end: ';',
         contains: [
-          hljs.inherit(hljs.UNDERSCORE_TITLE_MODE, {endsParent: true})
+          hljs.inherit(hljs.UNDERSCORE_TITLE_MODE, {
+            endsParent: true
+          })
         ],
         illegal: '\\S'
       },
       {
         className: 'class',
-        beginKeywords: 'trait enum struct union', end: '{',
+        beginKeywords: 'trait enum struct union',
+        end: '{',
         contains: [
-          hljs.inherit(hljs.UNDERSCORE_TITLE_MODE, {endsParent: true})
+          hljs.inherit(hljs.UNDERSCORE_TITLE_MODE, {
+            endsParent: true
+          })
         ],
         illegal: '[\\w\\d]'
       },
       {
         begin: hljs.IDENT_RE + '::',
-        keywords: {built_in: BUILTINS}
+        keywords: {
+          built_in: BUILTINS
+        }
       },
       {
         begin: '->'

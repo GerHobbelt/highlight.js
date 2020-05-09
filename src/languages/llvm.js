@@ -10,8 +10,7 @@ export default function(hljs) {
   var identifier = '([-a-zA-Z$._][\\w\\-$.]*)';
   return {
     name: 'LLVM IR',
-    keywords:
-      'begin end true false declare define global ' +
+    keywords: 'begin end true false declare define global ' +
       'constant private linker_private internal ' +
       'available_externally linkonce linkonce_odr weak ' +
       'weak_odr appending dllimport dllexport common ' +
@@ -48,13 +47,14 @@ export default function(hljs) {
       'extractelement insertelement shufflevector getresult ' +
       'extractvalue insertvalue atomicrmw cmpxchg fence ' +
       'argmemonly double',
-    contains: [
-      {
+    contains: [{
         className: 'keyword',
         begin: 'i\\d+'
       },
       hljs.COMMENT(
-        ';', '\\n', {relevance: 0}
+        ';', '\\n', {
+          relevance: 0
+        }
       ),
       // Double quote string
       hljs.QUOTE_STRING_MODE,
@@ -62,32 +62,50 @@ export default function(hljs) {
         className: 'string',
         variants: [
           // Double-quoted string
-          { begin: '"', end: '[^\\\\]"' },
+          {
+            begin: '"',
+            end: '[^\\\\]"'
+          },
         ],
         relevance: 0
       },
       {
         className: 'title',
-        variants: [
-          { begin: '@' + identifier },
-          { begin: '@\\d+' },
-          { begin: '!' + identifier },
-          { begin: '!\\d+' + identifier }
+        variants: [{
+            begin: '@' + identifier
+          },
+          {
+            begin: '@\\d+'
+          },
+          {
+            begin: '!' + identifier
+          },
+          {
+            begin: '!\\d+' + identifier
+          }
         ]
       },
       {
         className: 'symbol',
-        variants: [
-          { begin: '%' + identifier },
-          { begin: '%\\d+' },
-          { begin: '#\\d+' },
+        variants: [{
+            begin: '%' + identifier
+          },
+          {
+            begin: '%\\d+'
+          },
+          {
+            begin: '#\\d+'
+          },
         ]
       },
       {
         className: 'number',
-        variants: [
-            { begin: '0[xX][a-fA-F0-9]+' },
-            { begin: '-?\\d+(?:[.]\\d+)?(?:[eE][-+]?\\d+(?:[.]\\d+)?)?' }
+        variants: [{
+            begin: '0[xX][a-fA-F0-9]+'
+          },
+          {
+            begin: '-?\\d+(?:[.]\\d+)?(?:[eE][-+]?\\d+(?:[.]\\d+)?)?'
+          }
         ],
         relevance: 0
       },

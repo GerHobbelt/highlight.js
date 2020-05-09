@@ -15,8 +15,7 @@ export default function(hljs) {
   var SCHEME_COMPLEX_NUMBER_RE = SCHEME_SIMPLE_NUMBER_RE + '[+\\-]' + SCHEME_SIMPLE_NUMBER_RE + 'i';
   var KEYWORDS = {
     $pattern: SCHEME_IDENT_RE,
-    'builtin-name':
-      'case-lambda call/cc class define-class exit-handler field import ' +
+    'builtin-name': 'case-lambda call/cc class define-class exit-handler field import ' +
       'inherit init-field interface let*-values let-values let/ec mixin ' +
       'opt-lambda override protect provide public rename require ' +
       'require-for-syntax syntax syntax-case syntax-error unit/sig unless ' +
@@ -58,12 +57,23 @@ export default function(hljs) {
 
   var NUMBER = {
     className: 'number',
-    variants: [
-      { begin: SCHEME_SIMPLE_NUMBER_RE, relevance: 0 },
-      { begin: SCHEME_COMPLEX_NUMBER_RE, relevance: 0 },
-      { begin: '#b[0-1]+(/[0-1]+)?' },
-      { begin: '#o[0-7]+(/[0-7]+)?' },
-      { begin: '#x[0-9a-f]+(/[0-9a-f]+)?' }
+    variants: [{
+        begin: SCHEME_SIMPLE_NUMBER_RE,
+        relevance: 0
+      },
+      {
+        begin: SCHEME_COMPLEX_NUMBER_RE,
+        relevance: 0
+      },
+      {
+        begin: '#b[0-1]+(/[0-1]+)?'
+      },
+      {
+        begin: '#o[0-7]+(/[0-7]+)?'
+      },
+      {
+        begin: '#x[0-9a-f]+(/[0-9a-f]+)?'
+      }
     ]
   };
 
@@ -78,8 +88,7 @@ export default function(hljs) {
   var COMMENT_MODES = [
     hljs.COMMENT(
       ';',
-      '$',
-      {
+      '$', {
         relevance: 0
       }
     ),
@@ -102,16 +111,18 @@ export default function(hljs) {
   };
 
   var QUOTED_LIST = {
-    variants: [
-      { begin: /'/ },
-      { begin: '`' }
-    ],
-    contains: [
+    variants: [{
+        begin: /'/
+      },
       {
-        begin: '\\(', end: '\\)',
-        contains: ['self', LITERAL, STRING, NUMBER, IDENT, QUOTED_IDENT]
+        begin: '`'
       }
-    ]
+    ],
+    contains: [{
+      begin: '\\(',
+      end: '\\)',
+      contains: ['self', LITERAL, STRING, NUMBER, IDENT, QUOTED_IDENT]
+    }]
   };
 
   var NAME = {
@@ -121,20 +132,29 @@ export default function(hljs) {
   };
 
   var LAMBDA = {
-    begin: /lambda/, endsWithParent: true, returnBegin: true,
+    begin: /lambda/,
+    endsWithParent: true,
+    returnBegin: true,
     contains: [
       NAME,
       {
-        begin: /\(/, end: /\)/, endsParent: true,
+        begin: /\(/,
+        end: /\)/,
+        endsParent: true,
         contains: [IDENT],
       }
     ]
   };
 
   var LIST = {
-    variants: [
-      { begin: '\\(', end: '\\)' },
-      { begin: '\\[', end: '\\]' }
+    variants: [{
+        begin: '\\(',
+        end: '\\)'
+      },
+      {
+        begin: '\\[',
+        end: '\\]'
+      }
     ],
     contains: [LAMBDA, NAME, BODY]
   };

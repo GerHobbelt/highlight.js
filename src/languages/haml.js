@@ -11,8 +11,7 @@ export default function(hljs) {
   return {
     name: 'HAML',
     case_insensitive: true,
-    contains: [
-      {
+    contains: [{
         className: 'meta',
         begin: '^!!!( (5|1\\.1|Strict|Frameset|Basic|Mobile|RDFa|XML\\b.*))?$',
         relevance: 10
@@ -20,8 +19,7 @@ export default function(hljs) {
       // FIXME these comments should be allowed to span indented lines
       hljs.COMMENT(
         '^\\s*(!=#|=#|-#|/).*$',
-        false,
-        {
+        false, {
           relevance: 0
         }
       ),
@@ -35,8 +33,7 @@ export default function(hljs) {
       {
         className: 'tag',
         begin: '^\\s*%',
-        contains: [
-          {
+        contains: [{
             className: 'selector-tag',
             begin: '\\w+'
           },
@@ -51,52 +48,46 @@ export default function(hljs) {
           {
             begin: '{\\s*',
             end: '\\s*}',
-            contains: [
-              {
-                begin: ':\\w+\\s*=>',
-                end: ',\\s+',
-                returnBegin: true,
-                endsWithParent: true,
-                contains: [
-                  {
-                    className: 'attr',
-                    begin: ':\\w+'
-                  },
-                  hljs.APOS_STRING_MODE,
-                  hljs.QUOTE_STRING_MODE,
-                  {
-                    begin: '\\w+',
-                    relevance: 0
-                  }
-                ]
-              }
-            ]
+            contains: [{
+              begin: ':\\w+\\s*=>',
+              end: ',\\s+',
+              returnBegin: true,
+              endsWithParent: true,
+              contains: [{
+                  className: 'attr',
+                  begin: ':\\w+'
+                },
+                hljs.APOS_STRING_MODE,
+                hljs.QUOTE_STRING_MODE,
+                {
+                  begin: '\\w+',
+                  relevance: 0
+                }
+              ]
+            }]
           },
           {
             begin: '\\(\\s*',
             end: '\\s*\\)',
             excludeEnd: true,
-            contains: [
-              {
-                begin: '\\w+\\s*=',
-                end: '\\s+',
-                returnBegin: true,
-                endsWithParent: true,
-                contains: [
-                  {
-                    className: 'attr',
-                    begin: '\\w+',
-                    relevance: 0
-                  },
-                  hljs.APOS_STRING_MODE,
-                  hljs.QUOTE_STRING_MODE,
-                  {
-                    begin: '\\w+',
-                    relevance: 0
-                  }
-                ]
-              }
-            ]
+            contains: [{
+              begin: '\\w+\\s*=',
+              end: '\\s+',
+              returnBegin: true,
+              endsWithParent: true,
+              contains: [{
+                  className: 'attr',
+                  begin: '\\w+',
+                  relevance: 0
+                },
+                hljs.APOS_STRING_MODE,
+                hljs.QUOTE_STRING_MODE,
+                {
+                  begin: '\\w+',
+                  relevance: 0
+                }
+              ]
+            }]
           }
         ]
       },

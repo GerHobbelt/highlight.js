@@ -12,8 +12,7 @@ export default function(hljs) {
       hljs.COMMENT('--', '$'),
       hljs.COMMENT(
         '{-',
-        '-}',
-        {
+        '-}', {
           contains: ['self']
         }
       )
@@ -22,12 +21,14 @@ export default function(hljs) {
 
   var PRAGMA = {
     className: 'meta',
-    begin: '{-#', end: '#-}'
+    begin: '{-#',
+    end: '#-}'
   };
 
   var PREPROCESSOR = {
     className: 'meta',
-    begin: '^#', end: '$'
+    begin: '^#',
+    end: '$'
   };
 
   var CONSTRUCTOR = {
@@ -37,27 +38,33 @@ export default function(hljs) {
   };
 
   var LIST = {
-    begin: '\\(', end: '\\)',
+    begin: '\\(',
+    end: '\\)',
     illegal: '"',
     contains: [
       PRAGMA,
       PREPROCESSOR,
-      {className: 'type', begin: '\\b[A-Z][\\w]*(\\((\\.\\.|,|\\w+)\\))?'},
-      hljs.inherit(hljs.TITLE_MODE, {begin: '[_a-z][\\w\']*'}),
+      {
+        className: 'type',
+        begin: '\\b[A-Z][\\w]*(\\((\\.\\.|,|\\w+)\\))?'
+      },
+      hljs.inherit(hljs.TITLE_MODE, {
+        begin: '[_a-z][\\w\']*'
+      }),
       COMMENT
     ]
   };
 
   var RECORD = {
-    begin: '{', end: '}',
+    begin: '{',
+    end: '}',
     contains: LIST.contains
   };
 
   return {
     name: 'Haskell',
     aliases: ['hs'],
-    keywords:
-      'let in if then else case of where do module import hiding ' +
+    keywords: 'let in if then else case of where do module import hiding ' +
       'qualified type data newtype deriving class instance as default ' +
       'infix infixl infixr foreign export ccall stdcall cplusplus ' +
       'jvm dotnet safe unsafe family forall mdo proc rec',
@@ -66,13 +73,15 @@ export default function(hljs) {
       // Top-level constructions.
 
       {
-        beginKeywords: 'module', end: 'where',
+        beginKeywords: 'module',
+        end: 'where',
         keywords: 'module where',
         contains: [LIST, COMMENT],
         illegal: '\\W\\.|;'
       },
       {
-        begin: '\\bimport\\b', end: '$',
+        begin: '\\bimport\\b',
+        end: '$',
         keywords: 'import qualified as hiding',
         contains: [LIST, COMMENT],
         illegal: '\\W\\.|;'
@@ -80,33 +89,39 @@ export default function(hljs) {
 
       {
         className: 'class',
-        begin: '^(\\s*)?(class|instance)\\b', end: 'where',
+        begin: '^(\\s*)?(class|instance)\\b',
+        end: 'where',
         keywords: 'class family instance where',
         contains: [CONSTRUCTOR, LIST, COMMENT]
       },
       {
         className: 'class',
-        begin: '\\b(data|(new)?type)\\b', end: '$',
+        begin: '\\b(data|(new)?type)\\b',
+        end: '$',
         keywords: 'data family type newtype deriving',
         contains: [PRAGMA, CONSTRUCTOR, LIST, RECORD, COMMENT]
       },
       {
-        beginKeywords: 'default', end: '$',
+        beginKeywords: 'default',
+        end: '$',
         contains: [CONSTRUCTOR, LIST, COMMENT]
       },
       {
-        beginKeywords: 'infix infixl infixr', end: '$',
+        beginKeywords: 'infix infixl infixr',
+        end: '$',
         contains: [hljs.C_NUMBER_MODE, COMMENT]
       },
       {
-        begin: '\\bforeign\\b', end: '$',
+        begin: '\\bforeign\\b',
+        end: '$',
         keywords: 'foreign import export ccall stdcall cplusplus jvm ' +
-                  'dotnet safe unsafe',
+          'dotnet safe unsafe',
         contains: [CONSTRUCTOR, hljs.QUOTE_STRING_MODE, COMMENT]
       },
       {
         className: 'meta',
-        begin: '#!\\/usr\\/bin\\/env\ runhaskell', end: '$'
+        begin: '#!\\/usr\\/bin\\/env\ runhaskell',
+        end: '$'
       },
 
       // "Whitespaces".
@@ -120,11 +135,15 @@ export default function(hljs) {
       hljs.QUOTE_STRING_MODE,
       hljs.C_NUMBER_MODE,
       CONSTRUCTOR,
-      hljs.inherit(hljs.TITLE_MODE, {begin: '^[_a-z][\\w\']*'}),
+      hljs.inherit(hljs.TITLE_MODE, {
+        begin: '^[_a-z][\\w\']*'
+      }),
 
       COMMENT,
 
-      {begin: '->|<-'} // No markup, relevance booster
+      {
+        begin: '->|<-'
+      } // No markup, relevance booster
     ]
   };
 }

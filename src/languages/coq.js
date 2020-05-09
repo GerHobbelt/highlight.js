@@ -9,8 +9,7 @@ export default function(hljs) {
   return {
     name: 'Coq',
     keywords: {
-      keyword:
-        '_|0 as at cofix else end exists exists2 fix for forall fun if IF in let ' +
+      keyword: '_|0 as at cofix else end exists exists2 fix for forall fun if IF in let ' +
         'match mod Prop return Set then Type using where with ' +
         'Abort About Add Admit Admitted All Arguments Assumptions Axiom Back BackTo ' +
         'Backtrack Bind Blacklist Canonical Cd Check Class Classes Close Coercion ' +
@@ -35,8 +34,7 @@ export default function(hljs) {
         'Timeout Transparent Type Typeclasses Types Undelimit Undo Unfocus Unfocused ' +
         'Unfold Universe Universes Unset Unshelve using Variable Variables Variant ' +
         'Verbose Visibility where with',
-      built_in:
-        'abstract absurd admit after apply as assert assumption at auto autorewrite ' +
+      built_in: 'abstract absurd admit after apply as assert assumption at auto autorewrite ' +
         'autounfold before bottom btauto by case case_eq cbn cbv change ' +
         'classical_left classical_right clear clearbody cofix compare compute ' +
         'congruence constr_eq constructor contradict contradiction cut cutrewrite ' +
@@ -68,7 +66,9 @@ export default function(hljs) {
         begin: '\\|\\s*',
         end: '\\w+'
       },
-      {begin: /[-=]>/} // relevance booster
+      {
+        begin: /[-=]>/
+      } // relevance booster
     ]
   };
 }

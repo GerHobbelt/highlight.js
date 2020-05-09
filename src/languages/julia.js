@@ -24,8 +24,7 @@ export default function(hljs) {
     //         println(kw)
     //     end
     // end
-    keyword:
-      'in isa where ' +
+    keyword: 'in isa where ' +
       'baremodule begin break catch ccall const continue do else elseif end export false finally for function ' +
       'global if import importall let local macro module quote return true try using while ' +
       // legacy, to be deprecated in the next release
@@ -42,8 +41,7 @@ export default function(hljs) {
     //         end
     //     end
     // end
-    literal:
-      'true false ' +
+    literal: 'true false ' +
       'ARGS C_NULL DevNull ENDIAN_BOM ENV I Inf Inf16 Inf32 Inf64 InsertionSort JULIA_HOME LOAD_PATH MergeSort ' +
       'NaN NaN16 NaN32 NaN64 PROGRAM_FILE QuickSort RoundDown RoundFromZero RoundNearest RoundNearestTiesAway ' +
       'RoundNearestTiesUp RoundToZero RoundUp STDERR STDIN STDOUT VERSION catalan e|0 eu|0 eulergamma golden im ' +
@@ -58,10 +56,9 @@ export default function(hljs) {
     //         end
     //     end
     // end
-    built_in:
-      'ANY AbstractArray AbstractChannel AbstractFloat AbstractMatrix AbstractRNG AbstractSerializer AbstractSet ' +
+    built_in: 'ANY AbstractArray AbstractChannel AbstractFloat AbstractMatrix AbstractRNG AbstractSerializer AbstractSet ' +
       'AbstractSparseArray AbstractSparseMatrix AbstractSparseVector AbstractString AbstractUnitRange AbstractVecOrMat ' +
-      'AbstractVector Any ArgumentError Array AssertionError Associative Base64DecodePipe Base64EncodePipe Bidiagonal '+
+      'AbstractVector Any ArgumentError Array AssertionError Associative Base64DecodePipe Base64EncodePipe Bidiagonal ' +
       'BigFloat BigInt BitArray BitMatrix BitVector Bool BoundsError BufferStream CachingPool CapturedException ' +
       'CartesianIndex CartesianRange Cchar Cdouble Cfloat Channel Char Cint Cintmax_t Clong Clonglong ClusterManager ' +
       'Cmd CodeInfo Colon Complex Complex128 Complex32 Complex64 CompositeException Condition ConjArray ConjMatrix ' +
@@ -87,7 +84,8 @@ export default function(hljs) {
 
   // placeholder for recursive self-reference
   var DEFAULT = {
-    keywords: KEYWORDS, illegal: /<\//
+    keywords: KEYWORDS,
+    illegal: /<\//
   };
 
   // ref: http://julia.readthedocs.org/en/latest/manual/integers-and-floating-point-numbers/
@@ -111,7 +109,8 @@ export default function(hljs) {
 
   var INTERPOLATION = {
     className: 'subst',
-    begin: /\$\(/, end: /\)/,
+    begin: /\$\(/,
+    end: /\)/,
     keywords: KEYWORDS
   };
 
@@ -124,16 +123,23 @@ export default function(hljs) {
   var STRING = {
     className: 'string',
     contains: [hljs.BACKSLASH_ESCAPE, INTERPOLATION, INTERPOLATED_VARIABLE],
-    variants: [
-      { begin: /\w*"""/, end: /"""\w*/, relevance: 10 },
-      { begin: /\w*"/, end: /"\w*/ }
+    variants: [{
+        begin: /\w*"""/,
+        end: /"""\w*/,
+        relevance: 10
+      },
+      {
+        begin: /\w*"/,
+        end: /"\w*/
+      }
     ]
   };
 
   var COMMAND = {
     className: 'string',
     contains: [hljs.BACKSLASH_ESCAPE, INTERPOLATION, INTERPOLATED_VARIABLE],
-    begin: '`', end: '`'
+    begin: '`',
+    end: '`'
   };
 
   var MACROCALL = {
@@ -143,9 +149,15 @@ export default function(hljs) {
 
   var COMMENT = {
     className: 'comment',
-    variants: [
-      { begin: '#=', end: '=#', relevance: 10 },
-      { begin: '#', end: '$' }
+    variants: [{
+        begin: '#=',
+        end: '=#',
+        relevance: 10
+      },
+      {
+        begin: '#',
+        end: '$'
+      }
     ]
   };
 
@@ -160,10 +172,11 @@ export default function(hljs) {
     hljs.HASH_COMMENT_MODE,
     {
       className: 'keyword',
-      begin:
-        '\\b(((abstract|primitive)\\s+)type|(mutable\\s+)?struct)\\b'
+      begin: '\\b(((abstract|primitive)\\s+)type|(mutable\\s+)?struct)\\b'
     },
-    {begin: /<:/}  // relevance booster
+    {
+      begin: /<:/
+    } // relevance booster
   ];
   INTERPOLATION.contains = DEFAULT.contains;
 

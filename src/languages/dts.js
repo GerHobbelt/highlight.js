@@ -10,13 +10,17 @@ export default function(hljs) {
   var STRINGS = {
     className: 'string',
     variants: [
-      hljs.inherit(hljs.QUOTE_STRING_MODE, { begin: '((u8?|U)|L)?"' }),
+      hljs.inherit(hljs.QUOTE_STRING_MODE, {
+        begin: '((u8?|U)|L)?"'
+      }),
       {
-        begin: '(u8?|U)?R"', end: '"',
+        begin: '(u8?|U)?R"',
+        end: '"',
         contains: [hljs.BACKSLASH_ESCAPE]
       },
       {
-        begin: '\'\\\\?.', end: '\'',
+        begin: '\'\\\\?.',
+        end: '\'',
         illegal: '.'
       }
     ]
@@ -24,29 +28,41 @@ export default function(hljs) {
 
   var NUMBERS = {
     className: 'number',
-    variants: [
-      { begin: '\\b(\\d+(\\.\\d*)?|\\.\\d+)(u|U|l|L|ul|UL|f|F)' },
-      { begin: hljs.C_NUMBER_RE }
+    variants: [{
+        begin: '\\b(\\d+(\\.\\d*)?|\\.\\d+)(u|U|l|L|ul|UL|f|F)'
+      },
+      {
+        begin: hljs.C_NUMBER_RE
+      }
     ],
     relevance: 0
   };
 
   var PREPROCESSOR = {
     className: 'meta',
-    begin: '#', end: '$',
-    keywords: {'meta-keyword': 'if else elif endif define undef ifdef ifndef'},
-    contains: [
-      {
-        begin: /\\\n/, relevance: 0
+    begin: '#',
+    end: '$',
+    keywords: {
+      'meta-keyword': 'if else elif endif define undef ifdef ifndef'
+    },
+    contains: [{
+        begin: /\\\n/,
+        relevance: 0
       },
       {
-        beginKeywords: 'include', end: '$',
-        keywords: {'meta-keyword': 'include'},
+        beginKeywords: 'include',
+        end: '$',
+        keywords: {
+          'meta-keyword': 'include'
+        },
         contains: [
-          hljs.inherit(STRINGS, {className: 'meta-string'}),
+          hljs.inherit(STRINGS, {
+            className: 'meta-string'
+          }),
           {
             className: 'meta-string',
-            begin: '<', end: '>',
+            begin: '<',
+            end: '>',
             illegal: '\\n'
           }
         ]
@@ -130,4 +146,3 @@ export default function(hljs) {
     ]
   };
 }
-

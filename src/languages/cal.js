@@ -14,47 +14,51 @@ export default function(hljs) {
     hljs.C_LINE_COMMENT_MODE,
     hljs.COMMENT(
       /\{/,
-      /\}/,
-      {
+      /\}/, {
         relevance: 0
       }
     ),
     hljs.COMMENT(
       /\(\*/,
-      /\*\)/,
-      {
+      /\*\)/, {
         relevance: 10
       }
     )
   ];
   var STRING = {
     className: 'string',
-    begin: /'/, end: /'/,
-    contains: [{begin: /''/}]
+    begin: /'/,
+    end: /'/,
+    contains: [{
+      begin: /''/
+    }]
   };
   var CHAR_STRING = {
-    className: 'string', begin: /(#\d+)+/
+    className: 'string',
+    begin: /(#\d+)+/
   };
   var DATE = {
-      className: 'number',
-      begin: '\\b\\d+(\\.\\d+)?(DT|D|T)',
-      relevance: 0
+    className: 'number',
+    begin: '\\b\\d+(\\.\\d+)?(DT|D|T)',
+    relevance: 0
   };
   var DBL_QUOTED_VARIABLE = {
-      className: 'string', // not a string technically but makes sense to be highlighted in the same style
-      begin: '"',
-      end: '"'
+    className: 'string', // not a string technically but makes sense to be highlighted in the same style
+    begin: '"',
+    end: '"'
   };
 
   var PROCEDURE = {
     className: 'function',
-    beginKeywords: 'procedure', end: /[:;]/,
+    beginKeywords: 'procedure',
+    end: /[:;]/,
     keywords: 'procedure|10',
     contains: [
       hljs.TITLE_MODE,
       {
         className: 'params',
-        begin: /\(/, end: /\)/,
+        begin: /\(/,
+        end: /\)/,
         keywords: KEYWORDS,
         contains: [STRING, CHAR_STRING]
       }
@@ -67,14 +71,17 @@ export default function(hljs) {
     returnBegin: true,
     contains: [
       hljs.TITLE_MODE,
-        PROCEDURE
+      PROCEDURE
     ]
   };
 
   return {
     name: 'C/AL',
     case_insensitive: true,
-    keywords: { keyword: KEYWORDS, literal: LITERALS },
+    keywords: {
+      keyword: KEYWORDS,
+      literal: LITERALS
+    },
     illegal: /\/\*/,
     contains: [
       STRING, CHAR_STRING,

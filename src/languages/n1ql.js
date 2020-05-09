@@ -10,15 +10,13 @@ export default function(hljs) {
   return {
     name: 'N1QL',
     case_insensitive: true,
-    contains: [
-      {
-        beginKeywords:
-          'build create index delete drop explain infer|10 insert merge prepare select update upsert|10',
-        end: /;/, endsWithParent: true,
+    contains: [{
+        beginKeywords: 'build create index delete drop explain infer|10 insert merge prepare select update upsert|10',
+        end: /;/,
+        endsWithParent: true,
         keywords: {
           // Taken from http://developer.couchbase.com/documentation/server/current/n1ql/n1ql-language-reference/reservedwords.html
-          keyword:
-            'all alter analyze and any array as asc begin between binary boolean break bucket build by call ' +
+          keyword: 'all alter analyze and any array as asc begin between binary boolean break bucket build by call ' +
             'case cast cluster collate collection commit connect continue correlate cover create database ' +
             'dataset datastore declare decrement delete derived desc describe distinct do drop each element ' +
             'else end every except exclude execute exists explain fetch first flatten for force from ' +
@@ -31,11 +29,9 @@ export default function(hljs) {
             'truncate under union unique unknown unnest unset update upsert use user using validate value ' +
             'valued values via view when where while with within work xor',
           // Taken from http://developer.couchbase.com/documentation/server/4.5/n1ql/n1ql-language-reference/literals.html
-          literal:
-            'true false null missing|5',
+          literal: 'true false null missing|5',
           // Taken from http://developer.couchbase.com/documentation/server/4.5/n1ql/n1ql-language-reference/functions.html
-          built_in:
-            'array_agg array_append array_concat array_contains array_count array_distinct array_ifnull array_length ' +
+          built_in: 'array_agg array_append array_concat array_contains array_count array_distinct array_ifnull array_length ' +
             'array_max array_min array_position array_prepend array_put array_range array_remove array_repeat array_replace ' +
             'array_reverse array_sort array_sum avg count max min sum greatest least ifmissing ifmissingornull ifnull ' +
             'missingif nullif ifinf ifnan ifnanorinf naninf neginfif posinfif clock_millis clock_str date_add_millis ' +
@@ -48,22 +44,24 @@ export default function(hljs) {
             'regexp_replace contains initcap length lower ltrim position repeat replace rtrim split substr title trim upper ' +
             'isarray isatom isboolean isnumber isobject isstring type toarray toatom toboolean tonumber toobject tostring'
         },
-        contains: [
-          {
+        contains: [{
             className: 'string',
-            begin: '\'', end: '\'',
+            begin: '\'',
+            end: '\'',
             contains: [hljs.BACKSLASH_ESCAPE],
             relevance: 0
           },
           {
             className: 'string',
-            begin: '"', end: '"',
+            begin: '"',
+            end: '"',
             contains: [hljs.BACKSLASH_ESCAPE],
             relevance: 0
           },
           {
             className: 'symbol',
-            begin: '`', end: '`',
+            begin: '`',
+            end: '`',
             contains: [hljs.BACKSLASH_ESCAPE],
             relevance: 2
           },

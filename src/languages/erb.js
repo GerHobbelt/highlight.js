@@ -15,7 +15,8 @@ export default function(hljs) {
     contains: [
       hljs.COMMENT('<%#', '%>'),
       {
-        begin: '<%[%=-]?', end: '[%-]?%>',
+        begin: '<%[%=-]?',
+        end: '[%-]?%>',
         subLanguage: 'ruby',
         excludeBegin: true,
         excludeEnd: true

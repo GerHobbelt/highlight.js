@@ -19,27 +19,44 @@ export default function(hljs) {
   // The YAML spec allows for much more than this, but this covers most use-cases.
   var KEY = {
     className: 'attr',
-    variants: [
-      { begin: '\\w[\\w :\\/.-]*:(?=[ \t]|$)' },
-      { begin: '"\\w[\\w :\\/.-]*":(?=[ \t]|$)' }, // double quoted keys
-      { begin: '\'\\w[\\w :\\/.-]*\':(?=[ \t]|$)' } // single quoted keys
+    variants: [{
+        begin: '\\w[\\w :\\/.-]*:(?=[ \t]|$)'
+      },
+      {
+        begin: '"\\w[\\w :\\/.-]*":(?=[ \t]|$)'
+      }, // double quoted keys
+      {
+        begin: '\'\\w[\\w :\\/.-]*\':(?=[ \t]|$)'
+      } // single quoted keys
     ]
   };
 
   var TEMPLATE_VARIABLES = {
     className: 'template-variable',
-    variants: [
-      { begin: '{{', end: '}}' }, // jinja templates Ansible
-      { begin: '%{', end: '}' } // Ruby i18n
+    variants: [{
+        begin: '{{',
+        end: '}}'
+      }, // jinja templates Ansible
+      {
+        begin: '%{',
+        end: '}'
+      } // Ruby i18n
     ]
   };
   var STRING = {
     className: 'string',
     relevance: 0,
-    variants: [
-      { begin: /'/, end: /'/ },
-      { begin: /"/, end: /"/ },
-      { begin: /\S+/ }
+    variants: [{
+        begin: /'/,
+        end: /'/
+      },
+      {
+        begin: /"/,
+        end: /"/
+      },
+      {
+        begin: /\S+/
+      }
     ],
     contains: [
       hljs.BACKSLASH_ESCAPE,
@@ -50,10 +67,17 @@ export default function(hljs) {
   // Strings inside of value containers (objects) can't contain braces,
   // brackets, or commas
   var CONTAINER_STRING = hljs.inherit(STRING, {
-    variants: [
-      { begin: /'/, end: /'/ },
-      { begin: /"/, end: /"/ },
-      { begin: /[^\s,{}[\]]+/ }
+    variants: [{
+        begin: /'/,
+        end: /'/
+      },
+      {
+        begin: /"/,
+        end: /"/
+      },
+      {
+        begin: /[^\s,{}[\]]+/
+      }
     ]
   });
 
@@ -121,23 +145,23 @@ export default function(hljs) {
       className: 'type',
       begin: '!<' + URI_CHARACTERS + ">"
     },
-      { // named tags
-        className: 'type',
-        begin: '!\\w+!' + URI_CHARACTERS,
-      },
-      // https://yaml.org/spec/1.2/spec.html#id2784064
-      { // verbatim tags
-        className: 'type',
-        begin: '!<' + URI_CHARACTERS + ">",
-      },
-      { // primary tags
-        className: 'type',
-        begin: '!' + URI_CHARACTERS,
-      },
-      { // secondary tags
-        className: 'type',
-        begin: '!!' + URI_CHARACTERS,
-      },
+    { // named tags
+      className: 'type',
+      begin: '!\\w+!' + URI_CHARACTERS,
+    },
+    // https://yaml.org/spec/1.2/spec.html#id2784064
+    { // verbatim tags
+      className: 'type',
+      begin: '!<' + URI_CHARACTERS + ">",
+    },
+    { // primary tags
+      className: 'type',
+      begin: '!' + URI_CHARACTERS,
+    },
+    { // secondary tags
+      className: 'type',
+      begin: '!!' + URI_CHARACTERS,
+    },
     { // fragment id &ref
       className: 'meta',
       begin: '&' + hljs.UNDERSCORE_IDENT_RE + '$'
@@ -155,7 +179,9 @@ export default function(hljs) {
     hljs.HASH_COMMENT_MODE,
     {
       beginKeywords: LITERALS,
-      keywords: { literal: LITERALS }
+      keywords: {
+        literal: LITERALS
+      }
     },
     TIMESTAMP,
     // numbers are any valid C-style number that

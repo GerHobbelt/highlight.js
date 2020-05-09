@@ -7,13 +7,12 @@ Description: Abc is a text-based music notation system
 
 export default function(hljs) {
 
-  function continuation(parentClassName){
+  function continuation(parentClassName) {
     return {
       begin: '\\n(\\+\\:|  )',
       end: '$',
       returnBegin: true,
-      contains: [
-        {
+      contains: [{
           className: 'attribute',
           begin: '\\n\\+',
           end: '\\:',
@@ -39,24 +38,22 @@ export default function(hljs) {
 
   var COMMENTS = [
     hljs.BACKSLASH_ESCAPE,
-    hljs.COMMENT('\\%[^\\n%]','$'),
+    hljs.COMMENT('\\%[^\\n%]', '$'),
     hljs.C_BLOCK_COMMENT_MODE,
   ]
 
   var INFO_FIELDS = {
-    variants: [
-      {
+    variants: [{
         begin: '\\[[A-VY-Za-vy-z]\\:',
         end: '\\]'
       },
       {
-        begin:'^[A-VY-Za-vy-z\\+]\\:',
+        begin: '^[A-VY-Za-vy-z\\+]\\:',
         end: '$'
       },
     ],
     returnBegin: true,
-    contains: [
-      {
+    contains: [{
         className: 'attribute',
         begin: '[A-VX-Za-vx-z\\+]',
         end: '\\:',
@@ -78,37 +75,34 @@ export default function(hljs) {
 
   var REF_FIELD = {
     className: 'strong',
-    begin:'^[Xx]\\:',
+    begin: '^[Xx]\\:',
     end: '$',
     returnBegin: true,
     relevance: 3,
-    contains: [
-      {
-        className: 'attribute',
-        begin: '[Xx]',
-        end: '\\:',
-        excludeEnd: true,
+    contains: [{
+      className: 'attribute',
+      begin: '[Xx]',
+      end: '\\:',
+      excludeEnd: true,
+      starts: {
+        begin: '\\:',
         starts: {
-          begin: '\\:',
-          starts: {
-            className: 'params',
-            end: '$',
-            endsWithParent: true,
-            excludeEnd: true,
-            contains: COMMENTS,
-          }
+          className: 'params',
+          end: '$',
+          endsWithParent: true,
+          excludeEnd: true,
+          contains: COMMENTS,
         }
       }
-    ]
+    }]
   }
 
   var LYRICS = {
-    begin:'^[Ww]\\:',
+    begin: '^[Ww]\\:',
     end: '$',
     relevance: 3,
     returnBegin: true,
-    contains: [
-      {
+    contains: [{
         className: 'attribute',
         begin: '[Ww]',
         end: '\\:',
@@ -132,24 +126,23 @@ export default function(hljs) {
     returnBegin: true,
     end: '$',
     relevance: 5,
-    contains: [
-      {
-        className: 'attribute',
-        begin: '\\%\\%',
-        end: '\\s',
-        relevance: 2,
-        starts: {
-          className: 'params',
-          endsWithParent: true,
-          contains: COMMENTS,
-        }
-      },
-    ]
+    contains: [{
+      className: 'attribute',
+      begin: '\\%\\%',
+      end: '\\s',
+      relevance: 2,
+      starts: {
+        className: 'params',
+        endsWithParent: true,
+        contains: COMMENTS,
+      }
+    }, ]
   }
 
   var QUOTE_STRING = {
     className: 'string',
-    begin: '"', end: '"',
+    begin: '"',
+    end: '"',
     relevance: 1,
     contains: [hljs.BACKSLASH_ESCAPE]
   }
@@ -158,8 +151,8 @@ export default function(hljs) {
     contains: [
       DIRECTIVE,
       hljs.BACKSLASH_ESCAPE,
-      hljs.COMMENT('\\[r\\:','\\]'),
-      hljs.COMMENT('\\%[^\\n\\%]','$'),
+      hljs.COMMENT('\\[r\\:', '\\]'),
+      hljs.COMMENT('\\%[^\\n\\%]', '$'),
       hljs.C_BLOCK_COMMENT_MODE,
       REF_FIELD,
       LYRICS,
@@ -172,7 +165,7 @@ export default function(hljs) {
       },
       {
         className: 'keyword',
-        begin:'!\\S+!',
+        begin: '!\\S+!',
         relevance: 2,
       },
       {

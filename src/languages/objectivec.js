@@ -14,8 +14,7 @@ export default function(hljs) {
   var IDENTIFIER_RE = /[a-zA-Z@][a-zA-Z0-9_]*/;
   var OBJC_KEYWORDS = {
     $pattern: IDENTIFIER_RE,
-    keyword:
-      'int float while char export sizeof typedef const struct for union ' +
+    keyword: 'int float while char export sizeof typedef const struct for union ' +
       'unsigned long volatile static bool mutable if do return goto void ' +
       'enum else break extern asm case short default double register explicit ' +
       'signed typename this switch continue wchar_t inline readonly assign ' +
@@ -37,10 +36,8 @@ export default function(hljs) {
       'NS_ASSUME_NONNULL_BEGIN NS_ASSUME_NONNULL_END ' +
       'NS_REFINED_FOR_SWIFT NS_SWIFT_NAME NS_SWIFT_NOTHROW ' +
       'NS_DURING NS_HANDLER NS_ENDHANDLER NS_VALUERETURN NS_VOIDRETURN',
-    literal:
-      'false true FALSE TRUE nil YES NO NULL',
-    built_in:
-      'BOOL dispatch_once_t dispatch_queue_t dispatch_sync dispatch_async dispatch_once'
+    literal: 'false true FALSE TRUE nil YES NO NULL',
+    built_in: 'BOOL dispatch_once_t dispatch_queue_t dispatch_sync dispatch_async dispatch_once'
   };
   var CLASS_KEYWORDS = {
     $pattern: IDENTIFIER_RE,
@@ -60,30 +57,32 @@ export default function(hljs) {
       hljs.APOS_STRING_MODE,
       {
         className: 'string',
-        variants: [
-          {
-            begin: '@"', end: '"',
-            illegal: '\\n',
-            contains: [hljs.BACKSLASH_ESCAPE]
-          }
-        ]
+        variants: [{
+          begin: '@"',
+          end: '"',
+          illegal: '\\n',
+          contains: [hljs.BACKSLASH_ESCAPE]
+        }]
       },
       {
         className: 'meta',
-        begin: /#\s*[a-z]+\b/, end: /$/,
+        begin: /#\s*[a-z]+\b/,
+        end: /$/,
         keywords: {
-          'meta-keyword':
-            'if else elif endif define undef warning error line ' +
+          'meta-keyword': 'if else elif endif define undef warning error line ' +
             'pragma ifdef ifndef include'
         },
-        contains: [
-          {
-            begin: /\\\n/, relevance: 0
+        contains: [{
+            begin: /\\\n/,
+            relevance: 0
           },
-          hljs.inherit(hljs.QUOTE_STRING_MODE, {className: 'meta-string'}),
+          hljs.inherit(hljs.QUOTE_STRING_MODE, {
+            className: 'meta-string'
+          }),
           {
             className: 'meta-string',
-            begin: /<.*?>/, end: /$/,
+            begin: /<.*?>/,
+            end: /$/,
             illegal: '\\n',
           },
           hljs.C_LINE_COMMENT_MODE,
@@ -92,14 +91,16 @@ export default function(hljs) {
       },
       {
         className: 'class',
-        begin: '(' + CLASS_KEYWORDS.keyword.split(' ').join('|') + ')\\b', end: '({|$)', excludeEnd: true,
+        begin: '(' + CLASS_KEYWORDS.keyword.split(' ').join('|') + ')\\b',
+        end: '({|$)',
+        excludeEnd: true,
         keywords: CLASS_KEYWORDS,
         contains: [
           hljs.UNDERSCORE_TITLE_MODE
         ]
       },
       {
-        begin: '\\.'+hljs.UNDERSCORE_IDENT_RE,
+        begin: '\\.' + hljs.UNDERSCORE_IDENT_RE,
         relevance: 0
       }
     ]

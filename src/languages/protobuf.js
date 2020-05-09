@@ -21,23 +21,29 @@ export default function(hljs) {
       hljs.C_LINE_COMMENT_MODE,
       {
         className: 'class',
-        beginKeywords: 'message enum service', end: /\{/,
+        beginKeywords: 'message enum service',
+        end: /\{/,
         illegal: /\n/,
         contains: [
           hljs.inherit(hljs.TITLE_MODE, {
-            starts: {endsWithParent: true, excludeEnd: true} // hack: eating everything after the first title
+            starts: {
+              endsWithParent: true,
+              excludeEnd: true
+            } // hack: eating everything after the first title
           })
         ]
       },
       {
         className: 'function',
         beginKeywords: 'rpc',
-        end: /[{;]/, excludeEnd: true,
+        end: /[{;]/,
+        excludeEnd: true,
         keywords: 'rpc returns'
       },
       {
         begin: /^\s*[A-Z_]+/,
-        end: /\s*=/, excludeEnd: true
+        end: /\s*=/,
+        excludeEnd: true
       }
     ]
   };

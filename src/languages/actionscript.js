@@ -10,7 +10,8 @@ export default function(hljs) {
 
   var AS3_REST_ARG_MODE = {
     className: 'rest_arg',
-    begin: '[.]{3}', end: IDENT_RE,
+    begin: '[.]{3}',
+    end: IDENT_RE,
     relevance: 10
   };
 
@@ -33,14 +34,16 @@ export default function(hljs) {
       hljs.C_NUMBER_MODE,
       {
         className: 'class',
-        beginKeywords: 'package', end: '{',
+        beginKeywords: 'package',
+        end: '{',
         contains: [hljs.TITLE_MODE]
       },
       {
         className: 'class',
-        beginKeywords: 'class interface', end: '{', excludeEnd: true,
-        contains: [
-          {
+        beginKeywords: 'class interface',
+        end: '{',
+        excludeEnd: true,
+        contains: [{
             beginKeywords: 'extends implements'
           },
           hljs.TITLE_MODE
@@ -48,18 +51,24 @@ export default function(hljs) {
       },
       {
         className: 'meta',
-        beginKeywords: 'import include', end: ';',
-        keywords: {'meta-keyword': 'import include'}
+        beginKeywords: 'import include',
+        end: ';',
+        keywords: {
+          'meta-keyword': 'import include'
+        }
       },
       {
         className: 'function',
-        beginKeywords: 'function', end: '[{;]', excludeEnd: true,
+        beginKeywords: 'function',
+        end: '[{;]',
+        excludeEnd: true,
         illegal: '\\S',
         contains: [
           hljs.TITLE_MODE,
           {
             className: 'params',
-            begin: '\\(', end: '\\)',
+            begin: '\\(',
+            end: '\\)',
             contains: [
               hljs.APOS_STRING_MODE,
               hljs.QUOTE_STRING_MODE,

@@ -45,23 +45,31 @@ export default function(hljs) {
   };
   var NUMBER = {
     className: 'number',
-    variants: [
-      { begin: '\\b(0[bB][01]+)n?' },
-      { begin: '\\b(0[oO][0-7]+)n?' },
-      { begin: hljs.C_NUMBER_RE + 'n?' }
+    variants: [{
+        begin: '\\b(0[bB][01]+)n?'
+      },
+      {
+        begin: '\\b(0[oO][0-7]+)n?'
+      },
+      {
+        begin: hljs.C_NUMBER_RE + 'n?'
+      }
     ],
     relevance: 0
   };
   var SUBST = {
     className: 'subst',
-    begin: '\\$\\{', end: '\\}',
+    begin: '\\$\\{',
+    end: '\\}',
     keywords: KEYWORDS,
     contains: [] // defined later
   };
   var HTML_TEMPLATE = {
-    begin: 'html`', end: '',
+    begin: 'html`',
+    end: '',
     starts: {
-      end: '`', returnEnd: false,
+      end: '`',
+      returnEnd: false,
       contains: [
         hljs.BACKSLASH_ESCAPE,
         SUBST
@@ -70,9 +78,11 @@ export default function(hljs) {
     }
   };
   var CSS_TEMPLATE = {
-    begin: 'css`', end: '',
+    begin: 'css`',
+    end: '',
     starts: {
-      end: '`', returnEnd: false,
+      end: '`',
+      returnEnd: false,
       contains: [
         hljs.BACKSLASH_ESCAPE,
         SUBST
@@ -82,7 +92,8 @@ export default function(hljs) {
   };
   var TEMPLATE_STRING = {
     className: 'string',
-    begin: '`', end: '`',
+    begin: '`',
+    end: '`',
     contains: [
       hljs.BACKSLASH_ESCAPE,
       SUBST
@@ -97,8 +108,7 @@ export default function(hljs) {
     NUMBER,
     hljs.REGEXP_MODE
   ];
-  var ARGUMENTS =
-  {
+  var ARGUMENTS = {
     begin: '\\(',
     end: /\)/,
     keywords: KEYWORDS,
@@ -111,7 +121,8 @@ export default function(hljs) {
   };
   var PARAMS = {
     className: 'params',
-    begin: /\(/, end: /\)/,
+    begin: /\(/,
+    end: /\)/,
     excludeBegin: true,
     excludeEnd: true,
     keywords: KEYWORDS,
@@ -155,50 +166,56 @@ export default function(hljs) {
             // sub-expressions inside also surrounded by parens.
             begin: '(\\([^(]*' +
               '(\\([^(]*' +
-                '(\\([^(]*' +
-                '\\))?' +
+              '(\\([^(]*' +
               '\\))?' +
-            '\\)|' + hljs.UNDERSCORE_IDENT_RE + ')\\s*=>', returnBegin: true,
+              '\\))?' +
+              '\\)|' + hljs.UNDERSCORE_IDENT_RE + ')\\s*=>',
+            returnBegin: true,
             end: '\\s*=>',
-            contains: [
-              {
-                className: 'params',
-                variants: [
-                  {
-                    begin: hljs.UNDERSCORE_IDENT_RE
-                  },
-                  {
-                    className: null,
-                    begin: /\(\s*\)/,
-                    skip: true
-                  },
-                  {
-                    begin: /\(/, end: /\)/,
-                    excludeBegin: true, excludeEnd: true,
-                    keywords: KEYWORDS,
-                    contains: ARGUMENTS.contains
-                  }
-                ]
-              }
-            ]
+            contains: [{
+              className: 'params',
+              variants: [{
+                  begin: hljs.UNDERSCORE_IDENT_RE
+                },
+                {
+                  className: null,
+                  begin: /\(\s*\)/,
+                  skip: true
+                },
+                {
+                  begin: /\(/,
+                  end: /\)/,
+                  excludeBegin: true,
+                  excludeEnd: true,
+                  keywords: KEYWORDS,
+                  contains: ARGUMENTS.contains
+                }
+              ]
+            }]
           }
         ],
         relevance: 0
       },
       {
         className: 'function',
-        beginKeywords: 'function', end: /[\{;]/, excludeEnd: true,
+        beginKeywords: 'function',
+        end: /[\{;]/,
+        excludeEnd: true,
         keywords: KEYWORDS,
         contains: [
           'self',
-          hljs.inherit(hljs.TITLE_MODE, { begin: IDENT_RE }),
+          hljs.inherit(hljs.TITLE_MODE, {
+            begin: IDENT_RE
+          }),
           PARAMS
         ],
         illegal: /%/,
         relevance: 0 // () => {} is more typical in TypeScript
       },
       {
-        beginKeywords: 'constructor', end: /[\{;]/, excludeEnd: true,
+        beginKeywords: 'constructor',
+        end: /[\{;]/,
+        excludeEnd: true,
         contains: [
           'self',
           PARAMS
@@ -206,21 +223,28 @@ export default function(hljs) {
       },
       { // prevent references like module.id from being higlighted as module definitions
         begin: /module\./,
-        keywords: { built_in: 'module' },
+        keywords: {
+          built_in: 'module'
+        },
         relevance: 0
       },
       {
-        beginKeywords: 'module', end: /\{/, excludeEnd: true
+        beginKeywords: 'module',
+        end: /\{/,
+        excludeEnd: true
       },
       {
-        beginKeywords: 'interface', end: /\{/, excludeEnd: true,
+        beginKeywords: 'interface',
+        end: /\{/,
+        excludeEnd: true,
         keywords: 'interface extends'
       },
       {
         begin: /\$[(.]/ // relevance booster for a pattern common to JS libs: `$(something)` and `$.something`
       },
       {
-        begin: '\\.' + hljs.IDENT_RE, relevance: 0 // hack: prevents detection of keywords after dots
+        begin: '\\.' + hljs.IDENT_RE,
+        relevance: 0 // hack: prevents detection of keywords after dots
       },
       DECORATOR,
       ARGUMENTS

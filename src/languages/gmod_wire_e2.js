@@ -8,8 +8,7 @@ export default function(hljs) {
   return {
     alias: ["e2", "wire_e2", "gmod_wire_e2", "expression2"],
     keywords: 'if|0 elseif|0 else|0 for|0 foreach|0 while|0 break|0 continue|0 local|0 switch|0 case|0 default|0 function|0 return|0',
-    contains: [
-      {
+    contains: [{
         className: 'string',
         begin: /"(\\[\s\S]|(?!")[^\\])*"/,
       },
@@ -22,11 +21,18 @@ export default function(hljs) {
       hljs.HASH_COMMENT_MODE,
       {
         className: 'directive',
-        variants: [
-          {begin: /@name[^#\n]*/},
-          {begin: /@model.*/},
-          {begin: /@(inputs|outputs|persist|autoupdate)/},
-          {begin: /@trigger( +(all|none))?/}
+        variants: [{
+            begin: /@name[^#\n]*/
+          },
+          {
+            begin: /@model.*/
+          },
+          {
+            begin: /@(inputs|outputs|persist|autoupdate)/
+          },
+          {
+            begin: /@trigger( +(all|none))?/
+          }
         ],
         relevance: 10
       },
@@ -62,10 +68,15 @@ export default function(hljs) {
       },
       {
         className: 'number',
-        variants: [
-          {begin: /\b0x[A-F0-9]+/},                     //Hex
-          {begin: /\b0b[01]+/},                         //Binary literal
-          {begin: /(\b\d+(\.\d*)?|\.\d+)(e[-+]?\d+)?/}, //Regular number
+        variants: [{
+            begin: /\b0x[A-F0-9]+/
+          }, //Hex
+          {
+            begin: /\b0b[01]+/
+          }, //Binary literal
+          {
+            begin: /(\b\d+(\.\d*)?|\.\d+)(e[-+]?\d+)?/
+          }, //Regular number
         ],
         relevance: 0
       }

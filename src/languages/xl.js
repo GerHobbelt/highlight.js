@@ -12,13 +12,10 @@ export default function(hljs) {
 
   var XL_KEYWORDS = {
     $pattern: /[a-zA-Z][a-zA-Z0-9_?]*/,
-    keyword:
-      'if then else do while until for loop import with is as where when by data constant ' +
+    keyword: 'if then else do while until for loop import with is as where when by data constant ' +
       'integer real text name boolean symbol infix prefix postfix block tree',
-    literal:
-      'true false nil',
-    built_in:
-      'in mod rem and or xor not abs sign floor ceil sqrt sin cos tan asin ' +
+    literal: 'true false nil',
+    built_in: 'in mod rem and or xor not abs sign floor ceil sqrt sin cos tan asin ' +
       'acos atan exp expm1 log log2 log10 log1p pi at text_length text_range ' +
       'text_find text_replace contains page slide basic_slide title_slide ' +
       'title subtitle fade_in fade_out fade_at clear_color color line_color ' +
@@ -32,33 +29,43 @@ export default function(hljs) {
 
   var DOUBLE_QUOTE_TEXT = {
     className: 'string',
-    begin: '"', end: '"', illegal: '\\n'
+    begin: '"',
+    end: '"',
+    illegal: '\\n'
   };
   var SINGLE_QUOTE_TEXT = {
     className: 'string',
-    begin: '\'', end: '\'', illegal: '\\n'
+    begin: '\'',
+    end: '\'',
+    illegal: '\\n'
   };
   var LONG_TEXT = {
     className: 'string',
-    begin: '<<', end: '>>'
+    begin: '<<',
+    end: '>>'
   };
   var BASED_NUMBER = {
     className: 'number',
     begin: '[0-9]+#[0-9A-Z_]+(\\.[0-9-A-Z_]+)?#?([Ee][+-]?[0-9]+)?'
   };
   var IMPORT = {
-    beginKeywords: 'import', end: '$',
+    beginKeywords: 'import',
+    end: '$',
     keywords: XL_KEYWORDS,
     contains: [DOUBLE_QUOTE_TEXT]
   };
   var FUNCTION_DEFINITION = {
     className: 'function',
-    begin: /[a-z][^\n]*->/, returnBegin: true, end: /->/,
+    begin: /[a-z][^\n]*->/,
+    returnBegin: true,
+    end: /->/,
     contains: [
-      hljs.inherit(hljs.TITLE_MODE, {starts: {
-        endsWithParent: true,
-        keywords: XL_KEYWORDS
-      }})
+      hljs.inherit(hljs.TITLE_MODE, {
+        starts: {
+          endsWithParent: true,
+          keywords: XL_KEYWORDS
+        }
+      })
     ]
   };
   return {
@@ -66,15 +73,15 @@ export default function(hljs) {
     aliases: ['tao'],
     keywords: XL_KEYWORDS,
     contains: [
-    hljs.C_LINE_COMMENT_MODE,
-    hljs.C_BLOCK_COMMENT_MODE,
-    DOUBLE_QUOTE_TEXT,
-    SINGLE_QUOTE_TEXT,
-    LONG_TEXT,
-    FUNCTION_DEFINITION,
-    IMPORT,
-    BASED_NUMBER,
-    hljs.NUMBER_MODE
+      hljs.C_LINE_COMMENT_MODE,
+      hljs.C_BLOCK_COMMENT_MODE,
+      DOUBLE_QUOTE_TEXT,
+      SINGLE_QUOTE_TEXT,
+      LONG_TEXT,
+      FUNCTION_DEFINITION,
+      IMPORT,
+      BASED_NUMBER,
+      hljs.NUMBER_MODE
     ]
   };
 }

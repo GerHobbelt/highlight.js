@@ -8,12 +8,9 @@ Website: http://nixos.org/nix
 
 export default function(hljs) {
   var NIX_KEYWORDS = {
-    keyword:
-      'rec with let in inherit assert if else then',
-    literal:
-      'true false or and null',
-    built_in:
-      'import abort baseNameOf dirOf isNull builtins map removeAttrs throw ' +
+    keyword: 'rec with let in inherit assert if else then',
+    literal: 'true false or and null',
+    built_in: 'import abort baseNameOf dirOf isNull builtins map removeAttrs throw ' +
       'toString derivation'
   };
   var ANTIQUOTE = {
@@ -23,21 +20,25 @@ export default function(hljs) {
     keywords: NIX_KEYWORDS
   };
   var ATTRS = {
-    begin: /[a-zA-Z0-9-_]+(\s*=)/, returnBegin: true,
+    begin: /[a-zA-Z0-9-_]+(\s*=)/,
+    returnBegin: true,
     relevance: 0,
-    contains: [
-      {
-        className: 'attr',
-        begin: /\S+/
-      }
-    ]
+    contains: [{
+      className: 'attr',
+      begin: /\S+/
+    }]
   };
   var STRING = {
     className: 'string',
     contains: [ANTIQUOTE],
-    variants: [
-      {begin: "''", end: "''"},
-      {begin: '"', end: '"'}
+    variants: [{
+        begin: "''",
+        end: "''"
+      },
+      {
+        begin: '"',
+        end: '"'
+      }
     ]
   };
   var EXPRESSIONS = [

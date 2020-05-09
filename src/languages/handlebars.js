@@ -6,13 +6,13 @@ Description: Matcher for Handlebars as well as EmberJS additions.
 Website: https://handlebarsjs.com
 Category: template
 */
-export default function (hljs) {
+export default function(hljs) {
 
   var BUILT_INS = {
-    'builtin-name': 'action bindattr collection component concat debugger '
-      + 'each each-in get hash if in input link-to loc log lookup '
-      + 'mut outlet partial query-params render template textarea unbound '
-      + 'unless view with yield'
+    'builtin-name': 'action bindattr collection component concat debugger ' +
+      'each each-in get hash if in input link-to loc log lookup ' +
+      'mut outlet partial query-params render template textarea unbound ' +
+      'unless view with yield'
   };
 
   var LITERALS = {
@@ -38,7 +38,8 @@ export default function (hljs) {
 
   var SUB_EXPRESSION = {
     illegal: /\}\}/,
-    begin: /\(/, end: /\)/
+    begin: /\(/,
+    end: /\)/
     // the "contains" is added below when all necessary sub-modes are defined
   };
 
@@ -66,15 +67,15 @@ export default function (hljs) {
   var BLOCK_PARAMS = {
     // parameters of the form '{{#with x as | y |}}...{{/with}}'
     begin: /as\s+\|/,
-    keywords: { keyword: 'as' },
+    keywords: {
+      keyword: 'as'
+    },
     end: /\|/,
-    contains: [
-      {
-        // define sub-mode in order to prevent highlighting of block-parameter named "as"
-        begin: /\w+/,
-        keywords: ''
-      }
-    ]
+    contains: [{
+      // define sub-mode in order to prevent highlighting of block-parameter named "as"
+      begin: /\w+/,
+      keywords: ''
+    }]
   }
 
   var HELPER_PARAMETERS = {
@@ -127,8 +128,14 @@ export default function (hljs) {
     })
   });
 
-  var ESCAPE_MUSTACHE_WITH_PRECEEDING_BACKSLASH = {begin: /\\\{\{/, skip: true};
-  var PREVENT_ESCAPE_WITH_ANOTHER_PRECEEDING_BACKSLASH = {begin: /\\\\(?=\{\{)/, skip: true};
+  var ESCAPE_MUSTACHE_WITH_PRECEEDING_BACKSLASH = {
+    begin: /\\\{\{/,
+    skip: true
+  };
+  var PREVENT_ESCAPE_WITH_ANOTHER_PRECEEDING_BACKSLASH = {
+    begin: /\\\\(?=\{\{)/,
+    skip: true
+  };
 
   return {
     name: 'Handlebars',
@@ -143,20 +150,27 @@ export default function (hljs) {
       {
         // open raw block "{{{{raw}}}} content not evaluated {{{{/raw}}}}"
         className: 'template-tag',
-        begin: /\{\{\{\{(?!\/)/, end: /\}\}\}\}/,
+        begin: /\{\{\{\{(?!\/)/,
+        end: /\}\}\}\}/,
         contains: [OPENING_BLOCK_MUSTACHE_CONTENTS],
-        starts: {end: /\{\{\{\{\//, returnEnd: true, subLanguage: 'xml'}
+        starts: {
+          end: /\{\{\{\{\//,
+          returnEnd: true,
+          subLanguage: 'xml'
+        }
       },
       {
         // close raw block
         className: 'template-tag',
-        begin: /\{\{\{\{\//, end: /\}\}\}\}/,
+        begin: /\{\{\{\{\//,
+        end: /\}\}\}\}/,
         contains: [CLOSING_BLOCK_MUSTACHE_CONTENTS]
       },
       {
         // open block statement
         className: 'template-tag',
-        begin: /\{\{#/, end: /\}\}/,
+        begin: /\{\{#/,
+        end: /\}\}/,
         contains: [OPENING_BLOCK_MUSTACHE_CONTENTS],
       },
       {
@@ -168,19 +182,22 @@ export default function (hljs) {
       {
         // closing block statement
         className: 'template-tag',
-        begin: /\{\{\//, end: /\}\}/,
+        begin: /\{\{\//,
+        end: /\}\}/,
         contains: [CLOSING_BLOCK_MUSTACHE_CONTENTS],
       },
       {
         // template variable or helper-call that is NOT html-escaped
         className: 'template-variable',
-        begin: /\{\{\{/, end: /\}\}\}/,
+        begin: /\{\{\{/,
+        end: /\}\}\}/,
         contains: [BASIC_MUSTACHE_CONTENTS]
       },
       {
         // template variable or helper-call that is html-escaped
         className: 'template-variable',
-        begin: /\{\{/, end: /\}\}/,
+        begin: /\{\{/,
+        end: /\}\}/,
         contains: [BASIC_MUSTACHE_CONTENTS]
       }
     ]

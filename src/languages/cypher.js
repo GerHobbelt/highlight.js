@@ -7,8 +7,8 @@ export default function(hljs) {
   return {
     case_insensitive: true,
     keywords: {
-        keyword: 'start match where return union foreach with as limit skip unwind has distinct optional else end then case when create order by set',
-        literal: 'true false null'
+      keyword: 'start match where return union foreach with as limit skip unwind has distinct optional else end then case when create order by set',
+      literal: 'true false null'
     },
     contains: [
       hljs.QUOTE_STRING_MODE,
@@ -33,4 +33,3 @@ export default function(hljs) {
     ]
   }
 }
-

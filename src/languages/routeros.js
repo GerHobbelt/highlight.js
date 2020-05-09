@@ -36,21 +36,26 @@ export default function(hljs) {
 
   var VAR = {
     className: 'variable',
-    variants: [
-      {begin: /\$[\w\d#@][\w\d_]*/},
-      {begin: /\$\{(.*?)}/}
+    variants: [{
+        begin: /\$[\w\d#@][\w\d_]*/
+      },
+      {
+        begin: /\$\{(.*?)}/
+      }
     ]
   };
 
   var QUOTE_STRING = {
     className: 'string',
-    begin: /"/, end: /"/,
+    begin: /"/,
+    end: /"/,
     contains: [
       hljs.BACKSLASH_ESCAPE,
       VAR,
       {
         className: 'variable',
-        begin: /\$\(/, end: /\)/,
+        begin: /\$\(/,
+        end: /\)/,
         contains: [hljs.BACKSLASH_ESCAPE]
       }
     ]
@@ -58,11 +63,12 @@ export default function(hljs) {
 
   var APOS_STRING = {
     className: 'string',
-    begin: /'/, end: /'/
+    begin: /'/,
+    end: /'/
   };
 
   var IPADDR = '((25[0-5]|(2[0-4]|1{0,1}[0-9]){0,1}[0-9])\.){3}(25[0-5]|(2[0-4]|1{0,1}[0-9]){0,1}[0-9])\\b';
-  var IPADDR_wBITMASK =  IPADDR+'/(3[0-2]|[1-2][0-9]|\\d)';
+  var IPADDR_wBITMASK = IPADDR + '/(3[0-2]|[1-2][0-9]|\\d)';
   //////////////////////////////////////////////////////////////////////
   return {
     name: 'Microtik RouterOS script',
@@ -73,19 +79,47 @@ export default function(hljs) {
       literal: LITERALS,
       keyword: STATEMENTS + ' :' + STATEMENTS.split(' ').join(' :') + ' :' + GLOBAL_COMMANDS.split(' ').join(' :'),
     },
-    contains: [
-      { // недопустимые конструкции
-        variants: [
-          { begin: /^@/, end: /$/, },               // dns
-          { begin: /\/\*/, end: /\*\//, },          // -- comment
-          { begin: /%%/, end: /$/, },               // -- comment
-          { begin: /^'/, end: /$/, },               // Monkey one line comment
-          { begin: /^\s*\/[\w-]+=/, end: /$/, },    // jboss-cli
-          { begin: /\/\//, end: /$/, },             // Stan comment
-          { begin: /^\[\</, end: /\>\]$/, },        // F# class declaration?
-          { begin: /<\//, end: />/, },              // HTML tags
-          { begin: /^facet /, end: /\}/, },         // roboconf - лютый костыль )))
-          { begin: '^1\\.\\.(\\d+)$', end: /$/, },  // tap
+    contains: [{ // недопустимые конструкции
+        variants: [{
+            begin: /^@/,
+            end: /$/,
+          }, // dns
+          {
+            begin: /\/\*/,
+            end: /\*\//,
+          }, // -- comment
+          {
+            begin: /%%/,
+            end: /$/,
+          }, // -- comment
+          {
+            begin: /^'/,
+            end: /$/,
+          }, // Monkey one line comment
+          {
+            begin: /^\s*\/[\w-]+=/,
+            end: /$/,
+          }, // jboss-cli
+          {
+            begin: /\/\//,
+            end: /$/,
+          }, // Stan comment
+          {
+            begin: /^\[\</,
+            end: /\>\]$/,
+          }, // F# class declaration?
+          {
+            begin: /<\//,
+            end: />/,
+          }, // HTML tags
+          {
+            begin: /^facet /,
+            end: /\}/,
+          }, // roboconf - лютый костыль )))
+          {
+            begin: '^1\\.\\.(\\d+)$',
+            end: /$/,
+          }, // tap
         ],
         illegal: /./,
       },
@@ -97,14 +131,13 @@ export default function(hljs) {
         begin: /[\w-]+\=([^\s\{\}\[\]\(\)]+)/,
         relevance: 0,
         returnBegin: true,
-        contains: [
-          {
+        contains: [{
             className: 'attribute',
             begin: /[^=]+/
           },
           {
             begin: /=/,
-            endsWithParent:  true,
+            endsWithParent: true,
             relevance: 0,
             contains: [
               QUOTE_STRING,
@@ -136,7 +169,7 @@ export default function(hljs) {
             ]
           } //*/
         ]
-      },//*/
+      }, //*/
       {
         // HEX values
         className: 'number',
@@ -146,25 +179,23 @@ export default function(hljs) {
       {
         begin: '\\b(' + COMMON_COMMANDS.split(' ').join('|') + ')([\\s\[\(]|\])',
         returnBegin: true,
-        contains: [
-          {
-            className: 'builtin-name', //'function',
-            begin: /\w+/,
-          },
-        ],
+        contains: [{
+          className: 'builtin-name', //'function',
+          begin: /\w+/,
+        }, ],
       },
 
       {
         className: 'built_in',
-        variants: [
-          {begin: '(\\.\\./|/|\\s)((' + OBJECTS.split(' ').join('|') + ');?\\s)+',relevance: 10,},
-          {begin: /\.\./,},
+        variants: [{
+            begin: '(\\.\\./|/|\\s)((' + OBJECTS.split(' ').join('|') + ');?\\s)+',
+            relevance: 10,
+          },
+          {
+            begin: /\.\./,
+          },
         ],
-      },//*/
+      }, //*/
     ]
   };
 }
-
-
-
-

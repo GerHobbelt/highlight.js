@@ -7,7 +7,8 @@ Website: https://pypi.org/project/python-subunit/
 export default function(hljs) {
   var DETAILS = {
     className: 'string',
-    begin: '\\[\n(multipart)?', end: '\\]\n'
+    begin: '\\[\n(multipart)?',
+    end: '\\]\n'
   };
   var TIME = {
     className: 'string',
@@ -20,11 +21,18 @@ export default function(hljs) {
   var KEYWORDS = {
     className: 'keyword',
     relevance: 10,
-    variants: [
-      { begin: '^(test|testing|success|successful|failure|error|skip|xfail|uxsuccess)(:?)\\s+(test)?' },
-      { begin: '^progress(:?)(\\s+)?(pop|push)?' },
-      { begin: '^tags:' },
-      { begin: '^time:' }
+    variants: [{
+        begin: '^(test|testing|success|successful|failure|error|skip|xfail|uxsuccess)(:?)\\s+(test)?'
+      },
+      {
+        begin: '^progress(:?)(\\s+)?(pop|push)?'
+      },
+      {
+        begin: '^tags:'
+      },
+      {
+        begin: '^time:'
+      }
     ],
   };
   return {

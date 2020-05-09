@@ -7,8 +7,7 @@ Website: https://en.wikipedia.org/wiki/Batch_file
 
 export default function(hljs) {
   var COMMENT = hljs.COMMENT(
-    /^\s*@?rem\b/, /$/,
-    {
+    /^\s*@?rem\b/, /$/, {
       relevance: 10
     }
   );
@@ -23,11 +22,9 @@ export default function(hljs) {
     case_insensitive: true,
     illegal: /\/\*/,
     keywords: {
-      keyword:
-        'if else goto for in do call exit not exist errorlevel defined ' +
+      keyword: 'if else goto for in do call exit not exist errorlevel defined ' +
         'equ neq lss leq gtr geq',
-      built_in:
-        'prn nul lpt3 lpt2 lpt1 con com4 com3 com2 com1 aux ' +
+      built_in: 'prn nul lpt3 lpt2 lpt1 con com4 com3 com2 com1 aux ' +
         'shift cd dir echo setlocal endlocal set pause copy ' +
         'append assoc at attrib break cacls cd chcp chdir chkdsk chkntfs cls cmd color ' +
         'comp compact convert date dir diskcomp diskcopy doskey erase fs ' +
@@ -37,20 +34,24 @@ export default function(hljs) {
         // winutils
         'ping net ipconfig taskkill xcopy ren del'
     },
-    contains: [
-      {
-        className: 'variable', begin: /%%[^ ]|%[^ ]+?%|![^ ]+?!/
+    contains: [{
+        className: 'variable',
+        begin: /%%[^ ]|%[^ ]+?%|![^ ]+?!/
       },
       {
         className: 'function',
-        begin: LABEL.begin, end: 'goto:eof',
+        begin: LABEL.begin,
+        end: 'goto:eof',
         contains: [
-          hljs.inherit(hljs.TITLE_MODE, {begin: '([_a-zA-Z]\\w*\\.)*([_a-zA-Z]\\w*:)?[_a-zA-Z]\\w*'}),
+          hljs.inherit(hljs.TITLE_MODE, {
+            begin: '([_a-zA-Z]\\w*\\.)*([_a-zA-Z]\\w*:)?[_a-zA-Z]\\w*'
+          }),
           COMMENT
         ]
       },
       {
-        className: 'number', begin: '\\b\\d+',
+        className: 'number',
+        begin: '\\b\\d+',
         relevance: 0
       },
       COMMENT

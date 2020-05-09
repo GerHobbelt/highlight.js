@@ -10,38 +10,61 @@ export default function(hljs) {
   return {
     name: 'Diff',
     aliases: ['patch'],
-    contains: [
-      {
+    contains: [{
         className: 'meta',
         relevance: 10,
-        variants: [
-          {begin: /^@@ +\-\d+,\d+ +\+\d+,\d+ +@@$/},
-          {begin: /^\*\*\* +\d+,\d+ +\*\*\*\*$/},
-          {begin: /^\-\-\- +\d+,\d+ +\-\-\-\-$/}
+        variants: [{
+            begin: /^@@ +\-\d+,\d+ +\+\d+,\d+ +@@$/
+          },
+          {
+            begin: /^\*\*\* +\d+,\d+ +\*\*\*\*$/
+          },
+          {
+            begin: /^\-\-\- +\d+,\d+ +\-\-\-\-$/
+          }
         ]
       },
       {
         className: 'comment',
-        variants: [
-          {begin: /Index: /, end: /$/},
-          {begin: /={3,}/, end: /$/},
-          {begin: /^\-{3}/, end: /$/},
-          {begin: /^\*{3} /, end: /$/},
-          {begin: /^\+{3}/, end: /$/},
-          {begin: /^\*{15}$/ }
+        variants: [{
+            begin: /Index: /,
+            end: /$/
+          },
+          {
+            begin: /={3,}/,
+            end: /$/
+          },
+          {
+            begin: /^\-{3}/,
+            end: /$/
+          },
+          {
+            begin: /^\*{3} /,
+            end: /$/
+          },
+          {
+            begin: /^\+{3}/,
+            end: /$/
+          },
+          {
+            begin: /^\*{15}$/
+          }
         ]
       },
       {
         className: 'addition',
-        begin: '^\\+', end: '$'
+        begin: '^\\+',
+        end: '$'
       },
       {
         className: 'deletion',
-        begin: '^\\-', end: '$'
+        begin: '^\\-',
+        end: '$'
       },
       {
         className: 'addition',
-        begin: '^\\!', end: '$'
+        begin: '^\\!',
+        end: '$'
       }
     ]
   };

@@ -7,16 +7,13 @@ Description: Ballerina language (ballerinalang). For more info about language se
 
 export default function(hljs) {
   var BALLERINA_KEYWORDS = {
-    keyword:
-      'package import as public native service resource function connector action struct ' +
+    keyword: 'package import as public native service resource function connector action struct ' +
       'annotation enum parameter const typemapper worker xmlns returns version int float ' +
       'boolean string blob map json xml datatable any type var create attach transform if ' +
       'else iterate while next break fork join some all timeout try catch finally throw ' +
       'return reply transaction abort aborted committed failed retry lengthof typeof with',
-    literal:
-       'true false null',
-    built_in:
-      'Description Param Return Field NullReferenceException IllegalStateException equalsIgnoreCase' +
+    literal: 'true false null',
+    built_in: 'Description Param Return Field NullReferenceException IllegalStateException equalsIgnoreCase' +
       'toUpperCase subString lastIndexOf replaceFirst length contains indexOf trim hasSuffix unescape' +
       'toLowerCase hasPrefix replaceAll replace split toBlob print println sleep getEnv isSingleton' +
       'isEmpty elements select getItemType getElementName getTextValue children selectChildren' +
@@ -31,31 +28,40 @@ export default function(hljs) {
         className: 'string',
         variants: [
           hljs.QUOTE_STRING_MODE,
-          {begin: '`', end: '`'},
+          {
+            begin: '`',
+            end: '`'
+          },
         ]
       },
       {
         className: 'number',
-        variants: [
-          {begin: hljs.C_NUMBER_RE + '[dflsi]', relevance: 1},
+        variants: [{
+            begin: hljs.C_NUMBER_RE + '[dflsi]',
+            relevance: 1
+          },
           hljs.C_NUMBER_MODE
         ]
       },
       {
         className: 'function',
-        beginKeywords: 'function', end: /\s*\{/, excludeEnd: true,
+        beginKeywords: 'function',
+        end: /\s*\{/,
+        excludeEnd: true,
         contains: [
           hljs.TITLE_MODE,
           {
             className: 'params',
-            begin: /\(/, end: /\)/,
+            begin: /\(/,
+            end: /\)/,
             keywords: BALLERINA_KEYWORDS,
             illegal: /["']/
           }
         ]
       },
       {
-        className: 'meta', begin: '@[A-Za-z]+(:[A-Za-z]+)?'
+        className: 'meta',
+        begin: '@[A-Za-z]+(:[A-Za-z]+)?'
       }
     ]
   };

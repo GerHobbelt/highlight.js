@@ -13,20 +13,22 @@ export default function(hljs) {
       keyword: 'msf|10',
       nomarkup: 'exploit auxiliary post nop encoder' // Helps classification
     },
-    contains: [
-      {
+    contains: [{
         className: 'strong',
-        begin: '^\\[\\*\\]', end: ' ',
+        begin: '^\\[\\*\\]',
+        end: ' ',
         relevance: 10
       },
       {
         className: 'literal',
-        begin: '^\\[\\+\\]', end: ' ',
+        begin: '^\\[\\+\\]',
+        end: ' ',
         relevance: 10
       },
       {
         className: 'number',
-        begin: '^\\[[-!]\\]', end: ' ',
+        begin: '^\\[[-!]\\]',
+        end: ' ',
         relevance: 10
       },
     ]

@@ -47,10 +47,10 @@ export default function(hljs) {
         'greater_equal strless strgreater strequal strless_equal strgreater_equal version_less ' +
         'version_greater version_equal version_less_equal version_greater_equal in_list defined'
     },
-    contains: [
-      {
+    contains: [{
         className: 'variable',
-        begin: '\\${', end: '}'
+        begin: '\\${',
+        end: '}'
       },
       hljs.HASH_COMMENT_MODE,
       hljs.QUOTE_STRING_MODE,

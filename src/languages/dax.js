@@ -19,8 +19,7 @@ export default function(hljs) {
         lexemes: IDENT_RE,
         keywords: {
           keyword: 'FALSE TRUE VAR RETURN',
-          built_in:
-            'ABS ACOS ACOSH ADDCOLUMNS ADDMISSINGITEMS|10 ALL ALLEXCEPT|10 ALLNOBLANKROW|10 ' +
+          built_in: 'ABS ACOS ACOSH ADDCOLUMNS ADDMISSINGITEMS|10 ALL ALLEXCEPT|10 ALLNOBLANKROW|10 ' +
             'ALLSELECTED|10 AND ASIN ASINH ATAN ATANH AVERAGE AVERAGEA AVERAGEX BETA.DIST ' +
             'BETA.INV BLANK CALCULATE CALCULATETABLE|10 CALENDAR CALENDARAUTO|10 CEILING ' +
             'CHISQ.INV CHISQ.INV.RT CLOSINGBALANCEMONTH|10 CLOSINGBALANCEQUARTER|10 ' +
@@ -55,12 +54,11 @@ export default function(hljs) {
       },
       {
         className: 'string',
-        begin: '"', end: '"',
-        contains: [ 
-            {
-              begin: '""' 
-            }
-        ],
+        begin: '"',
+        end: '"',
+        contains: [{
+          begin: '""'
+        }],
         relevance: 0
       },
       {

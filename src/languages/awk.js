@@ -8,37 +8,45 @@ Description: language definition for Awk scripts
 export default function(hljs) {
   var VARIABLE = {
     className: 'variable',
-    variants: [
-      {begin: /\$[\w\d#@][\w\d_]*/},
-      {begin: /\$\{(.*?)}/}
+    variants: [{
+        begin: /\$[\w\d#@][\w\d_]*/
+      },
+      {
+        begin: /\$\{(.*?)}/
+      }
     ]
   };
   var KEYWORDS = 'BEGIN END if else while do for in break continue delete next nextfile function func exit|10';
   var STRING = {
     className: 'string',
     contains: [hljs.BACKSLASH_ESCAPE],
-    variants: [
-      {
-        begin: /(u|b)?r?'''/, end: /'''/,
+    variants: [{
+        begin: /(u|b)?r?'''/,
+        end: /'''/,
         relevance: 10
       },
       {
-        begin: /(u|b)?r?"""/, end: /"""/,
+        begin: /(u|b)?r?"""/,
+        end: /"""/,
         relevance: 10
       },
       {
-        begin: /(u|r|ur)'/, end: /'/,
+        begin: /(u|r|ur)'/,
+        end: /'/,
         relevance: 10
       },
       {
-        begin: /(u|r|ur)"/, end: /"/,
+        begin: /(u|r|ur)"/,
+        end: /"/,
         relevance: 10
       },
       {
-        begin: /(b|br)'/, end: /'/
+        begin: /(b|br)'/,
+        end: /'/
       },
       {
-        begin: /(b|br)"/, end: /"/
+        begin: /(b|br)"/,
+        end: /"/
       },
       hljs.APOS_STRING_MODE,
       hljs.QUOTE_STRING_MODE

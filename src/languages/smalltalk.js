@@ -39,12 +39,16 @@ export default function(hljs) {
         // explosion under V8. It effectively means `| var1 var2 ... |` with
         // whitespace adjacent to `|` being optional.
         begin: '\\|[ ]*' + VAR_IDENT_RE + '([ ]+' + VAR_IDENT_RE + ')*[ ]*\\|',
-        returnBegin: true, end: /\|/,
+        returnBegin: true,
+        end: /\|/,
         illegal: /\S/,
-        contains: [{begin: '(\\|[ ]*)?' + VAR_IDENT_RE}]
+        contains: [{
+          begin: '(\\|[ ]*)?' + VAR_IDENT_RE
+        }]
       },
       {
-        begin: '\\#\\(', end: '\\)',
+        begin: '\\#\\(',
+        end: '\\)',
         contains: [
           hljs.APOS_STRING_MODE,
           CHAR,

@@ -11,8 +11,7 @@ export default function(hljs) {
     aliases: ['vb'],
     case_insensitive: true,
     keywords: {
-      keyword:
-        'addhandler addressof alias and andalso aggregate ansi as async assembly auto await binary by byref byval ' + /* a-b */
+      keyword: 'addhandler addressof alias and andalso aggregate ansi as async assembly auto await binary by byref byval ' + /* a-b */
         'call case catch class compare const continue custom declare default delegate dim distinct do ' + /* c-d */
         'each equals else elseif end enum erase error event exit explicit finally for friend from function ' + /* e-f */
         'get global goto group handles if implements imports in inherits interface into is isfalse isnot istrue iterator ' + /* g-i */
@@ -22,31 +21,35 @@ export default function(hljs) {
         'paramarray partial preserve private property protected public ' + /* p */
         'raiseevent readonly redim rem removehandler resume return ' + /* r */
         'select set shadows shared skip static step stop structure strict sub synclock ' + /* s */
-        'take text then throw to try unicode until using when where while widening with withevents writeonly xor yield', /* t-y */
-      built_in:
-        'boolean byte cbool cbyte cchar cdate cdec cdbl char cint clng cobj csbyte cshort csng cstr ctype ' +  /* b-c */
+        'take text then throw to try unicode until using when where while widening with withevents writeonly xor yield',
+      /* t-y */
+      built_in: 'boolean byte cbool cbyte cchar cdate cdec cdbl char cint clng cobj csbyte cshort csng cstr ctype ' + /* b-c */
         'date decimal directcast double gettype getxmlnamespace iif integer long object ' + /* d-o */
-        'sbyte short single string trycast typeof uinteger ulong ushort', /* s-u */
-      literal:
-        'true false nothing'
+        'sbyte short single string trycast typeof uinteger ulong ushort',
+      /* s-u */
+      literal: 'true false nothing'
     },
-    illegal: '//|{|}|endif|gosub|variant|wend|^\\$ ', /* reserved deprecated keywords */
+    illegal: '//|{|}|endif|gosub|variant|wend|^\\$ ',
+    /* reserved deprecated keywords */
     contains: [
-      hljs.inherit(hljs.QUOTE_STRING_MODE, {contains: [{begin: '""'}]}),
+      hljs.inherit(hljs.QUOTE_STRING_MODE, {
+        contains: [{
+          begin: '""'
+        }]
+      }),
       hljs.COMMENT(
         '\'',
-        '$',
-        {
+        '$', {
           returnBegin: true,
-          contains: [
-            {
+          contains: [{
               className: 'doctag',
               begin: '\'\'\'|<!--|-->',
               contains: [hljs.PHRASAL_WORDS_MODE]
             },
             {
               className: 'doctag',
-              begin: '</?', end: '>',
+              begin: '</?',
+              end: '>',
               contains: [hljs.PHRASAL_WORDS_MODE]
             }
           ]
@@ -55,8 +58,11 @@ export default function(hljs) {
       hljs.C_NUMBER_MODE,
       {
         className: 'meta',
-        begin: '#', end: '$',
-        keywords: {'meta-keyword': 'if else elseif end region externalsource'}
+        begin: '#',
+        end: '$',
+        keywords: {
+          'meta-keyword': 'if else elseif end region externalsource'
+        }
       }
     ]
   };

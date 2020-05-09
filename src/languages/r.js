@@ -17,12 +17,10 @@ export default function(hljs) {
         begin: IDENT_RE,
         keywords: {
           $pattern: IDENT_RE,
-          keyword:
-            'function if in break next repeat else for return switch while try tryCatch ' +
+          keyword: 'function if in break next repeat else for return switch while try tryCatch ' +
             'stop warning require library attach detach source setMethod setGeneric ' +
             'setGroupGeneric setClass ...',
-          literal:
-            'NULL NA TRUE FALSE T F Inf NaN NA_integer_|10 NA_real_|10 NA_character_|10 ' +
+          literal: 'NULL NA TRUE FALSE T F Inf NaN NA_integer_|10 NA_real_|10 NA_character_|10 ' +
             'NA_complex_|10'
         },
         relevance: 0
@@ -68,9 +66,14 @@ export default function(hljs) {
       {
         className: 'string',
         contains: [hljs.BACKSLASH_ESCAPE],
-        variants: [
-          {begin: '"', end: '"'},
-          {begin: "'", end: "'"}
+        variants: [{
+            begin: '"',
+            end: '"'
+          },
+          {
+            begin: "'",
+            end: "'"
+          }
         ]
       }
     ]

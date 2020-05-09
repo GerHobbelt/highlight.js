@@ -163,8 +163,7 @@ export default function(hljs) {
       hljs.C_LINE_COMMENT_MODE,
       hljs.COMMENT(
         /#/,
-        /$/,
-        {
+        /$/, {
           relevance: 0,
           keywords: {
             'meta-keyword': 'include'
@@ -173,16 +172,13 @@ export default function(hljs) {
       ),
       hljs.COMMENT(
         /\/\*/,
-        /\*\//,
-        {
+        /\*\//, {
           relevance: 0,
           // highlight doc strings mentioned in Stan reference
-          contains: [
-            {
-              className: 'doctag',
-              begin: /@(return|param)/
-            }
-          ]
+          contains: [{
+            className: 'doctag',
+            begin: /@(return|param)/
+          }]
         }
       ),
       {
@@ -207,8 +203,7 @@ export default function(hljs) {
       },
       {
         className: 'number',
-        variants: [
-          {
+        variants: [{
             begin: /\b\d+(?:\.\d*)?(?:[eE][+-]?\d+)?/
           },
           {

@@ -11,15 +11,12 @@ export default function(hljs) {
   var LASSO_CLOSE_RE = '\\]|\\?>';
   var LASSO_KEYWORDS = {
     $pattern: LASSO_IDENT_RE + '|&[lg]t;',
-    literal:
-      'true false none minimal full all void and or not ' +
+    literal: 'true false none minimal full all void and or not ' +
       'bw nbw ew new cn ncn lt lte gt gte eq neq rx nrx ft',
-    built_in:
-      'array date decimal duration integer map pair string tag xml null ' +
+    built_in: 'array date decimal duration integer map pair string tag xml null ' +
       'boolean bytes keyword list locale queue set stack staticarray ' +
       'local var variable global data self inherited currentcapture givenblock',
-    keyword:
-      'cache database_names database_schemanames database_tablenames ' +
+    keyword: 'cache database_names database_schemanames database_tablenames ' +
       'define_tag define_type email_batch encode_set html_comment handle ' +
       'handle_error header if inline iterate ljax_target link ' +
       'link_currentaction link_currentgroup link_currentrecord link_detail ' +
@@ -39,8 +36,7 @@ export default function(hljs) {
   };
   var HTML_COMMENT = hljs.COMMENT(
     '<!--',
-    '-->',
-    {
+    '-->', {
       relevance: 0
     }
   );
@@ -64,33 +60,40 @@ export default function(hljs) {
   var LASSO_CODE = [
     hljs.C_LINE_COMMENT_MODE,
     hljs.C_BLOCK_COMMENT_MODE,
-    hljs.inherit(hljs.C_NUMBER_MODE, {begin: hljs.C_NUMBER_RE + '|(-?infinity|NaN)\\b'}),
-    hljs.inherit(hljs.APOS_STRING_MODE, {illegal: null}),
-    hljs.inherit(hljs.QUOTE_STRING_MODE, {illegal: null}),
+    hljs.inherit(hljs.C_NUMBER_MODE, {
+      begin: hljs.C_NUMBER_RE + '|(-?infinity|NaN)\\b'
+    }),
+    hljs.inherit(hljs.APOS_STRING_MODE, {
+      illegal: null
+    }),
+    hljs.inherit(hljs.QUOTE_STRING_MODE, {
+      illegal: null
+    }),
     {
       className: 'string',
-      begin: '`', end: '`'
+      begin: '`',
+      end: '`'
     },
     { // variables
-      variants: [
-        {
+      variants: [{
           begin: '[#$]' + LASSO_IDENT_RE
         },
         {
-          begin: '#', end: '\\d+',
+          begin: '#',
+          end: '\\d+',
           illegal: '\\W'
         }
       ]
     },
     {
       className: 'type',
-      begin: '::\\s*', end: LASSO_IDENT_RE,
+      begin: '::\\s*',
+      end: LASSO_IDENT_RE,
       illegal: '\\W'
     },
     {
       className: 'params',
-      variants: [
-        {
+      variants: [{
           begin: '-(?!infinity)' + LASSO_IDENT_RE,
           relevance: 0
         },
@@ -107,9 +110,12 @@ export default function(hljs) {
     {
       className: 'class',
       beginKeywords: 'define',
-      returnEnd: true, end: '\\(|=>',
+      returnEnd: true,
+      end: '\\(|=>',
       contains: [
-        hljs.inherit(hljs.TITLE_MODE, {begin: LASSO_IDENT_RE + '(=(?!>))?|[-+*/%](?!>)'})
+        hljs.inherit(hljs.TITLE_MODE, {
+          begin: LASSO_IDENT_RE + '(=(?!>))?|[-+*/%](?!>)'
+        })
       ]
     }
   ];
@@ -118,8 +124,7 @@ export default function(hljs) {
     aliases: ['ls', 'lassoscript'],
     case_insensitive: true,
     keywords: LASSO_KEYWORDS,
-    contains: [
-      {
+    contains: [{
         className: 'meta',
         begin: LASSO_CLOSE_RE,
         relevance: 0,
@@ -138,8 +143,7 @@ export default function(hljs) {
         starts: {
           end: '\\[/no_square_brackets\\]', // not implemented in the language
           keywords: LASSO_KEYWORDS,
-          contains: [
-            {
+          contains: [{
               className: 'meta',
               begin: LASSO_CLOSE_RE,
               relevance: 0,
@@ -161,7 +165,8 @@ export default function(hljs) {
       },
       {
         className: 'meta',
-        begin: '^#!', end:'lasso9$',
+        begin: '^#!',
+        end: 'lasso9$',
         relevance: 10
       }
     ].concat(LASSO_CODE)

@@ -4,35 +4,34 @@ Description: Pine (JS) is a lightweight, interpreted, or just-in-time compiled p
 Category: common, scripting
 */
 
-export default function (hljs) {
+export default function(hljs) {
 
   var KEYWORDS = {
-    keyword:
-      'var if else for to by return break continue and or not =>',
-    literal:
-      'true false na open close high low',
-    built_in:
-      'bool int float string color'
+    keyword: 'var if else for to by return break continue and or not =>',
+    literal: 'true false na open close high low',
+    built_in: 'bool int float string color'
   };
   var NUMBER = {
     className: 'number',
-    variants: [
-      { begin: hljs.C_NUMBER_RE }
-    ],
+    variants: [{
+      begin: hljs.C_NUMBER_RE
+    }],
     relevance: 0
   };
 
   var HEXCOLOR = {
-    className: 'number', begin: '#[0-9A-Fa-f]+'
+    className: 'number',
+    begin: '#[0-9A-Fa-f]+'
   };
 
   var PARAMS = {
     className: 'params',
-    begin: /\(/, end: /\)/,
+    begin: /\(/,
+    end: /\)/,
     contains: [
-      NUMBER, 
+      NUMBER,
       hljs.APOS_STRING_MODE,
-      hljs.QUOTE_STRING_MODE, 
+      hljs.QUOTE_STRING_MODE,
       HEXCOLOR
     ]
   };

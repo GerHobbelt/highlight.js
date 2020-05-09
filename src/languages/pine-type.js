@@ -4,16 +4,19 @@ Description: Pine (JS) is a lightweight, interpreted, or just-in-time compiled p
 Category: common, scripting
 */
 
-export default function (hljs) {
+export default function(hljs) {
 
   var OTHER_KEYWORDS = {
     className: 'keyword',
-    variants: [
-      { begin: /\b(series|list)\((int|float|bool|color|string)\)/ },
-      { begin: /\bint|float|bool|color|string|na|void\b/ },
+    variants: [{
+        begin: /\b(series|list)\((int|float|bool|color|string)\)/
+      },
+      {
+        begin: /\bint|float|bool|color|string|na|void\b/
+      },
     ],
   };
- 
+
   return {
     name: 'Pine Type',
     aliases: ['pine-type'],

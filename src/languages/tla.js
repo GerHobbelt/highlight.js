@@ -7,8 +7,7 @@ Category: misc
 export default function(hljs) {
   return {
     keywords: {
-      keyword:
-        'ASSUME ASSUMPTION AXIOM BOOLEAN CASE CONSTANT CONSTANTS ELSE EXCEPT EXTENDS FALSE ' +
+      keyword: 'ASSUME ASSUMPTION AXIOM BOOLEAN CASE CONSTANT CONSTANTS ELSE EXCEPT EXTENDS FALSE ' +
         'IF IN INSTANCE LET LOCAL MODULE OTHER STRING THEN THEOREM LEMMA PROPOSITION COROLLARY ' +
         'TRUE VARIABLE VARIABLES WITH CHOOSE ENABLED UNCHANGED SUBSET UNION DOMAIN BY OBVIOUS ' +
         'HAVE QED TAKE DEF HIDE RECURSIVE USE DEFINE PROOF WITNESS PICK DEFS PROVE SUFFICES ' +
@@ -19,7 +18,9 @@ export default function(hljs) {
       hljs.COMMENT('\\(\\*', '\\*\\)'),
       hljs.COMMENT('\\\\\\*', '$'),
       hljs.C_NUMBER_MODE,
-      { begin: /\/\\/ } // relevance booster
+      {
+        begin: /\/\\/
+      } // relevance booster
     ]
   };
 }

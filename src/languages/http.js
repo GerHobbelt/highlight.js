@@ -12,18 +12,24 @@ export default function(hljs) {
     name: 'HTTP',
     aliases: ['https'],
     illegal: '\\S',
-    contains: [
-      {
-        begin: '^' + VERSION, end: '$',
-        contains: [{className: 'number', begin: '\\b\\d{3}\\b'}]
+    contains: [{
+        begin: '^' + VERSION,
+        end: '$',
+        contains: [{
+          className: 'number',
+          begin: '\\b\\d{3}\\b'
+        }]
       },
       {
-        begin: '^[A-Z]+ (.*?) ' + VERSION + '$', returnBegin: true, end: '$',
-        contains: [
-          {
+        begin: '^[A-Z]+ (.*?) ' + VERSION + '$',
+        returnBegin: true,
+        end: '$',
+        contains: [{
             className: 'string',
-            begin: ' ', end: ' ',
-            excludeBegin: true, excludeEnd: true
+            begin: ' ',
+            end: ' ',
+            excludeBegin: true,
+            excludeEnd: true
           },
           {
             begin: VERSION
@@ -36,13 +42,21 @@ export default function(hljs) {
       },
       {
         className: 'attribute',
-        begin: '^\\w', end: ': ', excludeEnd: true,
+        begin: '^\\w',
+        end: ': ',
+        excludeEnd: true,
         illegal: '\\n|\\s|=',
-        starts: {end: '$', relevance: 0}
+        starts: {
+          end: '$',
+          relevance: 0
+        }
       },
       {
         begin: '\\n\\n',
-        starts: {subLanguage: [], endsWithParent: true}
+        starts: {
+          subLanguage: [],
+          endsWithParent: true
+        }
       }
     ]
   };

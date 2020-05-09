@@ -10,8 +10,7 @@ export default function(hljs) {
     name: 'Gradle',
     case_insensitive: true,
     keywords: {
-      keyword:
-        'task project allprojects subprojects artifacts buildscript configurations ' +
+      keyword: 'task project allprojects subprojects artifacts buildscript configurations ' +
         'dependencies repositories sourceSets description delete from into include ' +
         'exclude source classpath destinationDir includes options sourceCompatibility ' +
         'targetCompatibility group flatDir doLast doFirst flatten todir fromdir ant ' +

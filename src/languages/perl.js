@@ -9,39 +9,47 @@ export default function(hljs) {
   var PERL_KEYWORDS = {
     $pattern: /[\w.]+/,
     keyword: 'getpwent getservent quotemeta msgrcv scalar kill dbmclose undef lc ' +
-    'ma syswrite tr send umask sysopen shmwrite vec qx utime local oct semctl localtime ' +
-    'readpipe do return format read sprintf dbmopen pop getpgrp not getpwnam rewinddir qq ' +
-    'fileno qw endprotoent wait sethostent bless s|0 opendir continue each sleep endgrent ' +
-    'shutdown dump chomp connect getsockname die socketpair close flock exists index shmget ' +
-    'sub for endpwent redo lstat msgctl setpgrp abs exit select print ref gethostbyaddr ' +
-    'unshift fcntl syscall goto getnetbyaddr join gmtime symlink semget splice x|0 ' +
-    'getpeername recv log setsockopt cos last reverse gethostbyname getgrnam study formline ' +
-    'endhostent times chop length gethostent getnetent pack getprotoent getservbyname rand ' +
-    'mkdir pos chmod y|0 substr endnetent printf next open msgsnd readdir use unlink ' +
-    'getsockopt getpriority rindex wantarray hex system getservbyport endservent int chr ' +
-    'untie rmdir prototype tell listen fork shmread ucfirst setprotoent else sysseek link ' +
-    'getgrgid shmctl waitpid unpack getnetbyname reset chdir grep split require caller ' +
-    'lcfirst until warn while values shift telldir getpwuid my getprotobynumber delete and ' +
-    'sort uc defined srand accept package seekdir getprotobyname semop our rename seek if q|0 ' +
-    'chroot sysread setpwent no crypt getc chown sqrt write setnetent setpriority foreach ' +
-    'tie sin msgget map stat getlogin unless elsif truncate exec keys glob tied closedir ' +
-    'ioctl socket readlink eval xor readline binmode setservent eof ord bind alarm pipe ' +
-    'atan2 getgrent exp time push setgrent gt lt or ne m|0 break given say state when'
+      'ma syswrite tr send umask sysopen shmwrite vec qx utime local oct semctl localtime ' +
+      'readpipe do return format read sprintf dbmopen pop getpgrp not getpwnam rewinddir qq ' +
+      'fileno qw endprotoent wait sethostent bless s|0 opendir continue each sleep endgrent ' +
+      'shutdown dump chomp connect getsockname die socketpair close flock exists index shmget ' +
+      'sub for endpwent redo lstat msgctl setpgrp abs exit select print ref gethostbyaddr ' +
+      'unshift fcntl syscall goto getnetbyaddr join gmtime symlink semget splice x|0 ' +
+      'getpeername recv log setsockopt cos last reverse gethostbyname getgrnam study formline ' +
+      'endhostent times chop length gethostent getnetent pack getprotoent getservbyname rand ' +
+      'mkdir pos chmod y|0 substr endnetent printf next open msgsnd readdir use unlink ' +
+      'getsockopt getpriority rindex wantarray hex system getservbyport endservent int chr ' +
+      'untie rmdir prototype tell listen fork shmread ucfirst setprotoent else sysseek link ' +
+      'getgrgid shmctl waitpid unpack getnetbyname reset chdir grep split require caller ' +
+      'lcfirst until warn while values shift telldir getpwuid my getprotobynumber delete and ' +
+      'sort uc defined srand accept package seekdir getprotobyname semop our rename seek if q|0 ' +
+      'chroot sysread setpwent no crypt getc chown sqrt write setnetent setpriority foreach ' +
+      'tie sin msgget map stat getlogin unless elsif truncate exec keys glob tied closedir ' +
+      'ioctl socket readlink eval xor readline binmode setservent eof ord bind alarm pipe ' +
+      'atan2 getgrent exp time push setgrent gt lt or ne m|0 break given say state when'
   };
   var SUBST = {
     className: 'subst',
-    begin: '[$@]\\{', end: '\\}',
+    begin: '[$@]\\{',
+    end: '\\}',
     keywords: PERL_KEYWORDS
   };
   var METHOD = {
-    begin: '->{', end: '}'
+    begin: '->{',
+    end: '}'
     // contains defined later
   };
   var VAR = {
-    variants: [
-      {begin: /\$\d/},
-      {begin: /[\$%@](\^\w\b|#\w+(::\w+)*|{\w+}|\w+(::\w*)*)/},
-      {begin: /[\$%@][^\s\w{]/, relevance: 0}
+    variants: [{
+        begin: /\$\d/
+      },
+      {
+        begin: /[\$%@](\^\w\b|#\w+(::\w+)*|{\w+}|\w+(::\w*)*)/
+      },
+      {
+        begin: /[\$%@][^\s\w{]/,
+        relevance: 0
+      }
     ]
   };
   var STRING_CONTAINS = [hljs.BACKSLASH_ESCAPE, SUBST, VAR];
@@ -50,8 +58,7 @@ export default function(hljs) {
     hljs.HASH_COMMENT_MODE,
     hljs.COMMENT(
       '^\\=\\w',
-      '\\=cut',
-      {
+      '\\=cut', {
         endsWithParent: true
       }
     ),
@@ -59,40 +66,48 @@ export default function(hljs) {
     {
       className: 'string',
       contains: STRING_CONTAINS,
-      variants: [
-        {
-          begin: 'q[qwxr]?\\s*\\(', end: '\\)',
+      variants: [{
+          begin: 'q[qwxr]?\\s*\\(',
+          end: '\\)',
           relevance: 5
         },
         {
-          begin: 'q[qwxr]?\\s*\\[', end: '\\]',
+          begin: 'q[qwxr]?\\s*\\[',
+          end: '\\]',
           relevance: 5
         },
         {
-          begin: 'q[qwxr]?\\s*\\{', end: '\\}',
+          begin: 'q[qwxr]?\\s*\\{',
+          end: '\\}',
           relevance: 5
         },
         {
-          begin: 'q[qwxr]?\\s*\\|', end: '\\|',
+          begin: 'q[qwxr]?\\s*\\|',
+          end: '\\|',
           relevance: 5
         },
         {
-          begin: 'q[qwxr]?\\s*\\<', end: '\\>',
+          begin: 'q[qwxr]?\\s*\\<',
+          end: '\\>',
           relevance: 5
         },
         {
-          begin: 'qw\\s+q', end: 'q',
+          begin: 'qw\\s+q',
+          end: 'q',
           relevance: 5
         },
         {
-          begin: '\'', end: '\'',
+          begin: '\'',
+          end: '\'',
           contains: [hljs.BACKSLASH_ESCAPE]
         },
         {
-          begin: '"', end: '"'
+          begin: '"',
+          end: '"'
         },
         {
-          begin: '`', end: '`',
+          begin: '`',
+          end: '`',
           contains: [hljs.BACKSLASH_ESCAPE]
         },
         {
@@ -125,7 +140,8 @@ export default function(hljs) {
         },
         {
           className: 'regexp',
-          begin: '(m|qr)?/', end: '/[a-z]*',
+          begin: '(m|qr)?/',
+          end: '/[a-z]*',
           contains: [hljs.BACKSLASH_ESCAPE],
           relevance: 0 // allows empty "//" which is a common comment delimiter in other languages
         }
@@ -133,7 +149,9 @@ export default function(hljs) {
     },
     {
       className: 'function',
-      beginKeywords: 'sub', end: '(\\s*\\(.*?\\))?[;{]', excludeEnd: true,
+      beginKeywords: 'sub',
+      end: '(\\s*\\(.*?\\))?[;{]',
+      excludeEnd: true,
       relevance: 5,
       contains: [hljs.TITLE_MODE]
     },
@@ -145,13 +163,11 @@ export default function(hljs) {
       begin: "^__DATA__$",
       end: "^__END__$",
       subLanguage: 'mojolicious',
-      contains: [
-        {
-            begin: "^@@.*",
-            end: "$",
-            className: "comment"
-        }
-      ]
+      contains: [{
+        begin: "^@@.*",
+        end: "$",
+        className: "comment"
+      }]
     }
   ];
   SUBST.contains = PERL_DEFAULT_CONTAINS;

@@ -9,8 +9,7 @@ Category: graphics
 export default function(hljs) {
   return {
     name: 'RenderMan RIB',
-    keywords:
-      'ArchiveRecord AreaLightSource Atmosphere Attribute AttributeBegin AttributeEnd Basis ' +
+    keywords: 'ArchiveRecord AreaLightSource Atmosphere Attribute AttributeBegin AttributeEnd Basis ' +
       'Begin Blobby Bound Clipping ClippingPlane Color ColorSamples ConcatTransform Cone ' +
       'CoordinateSystem CoordSysTransform CropWindow Curves Cylinder DepthOfField Detail ' +
       'DetailRange Disk Displacement Display End ErrorHandler Exposure Exterior Format ' +

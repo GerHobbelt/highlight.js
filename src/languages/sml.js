@@ -21,46 +21,51 @@ export default function(hljs) {
       built_in:
         /* built-in types according to basis library */
         'array bool char exn int list option order real ref string substring vector unit word',
-      literal:
-        'true false NONE SOME LESS EQUAL GREATER nil'
+      literal: 'true false NONE SOME LESS EQUAL GREATER nil'
     },
     illegal: /\/\/|>>/,
-    contains: [
-      {
+    contains: [{
         className: 'literal',
         begin: /\[(\|\|)?\]|\(\)/,
         relevance: 0
       },
       hljs.COMMENT(
         '\\(\\*',
-        '\\*\\)',
-        {
+        '\\*\\)', {
           contains: ['self']
         }
       ),
-      { /* type variable */
+      {
+        /* type variable */
         className: 'symbol',
         begin: '\'[A-Za-z_](?!\')[\\w\']*'
         /* the grammar is ambiguous on how 'a'b should be interpreted but not the compiler */
       },
-      { /* polymorphic variant */
+      {
+        /* polymorphic variant */
         className: 'type',
         begin: '`[A-Z][\\w\']*'
       },
-      { /* module or constructor */
+      {
+        /* module or constructor */
         className: 'type',
         begin: '\\b[A-Z][\\w\']*',
         relevance: 0
       },
-      { /* don't color identifiers, but safely catch all identifiers with '*/
+      {
+        /* don't color identifiers, but safely catch all identifiers with '*/
         begin: '[a-z_]\\w*\'[\\w\']*'
       },
-      hljs.inherit(hljs.APOS_STRING_MODE, {className: 'string', relevance: 0}),
-      hljs.inherit(hljs.QUOTE_STRING_MODE, {illegal: null}),
+      hljs.inherit(hljs.APOS_STRING_MODE, {
+        className: 'string',
+        relevance: 0
+      }),
+      hljs.inherit(hljs.QUOTE_STRING_MODE, {
+        illegal: null
+      }),
       {
         className: 'number',
-        begin:
-          '\\b(0[xX][a-fA-F0-9_]+[Lln]?|' +
+        begin: '\\b(0[xX][a-fA-F0-9_]+[Lln]?|' +
           '0[oO][0-7_]+[Lln]?|' +
           '0[bB][01_]+[Lln]?|' +
           '[0-9][0-9_]*([Lln]|(\\.[0-9_]*)?([eE][-+]?[0-9_]+)?)?)',

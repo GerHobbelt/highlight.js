@@ -8,33 +8,33 @@ Website: https://www.ponylang.io
 
 export default function(hljs) {
   var KEYWORDS = {
-    keyword:
-      'actor addressof and as be break class compile_error compile_intrinsic ' +
+    keyword: 'actor addressof and as be break class compile_error compile_intrinsic ' +
       'consume continue delegate digestof do else elseif embed end error ' +
       'for fun if ifdef in interface is isnt lambda let match new not object ' +
       'or primitive recover repeat return struct then trait try type until ' +
       'use var where while with xor',
-    meta:
-      'iso val tag trn box ref',
-    literal:
-      'this false true'
+    meta: 'iso val tag trn box ref',
+    literal: 'this false true'
   };
 
   var TRIPLE_QUOTE_STRING_MODE = {
     className: 'string',
-    begin: '"""', end: '"""',
+    begin: '"""',
+    end: '"""',
     relevance: 10
   };
 
   var QUOTE_STRING_MODE = {
     className: 'string',
-    begin: '"', end: '"',
+    begin: '"',
+    end: '"',
     contains: [hljs.BACKSLASH_ESCAPE]
   };
 
   var SINGLE_QUOTE_CHAR_MODE = {
     className: 'string',
-    begin: '\'', end: '\'',
+    begin: '\'',
+    end: '\'',
     contains: [hljs.BACKSLASH_ESCAPE],
     relevance: 0
   };
@@ -46,7 +46,8 @@ export default function(hljs) {
   };
 
   var PRIMED_NAME = {
-    begin: hljs.IDENT_RE + '\'', relevance: 0
+    begin: hljs.IDENT_RE + '\'',
+    relevance: 0
   };
 
   var NUMBER_MODE = {

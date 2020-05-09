@@ -14,23 +14,33 @@ export default function(hljs) {
   var COMMENT = {
     variants: [
       hljs.COMMENT('%', '$'),
-      hljs.COMMENT( '/\\*', '\\*/', {relevance: 0})
+      hljs.COMMENT('/\\*', '\\*/', {
+        relevance: 0
+      })
     ]
   };
 
   var IDENTIFIER = {
     className: 'title',
-    variants: [
-      { begin: '[A-Z][A-Za-z]*' },
-      { begin: '\\$' },
+    variants: [{
+        begin: '[A-Z][A-Za-z]*'
+      },
+      {
+        begin: '\\$'
+      },
     ]
   }
 
   var OPERATOR = {
     className: 'symbol',
-    variants: [
-      { begin: '\\$|\\+|-|==|<=|>=|#|\\|', relevance: 0},
-      { begin: '\\\\=|=<', relevance: 10 }
+    variants: [{
+        begin: '\\$|\\+|-|==|<=|>=|#|\\|',
+        relevance: 0
+      },
+      {
+        begin: '\\\\=|=<',
+        relevance: 10
+      }
     ]
   }
 
@@ -44,9 +54,17 @@ export default function(hljs) {
       keyword: 'fun proc',
       meta: 'lazy'
     },
-    contains: [
-      { begin: '{ *', end: ' *', contains: [ IDENTIFIER ], relevance: 10 },
-      { begin: '!|\\?', className: 'comment', relevance: 10},
+    contains: [{
+        begin: '{ *',
+        end: ' *',
+        contains: [IDENTIFIER],
+        relevance: 10
+      },
+      {
+        begin: '!|\\?',
+        className: 'comment',
+        relevance: 10
+      },
       OPERATOR,
     ]
   };
@@ -55,13 +73,13 @@ export default function(hljs) {
     aliases: ['oz'],
     keywords: {
       keyword: 'andthen at attr case catch choice ' +
-      'class cond declare define dis do ' +
-      'div else elsecase elseif elseof end ' +
-      'export fail feat finally from for ' +
-      'functor if import in local ' +
-      'lock meth mod not of or orelse ' +
-      'prepare prop raise require ' +
-      'self skip suchthat then thread try',
+        'class cond declare define dis do ' +
+        'div else elsecase elseif elseof end ' +
+        'export fail feat finally from for ' +
+        'functor if import in local ' +
+        'lock meth mod not of or orelse ' +
+        'prepare prop raise require ' +
+        'self skip suchthat then thread try',
       literal: 'true false unit',
     },
     contains: [
@@ -69,12 +87,26 @@ export default function(hljs) {
       FUNCTION,
       OPERATOR,
       hljs.QUOTE_STRING_MODE,
-      { className: 'keyword', begin: '\\[\\]' },
-      { className: 'literal', begin: "'", end: "'", relevance: 0},
-      { className: 'symbol', begin: '`', end: '`' },
+      {
+        className: 'keyword',
+        begin: '\\[\\]'
+      },
+      {
+        className: 'literal',
+        begin: "'",
+        end: "'",
+        relevance: 0
+      },
+      {
+        className: 'symbol',
+        begin: '`',
+        end: '`'
+      },
 
       // No markup, relevance booster
-      { begin: '\\bnil\\b' },
+      {
+        begin: '\\bnil\\b'
+      },
     ]
   };
 }

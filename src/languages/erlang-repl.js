@@ -9,15 +9,13 @@ export default function(hljs) {
   return {
     name: 'Erlang REPL',
     keywords: {
-      built_in:
-        'spawn spawn_link self',
-      keyword:
-        'after and andalso|10 band begin bnot bor bsl bsr bxor case catch cond div end fun if ' +
+      built_in: 'spawn spawn_link self',
+      keyword: 'after and andalso|10 band begin bnot bor bsl bsr bxor case catch cond div end fun if ' +
         'let not of or orelse|10 query receive rem try when xor'
     },
-    contains: [
-      {
-        className: 'meta', begin: '^[0-9]+> ',
+    contains: [{
+        className: 'meta',
+        begin: '^[0-9]+> ',
         relevance: 10
       },
       hljs.COMMENT('%', '$'),

@@ -23,8 +23,7 @@ export default function(hljs) {
     name: 'VHDL',
     case_insensitive: true,
     keywords: {
-      keyword:
-        'abs access after alias all and architecture array assert assume assume_guarantee attribute ' +
+      keyword: 'abs access after alias all and architecture array assert assume assume_guarantee attribute ' +
         'begin block body buffer bus case component configuration constant context cover disconnect ' +
         'downto default else elsif end entity exit fairness file for force function generate ' +
         'generic group guarded if impure in inertial inout is label library linkage literal ' +
@@ -33,20 +32,18 @@ export default function(hljs) {
         'release rem report restrict restrict_guarantee return rol ror select sequence ' +
         'severity shared signal sla sll sra srl strong subtype then to transport type ' +
         'unaffected units until use variable view vmode vprop vunit wait when while with xnor xor',
-      built_in:
-        'boolean bit character ' +
+      built_in: 'boolean bit character ' +
         'integer time delay_length natural positive ' +
         'string bit_vector file_open_kind file_open_status ' +
         'std_logic std_logic_vector unsigned signed boolean_vector integer_vector ' +
         'std_ulogic std_ulogic_vector unresolved_unsigned u_unsigned unresolved_signed u_signed ' +
         'real_vector time_vector',
-      literal:
-        'false true note warning error failure ' +  // severity_level
-        'line text side width'                      // textio
+      literal: 'false true note warning error failure ' + // severity_level
+        'line text side width' // textio
     },
     illegal: '{',
     contains: [
-      hljs.C_BLOCK_COMMENT_MODE,      // VHDL-2008 block commenting.
+      hljs.C_BLOCK_COMMENT_MODE, // VHDL-2008 block commenting.
       hljs.COMMENT('--', '$'),
       hljs.QUOTE_STRING_MODE,
       {

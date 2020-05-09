@@ -17,15 +17,17 @@ export default function(hljs) {
         'frame-ancestors frame-src img-src media-src object-src plugin-types ' +
         'report-uri sandbox script-src style-src',
     },
-    contains: [
-    {
-      className: 'string',
-      begin: "'", end: "'"
-    },
-    {
-      className: 'attribute',
-      begin: '^Content', end: ':', excludeEnd: true,
-    },
+    contains: [{
+        className: 'string',
+        begin: "'",
+        end: "'"
+      },
+      {
+        className: 'attribute',
+        begin: '^Content',
+        end: ':',
+        excludeEnd: true,
+      },
     ]
   };
 }

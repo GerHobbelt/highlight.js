@@ -16,8 +16,7 @@ export default function(hljs) {
     contains: [
       hljs.COMMENT(
         '[^\\[\\]\\.,\\+\\-<> \r\n]',
-        '[\\[\\]\\.,\\+\\-<> \r\n]',
-        {
+        '[\\[\\]\\.,\\+\\-<> \r\n]', {
           returnEnd: true,
           relevance: 0
         }

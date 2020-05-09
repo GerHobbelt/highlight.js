@@ -18,27 +18,38 @@ export default function(hljs) {
     'specialize strict unaligned varargs ';
   var COMMENT_MODES = [
     hljs.C_LINE_COMMENT_MODE,
-    hljs.COMMENT(/\{/, /\}/, {relevance: 0}),
-    hljs.COMMENT(/\(\*/, /\*\)/, {relevance: 10})
+    hljs.COMMENT(/\{/, /\}/, {
+      relevance: 0
+    }),
+    hljs.COMMENT(/\(\*/, /\*\)/, {
+      relevance: 10
+    })
   ];
   var DIRECTIVE = {
     className: 'meta',
-    variants: [
-      {begin: /\{\$/, end: /\}/},
-      {begin: /\(\*\$/, end: /\*\)/}
+    variants: [{
+        begin: /\{\$/,
+        end: /\}/
+      },
+      {
+        begin: /\(\*\$/,
+        end: /\*\)/
+      }
     ]
   };
   var STRING = {
     className: 'string',
-    begin: /'/, end: /'/,
-    contains: [{begin: /''/}]
+    begin: /'/,
+    end: /'/,
+    contains: [{
+      begin: /''/
+    }]
   };
   var NUMBER = {
     className: 'number',
     relevance: 0,
     // Source: https://www.freepascal.org/docs-html/ref/refse6.html
-    variants: [
-      {
+    variants: [{
         // Hexadecimal notation, e.g., $7F.
         begin: '\\$[0-9A-Fa-f]+',
       },
@@ -53,23 +64,27 @@ export default function(hljs) {
     ]
   };
   var CHAR_STRING = {
-    className: 'string', begin: /(#\d+)+/
+    className: 'string',
+    begin: /(#\d+)+/
   };
   var CLASS = {
-    begin: hljs.IDENT_RE + '\\s*=\\s*class\\s*\\(', returnBegin: true,
+    begin: hljs.IDENT_RE + '\\s*=\\s*class\\s*\\(',
+    returnBegin: true,
     contains: [
       hljs.TITLE_MODE
     ]
   };
   var FUNCTION = {
     className: 'function',
-    beginKeywords: 'function constructor destructor procedure', end: /[:;]/,
+    beginKeywords: 'function constructor destructor procedure',
+    end: /[:;]/,
     keywords: 'function constructor|10 destructor|10 procedure|10',
     contains: [
       hljs.TITLE_MODE,
       {
         className: 'params',
-        begin: /\(/, end: /\)/,
+        begin: /\(/,
+        end: /\)/,
         keywords: KEYWORDS,
         contains: [STRING, CHAR_STRING, DIRECTIVE].concat(COMMENT_MODES)
       },

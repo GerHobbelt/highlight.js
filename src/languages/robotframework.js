@@ -66,11 +66,22 @@ export default function(hljs) {
   };
   var GHERKIN = {
     className: 'comment',
-    variants: [
-      {begin: /^\s{2,}given/, end: /\s/},
-      {begin: /^\s{2,}when/, end: /\s/},
-      {begin: /^\s{2,}then/, end: /\s/},
-      {begin: /^\s{2,}and/, end: /\s/}
+    variants: [{
+        begin: /^\s{2,}given/,
+        end: /\s/
+      },
+      {
+        begin: /^\s{2,}when/,
+        end: /\s/
+      },
+      {
+        begin: /^\s{2,}then/,
+        end: /\s/
+      },
+      {
+        begin: /^\s{2,}and/,
+        end: /\s/
+      }
     ]
   };
   return {

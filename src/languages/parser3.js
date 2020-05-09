@@ -9,20 +9,19 @@ Category: template
 export default function(hljs) {
   var CURLY_SUBCOMMENT = hljs.COMMENT(
     '{',
-    '}',
-    {
+    '}', {
       contains: ['self']
     }
   );
   return {
     name: 'Parser3',
-    subLanguage: 'xml', relevance: 0,
+    subLanguage: 'xml',
+    relevance: 0,
     contains: [
       hljs.COMMENT('^#', '$'),
       hljs.COMMENT(
         '\\^rem{',
-        '}',
-        {
+        '}', {
           relevance: 10,
           contains: [
             CURLY_SUBCOMMENT

@@ -26,7 +26,9 @@ export default function(hljs) {
     },
 
     contains: [
-      hljs.COMMENT(/\(\*/, /\*\)/, { relevance: 10 }),
+      hljs.COMMENT(/\(\*/, /\*\)/, {
+        relevance: 10
+      }),
 
       {
         // Match numeric constants (1000, 12.34, 1.2e5, 1.5, 1.2E2)
@@ -69,16 +71,14 @@ export default function(hljs) {
         begin: /\b[a-zA-Z][a-zA-Z_\d]+\s*\(/,
         end: /\b\B/,
         returnBegin: true,
-        contains: [
-          {
-            // Match the function title.
-            className: 'title',
-            begin: /[a-zA-Z][a-zA-Z_\d]+\s*/,
-            end: /\(/,
-            excludeEnd: true,
-            endsParent: true
-          }
-        ]
+        contains: [{
+          // Match the function title.
+          className: 'title',
+          begin: /[a-zA-Z][a-zA-Z_\d]+\s*/,
+          end: /\(/,
+          excludeEnd: true,
+          endsParent: true
+        }]
       }
     ]
   }

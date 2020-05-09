@@ -16,9 +16,12 @@ export default function(hljs) {
   var VAR = {
 
     className: 'symbol',
-    variants: [
-      {begin: /[A-Z][a-zA-Z0-9_]*/},
-      {begin: /_[A-Za-z0-9_]*/},
+    variants: [{
+        begin: /[A-Z][a-zA-Z0-9_]*/
+      },
+      {
+        begin: /_[A-Za-z0-9_]*/
+      },
     ],
     relevance: 0
   };
@@ -39,14 +42,16 @@ export default function(hljs) {
   var LINE_COMMENT = {
 
     className: 'comment',
-    begin: /%/, end: /$/,
+    begin: /%/,
+    end: /$/,
     contains: [hljs.PHRASAL_WORDS_MODE]
   };
 
   var BACKTICK_STRING = {
 
     className: 'string',
-    begin: /`/, end: /`/,
+    begin: /`/,
+    end: /`/,
     contains: [hljs.BACKSLASH_ESCAPE]
   };
 
@@ -88,8 +93,9 @@ export default function(hljs) {
 
   return {
     name: 'Prolog',
-    contains: inner.concat([
-      {begin: /\.$/} // relevance booster
+    contains: inner.concat([{
+        begin: /\.$/
+      } // relevance booster
     ])
   };
 }

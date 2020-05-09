@@ -12,12 +12,13 @@ export default function(hljs) {
   var ELIXIR_KEYWORDS = {
     $pattern: ELIXIR_IDENT_RE,
     keyword: 'and false then defined module in return redo retry end for true self when ' +
-    'next until do begin unless nil break not case cond alias while ensure or ' +
-    'include use alias fn quote require import with|0'
+      'next until do begin unless nil break not case cond alias while ensure or ' +
+      'include use alias fn quote require import with|0'
   };
   var SUBST = {
     className: 'subst',
-    begin: '#\\{', end: '}',
+    begin: '#\\{',
+    end: '}',
     keywords: ELIXIR_KEYWORDS
   };
   var NUMBER = {
@@ -29,78 +30,130 @@ export default function(hljs) {
   var LOWERCASE_SIGIL = {
     className: 'string',
     begin: '~[a-z]' + '(?=' + SIGIL_DELIMITERS + ')',
-    contains: [
-      {
-        endsParent:true,
-        contains: [{
-          contains: [hljs.BACKSLASH_ESCAPE, SUBST],
-          variants: [
-            { begin: /"/, end: /"/ },
-            { begin: /'/, end: /'/ },
-            { begin: /\//, end: /\// },
-            { begin: /\|/, end: /\|/ },
-            { begin: /\(/, end: /\)/ },
-            { begin: /\[/, end: /\]/ },
-            { begin: /\{/, end: /\}/ },
-            { begin: /</, end: />/ }
-          ]
-        }]
-      },
-    ],
+    contains: [{
+      endsParent: true,
+      contains: [{
+        contains: [hljs.BACKSLASH_ESCAPE, SUBST],
+        variants: [{
+            begin: /"/,
+            end: /"/
+          },
+          {
+            begin: /'/,
+            end: /'/
+          },
+          {
+            begin: /\//,
+            end: /\//
+          },
+          {
+            begin: /\|/,
+            end: /\|/
+          },
+          {
+            begin: /\(/,
+            end: /\)/
+          },
+          {
+            begin: /\[/,
+            end: /\]/
+          },
+          {
+            begin: /\{/,
+            end: /\}/
+          },
+          {
+            begin: /</,
+            end: />/
+          }
+        ]
+      }]
+    }, ],
   };
 
   var UPCASE_SIGIL = {
     className: 'string',
     begin: '~[A-Z]' + '(?=' + SIGIL_DELIMITERS + ')',
-    contains: [
-      { begin: /"/, end: /"/ },
-      { begin: /'/, end: /'/ },
-      { begin: /\//, end: /\// },
-      { begin: /\|/, end: /\|/ },
-      { begin: /\(/, end: /\)/ },
-      { begin: /\[/, end: /\]/ },
-      { begin: /\{/, end: /\}/ },
-      { begin: /\</, end: /\>/ }
+    contains: [{
+        begin: /"/,
+        end: /"/
+      },
+      {
+        begin: /'/,
+        end: /'/
+      },
+      {
+        begin: /\//,
+        end: /\//
+      },
+      {
+        begin: /\|/,
+        end: /\|/
+      },
+      {
+        begin: /\(/,
+        end: /\)/
+      },
+      {
+        begin: /\[/,
+        end: /\]/
+      },
+      {
+        begin: /\{/,
+        end: /\}/
+      },
+      {
+        begin: /\</,
+        end: /\>/
+      }
     ]
   };
 
   var STRING = {
     className: 'string',
     contains: [hljs.BACKSLASH_ESCAPE, SUBST],
-    variants: [
-      {
-        begin: /"""/, end: /"""/,
+    variants: [{
+        begin: /"""/,
+        end: /"""/,
       },
       {
-        begin: /'''/, end: /'''/,
+        begin: /'''/,
+        end: /'''/,
       },
       {
-        begin: /~S"""/, end: /"""/,
+        begin: /~S"""/,
+        end: /"""/,
         contains: []
       },
       {
-        begin: /~S"/, end: /"/,
+        begin: /~S"/,
+        end: /"/,
         contains: []
       },
       {
-        begin: /~S'''/, end: /'''/,
+        begin: /~S'''/,
+        end: /'''/,
         contains: []
       },
       {
-        begin: /~S'/, end: /'/,
+        begin: /~S'/,
+        end: /'/,
         contains: []
       },
       {
-        begin: /'/, end: /'/
+        begin: /'/,
+        end: /'/
       },
       {
-        begin: /"/, end: /"/
+        begin: /"/,
+        end: /"/
       },
     ]
   };
   var FUNCTION = {
     className: 'function',
-    beginKeywords: 'def defp defmacro', end: /\B\b/, // the mode is ended by the title
+    beginKeywords: 'def defp defmacro',
+    end: /\B\b/, // the mode is ended by the title
     contains: [
       hljs.inherit(hljs.TITLE_MODE, {
         begin: ELIXIR_IDENT_RE,
@@ -110,7 +163,8 @@ export default function(hljs) {
   };
   var CLASS = hljs.inherit(FUNCTION, {
     className: 'class',
-    beginKeywords: 'defimpl defmodule defprotocol defrecord', end: /\bdo\b|$|;/
+    beginKeywords: 'defimpl defmodule defprotocol defrecord',
+    end: /\bdo\b|$|;/
   });
   var ELIXIR_DEFAULT_CONTAINS = [
     STRING,
@@ -125,7 +179,9 @@ export default function(hljs) {
     {
       className: 'symbol',
       begin: ':(?![\\s:])',
-      contains: [STRING, {begin: ELIXIR_METHOD_RE}],
+      contains: [STRING, {
+        begin: ELIXIR_METHOD_RE
+      }],
       relevance: 0
     },
     {
@@ -158,12 +214,13 @@ export default function(hljs) {
           className: 'regexp',
           illegal: '\\n',
           contains: [hljs.BACKSLASH_ESCAPE, SUBST],
-          variants: [
-            {
-              begin: '/', end: '/[a-z]*'
+          variants: [{
+              begin: '/',
+              end: '/[a-z]*'
             },
             {
-              begin: '%r\\[', end: '\\][a-z]*'
+              begin: '%r\\[',
+              end: '\\][a-z]*'
             }
           ]
         }

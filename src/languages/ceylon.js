@@ -18,13 +18,15 @@ export default function(hljs) {
   var DOCUMENTATION =
     'doc by license see throws tagged';
   var SUBST = {
-    className: 'subst', excludeBegin: true, excludeEnd: true,
-    begin: /``/, end: /``/,
+    className: 'subst',
+    excludeBegin: true,
+    excludeEnd: true,
+    begin: /``/,
+    end: /``/,
     keywords: KEYWORDS,
     relevance: 10
   };
-  var EXPRESSIONS = [
-    {
+  var EXPRESSIONS = [{
       // verbatim string
       className: 'string',
       begin: '"""',
@@ -34,7 +36,8 @@ export default function(hljs) {
     {
       // string literal or template
       className: 'string',
-      begin: '"', end: '"',
+      begin: '"',
+      end: '"',
       contains: [SUBST]
     },
     {
@@ -61,7 +64,9 @@ export default function(hljs) {
     illegal: '\\$[^01]|#[^0-9a-fA-F]',
     contains: [
       hljs.C_LINE_COMMENT_MODE,
-      hljs.COMMENT('/\\*', '\\*/', {contains: ['self']}),
+      hljs.COMMENT('/\\*', '\\*/', {
+        contains: ['self']
+      }),
       {
         // compiler annotation
         className: 'meta',

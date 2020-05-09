@@ -1,4 +1,3 @@
-
 /*
  Language: GAMS
  Author: Stefan Bechert <stefan.bechert@gmx.net>
@@ -8,17 +7,15 @@
  Category: scientific
  */
 
-export default function (hljs) {
+export default function(hljs) {
   var KEYWORDS = {
-    keyword:
-      'abort acronym acronyms alias all and assign binary card diag display ' +
+    keyword: 'abort acronym acronyms alias all and assign binary card diag display ' +
       'else eq file files for free ge gt if integer le loop lt maximizing ' +
       'minimizing model models ne negative no not option options or ord ' +
       'positive prod put putpage puttl repeat sameas semicont semiint smax ' +
       'smin solve sos1 sos2 sum system table then until using while xor yes',
     literal: 'eps inf na',
-    built_in:
-      'abs arccos arcsin arctan arctan2 Beta betaReg binomial ceil centropy ' +
+    built_in: 'abs arccos arcsin arctan arctan2 Beta betaReg binomial ceil centropy ' +
       'cos cosh cvPower div div0 eDist entropy errorf execSeed exp fact ' +
       'floor frac gamma gammaReg log logBeta logGamma log10 log2 mapVal max ' +
       'min mod ncpCM ncpF ncpVUpow ncpVUsin normal pi poly power ' +
@@ -35,22 +32,31 @@ export default function (hljs) {
   };
   var PARAMS = {
     className: 'params',
-    begin: /\(/, end: /\)/,
+    begin: /\(/,
+    end: /\)/,
     excludeBegin: true,
     excludeEnd: true,
   };
   var SYMBOLS = {
     className: 'symbol',
-    variants: [
-      {begin: /\=[lgenxc]=/},
-      {begin: /\$/},
+    variants: [{
+        begin: /\=[lgenxc]=/
+      },
+      {
+        begin: /\$/
+      },
     ]
   };
   var QSTR = { // One-line quoted comment string
     className: 'comment',
-    variants: [
-      {begin: '\'', end: '\''},
-      {begin: '"', end: '"'},
+    variants: [{
+        begin: '\'',
+        end: '\''
+      },
+      {
+        begin: '"',
+        end: '"'
+      },
     ],
     illegal: '\\n',
     contains: [hljs.BACKSLASH_ESCAPE]
@@ -96,12 +102,10 @@ export default function (hljs) {
         begin: '^\\$[a-z0-9]+',
         end: '$',
         returnBegin: true,
-        contains: [
-          {
-            className: 'meta-keyword',
-            begin: '^\\$[a-z0-9]+',
-          }
-        ]
+        contains: [{
+          className: 'meta-keyword',
+          begin: '^\\$[a-z0-9]+',
+        }]
       },
       hljs.COMMENT('^\\*', '$'),
       hljs.C_LINE_COMMENT_MODE,
@@ -110,8 +114,7 @@ export default function (hljs) {
       hljs.APOS_STRING_MODE,
       // Declarations
       {
-        beginKeywords:
-          'set sets parameter parameters variable variables ' +
+        beginKeywords: 'set sets parameter parameters variable variables ' +
           'scalar scalars equation equations',
         end: ';',
         contains: [
@@ -128,8 +131,7 @@ export default function (hljs) {
         beginKeywords: 'table',
         end: ';',
         returnBegin: true,
-        contains: [
-          { // table header row
+        contains: [{ // table header row
             beginKeywords: 'table',
             end: '$',
             contains: [DESCTEXT],
@@ -148,14 +150,13 @@ export default function (hljs) {
         className: 'function',
         begin: /^[a-z][a-z0-9_,\-+' ()$]+\.{2}/,
         returnBegin: true,
-        contains: [
-              { // Function title
-                className: 'title',
-                begin: /^[a-z0-9_]+/,
-              },
-              PARAMS,
-              SYMBOLS,
-            ],
+        contains: [{ // Function title
+            className: 'title',
+            begin: /^[a-z0-9_]+/,
+          },
+          PARAMS,
+          SYMBOLS,
+        ],
       },
       hljs.C_NUMBER_MODE,
       SYMBOLS,

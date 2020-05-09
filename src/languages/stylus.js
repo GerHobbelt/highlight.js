@@ -408,8 +408,10 @@ export default function(hljs) {
         begin: '^[a-zA-Z][a-zA-Z0-9_\-]*\\(.*\\)',
         illegal: '[\\n]',
         returnBegin: true,
-        contains: [
-          {className: 'title', begin: '\\b[a-zA-Z][a-zA-Z0-9_\-]*'},
+        contains: [{
+            className: 'title',
+            begin: '\\b[a-zA-Z][a-zA-Z0-9_\-]*'
+          },
           {
             className: 'params',
             begin: /\(/,

@@ -11,19 +11,17 @@ export default function(hljs) {
     name: 'SQL',
     case_insensitive: true,
     illegal: /[<>{}*]/,
-    contains: [
-      {
-        beginKeywords:
-          'begin end start commit rollback savepoint lock alter create drop rename call ' +
+    contains: [{
+        beginKeywords: 'begin end start commit rollback savepoint lock alter create drop rename call ' +
           'delete do handler insert load replace select truncate update set show pragma grant ' +
           'merge describe use explain help declare prepare execute deallocate release ' +
           'unlock purge reset change stop analyze cache flush optimize repair kill ' +
           'install uninstall checksum restore check backup revoke comment values with',
-        end: /;/, endsWithParent: true,
+        end: /;/,
+        endsWithParent: true,
         keywords: {
           $pattern: /[\w\.]+/,
-          keyword:
-            'as abort abs absolute acc acce accep accept access accessed accessible account acos action activate add ' +
+          keyword: 'as abort abs absolute acc acce accep accept access accessed accessible account acos action activate add ' +
             'addtime admin administer advanced advise aes_decrypt aes_encrypt after agent aggregate ali alia alias ' +
             'all allocate allow alter always analyze ancillary and anti any anydata anydataset anyschema anytype apply ' +
             'archive archived archivelog are as asc ascii asin assembly assertion associate asynchronous at atan ' +
@@ -133,26 +131,30 @@ export default function(hljs) {
             'wellformed when whene whenev wheneve whenever where while whitespace window with within without work wrapped ' +
             'xdb xml xmlagg xmlattributes xmlcast xmlcolattval xmlelement xmlexists xmlforest xmlindex xmlnamespaces ' +
             'xmlpi xmlquery xmlroot xmlschema xmlserialize xmltable xmltype xor year year_to_month years yearweek',
-          literal:
-            'true false null unknown',
-          built_in:
-            'array bigint binary bit blob bool boolean char character date dec decimal float int int8 integer interval number ' +
+          literal: 'true false null unknown',
+          built_in: 'array bigint binary bit blob bool boolean char character date dec decimal float int int8 integer interval number ' +
             'numeric real record serial serial8 smallint text time timestamp tinyint varchar varchar2 varying void'
         },
-        contains: [
-          {
+        contains: [{
             className: 'string',
-            begin: '\'', end: '\'',
-            contains: [{begin: '\'\''}]
+            begin: '\'',
+            end: '\'',
+            contains: [{
+              begin: '\'\''
+            }]
           },
           {
             className: 'string',
-            begin: '"', end: '"',
-            contains: [{begin: '""'}]
+            begin: '"',
+            end: '"',
+            contains: [{
+              begin: '""'
+            }]
           },
           {
             className: 'string',
-            begin: '`', end: '`'
+            begin: '`',
+            end: '`'
           },
           hljs.C_NUMBER_MODE,
           hljs.C_BLOCK_COMMENT_MODE,

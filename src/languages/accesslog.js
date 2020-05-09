@@ -17,7 +17,7 @@ export default function(hljs) {
       {
         className: 'number',
         begin: '^\\d{1,3}\\.\\d{1,3}\\.\\d{1,3}\\.\\d{1,3}(:\\d{1,5})?\\b',
-        relevance:5
+        relevance: 5
       },
       // Other numbers
       {
@@ -28,13 +28,14 @@ export default function(hljs) {
       // Requests
       {
         className: 'string',
-        begin: '"(' + HTTP_VERBS.join("|") + ')', end: '"',
+        begin: '"(' + HTTP_VERBS.join("|") + ')',
+        end: '"',
         keywords: HTTP_VERBS.join(" "),
         illegal: '\\n',
         relevance: 5,
         contains: [{
           begin: 'HTTP/[12]\\.\\d',
-          relevance:5
+          relevance: 5
         }]
       },
       // Dates
@@ -49,21 +50,24 @@ export default function(hljs) {
       },
       {
         className: 'string',
-        begin: /\[/, end: /\]/,
+        begin: /\[/,
+        end: /\]/,
         illegal: '\\n',
         relevance: 0
       },
       // User agent / relevance boost
       {
         className: 'string',
-        begin: '"Mozilla/\\d\\.\\d \\\(', end: '"',
+        begin: '"Mozilla/\\d\\.\\d \\\(',
+        end: '"',
         illegal: '\\n',
         relevance: 3
       },
       // Strings
       {
         className: 'string',
-        begin: '"', end: '"',
+        begin: '"',
+        end: '"',
         illegal: '\\n',
         relevance: 0
       }
