@@ -347,13 +347,13 @@ const HLJS = function(hljs) {
         // spit the "skipped" character that our regex choked on back into the output sequence
         mode_buffer += codeToHighlight.slice(match.index, match.index + 1);
         if (!SAFE_MODE) {
-          //if (!lastMatch.rule.end || lastMatch.rule.end.toString() !== '/\\B|\\b/') {
-            const err = new Error('0 width match regex');
-            err.languageName = languageName;
-            err.badRule = lastMatch.rule;
-            err.match = match;
-            throw err;
-          //}
+          // if (!lastMatch.rule.end || lastMatch.rule.end.toString() !== '/\\B|\\b/') {
+          const err = new Error('0 width match regex');
+          err.languageName = languageName;
+          err.badRule = lastMatch.rule;
+          err.match = match;
+          throw err;
+          // }
         }
         return 1;
       }
