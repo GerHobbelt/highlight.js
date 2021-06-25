@@ -6,51 +6,59 @@
  Category: common
  */
 
+import { NUMERIC } from "./lib/java.js";
 
 export default function(hljs) {
-  var KEYWORDS = {
-    keyword: 'abstract as val var vararg get set class object open private protected public noinline ' +
+  const KEYWORDS = {
+    keyword:
+      'abstract as val var vararg get set class object open private protected public noinline ' +
       'crossinline dynamic final enum if else do while for when throw try catch finally ' +
       'import package is in fun override companion reified inline lateinit init ' +
       'interface annotation data sealed internal infix operator out by constructor super ' +
-      'tailrec where const inner suspend typealias external expect actual ' +
-      // to be deleted soon
-      'trait volatile transient native default',
-    built_in: 'Byte Short Char Int Long Boolean Float Double Void Unit Nothing',
-    literal: 'true false null'
+      'tailrec where const inner suspend typealias external expect actual',
+    built_in:
+      'Byte Short Char Int Long Boolean Float Double Void Unit Nothing',
+    literal:
+      'true false null'
   };
-  var KEYWORDS_WITH_LABEL = {
+  const KEYWORDS_WITH_LABEL = {
     className: 'keyword',
     begin: /\b(break|continue|return|this)\b/,
     starts: {
-      contains: [{
-        className: 'symbol',
-        begin: /@\w+/
-      }]
+      contains: [
+        {
+          className: 'symbol',
+          begin: /@\w+/
+        }
+      ]
     }
   };
-  var LABEL = {
+  const LABEL = {
     className: 'symbol',
     begin: hljs.UNDERSCORE_IDENT_RE + '@'
   };
 
   // for string templates
-  var SUBST = {
+  const SUBST = {
     className: 'subst',
-    begin: '\\${',
-    end: '}',
-    contains: [hljs.C_NUMBER_MODE]
+    begin: /\$\{/,
+    end: /\}/,
+    contains: [ hljs.C_NUMBER_MODE ]
   };
-  var VARIABLE = {
+  const VARIABLE = {
     className: 'variable',
     begin: '\\$' + hljs.UNDERSCORE_IDENT_RE
   };
-  var STRING = {
+  const STRING = {
     className: 'string',
-    variants: [{
+    variants: [
+      {
         begin: '"""',
         end: '"""(?=[^"])',
-        contains: [VARIABLE, SUBST]
+        contains: [
+          VARIABLE,
+          SUBST
+        ]
       },
       // Can't use built-in modes easily, as we want to use STRING in the meta
       // context as 'meta-string' and there's no syntax to remove explicitly set
@@ -59,92 +67,85 @@ export default function(hljs) {
         begin: '\'',
         end: '\'',
         illegal: /\n/,
-        contains: [hljs.BACKSLASH_ESCAPE]
+        contains: [ hljs.BACKSLASH_ESCAPE ]
       },
       {
         begin: '"',
         end: '"',
         illegal: /\n/,
-        contains: [hljs.BACKSLASH_ESCAPE, VARIABLE, SUBST]
+        contains: [
+          hljs.BACKSLASH_ESCAPE,
+          VARIABLE,
+          SUBST
+        ]
       }
     ]
   };
-  SUBST.contains.push(STRING)
+  SUBST.contains.push(STRING);
 
-  var ANNOTATION_USE_SITE = {
+  const ANNOTATION_USE_SITE = {
     className: 'meta',
     begin: '@(?:file|property|field|get|set|receiver|param|setparam|delegate)\\s*:(?:\\s*' + hljs.UNDERSCORE_IDENT_RE + ')?'
   };
-  var ANNOTATION = {
+  const ANNOTATION = {
     className: 'meta',
     begin: '@' + hljs.UNDERSCORE_IDENT_RE,
-    contains: [{
-      begin: /\(/,
-      end: /\)/,
-      contains: [
-        hljs.inherit(STRING, {
-          className: 'meta-string'
-        })
-      ]
-    }]
+    contains: [
+      {
+        begin: /\(/,
+        end: /\)/,
+        contains: [
+          hljs.inherit(STRING, {
+            className: 'string'
+          })
+        ]
+      }
+    ]
   };
 
   // https://kotlinlang.org/docs/reference/whatsnew11.html#underscores-in-numeric-literals
   // According to the doc above, the number mode of kotlin is the same as java 8,
   // so the code below is copied from java.js
-  var KOTLIN_NUMBER_RE = '\\b' +
-    '(' +
-    '0[bB]([01]+[01_]+[01]+|[01]+)' + // 0b...
-    '|' +
-    '0[xX]([a-fA-F0-9]+[a-fA-F0-9_]+[a-fA-F0-9]+|[a-fA-F0-9]+)' + // 0x...
-    '|' +
-    '(' +
-    '([\\d]+[\\d_]+[\\d]+|[\\d]+)(\\.([\\d]+[\\d_]+[\\d]+|[\\d]+))?' +
-    '|' +
-    '\\.([\\d]+[\\d_]+[\\d]+|[\\d]+)' +
-    ')' +
-    '([eE][-+]?\\d+)?' + // octal, decimal, float
-    ')' +
-    '[lLfF]?';
-  var KOTLIN_NUMBER_MODE = {
-    className: 'number',
-    begin: KOTLIN_NUMBER_RE,
-    relevance: 0
-  };
-  var KOTLIN_NESTED_COMMENT = hljs.COMMENT(
-    '/\\*', '\\*/', {
-      contains: [hljs.C_BLOCK_COMMENT_MODE]
+  const KOTLIN_NUMBER_MODE = NUMERIC;
+  const KOTLIN_NESTED_COMMENT = hljs.COMMENT(
+    '/\\*', '\\*/',
+    {
+      contains: [ hljs.C_BLOCK_COMMENT_MODE ]
     }
   );
-  var KOTLIN_PAREN_TYPE = {
-    variants: [{
+  const KOTLIN_PAREN_TYPE = {
+    variants: [
+      {
         className: 'type',
         begin: hljs.UNDERSCORE_IDENT_RE
       },
       {
         begin: /\(/,
         end: /\)/,
-        contains: [] //defined later
+        contains: [] // defined later
       }
     ]
   };
-  var KOTLIN_PAREN_TYPE2 = KOTLIN_PAREN_TYPE;
-  KOTLIN_PAREN_TYPE2.variants[1].contains = [KOTLIN_PAREN_TYPE];
-  KOTLIN_PAREN_TYPE.variants[1].contains = [KOTLIN_PAREN_TYPE2];
+  const KOTLIN_PAREN_TYPE2 = KOTLIN_PAREN_TYPE;
+  KOTLIN_PAREN_TYPE2.variants[1].contains = [ KOTLIN_PAREN_TYPE ];
+  KOTLIN_PAREN_TYPE.variants[1].contains = [ KOTLIN_PAREN_TYPE2 ];
 
   return {
     name: 'Kotlin',
-    aliases: ['kt'],
+    aliases: [ 'kt', 'kts' ],
     keywords: KEYWORDS,
     contains: [
       hljs.COMMENT(
         '/\\*\\*',
-        '\\*/', {
+        '\\*/',
+        {
           relevance: 0,
-          contains: [{
-            className: 'doctag',
-            begin: '@[A-Za-z]+'
-          }]
+          contains: [
+            {
+              className: 'doctag',
+              begin: '@[A-Za-z]+'
+            }
+          ]
         }
       ),
       hljs.C_LINE_COMMENT_MODE,
@@ -160,13 +161,13 @@ export default function(hljs) {
         returnBegin: true,
         excludeEnd: true,
         keywords: KEYWORDS,
-        illegal: /fun\s+(<.*>)?[^\s\(]+(\s+[^\s\(]+)\s*=/,
         relevance: 5,
-        contains: [{
+        contains: [
+          {
             begin: hljs.UNDERSCORE_IDENT_RE + '\\s*\\(',
             returnBegin: true,
             relevance: 0,
-            contains: [hljs.UNDERSCORE_TITLE_MODE]
+            contains: [ hljs.UNDERSCORE_TITLE_MODE ]
           },
           {
             className: 'type',
@@ -182,7 +183,8 @@ export default function(hljs) {
             endsParent: true,
             keywords: KEYWORDS,
             relevance: 0,
-            contains: [{
+            contains: [
+              {
                 begin: /:/,
                 end: /[=,\/]/,
                 endsWithParent: true,
@@ -206,11 +208,12 @@ export default function(hljs) {
       },
       {
         className: 'class',
-        beginKeywords: 'class interface trait',
-        end: /[:\{(]|$/, // remove 'trait' when removed from KEYWORDS
+        beginKeywords: 'class interface trait', // remove 'trait' when removed from KEYWORDS
+        end: /[:\{(]|$/,
         excludeEnd: true,
         illegal: 'extends implements',
-        contains: [{
+        contains: [
+          {
             beginKeywords: 'public protected internal private constructor'
           },
           hljs.UNDERSCORE_TITLE_MODE,

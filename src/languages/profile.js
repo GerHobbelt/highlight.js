@@ -23,7 +23,7 @@ export default function(hljs) {
       {
         begin: 'function calls',
         end: '$',
-        contains: [hljs.C_NUMBER_MODE],
+        contains: [ hljs.C_NUMBER_MODE ],
         relevance: 10
       },
       hljs.APOS_STRING_MODE,

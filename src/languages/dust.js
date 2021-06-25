@@ -7,14 +7,16 @@ Website: https://www.dustjs.com
 Category: template
 */
 
+/** @type LanguageFn */
 export default function(hljs) {
-  var EXPRESSION_KEYWORDS = 'if eq ne lt lte gt gte select default math sep';
+  const EXPRESSION_KEYWORDS = 'if eq ne lt lte gt gte select default math sep';
   return {
     name: 'Dust',
     aliases: ['dst'],
     case_insensitive: true,
     subLanguage: 'xml',
-    contains: [{
+    contains: [
+      {
         className: 'template-tag',
         begin: /\{[#\/]/,
         end: /\}/,
@@ -25,9 +27,7 @@ export default function(hljs) {
           starts: {
             endsWithParent: true,
             relevance: 0,
-            contains: [
-              hljs.QUOTE_STRING_MODE
-            ]
+            contains: [hljs.QUOTE_STRING_MODE]
           }
         }]
       },

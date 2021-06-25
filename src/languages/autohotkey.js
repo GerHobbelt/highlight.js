@@ -5,8 +5,9 @@ Description: AutoHotkey language definition
 Category: scripting
 */
 
+/** @type LanguageFn */
 export default function(hljs) {
-  var BACKTICK_ESCAPE = {
+  const BACKTICK_ESCAPE = {
     begin: '`[\\s\\S]'
   };
 
@@ -17,7 +18,7 @@ export default function(hljs) {
     keywords: {
       keyword: 'Break Continue Critical Exit ExitApp Gosub Goto New OnExit Pause return SetBatchLines SetTimer Suspend Thread Throw Until ahk_id ahk_class ahk_pid ahk_exe ahk_group',
       literal: 'true false NOT AND OR',
-      built_in: 'ComSpec Clipboard ClipboardAll ErrorLevel',
+      built_in: 'ComSpec Clipboard ClipboardAll ErrorLevel'
     },
     contains: [
       BACKTICK_ESCAPE,
@@ -34,25 +35,32 @@ export default function(hljs) {
         relevance: 0
       },
       {
-        className: 'variable', //subst would be the most accurate however fails the point of highlighting. variable is comparably the most accurate that actually has some effect
+        // subst would be the most accurate however fails the point of
+        // highlighting. variable is comparably the most accurate that actually
+        // has some effect
+        className: 'variable',
         begin: '%[a-zA-Z0-9#_$@]+%'
       },
       {
         className: 'built_in',
         begin: '^\\s*\\w+\\s*(,|%)'
-        //I don't really know if this is totally relevant
+        // I don't really know if this is totally relevant
       },
       {
-        className: 'title', //symbol would be most accurate however is higlighted just like built_in and that makes up a lot of AutoHotkey code
-        //meaning that it would fail to highlight anything
-        variants: [{
+        // symbol would be most accurate however is highlighted just like
+        // built_in and that makes up a lot of AutoHotkey code meaning that it
+        // would fail to highlight anything
+        className: 'title',
+        variants: [
+          {
             begin: '^[^\\n";]+::(?!=)'
           },
           {
             begin: '^[^\\n";]+:(?!=)',
+            // zero relevance as it catches a lot of things
+            // followed by a single ':' in many languages
             relevance: 0
-          } // zero relevance as it catches a lot of things
-          // followed by a single ':' in many languages
+          }
         ]
       },
       {
@@ -70,5 +78,5 @@ export default function(hljs) {
         begin: ',\\s*,'
       }
     ]
-  }
+  };
 }

@@ -6,36 +6,53 @@ Website: https://www.gnu.org/software/bash/
 Category: common
 */
 
+import * as regex from '../lib/regex.js';
+
+/** @type LanguageFn */
 export default function(hljs) {
   const VAR = {};
   const BRACED_VAR = {
     begin: /\$\{/,
-    end: /\}/,
-    contains: [{
+    end:/\}/,
+    contains: [
+      "self",
+      {
         begin: /:-/,
-        contains: [VAR]
+        contains: [ VAR ]
       } // default values
     ]
   };
-  Object.assign(VAR, {
+  Object.assign(VAR,{
     className: 'variable',
-    variants: [{
-        begin: /\$[\w\d#@][\w\d_]*/
-      },
+    variants: [
+      {begin: regex.concat(/\$[\w\d#@][\w\d_]*/,
+        // negative look-ahead tries to avoid matching patterns that are not
+        // Perl at all like $ident$, @ident@, etc.
+        `(?![\\w\\d])(?![$])`) },
       BRACED_VAR
     ]
   });
 
   const SUBST = {
     className: 'subst',
-    begin: /\$\(/,
-    end: /\)/,
+    begin: /\$\(/, end: /\)/,
     contains: [hljs.BACKSLASH_ESCAPE]
+  };
+  const HERE_DOC = {
+    begin: /<<-?\s*(?=\w+)/,
+    starts: {
+      contains: [
+        hljs.END_SAME_AS_BEGIN({
+          begin: /(\w+)/,
+          end: /(\w+)/,
+          className: 'string'
+        })
+      ]
+    }
   };
   const QUOTE_STRING = {
     className: 'string',
-    begin: /"/,
-    end: /"/,
+    begin: /"/, end: /"/,
     contains: [
       hljs.BACKSLASH_ESCAPE,
       VAR,
@@ -50,16 +67,13 @@ export default function(hljs) {
   };
   const APOS_STRING = {
     className: 'string',
-    begin: /'/,
-    end: /'/
+    begin: /'/, end: /'/
   };
   const ARITHMETIC = {
     begin: /\$\(\(/,
     end: /\)\)/,
-    contains: [{
-        begin: /\d+#[0-9a-f]+/,
-        className: "number"
-      },
+    contains: [
+      { begin: /\d+#[0-9a-f]+/, className: "number" },
       hljs.NUMBER_MODE,
       VAR
     ]
@@ -83,19 +97,38 @@ export default function(hljs) {
     className: 'function',
     begin: /\w[\w\d_]*\s*\(\s*\)\s*\{/,
     returnBegin: true,
-    contains: [hljs.inherit(hljs.TITLE_MODE, {
-      begin: /\w[\w\d_]*/
-    })],
+    contains: [hljs.inherit(hljs.TITLE_MODE, {begin: /\w[\w\d_]*/})],
     relevance: 0
   };
 
+  const KEYWORDS = [
+    "if",
+    "then",
+    "else",
+    "elif",
+    "fi",
+    "for",
+    "while",
+    "in",
+    "do",
+    "done",
+    "case",
+    "esac",
+    "function"
+  ];
+
+  const LITERALS = [
+    "true",
+    "false"
+  ];
+
   return {
     name: 'Bash',
-    aliases: ['sh', 'zsh'],
+    aliases: ['sh'],
     keywords: {
-      $pattern: /\b-?[a-z\._]+\b/,
-      keyword: 'if then else elif fi for while in do done case esac function',
-      literal: 'true false',
+      $pattern: /\b[a-z._-]+\b/,
+      keyword: KEYWORDS,
+      literal: LITERALS,
       built_in:
         // Shell built-ins
         // http://www.gnu.org/software/bash/manual/html_node/Shell-Builtin-Commands.html
@@ -112,8 +145,7 @@ export default function(hljs) {
         'fc fg float functions getcap getln history integer jobs kill limit log noglob popd print ' +
         'pushd pushln rehash sched setcap setopt stat suspend ttyctl unfunction unhash unlimit ' +
         'unsetopt vared wait whence where which zcompile zformat zftp zle zmodload zparseopts zprof ' +
-        'zpty zregexparse zsocket zstyle ztcp',
-      _: '-ne -eq -lt -gt -f -d -e -s -l -a' // relevance booster
+        'zpty zregexparse zsocket zstyle ztcp'
     },
     contains: [
       KNOWN_SHEBANG, // to catch known shells and boost relevancy
@@ -121,6 +153,7 @@ export default function(hljs) {
       FUNCTION,
       ARITHMETIC,
       hljs.HASH_COMMENT_MODE,
+      HERE_DOC,
       QUOTE_STRING,
       ESCAPED_QUOTE,
       APOS_STRING,

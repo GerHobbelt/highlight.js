@@ -7,26 +7,38 @@ Website: https://docs.microsoft.com/en-us/powershell/
 */
 
 export default function(hljs) {
-
-  var TYPES = ["string", "char", "byte", "int", "long", "bool", "decimal", "single",
-    "double", "DateTime", "xml", "array", "hashtable", "void"
+  const TYPES = [
+    "string",
+    "char",
+    "byte",
+    "int",
+    "long",
+    "bool",
+    "decimal",
+    "single",
+    "double",
+    "DateTime",
+    "xml",
+    "array",
+    "hashtable",
+    "void"
   ];
 
-  // https://msdn.microsoft.com/en-us/library/ms714428(v=vs.85).aspx
-  var VALID_VERBS =
+  // https://docs.microsoft.com/en-us/powershell/scripting/developer/cmdlet/approved-verbs-for-windows-powershell-commands
+  const VALID_VERBS =
     'Add|Clear|Close|Copy|Enter|Exit|Find|Format|Get|Hide|Join|Lock|' +
     'Move|New|Open|Optimize|Pop|Push|Redo|Remove|Rename|Reset|Resize|' +
     'Search|Select|Set|Show|Skip|Split|Step|Switch|Undo|Unlock|' +
     'Watch|Backup|Checkpoint|Compare|Compress|Convert|ConvertFrom|' +
     'ConvertTo|Dismount|Edit|Expand|Export|Group|Import|Initialize|' +
-    'Limit|Merge|New|Out|Publish|Restore|Save|Sync|Unpublish|Update|' +
-    'Approve|Assert|Complete|Confirm|Deny|Disable|Enable|Install|Invoke|Register|' +
-    'Request|Restart|Resume|Start|Stop|Submit|Suspend|Uninstall|' +
+    'Limit|Merge|Mount|Out|Publish|Restore|Save|Sync|Unpublish|Update|' +
+    'Approve|Assert|Build|Complete|Confirm|Deny|Deploy|Disable|Enable|Install|Invoke|' +
+    'Register|Request|Restart|Resume|Start|Stop|Submit|Suspend|Uninstall|' +
     'Unregister|Wait|Debug|Measure|Ping|Repair|Resolve|Test|Trace|Connect|' +
     'Disconnect|Read|Receive|Send|Write|Block|Grant|Protect|Revoke|Unblock|' +
     'Unprotect|Use|ForEach|Sort|Tee|Where';
 
-  var COMPARISON_OPERATORS =
+  const COMPARISON_OPERATORS =
     '-and|-as|-band|-bnot|-bor|-bxor|-casesensitive|-ccontains|-ceq|-cge|-cgt|' +
     '-cle|-clike|-clt|-cmatch|-cne|-cnotcontains|-cnotlike|-cnotmatch|-contains|' +
     '-creplace|-csplit|-eq|-exact|-f|-file|-ge|-gt|-icontains|-ieq|-ige|-igt|' +
@@ -35,13 +47,15 @@ export default function(hljs) {
     '-notcontains|-notin|-notlike|-notmatch|-or|-regex|-replace|-shl|-shr|' +
     '-split|-wildcard|-xor';
 
-  var KEYWORDS = {
+  const KEYWORDS = {
     $pattern: /-?[A-z\.\-]+\b/,
-    keyword: 'if else foreach return do while until elseif begin for trap data dynamicparam ' +
+    keyword:
+      'if else foreach return do while until elseif begin for trap data dynamicparam ' +
       'end break throw param continue finally in switch exit filter try process catch ' +
       'hidden static parameter',
     // "echo" relevance has been set to 0 to avoid auto-detect conflicts with shell transcripts
-    built_in: 'ac asnp cat cd CFS chdir clc clear clhy cli clp cls clv cnsn compare copy cp ' +
+    built_in:
+      'ac asnp cat cd CFS chdir clc clear clhy cli clp cls clv cnsn compare copy cp ' +
       'cpi cpp curl cvpa dbp del diff dir dnsn ebp echo|0 epal epcsv epsn erase etsn exsn fc fhx ' +
       'fl ft fw gal gbp gc gcb gci gcm gcs gdr gerr ghy gi gin gjb gl gm gmo gp gps gpv group ' +
       'gsn gsnp gsv gtz gu gv gwmi h history icm iex ihy ii ipal ipcsv ipmo ipsn irm ise iwmi ' +
@@ -52,16 +66,17 @@ export default function(hljs) {
     // TODO: 'validate[A-Z]+' can't work in keywords
   };
 
-  var TITLE_NAME_RE = /\w[\w\d]*((-)[\w\d]+)*/;
+  const TITLE_NAME_RE = /\w[\w\d]*((-)[\w\d]+)*/;
 
-  var BACKTICK_ESCAPE = {
+  const BACKTICK_ESCAPE = {
     begin: '`[\\s\\S]',
     relevance: 0
   };
 
-  var VAR = {
+  const VAR = {
     className: 'variable',
-    variants: [{
+    variants: [
+      {
         begin: /\$\B/
       },
       {
@@ -74,20 +89,23 @@ export default function(hljs) {
     ]
   };
 
-  var LITERAL = {
+  const LITERAL = {
     className: 'literal',
     begin: /\$(null|true|false)\b/
   };
 
-  var QUOTE_STRING = {
+  const QUOTE_STRING = {
     className: "string",
-    variants: [{
-      begin: /"/,
-      end: /"/
-    }, {
-      begin: /@"/,
-      end: /^"@/
-    }],
+    variants: [
+      {
+        begin: /"/,
+        end: /"/
+      },
+      {
+        begin: /@"/,
+        end: /^"@/
+      }
+    ],
     contains: [
       BACKTICK_ESCAPE,
       VAR,
@@ -99,9 +117,10 @@ export default function(hljs) {
     ]
   };
 
-  var APOS_STRING = {
+  const APOS_STRING = {
     className: 'string',
-    variants: [{
+    variants: [
+      {
         begin: /'/,
         end: /'/
       },
@@ -112,7 +131,7 @@ export default function(hljs) {
     ]
   };
 
-  var PS_HELPTAGS = {
+  const PS_HELPTAGS = {
     className: "doctag",
     variants: [
       /* no paramater help tags */
@@ -126,8 +145,9 @@ export default function(hljs) {
     ]
   };
 
-  var PS_COMMENT = hljs.inherit(
-    hljs.COMMENT(null, null), {
+  const PS_COMMENT = hljs.inherit(
+    hljs.COMMENT(null, null),
+    {
       variants: [
         /* single-line comment */
         {
@@ -140,34 +160,37 @@ export default function(hljs) {
           end: /#>/
         }
       ],
-      contains: [PS_HELPTAGS]
+      contains: [ PS_HELPTAGS ]
     }
   );
 
-  var CMDLETS = {
+  const CMDLETS = {
     className: 'built_in',
-    variants: [{
-      begin: '('.concat(VALID_VERBS, ')+(-)[\\w\\d]+')
-    }]
+    variants: [
+      {
+        begin: '('.concat(VALID_VERBS, ')+(-)[\\w\\d]+')
+      }
+    ]
   };
 
-  var PS_CLASS = {
+  const PS_CLASS = {
     className: 'class',
     beginKeywords: 'class enum',
     end: /\s*[{]/,
     excludeEnd: true,
     relevance: 0,
-    contains: [hljs.TITLE_MODE]
+    contains: [ hljs.TITLE_MODE ]
   };
 
-  var PS_FUNCTION = {
+  const PS_FUNCTION = {
     className: 'function',
     begin: /function\s+/,
     end: /\s*\{|$/,
     excludeEnd: true,
     returnBegin: true,
     relevance: 0,
-    contains: [{
+    contains: [
+      {
         begin: "function",
         relevance: 0,
         className: "keyword"
@@ -182,14 +205,14 @@ export default function(hljs) {
         end: /\)/,
         className: "params",
         relevance: 0,
-        contains: [VAR]
+        contains: [ VAR ]
       }
       // CMDLETS
     ]
   };
 
   // Using statment, plus type, plus assembly name.
-  var PS_USING = {
+  const PS_USING = {
     begin: /using\s/,
     end: /$/,
     returnBegin: true,
@@ -204,7 +227,7 @@ export default function(hljs) {
   };
 
   // Comperison operators & function named parameters.
-  var PS_ARGUMENTS = {
+  const PS_ARGUMENTS = {
     variants: [
       // PS literals are pretty verbose so it's a good idea to accent them a bit.
       {
@@ -219,30 +242,33 @@ export default function(hljs) {
     ]
   };
 
-  var STATIC_MEMBER = {
+  const STATIC_MEMBER = {
     className: 'selector-tag',
     begin: /::\w+\b/,
     end: /$/,
     returnBegin: true,
-    contains: [{
-      className: 'attribute',
-      begin: /\w+/,
-      endsParent: true
-    }]
+    contains: [
+      {
+        className: 'attribute',
+        begin: /\w+/,
+        endsParent: true
+      }
+    ]
   };
 
-  var HASH_SIGNS = {
+  const HASH_SIGNS = {
     className: 'selector-tag',
-    begin: /\@\B/,
+    begin: /@\B/,
     relevance: 0
   };
 
-  var PS_NEW_OBJECT_TYPE = {
+  const PS_NEW_OBJECT_TYPE = {
     className: 'built_in',
     begin: /New-Object\s+\w/,
     end: /$/,
     returnBegin: true,
-    contains: [{
+    contains: [
+      {
         begin: /New-Object\s+/,
         relevance: 0
       },
@@ -256,16 +282,18 @@ export default function(hljs) {
 
   // It's a very general rule so I'll narrow it a bit with some strict boundaries
   // to avoid any possible false-positive collisions!
-  var PS_METHODS = {
+  const PS_METHODS = {
     className: 'function',
     begin: /\[.*\]\s*[\w]+[ ]??\(/,
     end: /$/,
     returnBegin: true,
     relevance: 0,
-    contains: [{
+    contains: [
+      {
         className: 'keyword',
         begin: '('.concat(
-          KEYWORDS.keyword.toString().replace(/\s/g, '|'), ')\\b'),
+          KEYWORDS.keyword.toString().replace(/\s/g, '|'
+          ), ')\\b'),
         endsParent: true,
         relevance: 0
       },
@@ -275,7 +303,7 @@ export default function(hljs) {
     ]
   };
 
-  var GENTLEMANS_SET = [
+  const GENTLEMANS_SET = [
     // STATIC_MEMBER,
     PS_METHODS,
     PS_COMMENT,
@@ -290,7 +318,7 @@ export default function(hljs) {
     HASH_SIGNS
   ];
 
-  var PS_TYPE = {
+  const PS_TYPE = {
     begin: /\[/,
     end: /\]/,
     excludeBegin: true,
@@ -298,11 +326,13 @@ export default function(hljs) {
     relevance: 0,
     contains: [].concat(
       'self',
-      GENTLEMANS_SET, {
+      GENTLEMANS_SET,
+      {
         begin: "(" + TYPES.join("|") + ")",
         className: "built_in",
         relevance: 0
-      }, {
+      },
+      {
         className: 'type',
         begin: /[\.\w\d]+/,
         relevance: 0
@@ -310,11 +340,14 @@ export default function(hljs) {
     )
   };
 
-  PS_METHODS.contains.unshift(PS_TYPE)
+  PS_METHODS.contains.unshift(PS_TYPE);
 
   return {
     name: 'PowerShell',
-    aliases: ["ps", "ps1"],
+    aliases: [
+      "ps",
+      "ps1"
+    ],
     case_insensitive: true,
     keywords: KEYWORDS,
     contains: GENTLEMANS_SET.concat(

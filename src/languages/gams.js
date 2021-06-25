@@ -1,3 +1,4 @@
+
 /*
  Language: GAMS
  Author: Stefan Bechert <stefan.bechert@gmx.net>
@@ -7,15 +8,21 @@
  Category: scientific
  */
 
+import * as regex from '../lib/regex.js';
+
+/** @type LanguageFn */
 export default function(hljs) {
-  var KEYWORDS = {
-    keyword: 'abort acronym acronyms alias all and assign binary card diag display ' +
+  const KEYWORDS = {
+    keyword:
+      'abort acronym acronyms alias all and assign binary card diag display ' +
       'else eq file files for free ge gt if integer le loop lt maximizing ' +
       'minimizing model models ne negative no not option options or ord ' +
       'positive prod put putpage puttl repeat sameas semicont semiint smax ' +
       'smin solve sos1 sos2 sum system table then until using while xor yes',
-    literal: 'eps inf na',
-    built_in: 'abs arccos arcsin arctan arctan2 Beta betaReg binomial ceil centropy ' +
+    literal:
+      'eps inf na',
+    built_in:
+      'abs arccos arcsin arctan arctan2 Beta betaReg binomial ceil centropy ' +
       'cos cosh cvPower div div0 eDist entropy errorf execSeed exp fact ' +
       'floor frac gamma gammaReg log logBeta logGamma log10 log2 mapVal max ' +
       'min mod ncpCM ncpF ncpVUpow ncpVUsin normal pi poly power ' +
@@ -30,38 +37,40 @@ export default function(hljs) {
       'licenseLevel licenseStatus maxExecError sleep timeClose timeComp ' +
       'timeElapsed timeExec timeStart'
   };
-  var PARAMS = {
+  const PARAMS = {
     className: 'params',
     begin: /\(/,
     end: /\)/,
     excludeBegin: true,
-    excludeEnd: true,
+    excludeEnd: true
   };
-  var SYMBOLS = {
+  const SYMBOLS = {
     className: 'symbol',
-    variants: [{
-        begin: /\=[lgenxc]=/
+    variants: [
+      {
+        begin: /=[lgenxc]=/
       },
       {
         begin: /\$/
-      },
+      }
     ]
   };
-  var QSTR = { // One-line quoted comment string
+  const QSTR = { // One-line quoted comment string
     className: 'comment',
-    variants: [{
+    variants: [
+      {
         begin: '\'',
         end: '\''
       },
       {
         begin: '"',
         end: '"'
-      },
+      }
     ],
     illegal: '\\n',
     contains: [hljs.BACKSLASH_ESCAPE]
   };
-  var ASSIGNMENT = {
+  const ASSIGNMENT = {
     begin: '/',
     end: '/',
     keywords: KEYWORDS,
@@ -71,10 +80,11 @@ export default function(hljs) {
       hljs.C_BLOCK_COMMENT_MODE,
       hljs.QUOTE_STRING_MODE,
       hljs.APOS_STRING_MODE,
-      hljs.C_NUMBER_MODE,
-    ],
+      hljs.C_NUMBER_MODE
+    ]
   };
-  var DESCTEXT = { // Parameter/set/variable description text
+  const COMMENT_WORD = /[a-z0-9&#*=?@\\><:,()$[\]_.{}!+%^-]+/;
+  const DESCTEXT = { // Parameter/set/variable description text
     begin: /[a-z][a-z0-9_]*(\([a-z0-9_, ]*\))?[ \t]+/,
     excludeBegin: true,
     end: '$',
@@ -84,10 +94,15 @@ export default function(hljs) {
       ASSIGNMENT,
       {
         className: 'comment',
-        begin: /([ ]*[a-z0-9&#*=?@>\\<:\-,()$\[\]_.{}!+%^]+)+/,
+        // one comment word, then possibly more
+        begin: regex.concat(
+          COMMENT_WORD,
+          // [ ] because \s would be too broad (matching newlines)
+          regex.anyNumberOfTimes(regex.concat(/[ ]+/, COMMENT_WORD))
+        ),
         relevance: 0
-      },
-    ],
+      }
+    ]
   };
 
   return {
@@ -102,10 +117,12 @@ export default function(hljs) {
         begin: '^\\$[a-z0-9]+',
         end: '$',
         returnBegin: true,
-        contains: [{
-          className: 'meta-keyword',
-          begin: '^\\$[a-z0-9]+',
-        }]
+        contains: [
+          {
+            className: 'keyword',
+            begin: '^\\$[a-z0-9]+'
+          }
+        ]
       },
       hljs.COMMENT('^\\*', '$'),
       hljs.C_LINE_COMMENT_MODE,
@@ -114,7 +131,8 @@ export default function(hljs) {
       hljs.APOS_STRING_MODE,
       // Declarations
       {
-        beginKeywords: 'set sets parameter parameters variable variables ' +
+        beginKeywords:
+          'set sets parameter parameters variable variables ' +
           'scalar scalars equation equations',
         end: ';',
         contains: [
@@ -124,24 +142,25 @@ export default function(hljs) {
           hljs.QUOTE_STRING_MODE,
           hljs.APOS_STRING_MODE,
           ASSIGNMENT,
-          DESCTEXT,
+          DESCTEXT
         ]
       },
       { // table environment
         beginKeywords: 'table',
         end: ';',
         returnBegin: true,
-        contains: [{ // table header row
+        contains: [
+          { // table header row
             beginKeywords: 'table',
             end: '$',
-            contains: [DESCTEXT],
+            contains: [DESCTEXT]
           },
           hljs.COMMENT('^\\*', '$'),
           hljs.C_LINE_COMMENT_MODE,
           hljs.C_BLOCK_COMMENT_MODE,
           hljs.QUOTE_STRING_MODE,
           hljs.APOS_STRING_MODE,
-          hljs.C_NUMBER_MODE,
+          hljs.C_NUMBER_MODE
           // Table does not contain DESCTEXT or ASSIGNMENT
         ]
       },
@@ -150,16 +169,17 @@ export default function(hljs) {
         className: 'function',
         begin: /^[a-z][a-z0-9_,\-+' ()$]+\.{2}/,
         returnBegin: true,
-        contains: [{ // Function title
+        contains: [
+          { // Function title
             className: 'title',
-            begin: /^[a-z0-9_]+/,
+            begin: /^[a-z0-9_]+/
           },
           PARAMS,
-          SYMBOLS,
-        ],
+          SYMBOLS
+        ]
       },
       hljs.C_NUMBER_MODE,
-      SYMBOLS,
+      SYMBOLS
     ]
   };
 }

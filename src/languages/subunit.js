@@ -5,23 +5,24 @@ Website: https://pypi.org/project/python-subunit/
 */
 
 export default function(hljs) {
-  var DETAILS = {
+  const DETAILS = {
     className: 'string',
     begin: '\\[\n(multipart)?',
     end: '\\]\n'
   };
-  var TIME = {
+  const TIME = {
     className: 'string',
     begin: '\\d{4}-\\d{2}-\\d{2}(\\s+)\\d{2}:\\d{2}:\\d{2}\.\\d+Z'
   };
-  var PROGRESSVALUE = {
+  const PROGRESSVALUE = {
     className: 'string',
     begin: '(\\+|-)\\d+'
   };
-  var KEYWORDS = {
+  const KEYWORDS = {
     className: 'keyword',
     relevance: 10,
-    variants: [{
+    variants: [
+      {
         begin: '^(test|testing|success|successful|failure|error|skip|xfail|uxsuccess)(:?)\\s+(test)?'
       },
       {
@@ -33,7 +34,7 @@ export default function(hljs) {
       {
         begin: '^time:'
       }
-    ],
+    ]
   };
   return {
     name: 'SubUnit',

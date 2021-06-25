@@ -6,10 +6,10 @@ Website: http://www.lassosoft.com/What-Is-Lasso
 */
 
 export default function(hljs) {
-  var LASSO_IDENT_RE = '[a-zA-Z_][\\w.]*';
-  var LASSO_ANGLE_RE = '<\\?(lasso(script)?|=)';
-  var LASSO_CLOSE_RE = '\\]|\\?>';
-  var LASSO_KEYWORDS = {
+  const LASSO_IDENT_RE = '[a-zA-Z_][\\w.]*';
+  const LASSO_ANGLE_RE = '<\\?(lasso(script)?|=)';
+  const LASSO_CLOSE_RE = '\\]|\\?>';
+  const LASSO_KEYWORDS = {
     $pattern: LASSO_IDENT_RE + '|&[lg]t;',
     literal: 'true false none minimal full all void and or not ' +
       'bw nbw ew new cn ncn lt lte gt gte eq neq rx nrx ft',
@@ -34,13 +34,13 @@ export default function(hljs) {
       'require returnhome skip split_thread sum take thread to trait type ' +
       'where with yield yieldhome'
   };
-  var HTML_COMMENT = hljs.COMMENT(
+  const HTML_COMMENT = hljs.COMMENT(
     '<!--',
     '-->', {
       relevance: 0
     }
   );
-  var LASSO_NOPROCESS = {
+  const LASSO_NOPROCESS = {
     className: 'meta',
     begin: '\\[noprocess\\]',
     starts: {
@@ -49,15 +49,15 @@ export default function(hljs) {
       contains: [HTML_COMMENT]
     }
   };
-  var LASSO_START = {
+  const LASSO_START = {
     className: 'meta',
     begin: '\\[/noprocess|' + LASSO_ANGLE_RE
   };
-  var LASSO_DATAMEMBER = {
+  const LASSO_DATAMEMBER = {
     className: 'symbol',
     begin: '\'' + LASSO_IDENT_RE + '\''
   };
-  var LASSO_CODE = [
+  const LASSO_CODE = [
     hljs.C_LINE_COMMENT_MODE,
     hljs.C_BLOCK_COMMENT_MODE,
     hljs.inherit(hljs.C_NUMBER_MODE, {
@@ -121,7 +121,10 @@ export default function(hljs) {
   ];
   return {
     name: 'Lasso',
-    aliases: ['ls', 'lassoscript'],
+    aliases: [
+      'ls',
+      'lassoscript'
+    ],
     case_insensitive: true,
     keywords: LASSO_KEYWORDS,
     contains: [{

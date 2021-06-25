@@ -1,4 +1,5 @@
 .DS_Store
+build
 docs/_build
 __pycache__
 *.swp
@@ -7,6 +8,11 @@ node_modules
 yarn.lock
 extra/
 
+# play stuff
+quick*
+test*.*
+extra*
+
 # editors
 .idea/
 .vscode/
@@ -14,7 +20,4 @@ extra/
 
 # misc
 /work
-
-# build/distro output
-/build/
-
+/website

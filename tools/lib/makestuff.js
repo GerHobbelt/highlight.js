@@ -14,8 +14,21 @@ function install(file, dest = file) {
   fs.copyFileSync(file, `${process.env.BUILD_DIR}/${dest}`);
 }
 
-function install_cleancss(file, dest) {
-  const content = fs.readFileSync(file, { encoding: "utf8" });
+const DEFAULT_CSS = `
+pre code.hljs {
+  display: block;
+  overflow-x: auto;
+  padding: 1em;
+}
+
+code.hljs {
+  padding: 3px 5px;
+}
+`.trim();
+
+function installCleanCSS(file, dest) {
+  const theme = fs.readFileSync(file, { encoding: "utf8" });
+  const content = DEFAULT_CSS + "\n" + theme;
   const out = new CleanCSS(config.clean_css).minify(content).styles;
   fs.writeFileSync(`${process.env.BUILD_DIR}/${dest}`, out);
 }
@@ -31,4 +44,4 @@ function renderTemplate(src, dest, data) {
   fs.writeFileSync(`${process.env.BUILD_DIR}/${dest}`, rendered);
 }
 
-module.exports = { clean, install, install_cleancss, mkdir, renderTemplate };
+module.exports = { clean, install, installCleanCSS, mkdir, renderTemplate };

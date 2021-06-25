@@ -5,14 +5,14 @@
  Website: https://flix.dev/
  */
 
+ /** @type LanguageFn */
 export default function(hljs) {
-
-  var CHAR = {
+  const CHAR = {
     className: 'string',
     begin: /'(.|\\[xXuU][a-zA-Z0-9]+)'/
   };
 
-  var STRING = {
+  const STRING = {
     className: 'string',
     variants: [{
       begin: '"',
@@ -20,12 +20,13 @@ export default function(hljs) {
     }]
   };
 
-  var NAME = {
+  const NAME = {
     className: 'title',
+    relevance: 0,
     begin: /[^0-9\n\t "'(),.`{}\[\]:;][^\n\t "'(),.`{}\[\]:;]+|[^0-9\n\t "'(),.`{}\[\]:;=]/
   };
 
-  var METHOD = {
+  const METHOD = {
     className: 'function',
     beginKeywords: 'def',
     end: /[:={\[(\n;]/,
@@ -36,8 +37,31 @@ export default function(hljs) {
   return {
     name: 'Flix',
     keywords: {
-      literal: 'true false',
-      keyword: 'case class def else enum if impl import in lat rel index let match namespace switch type yield with'
+      keyword: [
+        "case",
+        "class",
+        "def",
+        "else",
+        "enum",
+        "if",
+        "impl",
+        "import",
+        "in",
+        "lat",
+        "rel",
+        "index",
+        "let",
+        "match",
+        "namespace",
+        "switch",
+        "type",
+        "yield",
+        "with"
+      ],
+      literal: [
+        "true",
+        "false"
+      ]
     },
     contains: [
       hljs.C_LINE_COMMENT_MODE,

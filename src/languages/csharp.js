@@ -1,33 +1,164 @@
 /*
 Language: C#
 Author: Jason Diamond <jason@diamond.name>
-Contributor: Nicolas LLOBERA <nicolas@bananeatomic.fr>, Pieter Vantorre <pietervantorre@gmail.com>
+Contributor: Nicolas LLOBERA <nllobera@gmail.com>, Pieter Vantorre <pietervantorre@gmail.com>, David Pine <david.pine@microsoft.com>
 Website: https://docs.microsoft.com/en-us/dotnet/csharp/
 Category: common
 */
 
+/** @type LanguageFn */
 export default function(hljs) {
-  var KEYWORDS = {
-    keyword:
-      // Normal keywords.
-      'abstract as async await base bool break byte case catch char checked const continue decimal ' +
-      'default delegate do double enum event explicit extern finally fixed float ' +
-      'for foreach goto implicit in int interface internal is lock long new ' +
-      'object operator out override params private protected public readonly ref sbyte ' +
-      'sealed short sizeof stackalloc static string struct switch this throw try typeof ' +
-      'uint ulong unchecked unsafe ushort using virtual void volatile while ' +
-      // Contextual keywords.
-      'add alias ascending async await by descending dynamic equals from get global group into join ' +
-      'let nameof on orderby partial remove select set value var when where yield',
-    literal: 'true false null',
-    symbol: 'if else return'
+  const BUILT_IN_KEYWORDS = [
+    'bool',
+    'byte',
+    'char',
+    'decimal',
+    'delegate',
+    'double',
+    'dynamic',
+    'enum',
+    'float',
+    'int',
+    'long',
+    'nint',
+    'nuint',
+    'object',
+    'sbyte',
+    'short',
+    'string',
+    'ulong',
+    'uint',
+    'ushort'
+  ];
+  const FUNCTION_MODIFIERS = [
+    'public',
+    'private',
+    'protected',
+    'static',
+    'internal',
+    'protected',
+    'abstract',
+    'async',
+    'extern',
+    'override',
+    'unsafe',
+    'virtual',
+    'new',
+    'sealed',
+    'partial'
+  ];
+  const LITERAL_KEYWORDS = [
+    'default',
+    'false',
+    'null',
+    'true'
+  ];
+  const NORMAL_KEYWORDS = [
+    'abstract',
+    'as',
+    'base',
+    'break',
+    'case',
+    'class',
+    'const',
+    'continue',
+    'do',
+    'else',
+    'event',
+    'explicit',
+    'extern',
+    'finally',
+    'fixed',
+    'for',
+    'foreach',
+    'goto',
+    'if',
+    'implicit',
+    'in',
+    'interface',
+    'internal',
+    'is',
+    'lock',
+    'namespace',
+    'new',
+    'operator',
+    'out',
+    'override',
+    'params',
+    'private',
+    'protected',
+    'public',
+    'readonly',
+    'record',
+    'ref',
+    'return',
+    'sealed',
+    'sizeof',
+    'stackalloc',
+    'static',
+    'struct',
+    'switch',
+    'this',
+    'throw',
+    'try',
+    'typeof',
+    'unchecked',
+    'unsafe',
+    'using',
+    'virtual',
+    'void',
+    'volatile',
+    'while'
+  ];
+  const CONTEXTUAL_KEYWORDS = [
+    'add',
+    'alias',
+    'and',
+    'ascending',
+    'async',
+    'await',
+    'by',
+    'descending',
+    'equals',
+    'from',
+    'get',
+    'global',
+    'group',
+    'init',
+    'into',
+    'join',
+    'let',
+    'nameof',
+    'not',
+    'notnull',
+    'on',
+    'or',
+    'orderby',
+    'partial',
+    'remove',
+    'select',
+    'set',
+    'unmanaged',
+    'value|0',
+    'var',
+    'when',
+    'where',
+    'with',
+    'yield'
+  ];
+
+  const KEYWORDS = {
+    keyword: NORMAL_KEYWORDS.concat(CONTEXTUAL_KEYWORDS),
+    built_in: BUILT_IN_KEYWORDS,
+    literal: LITERAL_KEYWORDS
   };
-  var TITLE_MODE = hljs.inherit(hljs.TITLE_MODE, {
+  const TITLE_MODE = hljs.inherit(hljs.TITLE_MODE, {
     begin: '[a-zA-Z](\\.?\\w)*'
   });
-  var NUMBERS = {
+  const NUMBERS = {
     className: 'number',
-    variants: [{
+    variants: [
+      {
         begin: '\\b(0b[01\']+)'
       },
       {
@@ -39,65 +170,97 @@ export default function(hljs) {
     ],
     relevance: 0
   };
-
-  var VERBATIM_STRING = {
+  const VERBATIM_STRING = {
     className: 'string',
     begin: '@"',
     end: '"',
-    contains: [{
-      begin: '""'
-    }]
+    contains: [
+      {
+        begin: '""'
+      }
+    ]
   };
-  var VERBATIM_STRING_NO_LF = hljs.inherit(VERBATIM_STRING, {
+  const VERBATIM_STRING_NO_LF = hljs.inherit(VERBATIM_STRING, {
     illegal: /\n/
   });
-  var SUBST = {
+  const SUBST = {
     className: 'subst',
-    begin: '{',
-    end: '}',
-    keywords: KEYWORDS,
-    contains: [{
-      className: 'variable',
-      begin: hljs.IDENT_RE
-    }]
+    begin: /\{/,
+    end: /\}/,
+    keywords: KEYWORDS
   };
-  var SUBST_NO_LF = hljs.inherit(SUBST, {
+  const SUBST_NO_LF = hljs.inherit(SUBST, {
     illegal: /\n/
   });
-  var INTERPOLATED_STRING = {
+  const INTERPOLATED_STRING = {
     className: 'string',
     begin: /\$"/,
     end: '"',
     illegal: /\n/,
-    contains: [{
-      begin: '{{'
-    }, {
-      begin: '}}'
-    }, hljs.BACKSLASH_ESCAPE, SUBST_NO_LF]
+    contains: [
+      {
+        begin: /\{\{/
+      },
+      {
+        begin: /\}\}/
+      },
+      hljs.BACKSLASH_ESCAPE,
+      SUBST_NO_LF
+    ]
   };
-  var INTERPOLATED_VERBATIM_STRING = {
+  const INTERPOLATED_VERBATIM_STRING = {
     className: 'string',
     begin: /\$@"/,
     end: '"',
-    contains: [{
-      begin: '{{'
-    }, {
-      begin: '}}'
-    }, {
-      begin: '""'
-    }, SUBST]
+    contains: [
+      {
+        begin: /\{\{/
+      },
+      {
+        begin: /\}\}/
+      },
+      {
+        begin: '""'
+      },
+      SUBST
+    ]
   };
-  var INTERPOLATED_VERBATIM_STRING_NO_LF = hljs.inherit(INTERPOLATED_VERBATIM_STRING, {
+  const INTERPOLATED_VERBATIM_STRING_NO_LF = hljs.inherit(INTERPOLATED_VERBATIM_STRING, {
     illegal: /\n/,
-    contains: [{
-      begin: '{{'
-    }, {
-      begin: '}}'
-    }, {
-      begin: '""'
-    }, SUBST_NO_LF]
+    contains: [
+      {
+        begin: /\{\{/
+      },
+      {
+        begin: /\}\}/
+      },
+      {
+        begin: '""'
+      },
+      SUBST_NO_LF
+    ]
   });
-  var STRING = {
+  SUBST.contains = [
+    INTERPOLATED_VERBATIM_STRING,
+    INTERPOLATED_STRING,
+    VERBATIM_STRING,
+    hljs.APOS_STRING_MODE,
+    hljs.QUOTE_STRING_MODE,
+    NUMBERS,
+    hljs.C_BLOCK_COMMENT_MODE
+  ];
+  SUBST_NO_LF.contains = [
+    INTERPOLATED_VERBATIM_STRING_NO_LF,
+    INTERPOLATED_STRING,
+    VERBATIM_STRING_NO_LF,
+    hljs.APOS_STRING_MODE,
+    hljs.QUOTE_STRING_MODE,
+    NUMBERS,
+    hljs.inherit(hljs.C_BLOCK_COMMENT_MODE, {
+      illegal: /\n/
+    })
+  ];
+  const STRING = {
     variants: [
       INTERPOLATED_VERBATIM_STRING,
       INTERPOLATED_STRING,
@@ -107,222 +270,170 @@ export default function(hljs) {
     ]
   };
 
-  // Type, Type?, Type[], Type<int>, Type<Type>, Type<Type<int, Type>>
-  var TYPE_IDENT_RE = '[A-Z]\\w*' + '\\??(<' + hljs.IDENT_RE + '[<>a-zA-Z\\[\\]\\?\\ ,]*>)?(\\[\\])?';
-  var TYPE_IDENT_MODE = {
-    begin: TYPE_IDENT_RE,
-    returnBegin: true,
-    relevance: 0,
-    contains: [{
-        className: 'type', // interface
-        begin: 'I[A-Z]\\w*',
-        relevance: 0
-      },
-      {
-        className: 'class',
-        begin: '[A-Z]\\w*',
-        relevance: 0
-      },
-      {
-        begin: '<',
-        excludeBegin: true,
-        end: '>',
-        excludeEnd: true,
-        relevance: 0,
-        keywords: KEYWORDS,
-        contains: [{
-            className: 'type', // interface
-            begin: 'I[A-Z]\\w*',
-            relevance: 0,
-            keywords: KEYWORDS
-          },
-          {
-            className: 'class',
-            begin: '[A-Z]\\w*',
-            relevance: 0,
-            keywords: KEYWORDS
-          }
-        ]
-      }
-    ]
-  };
-
-  var xml_doc = hljs.COMMENT('///', '$', {
-    contains: [{
-      className: 'doctag',
-      begin: '</?',
-      end: '>',
-      keywords: KEYWORDS,
-      contains: [
-        hljs.QUOTE_STRING_MODE,
-        {
-          className: 'attribute',
-          begin: ' [a-z]+',
-          end: '=',
-          excludeEnd: true,
-        }
-      ]
-    }]
-  });
-
-  var preprocessor_directives = {
-    className: 'meta',
-    begin: '#',
-    end: '$',
-    contains: [{
-      className: 'meta-keyword',
-      begin: '[A-Z]+'
-    }]
-  };
-
-  var namespace = {
-    beginKeywords: 'namespace',
-    end: '{',
-    contains: [{
-      className: 'class',
-      begin: '[A-Z]\\w*'
-    }]
-  };
-
-  var class_declaration = {
-    beginKeywords: 'class interface',
-    end: '{',
-    contains: [TYPE_IDENT_MODE]
-  };
-
-  var var_declaration = {
-    // Type _varName
-    // Type PropertyName
-    className: 'typeandvar',
-    begin: '\\b' + TYPE_IDENT_RE + ' [_a-zA-Z]\\w*',
-    returnBegin: true,
-    relevance: 0,
-    contains: [TYPE_IDENT_MODE]
-  };
-
-  var attribute = {
-    // [Attributes("")]
-    className: 'attribute-re', // attribute
-    begin: '^\\s*\\[',
-    end: '\\]',
-    keywords: KEYWORDS,
+  const GENERIC_MODIFIER = {
+    begin: "<",
+    end: ">",
     contains: [
-      STRING,
-      TYPE_IDENT_MODE
-    ]
-  };
-
-  var object_instanciation = {
-    className: 'new',
-    begin: 'new ',
-    excludeBegin: true,
-    end: '[\\({]',
-    excludeEnd: true,
-    keywords: KEYWORDS,
-    contains: [TYPE_IDENT_MODE]
-  };
-
-  var as_usage = {
-    // as Type
-    className: 'as',
-    begin: ' as ',
-    excludeBegin: true,
-    end: ';',
-    keywords: KEYWORDS,
-    contains: [TYPE_IDENT_MODE]
-  };
-
-  var using_usage = {
-    // using
-    className: 'using',
-    begin: 'using',
-    excludeBegin: true,
-    end: '[\\(;]',
-    contains: [{
-      className: 'class',
-      begin: '[A-Z]\\w*'
-    }]
-  };
-
-  var method_name = {
-    // Method<Type>(
-    className: 'method-re',
-    begin: '[A-Z]\\w*(<' + hljs.IDENT_RE + '(\\s*,\\s*' + hljs.IDENT_RE + ')*>)?\\(',
-    returnBegin: true,
-    relevance: 0,
-    contains: [{
-        className: 'function', // method name
-        begin: '[A-Z]\\w*',
-        relevance: 0,
-      },
       {
-        begin: '<',
-        excludeBegin: true,
-        end: '>',
-        excludeEnd: true,
-        relevance: 0,
-        keywords: KEYWORDS,
-        contains: [TYPE_IDENT_MODE]
-      }
+        beginKeywords: "in out"
+      },
+      TITLE_MODE
     ]
   };
-
-  var type_surrounded_by_parenthesis = {
-    // (Type)
-    className: 'cast',
-    begin: '\\(' + TYPE_IDENT_RE + '\\)',
-    returnBegin: true,
-    relevance: 0,
-    contains: [{
-      begin: '\\(',
-      excludeBegin: true,
-      end: '\\)',
-      excludeEnd: true,
-      relevance: 0,
-      contains: [TYPE_IDENT_MODE]
-    }]
-  };
-
-  var var_name = {
-    // variableName
-    className: 'variable',
-    begin: '\\b[a-z]\\w*',
-    relevance: 0,
-    keywords: KEYWORDS
-  };
-
-  var static_class = {
-    // static class: Type. Type<T>.
-    className: 'static',
-    begin: '\\s[A-Z]\\w*(<' + hljs.IDENT_RE + '(\\s*,\\s*' + hljs.IDENT_RE + ')*>)?\\.',
-    returnBegin: true,
-    relevance: 0,
-    keywords: KEYWORDS,
-    contains: [TYPE_IDENT_MODE]
+  const TYPE_IDENT_RE = hljs.IDENT_RE + '(<' + hljs.IDENT_RE + '(\\s*,\\s*' + hljs.IDENT_RE + ')*>)?(\\[\\])?';
+  const AT_IDENTIFIER = {
+    // prevents expressions like `@class` from incorrect flagging
+    // `class` as a keyword
+    begin: "@" + hljs.IDENT_RE,
+    relevance: 0
   };
 
   return {
-    aliases: ['cs', 'c#'],
+    name: 'C#',
+    aliases: [
+      'cs',
+      'c#'
+    ],
     keywords: KEYWORDS,
     illegal: /::/,
     contains: [
-      xml_doc,
+      hljs.COMMENT(
+        '///',
+        '$',
+        {
+          returnBegin: true,
+          contains: [
+            {
+              className: 'doctag',
+              variants: [
+                {
+                  begin: '///',
+                  relevance: 0
+                },
+                {
+                  begin: '<!--|-->'
+                },
+                {
+                  begin: '</?',
+                  end: '>'
+                }
+              ]
+            }
+          ]
+        }
+      ),
       hljs.C_LINE_COMMENT_MODE,
       hljs.C_BLOCK_COMMENT_MODE,
-      preprocessor_directives,
+      {
+        className: 'meta',
+        begin: '#',
+        end: '$',
+        keywords: {
+          keyword: 'if else elif endif define undef warning error line region endregion pragma checksum'
+        }
+      },
       STRING,
       NUMBERS,
-      namespace,
-      class_declaration,
-      var_declaration,
-      attribute,
-      object_instanciation,
-      as_usage,
-      using_usage,
-      method_name,
-      type_surrounded_by_parenthesis,
-      var_name,
-      static_class
+      {
+        beginKeywords: 'class interface',
+        relevance: 0,
+        end: /[{;=]/,
+        illegal: /[^\s:,]/,
+        contains: [
+          {
+            beginKeywords: "where class"
+          },
+          TITLE_MODE,
+          GENERIC_MODIFIER,
+          hljs.C_LINE_COMMENT_MODE,
+          hljs.C_BLOCK_COMMENT_MODE
+        ]
+      },
+      {
+        beginKeywords: 'namespace',
+        relevance: 0,
+        end: /[{;=]/,
+        illegal: /[^\s:]/,
+        contains: [
+          TITLE_MODE,
+          hljs.C_LINE_COMMENT_MODE,
+          hljs.C_BLOCK_COMMENT_MODE
+        ]
+      },
+      {
+        beginKeywords: 'record',
+        relevance: 0,
+        end: /[{;=]/,
+        illegal: /[^\s:]/,
+        contains: [
+          TITLE_MODE,
+          GENERIC_MODIFIER,
+          hljs.C_LINE_COMMENT_MODE,
+          hljs.C_BLOCK_COMMENT_MODE
+        ]
+      },
+      {
+        // [Attributes("")]
+        className: 'meta',
+        begin: '^\\s*\\[(?=[\\w])',
+        excludeBegin: true,
+        end: '\\]',
+        excludeEnd: true,
+        contains: [
+          {
+            className: 'string',
+            begin: /"/,
+            end: /"/
+          }
+        ]
+      },
+      {
+        // Expression keywords prevent 'keyword Name(...)' from being
+        // recognized as a function definition
+        beginKeywords: 'new return throw await else',
+        relevance: 0
+      },
+      {
+        className: 'function',
+        begin: '(' + TYPE_IDENT_RE + '\\s+)+' + hljs.IDENT_RE + '\\s*(<.+>\\s*)?\\(',
+        returnBegin: true,
+        end: /\s*[{;=]/,
+        excludeEnd: true,
+        keywords: KEYWORDS,
+        contains: [
+          // prevents these from being highlighted `title`
+          {
+            beginKeywords: FUNCTION_MODIFIERS.join(" "),
+            relevance: 0
+          },
+          {
+            begin: hljs.IDENT_RE + '\\s*(<.+>\\s*)?\\(',
+            returnBegin: true,
+            contains: [
+              hljs.TITLE_MODE,
+              GENERIC_MODIFIER
+            ],
+            relevance: 0
+          },
+          {
+            className: 'params',
+            begin: /\(/,
+            end: /\)/,
+            excludeBegin: true,
+            excludeEnd: true,
+            keywords: KEYWORDS,
+            relevance: 0,
+            contains: [
+              STRING,
+              NUMBERS,
+              hljs.C_BLOCK_COMMENT_MODE
+            ]
+          },
+          hljs.C_LINE_COMMENT_MODE,
+          hljs.C_BLOCK_COMMENT_MODE
+        ]
+      },
+      AT_IDENTIFIER
     ]
   };
 }

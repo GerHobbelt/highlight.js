@@ -31,7 +31,7 @@ export default function(hljs) {
         'scscope set setfiletype setglobal setlocal sfind sfirst shell simalt sign silent sleep slast smagic smapclear smenu snext sniff snomagic snoremap snoremenu sort source spelldump spellgood spellinfo spellrepall spellundo spellwrong split sprevious srewind stop stag startgreplace startreplace ' +
         'startinsert stopinsert stjump stselect sunhide sunmap sunmenu suspend sview swapname syntax syntime syncbind tNext tabNext tabclose tabedit tabfind tabfirst tablast tabmove tabnext tabonly tabprevious tabrewind tag tcl tcldo tclfile tearoff tfirst throw tjump tlast tmenu tnext topleft tprevious ' + 'trewind tselect tunmenu undo undojoin undolist unabbreviate unhide unlet unlockvar unmap unmenu unsilent update vglobal version verbose vertical vimgrep vimgrepadd visual viusage view vmap vmapclear vmenu vnew ' +
         'vnoremap vnoremenu vsplit vunmap vunmenu write wNext wall while winsize wincmd winpos wnext wprevious wqall wsverb wundo wviminfo xit xall xmapclear xmap xmenu xnoremap xnoremenu xunmap xunmenu yank',
-      built_in: //built in func
+      built_in: // built in func
         'synIDtrans atan2 range matcharg did_filetype asin feedkeys xor argv ' +
         'complete_check add getwinposx getqflist getwinposy screencol ' +
         'clearmatches empty extend getcmdpos mzeval garbagecollect setreg ' +
@@ -96,15 +96,21 @@ export default function(hljs) {
 
       {
         className: 'variable',
-        begin: /[bwtglsav]:[\w\d_]*/
+        begin: /[bwtglsav]:[\w\d_]+/
       },
       {
-        className: 'function',
-        beginKeywords: 'function function!',
+        begin: [
+          /\b(?:function|function!)/,
+          /\s+/,
+          hljs.IDENT_RE
+        ],
+        className: {
+          1: "keyword",
+          3: "title"
+        },
         end: '$',
         relevance: 0,
         contains: [
-          hljs.TITLE_MODE,
           {
             className: 'params',
             begin: '\\(',

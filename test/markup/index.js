@@ -6,9 +6,11 @@ const hljs = require('../../build');
 const path = require('path');
 const utility = require('../utility');
 
-const { getThirdPartyPackages } = require("../../tools/lib/external_language");
+hljs.debugMode();
 
-function testLanguage(language, { testDir }) {
+const { getThirdPartyPackages } = require("../../tools/lib/external_language")
+
+function testLanguage(language, {testDir}) {
   describe(language, function() {
     const where = testDir ?
       path.join(testDir, '*.expect.txt') :
@@ -25,15 +27,15 @@ function testLanguage(language, { testDir }) {
         const expectedFile = fs.readFile(filename, 'utf-8');
 
         Promise.all([sourceFile, expectedFile]).then(function([source, expected]) {
-          const actual = hljs.highlight(language, source).value;
+          const actual = hljs.highlight(source, { language }).value;
 
-          if (actual !== expected) {
-            console.log('----------------START---------------\n', actual, '\n------------------------------------------------\n',
-              expected, '\n---------------END-------------------\n');
-          }
+          // Uncomment this for major changes that rewrite the test expectations
+          // which will then need to be manually compared by hand of course
+          // require('fs').writeFileSync(filename, actual);
+
           actual.trim().should.equal(expected.trim());
           done();
-        }).catch(function(err) { return done(err); });
+        }).catch(function(err) { return done(err) });
       });
     });
   });

@@ -7,50 +7,59 @@ Category: scientific
 */
 
 export default function(hljs) {
-  var SPECIAL_VARS = {
-      className: 'keyword',
-      begin: '\\$(f[asn]|t|vp[rtd]|children)'
+  const SPECIAL_VARS = {
+    className: 'keyword',
+    begin: '\\$(f[asn]|t|vp[rtd]|children)'
+  };
+  const LITERALS = {
+    className: 'literal',
+    begin: 'false|true|PI|undef'
+  };
+  const NUMBERS = {
+    className: 'number',
+    begin: '\\b\\d+(\\.\\d+)?(e-?\\d+)?', // adds 1e5, 1e-10
+    relevance: 0
+  };
+  const STRING = hljs.inherit(hljs.QUOTE_STRING_MODE, {
+    illegal: null
+  });
+  const PREPRO = {
+    className: 'meta',
+    keywords: {
+      keyword: 'include use'
     },
-    LITERALS = {
-      className: 'literal',
-      begin: 'false|true|PI|undef'
-    },
-    NUMBERS = {
-      className: 'number',
-      begin: '\\b\\d+(\\.\\d+)?(e-?\\d+)?', //adds 1e5, 1e-10
-      relevance: 0
-    },
-    STRING = hljs.inherit(hljs.QUOTE_STRING_MODE, {
-      illegal: null
-    }),
-    PREPRO = {
-      className: 'meta',
-      keywords: {
-        'meta-keyword': 'include use'
-      },
-      begin: 'include|use <',
-      end: '>'
-    },
-    PARAMS = {
-      className: 'params',
-      begin: '\\(',
-      end: '\\)',
-      contains: ['self', NUMBERS, STRING, SPECIAL_VARS, LITERALS]
-    },
-    MODIFIERS = {
-      begin: '[*!#%]',
-      relevance: 0
-    },
-    FUNCTIONS = {
-      className: 'function',
-      beginKeywords: 'module function',
-      end: '\\=|\\{',
-      contains: [PARAMS, hljs.UNDERSCORE_TITLE_MODE]
-    };
+    begin: 'include|use <',
+    end: '>'
+  };
+  const PARAMS = {
+    className: 'params',
+    begin: '\\(',
+    end: '\\)',
+    contains: [
+      'self',
+      NUMBERS,
+      STRING,
+      SPECIAL_VARS,
+      LITERALS
+    ]
+  };
+  const MODIFIERS = {
+    begin: '[*!#%]',
+    relevance: 0
+  };
+  const FUNCTIONS = {
+    className: 'function',
+    beginKeywords: 'module function',
+    end: /=|\{/,
+    contains: [
+      PARAMS,
+      hljs.UNDERSCORE_TITLE_MODE
+    ]
+  };
 
   return {
     name: 'OpenSCAD',
-    aliases: ['scad'],
+    aliases: [ 'scad' ],
     keywords: {
       keyword: 'function module include use for intersection_for if else \\%',
       literal: 'false true PI undef',
@@ -66,5 +75,5 @@ export default function(hljs) {
       MODIFIERS,
       FUNCTIONS
     ]
-  }
+  };
 }

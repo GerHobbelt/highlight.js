@@ -6,19 +6,26 @@ Website: https://en.wikipedia.org/wiki/Smalltalk
 */
 
 export default function(hljs) {
-  var VAR_IDENT_RE = '[a-z][a-zA-Z0-9_]*';
-  var CHAR = {
+  const VAR_IDENT_RE = '[a-z][a-zA-Z0-9_]*';
+  const CHAR = {
     className: 'string',
     begin: '\\$.{1}'
   };
-  var SYMBOL = {
+  const SYMBOL = {
     className: 'symbol',
     begin: '#' + hljs.UNDERSCORE_IDENT_RE
   };
   return {
     name: 'Smalltalk',
-    aliases: ['st'],
-    keywords: 'self super nil true false thisContext', // only 6
+    aliases: [ 'st' ],
+    keywords: [
+      "self",
+      "super",
+      "nil",
+      "true",
+      "false",
+      "thisContext"
+    ],
     contains: [
       hljs.COMMENT('"', '"'),
       hljs.APOS_STRING_MODE,
@@ -42,12 +49,12 @@ export default function(hljs) {
         returnBegin: true,
         end: /\|/,
         illegal: /\S/,
-        contains: [{
+        contains: [ {
           begin: '(\\|[ ]*)?' + VAR_IDENT_RE
-        }]
+        } ]
       },
       {
-        begin: '\\#\\(',
+        begin: '#\\(',
         end: '\\)',
         contains: [
           hljs.APOS_STRING_MODE,

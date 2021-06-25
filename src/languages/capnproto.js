@@ -6,15 +6,58 @@ Website: https://capnproto.org/capnp-tool.html
 Category: protocols
 */
 
+/** @type LanguageFn */
 export default function(hljs) {
+  const KEYWORDS = [
+    "struct",
+    "enum",
+    "interface",
+    "union",
+    "group",
+    "import",
+    "using",
+    "const",
+    "annotation",
+    "extends",
+    "in",
+    "of",
+    "on",
+    "as",
+    "with",
+    "from",
+    "fixed"
+  ];
+  const BUILT_INS = [
+    "Void",
+    "Bool",
+    "Int8",
+    "Int16",
+    "Int32",
+    "Int64",
+    "UInt8",
+    "UInt16",
+    "UInt32",
+    "UInt64",
+    "Float32",
+    "Float64",
+    "Text",
+    "Data",
+    "AnyPointer",
+    "AnyStruct",
+    "Capability",
+    "List"
+  ];
+  const LITERALS = [
+    "true",
+    "false"
+  ];
   return {
     name: 'Cap’n Proto',
     aliases: ['capnp'],
     keywords: {
-      keyword: 'struct enum interface union group import using const annotation extends in of on as with from fixed',
-      built_in: 'Void Bool Int8 Int16 Int32 Int64 UInt8 UInt16 UInt32 UInt64 Float32 Float64 ' +
-        'Text Data AnyPointer AnyStruct Capability List',
-      literal: 'true false'
+      keyword: KEYWORDS,
+      built_in: BUILT_INS,
+      literal: LITERALS
     },
     contains: [
       hljs.QUOTE_STRING_MODE,
@@ -34,28 +77,24 @@ export default function(hljs) {
         beginKeywords: 'struct enum',
         end: /\{/,
         illegal: /\n/,
-        contains: [
-          hljs.inherit(hljs.TITLE_MODE, {
-            starts: {
-              endsWithParent: true,
-              excludeEnd: true
-            } // hack: eating everything after the first title
-          })
-        ]
+        contains: [hljs.inherit(hljs.TITLE_MODE, {
+          starts: {
+            endsWithParent: true,
+            excludeEnd: true
+          } // hack: eating everything after the first title
+        })]
       },
       {
         className: 'class',
         beginKeywords: 'interface',
         end: /\{/,
         illegal: /\n/,
-        contains: [
-          hljs.inherit(hljs.TITLE_MODE, {
-            starts: {
-              endsWithParent: true,
-              excludeEnd: true
-            } // hack: eating everything after the first title
-          })
-        ]
+        contains: [hljs.inherit(hljs.TITLE_MODE, {
+          starts: {
+            endsWithParent: true,
+            excludeEnd: true
+          } // hack: eating everything after the first title
+        })]
       }
     ]
   };

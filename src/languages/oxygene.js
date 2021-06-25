@@ -6,9 +6,10 @@ Website: https://www.elementscompiler.com/elements/default.aspx
 */
 
 export default function(hljs) {
-  var OXYGENE_KEYWORDS = {
+  const OXYGENE_KEYWORDS = {
     $pattern: /\.?\w+/,
-    keyword: 'abstract add and array as asc aspect assembly async begin break block by case class concat const copy constructor continue ' +
+    keyword:
+      'abstract add and array as asc aspect assembly async begin break block by case class concat const copy constructor continue ' +
       'create default delegate desc distinct div do downto dynamic each else empty end ensure enum equals event except exit extension external false ' +
       'final finalize finalizer finally flags for forward from function future global group has if implementation implements implies in index inherited ' +
       'inline interface into invariants is iterator join locked locking loop matching method mod module namespace nested new nil not notify nullable of ' +
@@ -17,31 +18,35 @@ export default function(hljs) {
       'type union unit unsafe until uses using var virtual raises volatile where while with write xor yield await mapped deprecated stdcall cdecl pascal ' +
       'register safecall overload library platform reference packed strict published autoreleasepool selector strong weak unretained'
   };
-  var CURLY_COMMENT = hljs.COMMENT(
-    '{',
-    '}', {
+  const CURLY_COMMENT = hljs.COMMENT(
+    /\{/,
+    /\}/,
+    {
       relevance: 0
     }
   );
-  var PAREN_COMMENT = hljs.COMMENT(
+  const PAREN_COMMENT = hljs.COMMENT(
     '\\(\\*',
-    '\\*\\)', {
+    '\\*\\)',
+    {
       relevance: 10
     }
   );
-  var STRING = {
+  const STRING = {
     className: 'string',
     begin: '\'',
     end: '\'',
-    contains: [{
-      begin: '\'\''
-    }]
+    contains: [
+      {
+        begin: '\'\''
+      }
+    ]
   };
-  var CHAR_STRING = {
+  const CHAR_STRING = {
     className: 'string',
     begin: '(#\\d+)+'
   };
-  var FUNCTION = {
+  const FUNCTION = {
     className: 'function',
     beginKeywords: 'function constructor destructor procedure method',
     end: '[:;]',
@@ -53,9 +58,13 @@ export default function(hljs) {
         begin: '\\(',
         end: '\\)',
         keywords: OXYGENE_KEYWORDS,
-        contains: [STRING, CHAR_STRING]
+        contains: [
+          STRING,
+          CHAR_STRING
+        ]
       },
-      CURLY_COMMENT, PAREN_COMMENT
+      CURLY_COMMENT,
+      PAREN_COMMENT
     ]
   };
   return {
@@ -64,8 +73,11 @@ export default function(hljs) {
     keywords: OXYGENE_KEYWORDS,
     illegal: '("|\\$[G-Zg-z]|\\/\\*|</|=>|->)',
     contains: [
-      CURLY_COMMENT, PAREN_COMMENT, hljs.C_LINE_COMMENT_MODE,
-      STRING, CHAR_STRING,
+      CURLY_COMMENT,
+      PAREN_COMMENT,
+      hljs.C_LINE_COMMENT_MODE,
+      STRING,
+      CHAR_STRING,
       hljs.NUMBER_MODE,
       FUNCTION,
       {
@@ -74,8 +86,11 @@ export default function(hljs) {
         end: 'end;',
         keywords: OXYGENE_KEYWORDS,
         contains: [
-          STRING, CHAR_STRING,
-          CURLY_COMMENT, PAREN_COMMENT, hljs.C_LINE_COMMENT_MODE,
+          STRING,
+          CHAR_STRING,
+          CURLY_COMMENT,
+          PAREN_COMMENT,
+          hljs.C_LINE_COMMENT_MODE,
           FUNCTION
         ]
       }

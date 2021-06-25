@@ -3,24 +3,25 @@ Language: CoffeeScript
 Author: Dmytrii Nagirniak <dnagir@gmail.com>
 Contributors: Oleg Efimov <efimovov@gmail.com>, Cédric Néhémie <cedric.nehemie@gmail.com>
 Description: CoffeeScript is a programming language that transcompiles to JavaScript. For info about language see http://coffeescript.org/
-Category: common, scripting
+Category: scripting
 Website: https://coffeescript.org
 */
 
-import * as ECMAScript from "./lib/ecmascript";
+import * as ECMAScript from './lib/ecmascript.js';
 
+/** @type LanguageFn */
 export default function(hljs) {
-  var COFFEE_BUILT_INS = [
+  const COFFEE_BUILT_INS = [
     'npm',
     'print'
   ];
-  var COFFEE_LITERALS = [
+  const COFFEE_LITERALS = [
     'yes',
     'no',
     'on',
     'off'
   ];
-  var COFFEE_KEYWORDS = [
+  const COFFEE_KEYWORDS = [
     'then',
     'unless',
     'until',
@@ -33,28 +34,28 @@ export default function(hljs) {
     'isnt',
     'not'
   ];
-  var NOT_VALID_KEYWORDS = [
+  const NOT_VALID_KEYWORDS = [
     "var",
     "const",
     "let",
     "function",
     "static"
   ];
-  var excluding = (list) =>
+  const excluding = (list) =>
     (kw) => !list.includes(kw);
-  var KEYWORDS = {
-    keyword: ECMAScript.KEYWORDS.concat(COFFEE_KEYWORDS).filter(excluding(NOT_VALID_KEYWORDS)).join(" "),
-    literal: ECMAScript.LITERALS.concat(COFFEE_LITERALS).join(" "),
-    built_in: ECMAScript.BUILT_INS.concat(COFFEE_BUILT_INS).join(" ")
+  const KEYWORDS = {
+    keyword: ECMAScript.KEYWORDS.concat(COFFEE_KEYWORDS).filter(excluding(NOT_VALID_KEYWORDS)),
+    literal: ECMAScript.LITERALS.concat(COFFEE_LITERALS),
+    built_in: ECMAScript.BUILT_INS.concat(COFFEE_BUILT_INS)
   };
-  var JS_IDENT_RE = '[A-Za-z$_][0-9A-Za-z$_]*';
-  var SUBST = {
+  const JS_IDENT_RE = '[A-Za-z$_][0-9A-Za-z$_]*';
+  const SUBST = {
     className: 'subst',
     begin: /#\{/,
-    end: /}/,
+    end: /\}/,
     keywords: KEYWORDS
   };
-  var EXPRESSIONS = [
+  const EXPRESSIONS = [
     hljs.BINARY_NUMBER_MODE,
     hljs.inherit(hljs.C_NUMBER_MODE, {
       starts: {
@@ -64,7 +65,8 @@ export default function(hljs) {
     }), // a number tries to eat the following slash to prevent treating it as a regexp
     {
       className: 'string',
-      variants: [{
+      variants: [
+        {
           begin: /'''/,
           end: /'''/,
           contains: [hljs.BACKSLASH_ESCAPE]
@@ -77,21 +79,31 @@ export default function(hljs) {
         {
           begin: /"""/,
           end: /"""/,
-          contains: [hljs.BACKSLASH_ESCAPE, SUBST]
+          contains: [
+            hljs.BACKSLASH_ESCAPE,
+            SUBST
+          ]
         },
         {
           begin: /"/,
           end: /"/,
-          contains: [hljs.BACKSLASH_ESCAPE, SUBST]
+          contains: [
+            hljs.BACKSLASH_ESCAPE,
+            SUBST
+          ]
         }
       ]
     },
     {
       className: 'regexp',
-      variants: [{
+      variants: [
+        {
           begin: '///',
           end: '///',
-          contains: [SUBST, hljs.HASH_COMMENT_MODE]
+          contains: [
+            SUBST,
+            hljs.HASH_COMMENT_MODE
+          ]
         },
         {
           begin: '//[gim]{0,3}(?=\\W)',
@@ -111,24 +123,25 @@ export default function(hljs) {
       subLanguage: 'javascript',
       excludeBegin: true,
       excludeEnd: true,
-      variants: [{
+      variants: [
+        {
           begin: '```',
-          end: '```',
+          end: '```'
         },
         {
           begin: '`',
-          end: '`',
+          end: '`'
         }
       ]
     }
   ];
   SUBST.contains = EXPRESSIONS;
 
-  var TITLE = hljs.inherit(hljs.TITLE_MODE, {
+  const TITLE = hljs.inherit(hljs.TITLE_MODE, {
     begin: JS_IDENT_RE
   });
-  var PARAMS_RE = '(\\(.*\\))?\\s*\\B[-=]>';
-  var PARAMS = {
+  const POSSIBLE_PARAMS_RE = '(\\(.*\\)\\s*)?\\B[-=]>';
+  const PARAMS = {
     className: 'params',
     begin: '\\([^\\(]',
     returnBegin: true,
@@ -144,18 +157,26 @@ export default function(hljs) {
 
   return {
     name: 'CoffeeScript',
-    aliases: ['coffee', 'cson', 'iced'],
+    aliases: [
+      'coffee',
+      'cson',
+      'iced'
+    ],
     keywords: KEYWORDS,
     illegal: /\/\*/,
-    contains: EXPRESSIONS.concat([
+    contains: [
+      ...EXPRESSIONS,
       hljs.COMMENT('###', '###'),
       hljs.HASH_COMMENT_MODE,
       {
         className: 'function',
-        begin: '^\\s*' + JS_IDENT_RE + '\\s*=\\s*' + PARAMS_RE,
+        begin: '^\\s*' + JS_IDENT_RE + '\\s*=\\s*' + POSSIBLE_PARAMS_RE,
         end: '[-=]>',
         returnBegin: true,
-        contains: [TITLE, PARAMS]
+        contains: [
+          TITLE,
+          PARAMS
+        ]
       },
       {
         // anonymous function start
@@ -163,7 +184,7 @@ export default function(hljs) {
         relevance: 0,
         contains: [{
           className: 'function',
-          begin: PARAMS_RE,
+          begin: POSSIBLE_PARAMS_RE,
           end: '[-=]>',
           returnBegin: true,
           contains: [PARAMS]
@@ -174,7 +195,8 @@ export default function(hljs) {
         beginKeywords: 'class',
         end: '$',
         illegal: /[:="\[\]]/,
-        contains: [{
+        contains: [
+          {
             beginKeywords: 'extends',
             endsWithParent: true,
             illegal: /[:="\[\]]/,
@@ -190,6 +212,6 @@ export default function(hljs) {
         returnEnd: true,
         relevance: 0
       }
-    ])
+    ]
   };
 }

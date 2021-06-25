@@ -6,14 +6,36 @@ Website: http://irpf90.ups-tlse.fr
 Category: scientific
 */
 
+import * as regex from '../lib/regex.js';
+
+/** @type LanguageFn */
 export default function(hljs) {
-  var PARAMS = {
+  const PARAMS = {
     className: 'params',
     begin: '\\(',
     end: '\\)'
   };
 
-  var F_KEYWORDS = {
+  // regex in both fortran and irpf90 should match
+  const OPTIONAL_NUMBER_SUFFIX = /(_[a-z_\d]+)?/;
+  const OPTIONAL_NUMBER_EXP = /([de][+-]?\d+)?/;
+  const NUMBER = {
+    className: 'number',
+    variants: [
+      {
+        begin: regex.concat(/\b\d+/, /\.(\d*)/, OPTIONAL_NUMBER_EXP, OPTIONAL_NUMBER_SUFFIX)
+      },
+      {
+        begin: regex.concat(/\b\d+/, OPTIONAL_NUMBER_EXP, OPTIONAL_NUMBER_SUFFIX)
+      },
+      {
+        begin: regex.concat(/\.\d+/, OPTIONAL_NUMBER_EXP, OPTIONAL_NUMBER_SUFFIX)
+      }
+    ],
+    relevance: 0
+  };
+
+  const F_KEYWORDS = {
     literal: '.False. .True.',
     keyword: 'kind do while private call intrinsic where elsewhere ' +
       'type endtype endmodule endselect endinterface end enddo endif if forall endforall only contains default return stop then ' +
@@ -77,7 +99,10 @@ export default function(hljs) {
         className: 'function',
         beginKeywords: 'subroutine function program',
         illegal: '[${=\\n]',
-        contains: [hljs.UNDERSCORE_TITLE_MODE, PARAMS]
+        contains: [
+          hljs.UNDERSCORE_TITLE_MODE,
+          PARAMS
+        ]
       },
       hljs.COMMENT('!', '$', {
         relevance: 0
@@ -85,12 +110,7 @@ export default function(hljs) {
       hljs.COMMENT('begin_doc', 'end_doc', {
         relevance: 10
       }),
-      {
-        className: 'number',
-        // regex in both fortran and irpf90 should match
-        begin: '(?=\\b|\\+|\\-|\\.)(?:\\.|\\d+\\.?)\\d*([de][+-]?\\d+)?(_[a-z_\\d]+)?',
-        relevance: 0
-      }
+      NUMBER
     ]
   };
 }

@@ -4,20 +4,21 @@ Author: Alex McKibben <alex@nullscope.net>
 Website: https://en.wikipedia.org/wiki/Extended_Backus–Naur_form
 */
 
+/** @type LanguageFn */
 export default function(hljs) {
-  var commentMode = hljs.COMMENT(/\(\*/, /\*\)/);
+  const commentMode = hljs.COMMENT(/\(\*/, /\*\)/);
 
-  var nonTerminalMode = {
+  const nonTerminalMode = {
     className: "attribute",
-    begin: /^[ ]*[a-zA-Z][a-zA-Z-_]*([\s-_]+[a-zA-Z][a-zA-Z]*)*/
+    begin: /^[ ]*[a-zA-Z]+([\s_-]+[a-zA-Z]+)*/
   };
 
-  var specialSequenceMode = {
+  const specialSequenceMode = {
     className: "meta",
     begin: /\?.*\?/
   };
 
-  var ruleBodyMode = {
+  const ruleBodyMode = {
     begin: /=/,
     end: /[.;]/,
     contains: [
@@ -32,9 +33,9 @@ export default function(hljs) {
           {
             begin: '`',
             end: '`'
-          },
+          }
         ]
-      },
+      }
     ]
   };
 

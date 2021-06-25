@@ -5,30 +5,33 @@ Website: https://elm-lang.org
 Category: functional
 */
 
+/** @type LanguageFn */
 export default function(hljs) {
-  var COMMENT = {
+  const COMMENT = {
     variants: [
       hljs.COMMENT('--', '$'),
       hljs.COMMENT(
-        '{-',
-        '-}', {
+        /\{-/,
+        /-\}/,
+        {
           contains: ['self']
         }
       )
     ]
   };
 
-  var CONSTRUCTOR = {
+  const CONSTRUCTOR = {
     className: 'type',
     begin: '\\b[A-Z][\\w\']*', // TODO: other constructors (built-in, infix).
     relevance: 0
   };
 
-  var LIST = {
+  const LIST = {
     begin: '\\(',
     end: '\\)',
     illegal: '"',
-    contains: [{
+    contains: [
+      {
         className: 'type',
         begin: '\\b[A-Z][\\w]*(\\((\\.\\.|,|\\w+)\\))?'
       },
@@ -36,23 +39,46 @@ export default function(hljs) {
     ]
   };
 
-  var RECORD = {
-    begin: '{',
-    end: '}',
+  const RECORD = {
+    begin: /\{/,
+    end: /\}/,
     contains: LIST.contains
   };
 
-  var CHARACTER = {
+  const CHARACTER = {
     className: 'string',
     begin: '\'\\\\?.',
     end: '\'',
     illegal: '.'
   };
 
+  const KEYWORDS = [
+    "let",
+    "in",
+    "if",
+    "then",
+    "else",
+    "case",
+    "of",
+    "where",
+    "module",
+    "import",
+    "exposing",
+    "type",
+    "alias",
+    "as",
+    "infix",
+    "infixl",
+    "infixr",
+    "port",
+    "effect",
+    "command",
+    "subscription"
+  ];
+
   return {
     name: 'Elm',
-    keywords: 'let in if then else case of where module import exposing ' +
-      'type alias as infix infixl infixr port effect command subscription',
+    keywords: KEYWORDS,
     contains: [
 
       // Top-level constructions.
@@ -61,26 +87,40 @@ export default function(hljs) {
         beginKeywords: 'port effect module',
         end: 'exposing',
         keywords: 'port effect module where command subscription exposing',
-        contains: [LIST, COMMENT],
+        contains: [
+          LIST,
+          COMMENT
+        ],
         illegal: '\\W\\.|;'
       },
       {
         begin: 'import',
         end: '$',
         keywords: 'import as exposing',
-        contains: [LIST, COMMENT],
+        contains: [
+          LIST,
+          COMMENT
+        ],
         illegal: '\\W\\.|;'
       },
       {
         begin: 'type',
         end: '$',
         keywords: 'type alias',
-        contains: [CONSTRUCTOR, LIST, RECORD, COMMENT]
+        contains: [
+          CONSTRUCTOR,
+          LIST,
+          RECORD,
+          COMMENT
+        ]
       },
       {
         beginKeywords: 'infix infixl infixr',
         end: '$',
-        contains: [hljs.C_NUMBER_MODE, COMMENT]
+        contains: [
+          hljs.C_NUMBER_MODE,
+          COMMENT
+        ]
       },
       {
         begin: 'port',
@@ -90,7 +130,6 @@ export default function(hljs) {
       },
 
       // Literals and names.
-
       CHARACTER,
       hljs.QUOTE_STRING_MODE,
       hljs.C_NUMBER_MODE,
@@ -100,9 +139,9 @@ export default function(hljs) {
       }),
       COMMENT,
 
-      {
+      { // No markup, relevance booster
         begin: '->|<-'
-      } // No markup, relevance booster
+      }
     ],
     illegal: /;/
   };

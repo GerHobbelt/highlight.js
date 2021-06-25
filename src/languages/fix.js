@@ -3,6 +3,7 @@ Language: FIX
 Author: Brent Bradbury <brent@brentium.com>
 */
 
+/** @type LanguageFn */
 export default function(hljs) {
   return {
     name: 'FIX',
@@ -12,7 +13,8 @@ export default function(hljs) {
       excludeEnd: true,
       returnBegin: true,
       returnEnd: false,
-      contains: [{
+      contains: [
+        {
           begin: /([^\u2401\u0001=]+)/,
           end: /=([^\u2401\u0001=]+)/,
           returnEnd: true,

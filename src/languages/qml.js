@@ -8,13 +8,18 @@ Website: https://doc.qt.io/qt-5/qmlapplications.html
 Category: scripting
 */
 
+import * as regex from '../lib/regex.js';
+
 export default function(hljs) {
-  var KEYWORDS = {
-    keyword: 'in of on if for while finally var new function do return void else break catch ' +
+  const KEYWORDS = {
+    keyword:
+      'in of on if for while finally var new function do return void else break catch ' +
       'instanceof with throw case default try this switch continue typeof delete ' +
       'let yield const export super debugger as async await import',
-    literal: 'true false null undefined NaN Infinity',
-    built_in: 'eval isFinite isNaN parseFloat parseInt decodeURI decodeURIComponent ' +
+    literal:
+      'true false null undefined NaN Infinity',
+    built_in:
+      'eval isFinite isNaN parseFloat parseInt decodeURI decodeURIComponent ' +
       'encodeURI encodeURIComponent escape unescape Object Function Boolean Error ' +
       'EvalError InternalError RangeError ReferenceError StopIteration SyntaxError ' +
       'TypeError URIError Number Math Date String RegExp Array Float32Array ' +
@@ -27,11 +32,11 @@ export default function(hljs) {
       'Promise'
   };
 
-  var QML_IDENT_RE = '[a-zA-Z_][a-zA-Z0-9\\._]*';
+  const QML_IDENT_RE = '[a-zA-Z_][a-zA-Z0-9\\._]*';
 
   // Isolate property statements. Ends at a :, =, ;, ,, a comment or end of line.
   // Use property class.
-  var PROPERTY = {
+  const PROPERTY = {
     className: 'keyword',
     begin: '\\bproperty\\b',
     starts: {
@@ -43,7 +48,7 @@ export default function(hljs) {
 
   // Isolate signal statements. Ends at a ) a comment or end of line.
   // Use property class.
-  var SIGNAL = {
+  const SIGNAL = {
     className: 'keyword',
     begin: '\\bsignal\\b',
     starts: {
@@ -55,7 +60,7 @@ export default function(hljs) {
 
   // id: is special in QML. When we see id: we want to mark the id: as attribute and
   // emphasize the token following.
-  var ID_ID = {
+  const ID_ID = {
     className: 'attribute',
     begin: '\\bid\\s*:',
     starts: {
@@ -69,24 +74,26 @@ export default function(hljs) {
   // Unfortunately it's hard to know where it ends, as it may contain scalars,
   // objects, object definitions, or javascript. The true end is either when the parent
   // ends or the next attribute is detected.
-  var QML_ATTRIBUTE = {
+  const QML_ATTRIBUTE = {
     begin: QML_IDENT_RE + '\\s*:',
     returnBegin: true,
-    contains: [{
-      className: 'attribute',
-      begin: QML_IDENT_RE,
-      end: '\\s*:',
-      excludeEnd: true,
-      relevance: 0
-    }],
+    contains: [
+      {
+        className: 'attribute',
+        begin: QML_IDENT_RE,
+        end: '\\s*:',
+        excludeEnd: true,
+        relevance: 0
+      }
+    ],
     relevance: 0
   };
 
   // Find QML object. A QML object is a QML identifier followed by { and ends at the matching }.
   // All we really care about is finding IDENT followed by { and just mark up the IDENT and ignore the {.
-  var QML_OBJECT = {
-    begin: QML_IDENT_RE + '\\s*{',
-    end: '{',
+  const QML_OBJECT = {
+    begin: regex.concat(QML_IDENT_RE, /\s*\{/),
+    end: /\{/,
     returnBegin: true,
     relevance: 0,
     contains: [
@@ -98,10 +105,11 @@ export default function(hljs) {
 
   return {
     name: 'QML',
-    aliases: ['qt'],
+    aliases: [ 'qt' ],
     case_insensitive: false,
     keywords: KEYWORDS,
-    contains: [{
+    contains: [
+      {
         className: 'meta',
         begin: /^\s*['"]use (strict|asm)['"]/
       },
@@ -124,7 +132,8 @@ export default function(hljs) {
       hljs.C_BLOCK_COMMENT_MODE,
       {
         className: 'number',
-        variants: [{
+        variants: [
+          {
             begin: '\\b(0[bB][01]+)'
           },
           {
@@ -178,8 +187,9 @@ export default function(hljs) {
         illegal: /\[|%/
       },
       {
+        // hack: prevents detection of keywords after dots
         begin: '\\.' + hljs.IDENT_RE,
-        relevance: 0 // hack: prevents detection of keywords after dots
+        relevance: 0
       },
       ID_ID,
       QML_ATTRIBUTE,

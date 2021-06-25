@@ -8,9 +8,10 @@ Category: enterprise
 */
 
 export default function(hljs) {
-  var VARIABLE = {
+  const VARIABLE = {
     className: 'variable',
-    variants: [{
+    variants: [
+      {
         begin: '\\b([gtps][A-Z]{1}[a-zA-Z0-9]*)(\\[.+\\])?(?:\\s*?)'
       },
       {
@@ -19,29 +20,31 @@ export default function(hljs) {
     ],
     relevance: 0
   };
-  var COMMENT_MODES = [
+  const COMMENT_MODES = [
     hljs.C_BLOCK_COMMENT_MODE,
     hljs.HASH_COMMENT_MODE,
     hljs.COMMENT('--', '$'),
     hljs.COMMENT('[^:]//', '$')
   ];
-  var TITLE1 = hljs.inherit(hljs.TITLE_MODE, {
-    variants: [{
-        begin: '\\b_*rig[A-Z]+[A-Za-z0-9_\\-]*'
+  const TITLE1 = hljs.inherit(hljs.TITLE_MODE, {
+    variants: [
+      {
+        begin: '\\b_*rig[A-Z][A-Za-z0-9_\\-]*'
       },
       {
         begin: '\\b_[a-z0-9\\-]+'
       }
     ]
   });
-  var TITLE2 = hljs.inherit(hljs.TITLE_MODE, {
+  const TITLE2 = hljs.inherit(hljs.TITLE_MODE, {
     begin: '\\b([A-Za-z0-9_\\-]+)\\b'
   });
   return {
     name: 'LiveCode',
     case_insensitive: false,
     keywords: {
-      keyword: '$_COOKIE $_FILES $_GET $_GET_BINARY $_GET_RAW $_POST $_POST_BINARY $_POST_RAW $_SESSION $_SERVER ' +
+      keyword:
+        '$_COOKIE $_FILES $_GET $_GET_BINARY $_GET_RAW $_POST $_POST_BINARY $_POST_RAW $_SESSION $_SERVER ' +
         'codepoint codepoints segment segments codeunit codeunits sentence sentences trueWord trueWords paragraph ' +
         'after byte bytes english the until http forever descending using line real8 with seventh ' +
         'for stdout finally element word words fourth before black ninth sixth characters chars stderr ' +
@@ -53,13 +56,15 @@ export default function(hljs) {
         'first ftp integer abbreviated abbr abbrev private case while if ' +
         'div mod wrap and or bitAnd bitNot bitOr bitXor among not in a an within ' +
         'contains ends with begins the keys of keys',
-      literal: 'SIX TEN FORMFEED NINE ZERO NONE SPACE FOUR FALSE COLON CRLF PI COMMA ENDOFFILE EOF EIGHT FIVE ' +
+      literal:
+        'SIX TEN FORMFEED NINE ZERO NONE SPACE FOUR FALSE COLON CRLF PI COMMA ENDOFFILE EOF EIGHT FIVE ' +
         'QUOTE EMPTY ONE TRUE RETURN CR LINEFEED RIGHT BACKSLASH NULL SEVEN TAB THREE TWO ' +
         'six ten formfeed nine zero none space four false colon crlf pi comma endoffile eof eight five ' +
         'quote empty one true return cr linefeed right backslash null seven tab three two ' +
         'RIVERSION RISTATE FILE_READ_MODE FILE_WRITE_MODE FILE_WRITE_MODE DIR_WRITE_MODE FILE_READ_UMASK ' +
         'FILE_WRITE_UMASK DIR_READ_UMASK DIR_WRITE_UMASK',
-      built_in: 'put abs acos aliasReference annuity arrayDecode arrayEncode asin atan atan2 average avg avgDev base64Decode ' +
+      built_in:
+        'put abs acos aliasReference annuity arrayDecode arrayEncode asin atan atan2 average avg avgDev base64Decode ' +
         'base64Encode baseConvert binaryDecode binaryEncode byteOffset byteToNum cachedURL cachedURLs charToNum ' +
         'cipherNames codepointOffset codepointProperty codepointToNum codeunitOffset commandNames compound compress ' +
         'constantNames cos date dateFormat decompress difference directories ' +
@@ -158,7 +163,8 @@ export default function(hljs) {
       },
       {
         className: 'meta',
-        variants: [{
+        variants: [
+          {
             begin: '<\\?(rev|lc|livecode)',
             relevance: 10
           },
@@ -176,6 +182,6 @@ export default function(hljs) {
       hljs.C_NUMBER_MODE,
       TITLE1
     ].concat(COMMENT_MODES),
-    illegal: ';$|^\\[|^=|&|{'
+    illegal: ';$|^\\[|^=|&|\\{'
   };
 }

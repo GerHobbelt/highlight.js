@@ -10,18 +10,15 @@ Category: template
 export default function(hljs) {
   var PARAMS = {
     className: 'params',
-    begin: '\\(',
-    end: '\\)'
+    begin: '\\(', end: '\\)'
   };
 
   var FUNCTION_NAMES = 'attribute block constant cycle date dump include ' +
-    'max min parent random range source template_from_string';
+                  'max min parent random range source template_from_string';
 
   var FUNCTIONS = {
     beginKeywords: FUNCTION_NAMES,
-    keywords: {
-      name: FUNCTION_NAMES
-    },
+    keywords: {name: FUNCTION_NAMES},
     relevance: 0,
     contains: [
       PARAMS
@@ -30,7 +27,8 @@ export default function(hljs) {
 
   var FILTER = {
     begin: /\|[A-Za-z_]+:?/,
-    keywords: 'abs batch capitalize column convert_encoding date date_modify default ' +
+    keywords:
+      'abs batch capitalize column convert_encoding date date_modify default ' +
       'escape filter first format inky_to_html inline_css join json_encode keys last ' +
       'length lower map markdown merge nl2br number_format raw reduce replace ' +
       'reverse round slice sort spaceless split striptags title trim upper url_encode',
@@ -42,9 +40,7 @@ export default function(hljs) {
   var TAGS = 'apply autoescape block deprecated do embed extends filter flush for from ' +
     'if import include macro sandbox set use verbatim with';
 
-  TAGS = TAGS + ' ' + TAGS.split(' ').map(function(t) {
-    return 'end' + t
-  }).join(' ');
+  TAGS = TAGS + ' ' + TAGS.split(' ').map(function(t){return 'end' + t}).join(' ');
 
   return {
     name: 'Twig',
@@ -52,26 +48,26 @@ export default function(hljs) {
     case_insensitive: true,
     subLanguage: 'xml',
     contains: [
-      hljs.COMMENT(/\{#/, /#}/),
+      hljs.COMMENT(/\{#/, /#\}/),
       {
         className: 'template-tag',
-        begin: /\{%/,
-        end: /%}/,
-        contains: [{
-          className: 'name',
-          begin: /\w+/,
-          keywords: TAGS,
-          starts: {
-            endsWithParent: true,
-            contains: [FILTER, FUNCTIONS],
-            relevance: 0
+        begin: /\{%/, end: /%\}/,
+        contains: [
+          {
+            className: 'name',
+            begin: /\w+/,
+            keywords: TAGS,
+            starts: {
+              endsWithParent: true,
+              contains: [FILTER, FUNCTIONS],
+              relevance: 0
+            }
           }
-        }]
+        ]
       },
       {
         className: 'template-variable',
-        begin: /\{\{/,
-        end: /}}/,
+        begin: /\{\{/, end: /\}\}/,
         contains: ['self', FILTER, FUNCTIONS]
       }
     ]

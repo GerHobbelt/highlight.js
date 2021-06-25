@@ -1,12 +1,14 @@
 'use strict';
 
-const hljs = require('../../build');
+const hljs     = require('../../build');
+hljs.debugMode(); // tests run in debug mode so errors are raised
+
 const { JSDOM } = require('jsdom');
 const { readFile } = require('fs').promises;
-const utility = require('../utility');
+const utility  = require('../utility');
 
 describe('special cases tests', () => {
-  before(async() => {
+  before(async () => {
     const filename = utility.buildPath('fixtures', 'index.html');
     const page = await readFile(filename, 'utf-8');
     const { window } = await new JSDOM(page);
@@ -19,21 +21,20 @@ describe('special cases tests', () => {
 
     // Setup hljs environment
     hljs.configure({ tabReplace: '    ' });
-    hljs.initHighlighting();
+    let blocks = document.querySelectorAll('pre code');
+    blocks.forEach(hljs.highlightElement);
 
     // Setup hljs for non-`<pre><code>` tests
-    hljs.configure({ useBR: true });
+    hljs.configure();
 
-    const blocks = document.querySelectorAll('.code');
-    blocks.forEach(hljs.highlightBlock);
+    blocks = document.querySelectorAll('.code');
+    blocks.forEach(hljs.highlightElement);
   });
 
   require('./explicitLanguage');
-  require('./customMarkup');
   require('./languageAlias');
   require('./noHighlight');
   require('./subLanguages');
   require('./buildClassName');
-  require('./useBr');
-  require('./endsWithParentVariants');
+  require('./endsWithParentVariants')
 });

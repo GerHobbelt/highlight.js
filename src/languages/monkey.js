@@ -6,10 +6,11 @@ Website: https://blitzresearch.itch.io/monkey2
 */
 
 export default function(hljs) {
-  var NUMBER = {
+  const NUMBER = {
     className: 'number',
     relevance: 0,
-    variants: [{
+    variants: [
+      {
         begin: '[$][a-fA-F0-9]+'
       },
       hljs.NUMBER_MODE
@@ -35,7 +36,8 @@ export default function(hljs) {
       hljs.COMMENT('#rem', '#end'),
       hljs.COMMENT(
         "'",
-        '$', {
+        '$',
+        {
           relevance: 0
         }
       ),
@@ -44,15 +46,14 @@ export default function(hljs) {
         beginKeywords: 'function method',
         end: '[(=:]|$',
         illegal: /\n/,
-        contains: [
-          hljs.UNDERSCORE_TITLE_MODE
-        ]
+        contains: [ hljs.UNDERSCORE_TITLE_MODE ]
       },
       {
         className: 'class',
         beginKeywords: 'class interface',
         end: '$',
-        contains: [{
+        contains: [
+          {
             beginKeywords: 'extends implements'
           },
           hljs.UNDERSCORE_TITLE_MODE
@@ -67,7 +68,7 @@ export default function(hljs) {
         begin: '\\s*#',
         end: '$',
         keywords: {
-          'meta-keyword': 'if else elseif endif end then'
+          keyword: 'if else elseif endif end then'
         }
       },
       {
@@ -77,10 +78,10 @@ export default function(hljs) {
       {
         beginKeywords: 'alias',
         end: '=',
-        contains: [hljs.UNDERSCORE_TITLE_MODE]
+        contains: [ hljs.UNDERSCORE_TITLE_MODE ]
       },
       hljs.QUOTE_STRING_MODE,
       NUMBER
     ]
-  }
+  };
 }

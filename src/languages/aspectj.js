@@ -3,35 +3,115 @@ Language: AspectJ
 Author: Hakan Ozler <ozler.hakan@gmail.com>
 Website: https://www.eclipse.org/aspectj/
 Description: Syntax Highlighting for the AspectJ Language which is a general-purpose aspect-oriented extension to the Java programming language.
- */
+Audit: 2020
+*/
+
+import * as regex from '../lib/regex.js';
+
+/** @type LanguageFn */
 export default function(hljs) {
-  var KEYWORDS =
-    'false synchronized int abstract float private char boolean static null if const ' +
-    'for true while long throw strictfp finally protected import native final return void ' +
-    'enum else extends implements break transient new catch instanceof byte super volatile case ' +
-    'assert short package default double public try this switch continue throws privileged ' +
-    'aspectOf adviceexecution proceed cflowbelow cflow initialization preinitialization ' +
-    'staticinitialization withincode target within execution getWithinTypeName handler ' +
-    'thisJoinPoint thisJoinPointStaticPart thisEnclosingJoinPointStaticPart declare parents ' +
-    'warning error soft precedence thisAspectInstance';
-  var SHORTKEYS = 'get set args call';
+  const KEYWORDS = [
+    "false",
+    "synchronized",
+    "int",
+    "abstract",
+    "float",
+    "private",
+    "char",
+    "boolean",
+    "static",
+    "null",
+    "if",
+    "const",
+    "for",
+    "true",
+    "while",
+    "long",
+    "throw",
+    "strictfp",
+    "finally",
+    "protected",
+    "import",
+    "native",
+    "final",
+    "return",
+    "void",
+    "enum",
+    "else",
+    "extends",
+    "implements",
+    "break",
+    "transient",
+    "new",
+    "catch",
+    "instanceof",
+    "byte",
+    "super",
+    "volatile",
+    "case",
+    "assert",
+    "short",
+    "package",
+    "default",
+    "double",
+    "public",
+    "try",
+    "this",
+    "switch",
+    "continue",
+    "throws",
+    "privileged",
+    "aspectOf",
+    "adviceexecution",
+    "proceed",
+    "cflowbelow",
+    "cflow",
+    "initialization",
+    "preinitialization",
+    "staticinitialization",
+    "withincode",
+    "target",
+    "within",
+    "execution",
+    "getWithinTypeName",
+    "handler",
+    "thisJoinPoint",
+    "thisJoinPointStaticPart",
+    "thisEnclosingJoinPointStaticPart",
+    "declare",
+    "parents",
+    "warning",
+    "error",
+    "soft",
+    "precedence",
+    "thisAspectInstance"
+  ];
+  const SHORTKEYS = [
+    "get",
+    "set",
+    "args",
+    "call"
+  ];
+
   return {
     name: 'AspectJ',
     keywords: KEYWORDS,
     illegal: /<\/|#/,
     contains: [
       hljs.COMMENT(
-        '/\\*\\*',
-        '\\*/', {
+        /\/\*\*/,
+        /\*\//,
+        {
           relevance: 0,
-          contains: [{
+          contains: [
+            {
               // eat up @'s in emails to prevent them to be recognized as doctags
               begin: /\w+@/,
               relevance: 0
             },
             {
               className: 'doctag',
-              begin: '@[A-Za-z]+'
+              begin: /@[A-Za-z]+/
             }
           ]
         }
@@ -46,14 +126,15 @@ export default function(hljs) {
         end: /[{;=]/,
         excludeEnd: true,
         illegal: /[:;"\[\]]/,
-        contains: [{
+        contains: [
+          {
             beginKeywords: 'extends implements pertypewithin perthis pertarget percflowbelow percflow issingleton'
           },
           hljs.UNDERSCORE_TITLE_MODE,
           {
             begin: /\([^\)]*/,
             end: /[)]+/,
-            keywords: KEYWORDS + ' ' + SHORTKEYS,
+            keywords: KEYWORDS.concat(SHORTKEYS),
             excludeEnd: false
           }
         ]
@@ -66,7 +147,8 @@ export default function(hljs) {
         relevance: 0,
         keywords: 'class interface',
         illegal: /[:"\[\]]/,
-        contains: [{
+        contains: [
+          {
             beginKeywords: 'extends implements'
           },
           hljs.UNDERSCORE_TITLE_MODE
@@ -78,11 +160,13 @@ export default function(hljs) {
         end: /[)]/,
         excludeEnd: false,
         illegal: /["\[\]]/,
-        contains: [{
-          begin: hljs.UNDERSCORE_IDENT_RE + '\\s*\\(',
-          returnBegin: true,
-          contains: [hljs.UNDERSCORE_TITLE_MODE]
-        }]
+        contains: [
+          {
+            begin: regex.concat(hljs.UNDERSCORE_IDENT_RE, /\s*\(/),
+            returnBegin: true,
+            contains: [ hljs.UNDERSCORE_TITLE_MODE ]
+          }
+        ]
       },
       {
         begin: /[:]/,
@@ -92,9 +176,10 @@ export default function(hljs) {
         excludeEnd: false,
         keywords: KEYWORDS,
         illegal: /["\[\]]/,
-        contains: [{
-            begin: hljs.UNDERSCORE_IDENT_RE + '\\s*\\(',
-            keywords: KEYWORDS + ' ' + SHORTKEYS,
+        contains: [
+          {
+            begin: regex.concat(hljs.UNDERSCORE_IDENT_RE, /\s*\(/),
+            keywords: KEYWORDS.concat(SHORTKEYS),
             relevance: 0
           },
           hljs.QUOTE_STRING_MODE
@@ -108,16 +193,17 @@ export default function(hljs) {
       {
         // the function class is a bit different for AspectJ compared to the Java language
         className: 'function',
-        begin: /\w+ +\w+(\.)?\w+\s*\([^\)]*\)\s*((throws)[\w\s,]+)?[\{;]/,
+        begin: /\w+ +\w+(\.\w+)?\s*\([^\)]*\)\s*((throws)[\w\s,]+)?[\{;]/,
         returnBegin: true,
         end: /[{;=]/,
         keywords: KEYWORDS,
         excludeEnd: true,
-        contains: [{
-            begin: hljs.UNDERSCORE_IDENT_RE + '\\s*\\(',
+        contains: [
+          {
+            begin: regex.concat(hljs.UNDERSCORE_IDENT_RE, /\s*\(/),
             returnBegin: true,
             relevance: 0,
-            contains: [hljs.UNDERSCORE_TITLE_MODE]
+            contains: [ hljs.UNDERSCORE_TITLE_MODE ]
           },
           {
             className: 'params',
@@ -140,7 +226,7 @@ export default function(hljs) {
       {
         // annotation is also used in this language
         className: 'meta',
-        begin: '@[A-Za-z]+'
+        begin: /@[A-Za-z]+/
       }
     ]
   };

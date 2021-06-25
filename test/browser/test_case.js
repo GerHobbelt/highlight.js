@@ -27,10 +27,10 @@ function newTestCase(opts) {
   test.html = opts.html;
   test.expect = opts.expect;
   test.language = opts.language;
-  test.html = test.html || `<pre><code class='${test.language}'>${test.code}</code></pre>`;
+  test.html = test.html || `<pre><code class='language-${test.language}'>${test.code}</code></pre>`;
   test.runner = async function() {
     await buildFakeDOM.bind(this, test)();
-    this.hljs.highlightBlock(this.block);
+    this.hljs.highlightElement(this.block);
     const actual = this.block.innerHTML;
     actual.should.equal(test.expect);
   };
@@ -48,6 +48,9 @@ const buildFakeDOM = async function(data) {
   this.hljs = window.hljs;
 };
 
+// quotes are not encoded because we're testing the value
+// returned by innerHTML where the browser helpfully reencodes
+// &quot; to " for us...
 const defaultCase = newTestCase({
   code: 'var say = "Hello";',
   language: "javascript",

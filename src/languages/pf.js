@@ -7,16 +7,16 @@ Category: config
 */
 
 export default function(hljs) {
-  var MACRO = {
+  const MACRO = {
     className: 'variable',
     begin: /\$[\w\d#@][\w\d_]*/
   };
-  var TABLE = {
+  const TABLE = {
     className: 'variable',
     begin: /<(?!\/)/,
     end: />/
   };
-  var QUOTE_STRING = {
+  const QUOTE_STRING = {
     className: 'string',
     begin: /"/,
     end: /"/
@@ -24,7 +24,7 @@ export default function(hljs) {
 
   return {
     name: 'Packet Filter config',
-    aliases: ['pf.conf'],
+    aliases: [ 'pf.conf' ],
     keywords: {
       $pattern: /[a-z0-9_<>-]+/,
       built_in:

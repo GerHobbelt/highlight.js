@@ -15,17 +15,19 @@ export default function(hljs) {
   var TRANSPOSE_RE = '(\'|\\.\')+';
   var TRANSPOSE = {
     relevance: 0,
-    contains: [{
-      begin: TRANSPOSE_RE
-    }]
+    contains: [
+      { begin: TRANSPOSE_RE }
+    ]
   };
 
   return {
     name: 'Matlab',
     keywords: {
-      keyword: 'break case catch classdef continue else elseif end enumerated events for function ' +
+      keyword:
+        'arguments break case catch classdef continue else elseif end enumeration events for function ' +
         'global if methods otherwise parfor persistent properties return spmd switch try while',
-      built_in: 'sin sind sinh asin asind asinh cos cosd cosh acos acosd acosh tan tand tanh atan ' +
+      built_in:
+        'sin sind sinh asin asind asinh cos cosd cosh acos acosd acosh tan tand tanh atan ' +
         'atand atan2 atanh sec secd sech asec asecd asech csc cscd csch acsc acscd acsch cot ' +
         'cotd coth acot acotd acoth hypot exp expm1 log log1p log10 log2 pow2 realpow reallog ' +
         'realsqrt sqrt nthroot nextpow2 abs angle complex conj imag real unwrap isreal ' +
@@ -36,29 +38,24 @@ export default function(hljs) {
         'eye repmat rand randn linspace logspace freqspace meshgrid accumarray size length ' +
         'ndims numel disp isempty isequal isequalwithequalnans cat reshape diag blkdiag tril ' +
         'triu fliplr flipud flipdim rot90 find sub2ind ind2sub bsxfun ndgrid permute ipermute ' +
-        'shiftdim circshift squeeze isscalar isvector ans eps realmax realmin pi i inf nan ' +
-        'isnan isinf isfinite j why compan gallery hadamard hankel hilb invhilb magic pascal ' +
+        'shiftdim circshift squeeze isscalar isvector ans eps realmax realmin pi i|0 inf nan ' +
+        'isnan isinf isfinite j|0 why compan gallery hadamard hankel hilb invhilb magic pascal ' +
         'rosser toeplitz vander wilkinson max min nanmax nanmin mean nanmean type table ' +
         'readtable writetable sortrows sort figure plot plot3 scatter scatter3 cellfun ' +
         'legend intersect ismember procrustes hold num2cell '
     },
     illegal: '(//|"|#|/\\*|\\s+/\\w+)',
-    contains: [{
+    contains: [
+      {
         className: 'function',
-        beginKeywords: 'function',
-        end: '$',
+        beginKeywords: 'function', end: '$',
         contains: [
           hljs.UNDERSCORE_TITLE_MODE,
           {
             className: 'params',
-            variants: [{
-                begin: '\\(',
-                end: '\\)'
-              },
-              {
-                begin: '\\[',
-                end: '\\]'
-              }
+            variants: [
+              {begin: '\\(', end: '\\)'},
+              {begin: '\\[', end: '\\]'}
             ]
           }
         ]
@@ -81,34 +78,27 @@ export default function(hljs) {
       },
       {
         className: 'string',
-        begin: '\'',
-        end: '\'',
+        begin: '\'', end: '\'',
         contains: [
           hljs.BACKSLASH_ESCAPE,
-          {
-            begin: '\'\''
-          }
-        ]
+          {begin: '\'\''}]
       },
       {
-        begin: /\]|}|\)/,
+        begin: /\]|\}|\)/,
         relevance: 0,
         starts: TRANSPOSE
       },
       {
         className: 'string',
-        begin: '"',
-        end: '"',
+        begin: '"', end: '"',
         contains: [
           hljs.BACKSLASH_ESCAPE,
-          {
-            begin: '""'
-          }
+          {begin: '""'}
         ],
         starts: TRANSPOSE
       },
-      hljs.COMMENT('^\\s*\\%\\{\\s*$', '^\\s*\\%\\}\\s*$'),
-      hljs.COMMENT('\\%', '$')
+      hljs.COMMENT('^\\s*%\\{\\s*$', '^\\s*%\\}\\s*$'),
+      hljs.COMMENT('%', '$')
     ]
   };
 }

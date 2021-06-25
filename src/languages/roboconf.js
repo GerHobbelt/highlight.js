@@ -7,9 +7,9 @@ Category: config
 */
 
 export default function(hljs) {
-  var IDENTIFIER = '[a-zA-Z-_][^\\n{]+\\{';
+  const IDENTIFIER = '[a-zA-Z-_][^\\n{]+\\{';
 
-  var PROPERTY = {
+  const PROPERTY = {
     className: 'attribute',
     begin: /[a-zA-Z-_]+/,
     end: /\s*:/,
@@ -31,14 +31,17 @@ export default function(hljs) {
 
   return {
     name: 'Roboconf',
-    aliases: ['graph', 'instances'],
+    aliases: [
+      'graph',
+      'instances'
+    ],
     case_insensitive: true,
     keywords: 'import',
     contains: [
       // Facet sections
       {
         begin: '^facet ' + IDENTIFIER,
-        end: '}',
+        end: /\}/,
         keywords: 'facet',
         contains: [
           PROPERTY,
@@ -49,7 +52,7 @@ export default function(hljs) {
       // Instance sections
       {
         begin: '^\\s*instance of ' + IDENTIFIER,
-        end: '}',
+        end: /\}/,
         keywords: 'name count channels instance-data instance-state instance of',
         illegal: /\S/,
         contains: [
@@ -62,7 +65,7 @@ export default function(hljs) {
       // Component sections
       {
         begin: '^' + IDENTIFIER,
-        end: '}',
+        end: /\}/,
         contains: [
           PROPERTY,
           hljs.HASH_COMMENT_MODE

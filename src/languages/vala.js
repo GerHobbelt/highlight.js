@@ -23,18 +23,19 @@ export default function(hljs) {
         'public private protected internal ' +
         // Other
         'using new this get set const stdout stdin stderr var',
-      built_in: 'DBus GLib CCode Gee Object Gtk Posix',
-      literal: 'false true null'
+      built_in:
+        'DBus GLib CCode Gee Object Gtk Posix',
+      literal:
+        'false true null'
     },
-    contains: [{
+    contains: [
+      {
         className: 'class',
         beginKeywords: 'class interface namespace',
-        end: '{',
+        end: /\{/,
         excludeEnd: true,
         illegal: '[^,:\\n\\s\\.]',
-        contains: [
-          hljs.UNDERSCORE_TITLE_MODE
-        ]
+        contains: [ hljs.UNDERSCORE_TITLE_MODE ]
       },
       hljs.C_LINE_COMMENT_MODE,
       hljs.C_BLOCK_COMMENT_MODE,
@@ -51,7 +52,6 @@ export default function(hljs) {
         className: 'meta',
         begin: '^#',
         end: '$',
-        relevance: 2
       }
     ]
   };

@@ -1,3 +1,4 @@
+#!/usr/bin/env node
 // For the basic introductions on using this build script, see:
 //
 // <https://highlightjs.readthedocs.org/en/latest/building-testing.html>
@@ -70,12 +71,14 @@ const dir = {};
 commander
   .usage('[options] [<language>...]')
   .option('-n, --no-minify', 'Disable minification')
-  .option('-t, --target <name>', 'Build for target ' +
-                                 '[all, browser, cdn, node]',
-  'browser')
+  .option('-ne, --no-esm', 'Disable building ESM')
+  .option('-t, --target <name>',
+    'Build for target ' +
+    '[all, browser, cdn, node]',
+    'browser')
   .parse(process.argv);
 
-commander.target = commander.target.toLowerCase();
+const TARGET = commander.opts().target.toLowerCase();
 
 dir.root = path.dirname(__dirname);
 dir.buildRoot = path.join(dir.root, 'build');
@@ -84,22 +87,22 @@ async function doTarget(target, buildDir) {
   const build = require(`./build_${target}`);
   process.env.BUILD_DIR = buildDir;
   await clean(buildDir);
-  await build.build({ languages: commander.args, minify: commander.minify });
+  await build.build({ languages: commander.args, minify: commander.opts().minify, esm: commander.opts().esm });
 }
 
 async function doBuild() {
   log("Starting build.");
-  if (commander.target === "all") {
+  if (TARGET === "all") {
     await clean(dir.buildRoot);
     for (const target of TARGETS) {
       log(`** Building ${target.toUpperCase()}. **`);
       const buildDir = path.join(dir.buildRoot, target);
       await doTarget(target, buildDir);
     }
-  } else if (TARGETS.includes(commander.target)) {
-    doTarget(commander.target, dir.buildRoot);
+  } else if (TARGETS.includes(TARGET)) {
+    doTarget(TARGET, dir.buildRoot);
   } else {
-    log(`ERROR: I do not know how to build '${commander.target}'`);
+    log(`ERROR: I do not know how to build '${TARGET}'`);
   }
   log("Finished build.");
 }

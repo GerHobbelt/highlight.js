@@ -6,13 +6,73 @@ Website: https://github.com/JesusFreke/smali
 */
 
 export default function(hljs) {
-  var smali_instr_low_prio = ['add', 'and', 'cmp', 'cmpg', 'cmpl', 'const', 'div', 'double', 'float', 'goto', 'if', 'int', 'long', 'move', 'mul', 'neg', 'new', 'nop', 'not', 'or', 'rem', 'return', 'shl', 'shr', 'sput', 'sub', 'throw', 'ushr', 'xor'];
-  var smali_instr_high_prio = ['aget', 'aput', 'array', 'check', 'execute', 'fill', 'filled', 'goto/16', 'goto/32', 'iget', 'instance', 'invoke', 'iput', 'monitor', 'packed', 'sget', 'sparse'];
-  var smali_keywords = ['transient', 'constructor', 'abstract', 'final', 'synthetic', 'public', 'private', 'protected', 'static', 'bridge', 'system'];
+  const smali_instr_low_prio = [
+    'add',
+    'and',
+    'cmp',
+    'cmpg',
+    'cmpl',
+    'const',
+    'div',
+    'double',
+    'float',
+    'goto',
+    'if',
+    'int',
+    'long',
+    'move',
+    'mul',
+    'neg',
+    'new',
+    'nop',
+    'not',
+    'or',
+    'rem',
+    'return',
+    'shl',
+    'shr',
+    'sput',
+    'sub',
+    'throw',
+    'ushr',
+    'xor'
+  ];
+  const smali_instr_high_prio = [
+    'aget',
+    'aput',
+    'array',
+    'check',
+    'execute',
+    'fill',
+    'filled',
+    'goto/16',
+    'goto/32',
+    'iget',
+    'instance',
+    'invoke',
+    'iput',
+    'monitor',
+    'packed',
+    'sget',
+    'sparse'
+  ];
+  const smali_keywords = [
+    'transient',
+    'constructor',
+    'abstract',
+    'final',
+    'synthetic',
+    'public',
+    'private',
+    'protected',
+    'static',
+    'bridge',
+    'system'
+  ];
   return {
     name: 'Smali',
-    aliases: ['smali'],
-    contains: [{
+    contains: [
+      {
         className: 'string',
         begin: '"',
         end: '"',
@@ -20,13 +80,15 @@ export default function(hljs) {
       },
       hljs.COMMENT(
         '#',
-        '$', {
+        '$',
+        {
           relevance: 0
         }
       ),
       {
         className: 'keyword',
-        variants: [{
+        variants: [
+          {
             begin: '\\s*\\.end\\s[a-zA-Z0-9]*'
           },
           {
@@ -44,17 +106,18 @@ export default function(hljs) {
       },
       {
         className: 'built_in',
-        variants: [{
+        variants: [
+          {
             begin: '\\s(' + smali_instr_low_prio.join('|') + ')\\s'
           },
           {
-            begin: '\\s(' + smali_instr_low_prio.join('|') + ')((\\-|/)[a-zA-Z0-9]+)+\\s',
+            begin: '\\s(' + smali_instr_low_prio.join('|') + ')((-|/)[a-zA-Z0-9]+)+\\s',
             relevance: 10
           },
           {
-            begin: '\\s(' + smali_instr_high_prio.join('|') + ')((\\-|/)[a-zA-Z0-9]+)*\\s',
+            begin: '\\s(' + smali_instr_high_prio.join('|') + ')((-|/)[a-zA-Z0-9]+)*\\s',
             relevance: 10
-          },
+          }
         ]
       },
       {
@@ -63,7 +126,7 @@ export default function(hljs) {
         relevance: 0
       },
       {
-        begin: '[vp][0-9]+',
+        begin: '[vp][0-9]+'
       }
     ]
   };

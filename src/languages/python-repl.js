@@ -7,25 +7,28 @@ Category: common
 
 export default function(hljs) {
   return {
-    aliases: ['pycon'],
-    contains: [{
-      className: 'meta',
-      starts: {
-        // a space separates the REPL prefix from the actual code
-        // this is purely for cleaner HTML output
-        end: / |$/,
+    aliases: [ 'pycon' ],
+    contains: [
+      {
+        className: 'meta',
         starts: {
-          end: '$',
-          subLanguage: 'python'
-        }
-      },
-      variants: [{
-          begin: /^>>>(?=[ ]|$)/
+          // a space separates the REPL prefix from the actual code
+          // this is purely for cleaner HTML output
+          end: / |$/,
+          starts: {
+            end: '$',
+            subLanguage: 'python'
+          }
         },
-        {
-          begin: /^\.\.\.(?=[ ]|$)/
-        }
-      ]
-    }, ]
-  }
+        variants: [
+          {
+            begin: /^>>>(?=[ ]|$)/
+          },
+          {
+            begin: /^\.\.\.(?=[ ]|$)/
+          }
+        ]
+      }
+    ]
+  };
 }

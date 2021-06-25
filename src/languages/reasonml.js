@@ -19,47 +19,62 @@ export default function(hljs) {
       .join('|');
   }
 
-  var RE_IDENT = '~?[a-z$_][0-9a-zA-Z$_]*';
-  var RE_MODULE_IDENT = '`?[A-Z$_][0-9a-zA-Z$_]*';
+  const RE_IDENT = '~?[a-z$_][0-9a-zA-Z$_]*';
+  const RE_MODULE_IDENT = '`?[A-Z$_][0-9a-zA-Z$_]*';
 
-  var RE_PARAM_TYPEPARAM = '\'?[a-z$_][0-9a-z$_]*';
-  var RE_PARAM_TYPE = '\s*:\s*[a-z$_][0-9a-z$_]*(\(\s*(' + RE_PARAM_TYPEPARAM + '\s*(,' + RE_PARAM_TYPEPARAM + ')*)?\s*\))?';
-  var RE_PARAM = RE_IDENT + '(' + RE_PARAM_TYPE + ')?(' + RE_PARAM_TYPE + ')?';
-  var RE_OPERATOR = "(" + orReValues(['||', '&&', '++', '**', '+.', '*', '/', '*.', '/.', '...', '|>']) + "|==|===)";
-  var RE_OPERATOR_SPACED = "\\s+" + RE_OPERATOR + "\\s+";
+  const RE_PARAM_TYPEPARAM = '\'?[a-z$_][0-9a-z$_]*';
+  const RE_PARAM_TYPE = '\\s*:\\s*[a-z$_][0-9a-z$_]*(\\(\\s*(' + RE_PARAM_TYPEPARAM + '\\s*(,' + RE_PARAM_TYPEPARAM + '\\s*)*)?\\))?';
+  const RE_PARAM = RE_IDENT + '(' + RE_PARAM_TYPE + '){0,2}';
+  const RE_OPERATOR = "(" + orReValues([
+    '||',
+    '++',
+    '**',
+    '+.',
+    '*',
+    '/',
+    '*.',
+    '/.',
+    '...'
+  ]) + "|\\|>|&&|==|===)";
+  const RE_OPERATOR_SPACED = "\\s+" + RE_OPERATOR + "\\s+";
 
-  var KEYWORDS = {
-    keyword: 'and as asr assert begin class constraint do done downto else end exception external ' +
+  const KEYWORDS = {
+    keyword:
+      'and as asr assert begin class constraint do done downto else end exception external ' +
       'for fun function functor if in include inherit initializer ' +
       'land lazy let lor lsl lsr lxor match method mod module mutable new nonrec ' +
       'object of open or private rec sig struct then to try type val virtual when while with',
-    built_in: 'array bool bytes char exn|5 float int int32 int64 list lazy_t|5 nativeint|5 ref string unit ',
-    literal: 'true false'
+    built_in:
+      'array bool bytes char exn|5 float int int32 int64 list lazy_t|5 nativeint|5 ref string unit ',
+    literal:
+      'true false'
   };
 
-  var RE_NUMBER = '\\b(0[xX][a-fA-F0-9_]+[Lln]?|' +
+  const RE_NUMBER = '\\b(0[xX][a-fA-F0-9_]+[Lln]?|' +
     '0[oO][0-7_]+[Lln]?|' +
     '0[bB][01_]+[Lln]?|' +
     '[0-9][0-9_]*([Lln]|(\\.[0-9_]*)?([eE][-+]?[0-9_]+)?)?)';
 
-  var NUMBER_MODE = {
+  const NUMBER_MODE = {
     className: 'number',
     relevance: 0,
-    variants: [{
+    variants: [
+      {
         begin: RE_NUMBER
       },
       {
-        begin: '\\(\\-' + RE_NUMBER + '\\)'
+        begin: '\\(-' + RE_NUMBER + '\\)'
       }
     ]
   };
 
-  var OPERATOR_MODE = {
+  const OPERATOR_MODE = {
     className: 'operator',
     relevance: 0,
     begin: RE_OPERATOR
   };
-  var LIST_CONTENTS_MODES = [{
+  const LIST_CONTENTS_MODES = [
+    {
       className: 'identifier',
       relevance: 0,
       begin: RE_IDENT
@@ -68,36 +83,43 @@ export default function(hljs) {
     NUMBER_MODE
   ];
 
-  var MODULE_ACCESS_CONTENTS = [
+  const MODULE_ACCESS_CONTENTS = [
     hljs.QUOTE_STRING_MODE,
     OPERATOR_MODE,
     {
       className: 'module',
       begin: "\\b" + RE_MODULE_IDENT,
       returnBegin: true,
+      relevance: 0,
       end: "\.",
-      contains: [{
-        className: 'identifier',
-        begin: RE_MODULE_IDENT,
-        relevance: 0
-      }]
+      contains: [
+        {
+          className: 'identifier',
+          begin: RE_MODULE_IDENT,
+          relevance: 0
+        }
+      ]
     }
   ];
 
-  var PARAMS_CONTENTS = [{
-    className: 'module',
-    begin: "\\b" + RE_MODULE_IDENT,
-    returnBegin: true,
-    end: "\.",
-    relevance: 0,
-    contains: [{
-      className: 'identifier',
-      begin: RE_MODULE_IDENT,
-      relevance: 0
-    }]
-  }];
+  const PARAMS_CONTENTS = [
+    {
+      className: 'module',
+      begin: "\\b" + RE_MODULE_IDENT,
+      returnBegin: true,
+      end: "\.",
+      relevance: 0,
+      contains: [
+        {
+          className: 'identifier',
+          begin: RE_MODULE_IDENT,
+          relevance: 0
+        }
+      ]
+    }
+  ];
 
-  var PARAMS_MODE = {
+  const PARAMS_MODE = {
     begin: RE_IDENT,
     end: '(,|\\n|\\))',
     relevance: 0,
@@ -114,41 +136,45 @@ export default function(hljs) {
     ]
   };
 
-  var FUNCTION_BLOCK_MODE = {
+  const FUNCTION_BLOCK_MODE = {
     className: 'function',
     relevance: 0,
     keywords: KEYWORDS,
-    variants: [{
+    variants: [
+      {
         begin: '\\s(\\(\\.?.*?\\)|' + RE_IDENT + ')\\s*=>',
         end: '\\s*=>',
         returnBegin: true,
         relevance: 0,
-        contains: [{
-          className: 'params',
-          variants: [{
-              begin: RE_IDENT
-            },
-            {
-              begin: RE_PARAM
-            },
-            {
-              begin: /\(\s*\)/,
-            }
-          ]
-        }]
+        contains: [
+          {
+            className: 'params',
+            variants: [
+              {
+                begin: RE_IDENT
+              },
+              {
+                begin: RE_PARAM
+              },
+              {
+                begin: /\(\s*\)/
+              }
+            ]
+          }
+        ]
       },
       {
         begin: '\\s\\(\\.?[^;\\|]*\\)\\s*=>',
         end: '\\s=>',
         returnBegin: true,
         relevance: 0,
-        contains: [{
-          className: 'params',
-          relevance: 0,
-          variants: [
-            PARAMS_MODE
-          ]
-        }]
+        contains: [
+          {
+            className: 'params',
+            relevance: 0,
+            variants: [ PARAMS_MODE ]
+          }
+        ]
       },
       {
         begin: '\\(\\.\\s' + RE_IDENT + '\\)\\s*=>'
@@ -157,7 +183,7 @@ export default function(hljs) {
   };
   MODULE_ACCESS_CONTENTS.push(FUNCTION_BLOCK_MODE);
 
-  var CONSTRUCTOR_MODE = {
+  const CONSTRUCTOR_MODE = {
     className: 'constructor',
     begin: RE_MODULE_IDENT + '\\(',
     end: '\\)',
@@ -173,7 +199,7 @@ export default function(hljs) {
     ]
   };
 
-  var PATTERN_MATCH_BLOCK_MODE = {
+  const PATTERN_MATCH_BLOCK_MODE = {
     className: 'pattern-match',
     begin: '\\|',
     returnBegin: true,
@@ -191,11 +217,12 @@ export default function(hljs) {
     ]
   };
 
-  var MODULE_ACCESS_MODE = {
+  const MODULE_ACCESS_MODE = {
     className: 'module-access',
     keywords: KEYWORDS,
     returnBegin: true,
-    variants: [{
+    variants: [
+      {
         begin: "\\b(" + RE_MODULE_IDENT + "\\.)+" + RE_IDENT
       },
       {
@@ -207,13 +234,14 @@ export default function(hljs) {
           {
             begin: '\\(',
             end: '\\)',
+            relevance: 0,
             skip: true
           }
         ].concat(MODULE_ACCESS_CONTENTS)
       },
       {
-        begin: "\\b(" + RE_MODULE_IDENT + "\\.)+{",
-        end: "}"
+        begin: "\\b(" + RE_MODULE_IDENT + "\\.)+\\{",
+        end: /\}/
       }
     ],
     contains: MODULE_ACCESS_CONTENTS
@@ -223,12 +251,12 @@ export default function(hljs) {
 
   return {
     name: 'ReasonML',
-    aliases: ['re'],
+    aliases: [ 're' ],
     keywords: KEYWORDS,
-    illegal: '(:\\-|:=|\\${|\\+=)',
+    illegal: '(:-|:=|\\$\\{|\\+=)',
     contains: [
       hljs.COMMENT('/\\*', '\\*/', {
-        illegal: '^(\\#,\\/\\/)'
+        illegal: '^(#,\\/\\/)'
       }),
       {
         className: 'character',
@@ -260,7 +288,7 @@ export default function(hljs) {
       {
         className: 'operator',
         begin: RE_OPERATOR_SPACED,
-        illegal: '\\-\\->',
+        illegal: '-->',
         relevance: 0
       },
       NUMBER_MODE,
@@ -269,19 +297,21 @@ export default function(hljs) {
       FUNCTION_BLOCK_MODE,
       {
         className: 'module-def',
-        begin: "\\bmodule\\s+" + RE_IDENT + "\\s+" + RE_MODULE_IDENT + "\\s+=\\s+{",
-        end: "}",
+        begin: "\\bmodule\\s+" + RE_IDENT + "\\s+" + RE_MODULE_IDENT + "\\s+=\\s+\\{",
+        end: /\}/,
         returnBegin: true,
         keywords: KEYWORDS,
         relevance: 0,
-        contains: [{
+        contains: [
+          {
             className: 'module',
             relevance: 0,
             begin: RE_MODULE_IDENT
           },
           {
-            begin: '{',
-            end: '}',
+            begin: /\{/,
+            end: /\}/,
+            relevance: 0,
             skip: true
           }
         ].concat(MODULE_ACCESS_CONTENTS)

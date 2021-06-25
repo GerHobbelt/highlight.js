@@ -6,9 +6,11 @@ Category: scientific
 */
 
 export default function(hljs) {
-  var KEYWORDS = 'if then else elseif for thru do while unless step in and or not';
-  var LITERALS = 'true false unknown inf minf ind und %e %i %pi %phi %gamma';
-  var BUILTIN_FUNCTIONS =
+  const KEYWORDS =
+    'if then else elseif for thru do while unless step in and or not';
+  const LITERALS =
+    'true false unknown inf minf ind und %e %i %pi %phi %gamma';
+  const BUILTIN_FUNCTIONS =
     ' abasep abs absint absolute_real_time acos acosh acot acoth acsc acsch activate' +
     ' addcol add_edge add_edges addmatrices addrow add_vertex add_vertices adjacency_matrix' +
     ' adjoin adjoint af agd airy airy_ai airy_bi airy_dai airy_dbi algsys alg_type' +
@@ -362,7 +364,7 @@ export default function(hljs) {
     ' ytics_rotate ytics_rotate_secondary ytics_secondary ytics_secondary_axis' +
     ' yv_grid y_voxel yx_ratio zaxis zaxis_color zaxis_type zaxis_width zeroa zerob' +
     ' zerobern zeta%pi zlabel zlabel_rotate zlength zmin zn_primroot_limit zn_primroot_pretest';
-  var SYMBOLS = '_ __ %|0 %%|0';
+  const SYMBOLS = '_ __ %|0 %%|0';
 
   return {
     name: 'Maxima',
@@ -371,22 +373,24 @@ export default function(hljs) {
       keyword: KEYWORDS,
       literal: LITERALS,
       built_in: BUILTIN_FUNCTIONS,
-      symbol: SYMBOLS,
+      symbol: SYMBOLS
     },
-    contains: [{
+    contains: [
+      {
         className: 'comment',
         begin: '/\\*',
         end: '\\*/',
-        contains: ['self']
+        contains: [ 'self' ]
       },
       hljs.QUOTE_STRING_MODE,
       {
         className: 'number',
         relevance: 0,
-        variants: [{
+        variants: [
+          {
             // float number w/ exponent
             // hmm, I wonder if we ought to include other exponent markers?
-            begin: '\\b(\\d+|\\d+\\.|\\.\\d+|\\d+\\.\\d+)[Ee][-+]?\\d+\\b',
+            begin: '\\b(\\d+|\\d+\\.|\\.\\d+|\\d+\\.\\d+)[Ee][-+]?\\d+\\b'
           },
           {
             // bigfloat number
@@ -396,16 +400,16 @@ export default function(hljs) {
           {
             // float number w/out exponent
             // Doesn't seem to recognize floats which start with '.'
-            begin: '\\b(\\.\\d+|\\d+\\.\\d+)\\b',
+            begin: '\\b(\\.\\d+|\\d+\\.\\d+)\\b'
           },
           {
             // integer in base up to 36
             // Doesn't seem to recognize integers which end with '.'
-            begin: '\\b(\\d+|0[0-9A-Za-z]+)\\.?\\b',
+            begin: '\\b(\\d+|0[0-9A-Za-z]+)\\.?\\b'
           }
         ]
       }
     ],
     illegal: /@/
-  }
+  };
 }

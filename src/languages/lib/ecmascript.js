@@ -51,7 +51,7 @@ const LITERALS = [
   "Infinity"
 ];
 
-const TYPES = [
+export const TYPES = [
   "Intl",
   "DataView",
   "Number",
@@ -82,10 +82,13 @@ const TYPES = [
   "Array",
   "Uint8Array",
   "Uint8ClampedArray",
-  "ArrayBuffer"
+  "ArrayBuffer",
+  "BigInt64Array",
+  "BigUint64Array",
+  "BigInt"
 ];
 
-const ERROR_TYPES = [
+export const ERROR_TYPES = [
   "EvalError",
   "InternalError",
   "RangeError",
@@ -95,7 +98,7 @@ const ERROR_TYPES = [
   "URIError"
 ];
 
-const BUILT_IN_GLOBALS = [
+export const BUILT_IN_GLOBALS = [
   "setInterval",
   "setTimeout",
   "clearInterval",
@@ -117,7 +120,7 @@ const BUILT_IN_GLOBALS = [
   "unescape"
 ];
 
-const BUILT_IN_VARIABLES = [
+export const BUILT_IN_VARIABLES = [
   "arguments",
   "this",
   "super",
@@ -131,7 +134,6 @@ const BUILT_IN_VARIABLES = [
 
 const BUILT_INS = [].concat(
   BUILT_IN_GLOBALS,
-  BUILT_IN_VARIABLES,
   TYPES,
   ERROR_TYPES
 );

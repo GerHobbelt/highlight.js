@@ -6,24 +6,25 @@
  */
 
 export default function(hljs) {
-  var GCODE_IDENT_RE = '[A-Z_][A-Z0-9_.]*';
-  var GCODE_CLOSE_RE = '\\%';
-  var GCODE_KEYWORDS = {
+  const GCODE_IDENT_RE = '[A-Z_][A-Z0-9_.]*';
+  const GCODE_CLOSE_RE = '%';
+  const GCODE_KEYWORDS = {
     $pattern: GCODE_IDENT_RE,
     keyword: 'IF DO WHILE ENDWHILE CALL ENDIF SUB ENDSUB GOTO REPEAT ENDREPEAT ' +
       'EQ LT GT NE GE LE OR XOR'
   };
-  var GCODE_START = {
+  const GCODE_START = {
     className: 'meta',
     begin: '([O])([0-9]+)'
   };
-  var GCODE_CODE = [
+  const NUMBER = hljs.inherit(hljs.C_NUMBER_MODE, {
+    begin: '([-+]?((\\.\\d+)|(\\d+)(\\.\\d*)?))|' + hljs.C_NUMBER_RE
+  });
+  const GCODE_CODE = [
     hljs.C_LINE_COMMENT_MODE,
     hljs.C_BLOCK_COMMENT_MODE,
     hljs.COMMENT(/\(/, /\)/),
-    hljs.inherit(hljs.C_NUMBER_MODE, {
-      begin: '([-+]?([0-9]*\\.?[0-9]+\\.?))|' + hljs.C_NUMBER_RE
-    }),
+    NUMBER,
     hljs.inherit(hljs.APOS_STRING_MODE, {
       illegal: null
     }),
@@ -50,15 +51,20 @@ export default function(hljs) {
     {
       className: 'built_in',
       begin: '(ATAN|ABS|ACOS|ASIN|SIN|COS|EXP|FIX|FUP|ROUND|LN|TAN)(\\[)',
-      end: '([-+]?([0-9]*\\.?[0-9]+\\.?))(\\])'
+      contains: [
+        NUMBER
+      ],
+      end: '\\]'
     },
     {
       className: 'symbol',
-      variants: [{
-        begin: 'N',
-        end: '\\d+',
-        illegal: '\\W'
-      }]
+      variants: [
+        {
+          begin: 'N',
+          end: '\\d+',
+          illegal: '\\W'
+        }
+      ]
     }
   ];
 
@@ -69,7 +75,8 @@ export default function(hljs) {
     // However, most prefer all uppercase and uppercase is customary.
     case_insensitive: true,
     keywords: GCODE_KEYWORDS,
-    contains: [{
+    contains: [
+      {
         className: 'meta',
         begin: GCODE_CLOSE_RE
       },

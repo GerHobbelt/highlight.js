@@ -5,22 +5,25 @@ Website: https://www.gnu.org/software/gawk/manual/gawk.html
 Description: language definition for Awk scripts
 */
 
+/** @type LanguageFn */
 export default function(hljs) {
-  var VARIABLE = {
+  const VARIABLE = {
     className: 'variable',
-    variants: [{
+    variants: [
+      {
         begin: /\$[\w\d#@][\w\d_]*/
       },
       {
-        begin: /\$\{(.*?)}/
+        begin: /\$\{(.*?)\}/
       }
     ]
   };
-  var KEYWORDS = 'BEGIN END if else while do for in break continue delete next nextfile function func exit|10';
-  var STRING = {
+  const KEYWORDS = 'BEGIN END if else while do for in break continue delete next nextfile function func exit|10';
+  const STRING = {
     className: 'string',
     contains: [hljs.BACKSLASH_ESCAPE],
-    variants: [{
+    variants: [
+      {
         begin: /(u|b)?r?'''/,
         end: /'''/,
         relevance: 10
@@ -64,5 +67,5 @@ export default function(hljs) {
       hljs.HASH_COMMENT_MODE,
       hljs.NUMBER_MODE
     ]
-  }
+  };
 }

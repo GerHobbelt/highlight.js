@@ -6,13 +6,12 @@ Category: config
 */
 
 export default function(hljs) {
-
-  var PUPPET_KEYWORDS = {
+  const PUPPET_KEYWORDS = {
     keyword:
-      /* language keywords */
+    /* language keywords */
       'and case default else elsif false if in import enherits node or true undef unless main settings $string ',
     literal:
-      /* metaparameters */
+    /* metaparameters */
       'alias audit before loglevel noop require subscribe tag ' +
       /* normal attributes */
       'owner ensure group mode name|0 changes context force incl lens load_path onlyif provider returns root show_diff type_check ' +
@@ -31,7 +30,7 @@ export default function(hljs) {
       'priority protect proxy proxy_password proxy_username repo_gpgcheck s3_enabled skip_if_unavailable sslcacert sslclientcert sslclientkey ' +
       'sslverify mounted',
     built_in:
-      /* core facts */
+    /* core facts */
       'architecture augeasversion blockdevices boardmanufacturer boardproductname boardserialnumber cfkey dhcp_servers ' +
       'domain ec2_ ec2_userdata facterversion filesystems ldom fqdn gid hardwareisa hardwaremodel hostname id|0 interfaces ' +
       'ipaddress ipaddress_ ipaddress6 ipaddress6_ iphostnumber is_virtual kernel kernelmajversion kernelrelease kernelversion ' +
@@ -44,23 +43,27 @@ export default function(hljs) {
       'uptime_days uptime_hours uptime_seconds uuid virtual vlans xendomains zfs_version zonenae zones zpool_version'
   };
 
-  var COMMENT = hljs.COMMENT('#', '$');
+  const COMMENT = hljs.COMMENT('#', '$');
 
-  var IDENT_RE = '([A-Za-z_]|::)(\\w|::)*';
+  const IDENT_RE = '([A-Za-z_]|::)(\\w|::)*';
 
-  var TITLE = hljs.inherit(hljs.TITLE_MODE, {
+  const TITLE = hljs.inherit(hljs.TITLE_MODE, {
     begin: IDENT_RE
   });
 
-  var VARIABLE = {
+  const VARIABLE = {
     className: 'variable',
     begin: '\\$' + IDENT_RE
   };
 
-  var STRING = {
+  const STRING = {
     className: 'string',
-    contains: [hljs.BACKSLASH_ESCAPE, VARIABLE],
-    variants: [{
+    contains: [
+      hljs.BACKSLASH_ESCAPE,
+      VARIABLE
+    ],
+    variants: [
+      {
         begin: /'/,
         end: /'/
       },
@@ -73,7 +76,7 @@ export default function(hljs) {
 
   return {
     name: 'Puppet',
-    aliases: ['pp'],
+    aliases: [ 'pp' ],
     contains: [
       COMMENT,
       VARIABLE,
@@ -82,22 +85,28 @@ export default function(hljs) {
         beginKeywords: 'class',
         end: '\\{|;',
         illegal: /=/,
-        contains: [TITLE, COMMENT]
+        contains: [
+          TITLE,
+          COMMENT
+        ]
       },
       {
         beginKeywords: 'define',
         end: /\{/,
-        contains: [{
-          className: 'section',
-          begin: hljs.IDENT_RE,
-          endsParent: true
-        }]
+        contains: [
+          {
+            className: 'section',
+            begin: hljs.IDENT_RE,
+            endsParent: true
+          }
+        ]
       },
       {
         begin: hljs.IDENT_RE + '\\s+\\{',
         returnBegin: true,
         end: /\S/,
-        contains: [{
+        contains: [
+          {
             className: 'keyword',
             begin: hljs.IDENT_RE
           },
@@ -113,10 +122,12 @@ export default function(hljs) {
                 begin: '[a-zA-Z_]+\\s*=>',
                 returnBegin: true,
                 end: '=>',
-                contains: [{
-                  className: 'attr',
-                  begin: hljs.IDENT_RE,
-                }]
+                contains: [
+                  {
+                    className: 'attr',
+                    begin: hljs.IDENT_RE
+                  }
+                ]
               },
               {
                 className: 'number',
@@ -130,5 +141,5 @@ export default function(hljs) {
         relevance: 0
       }
     ]
-  }
+  };
 }

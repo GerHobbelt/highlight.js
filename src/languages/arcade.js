@@ -5,12 +5,17 @@
  Website: https://developers.arcgis.com/arcade/
  Description: ArcGIS Arcade is an expression language used in many Esri ArcGIS products such as Pro, Online, Server, Runtime, JavaScript, and Python
 */
+
+/** @type LanguageFn */
 export default function(hljs) {
-  var IDENT_RE = '[A-Za-z_][0-9A-Za-z_]*';
-  var KEYWORDS = {
-    keyword: 'if for while var new function do return void else break',
-    literal: 'BackSlash DoubleQuote false ForwardSlash Infinity NaN NewLine null PI SingleQuote Tab TextFormatting true undefined',
-    built_in: 'Abs Acos Angle Attachments Area AreaGeodetic Asin Atan Atan2 Average Bearing Boolean Buffer BufferGeodetic ' +
+  const IDENT_RE = '[A-Za-z_][0-9A-Za-z_]*';
+  const KEYWORDS = {
+    keyword:
+      'if for while var new function do return void else break',
+    literal:
+      'BackSlash DoubleQuote false ForwardSlash Infinity NaN NewLine null PI SingleQuote Tab TextFormatting true undefined',
+    built_in:
+      'Abs Acos Angle Attachments Area AreaGeodetic Asin Atan Atan2 Average Bearing Boolean Buffer BufferGeodetic ' +
       'Ceil Centroid Clip Console Constrain Contains Cos Count Crosses Cut Date DateAdd ' +
       'DateDiff Day Decode DefaultValue Dictionary Difference Disjoint Distance DistanceGeodetic Distinct ' +
       'DomainCode DomainName Equals Exp Extent Feature FeatureSet FeatureSetByAssociation FeatureSetById FeatureSetByPortalItem ' +
@@ -22,14 +27,14 @@ export default function(hljs) {
       'TrackGeometryWindow TrackIndex TrackStartTime TrackWindow TypeOf Union UrlEncode Variance ' +
       'Weekday When Within Year '
   };
-  var EXPRESSIONS;
-  var SYMBOL = {
+  const SYMBOL = {
     className: 'symbol',
     begin: '\\$[datastore|feature|layer|map|measure|sourcefeature|sourcelayer|targetfeature|targetlayer|value|view]+'
   };
-  var NUMBER = {
+  const NUMBER = {
     className: 'number',
-    variants: [{
+    variants: [
+      {
         begin: '\\b(0[bB][01]+)'
       },
       {
@@ -41,14 +46,14 @@ export default function(hljs) {
     ],
     relevance: 0
   };
-  var SUBST = {
+  const SUBST = {
     className: 'subst',
     begin: '\\$\\{',
     end: '\\}',
     keywords: KEYWORDS,
     contains: [] // defined later
   };
-  var TEMPLATE_STRING = {
+  const TEMPLATE_STRING = {
     className: 'string',
     begin: '`',
     end: '`',
@@ -64,14 +69,13 @@ export default function(hljs) {
     NUMBER,
     hljs.REGEXP_MODE
   ];
-  var PARAMS_CONTAINS = SUBST.contains.concat([
+  const PARAMS_CONTAINS = SUBST.contains.concat([
     hljs.C_BLOCK_COMMENT_MODE,
     hljs.C_LINE_COMMENT_MODE
   ]);
 
   return {
     name: 'ArcGIS Arcade',
-    aliases: ['arcade'],
     keywords: KEYWORDS,
     contains: [
       hljs.APOS_STRING_MODE,
@@ -109,11 +113,12 @@ export default function(hljs) {
             end: '\\s*=>',
             contains: [{
               className: 'params',
-              variants: [{
+              variants: [
+                {
                   begin: IDENT_RE
                 },
                 {
-                  begin: /\(\s*\)/,
+                  begin: /\(\s*\)/
                 },
                 {
                   begin: /\(/,
@@ -130,12 +135,12 @@ export default function(hljs) {
         relevance: 0
       },
       {
-        className: 'function',
         beginKeywords: 'function',
         end: /\{/,
         excludeEnd: true,
         contains: [
           hljs.inherit(hljs.TITLE_MODE, {
+            className: "title.function",
             begin: IDENT_RE
           }),
           {

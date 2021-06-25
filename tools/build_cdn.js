@@ -1,27 +1,31 @@
 const fs = require("fs").promises;
+const fss = require("fs");
 const glob = require("glob");
 const zlib = require('zlib');
 const { getLanguages } = require("./lib/language");
 const { filter } = require("./lib/dependencies");
 const config = require("./build_config");
-const { install, install_cleancss, mkdir } = require("./lib/makestuff");
+const { install, installCleanCSS, mkdir } = require("./lib/makestuff");
 const log = (...args) => console.log(...args);
 const { buildBrowserHighlightJS } = require("./build_browser");
 const { buildPackageJSON } = require("./build_node");
 const path = require("path");
+const bundling = require('./lib/bundling.js');
 
-async function installPackageJSON() {
-  await buildPackageJSON();
+async function installPackageJSON(options) {
+  await buildPackageJSON(options);
   const json = require(`${process.env.BUILD_DIR}/package`);
   json.name = "@highlightjs/cdn-assets";
   json.description = json.description.concat(" (pre-compiled CDN assets)");
   fs.writeFile(`${process.env.BUILD_DIR}/package.json`, JSON.stringify(json, null, '   '));
 }
 
+let shas = {};
+
 async function buildCDN(options) {
-  install("./LICENSE.md", "LICENSE.md");
+  install("./LICENSE", "LICENSE");
   install("./README.CDN.md", "README.md");
-  installPackageJSON();
+  installPackageJSON(options);
 
   installStyles();
 
@@ -39,7 +43,10 @@ async function buildCDN(options) {
     embedLanguages = [];
   }
 
-  var size = await buildBrowserHighlightJS(embedLanguages, { minify: options.minify });
+  const size = await buildBrowserHighlightJS(embedLanguages, { minify: options.minify });
+  shas = Object.assign({}, size.shas, shas);
+
+  await buildSRIDigests(shas);
 
   log("-----");
   log("Embedded Lang       :",
@@ -56,6 +63,22 @@ async function buildCDN(options) {
     log("highlight.js.gz     :", zlib.gzipSync(size.fullSrc).length, "bytes");
   }
   log("-----");
+}
+
+
+async function buildSRIDigests(shas) {
+  const temp = await fs.readFile("./tools/templates/DIGESTS.md");
+  const DIGEST_MD = temp.toString();
+
+  const version = require("../package").version;
+  const digestList = Object.entries(shas).map(([k, v]) => `${v} ${k}`).join("\n");
+
+  const out = DIGEST_MD
+    .replace("<!-- $DIGEST_LIST -->", digestList)
+    .replace("<!-- $MIN_JS_DIGEST -->", shas["highlight.min.js"])
+    .replace("<!-- $GO_SHA -->", shas["languages/go.min.js"])
+    .replace(/<!-- \$VERSION -->/g, version);
+  fs.writeFile(`${process.env.BUILD_DIR}/DIGESTS.md`, out);
 }
 
 async function installLanguages(languages) {
@@ -82,13 +105,16 @@ async function installLanguages(languages) {
 
 function installStyles() {
   log("Writing style files.");
-  mkdir("styles");
+  mkdir("styles/base16");
 
-  glob.sync("*", { cwd: "./src/styles" }).forEach((file) => {
+  glob.sync("**", { cwd: "./src/styles" }).forEach((file) => {
+    const stat = fss.statSync(`./src/styles/${file}`);
+    if (stat.isDirectory()) return;
+
     if (file.endsWith(".css")) {
-      install_cleancss(`./src/styles/${file}`, `styles/${file.replace(".css", ".min.css")}`);
+      installCleanCSS(`./src/styles/${file}`, `styles/${file.replace(".css", ".min.css")}`);
     } else {
-    // images, backgrounds, etc
+      // images, backgrounds, etc
       install(`./src/styles/${file}`, `styles/${file}`);
     }
   });
@@ -104,10 +130,13 @@ async function buildDistributable(language) {
 }
 
 async function buildCDNLanguage(language) {
-  const filename = `${process.env.BUILD_DIR}/languages/${language.name}.min.js`;
+  const name = `languages/${language.name}.min.js`;
+  const filename = `${process.env.BUILD_DIR}/${name}`;
 
   await language.compile({ terser: config.terser });
+  shas[name] = bundling.sha384(language.minified);
   fs.writeFile(filename, language.minified);
 }
 
 module.exports.build = buildCDN;
+

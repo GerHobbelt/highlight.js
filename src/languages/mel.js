@@ -9,7 +9,8 @@ Category: graphics
 export default function(hljs) {
   return {
     name: 'MEL',
-    keywords: 'int float string vector matrix if else switch case default while do for in break ' +
+    keywords:
+      'int float string vector matrix if else switch case default while do for in break ' +
       'continue global proc return about abs addAttr addAttributeEditorNodeHelp addDynamic ' +
       'addNewShelfTab addPP addPanelCategory addPrefixToName advanceToNextDrivenKey ' +
       'affectedNet affects aimConstraint air alias aliasAttr align alignCtx alignCurve ' +
@@ -221,10 +222,10 @@ export default function(hljs) {
         className: 'string',
         begin: '`',
         end: '`',
-        contains: [hljs.BACKSLASH_ESCAPE]
+        contains: [ hljs.BACKSLASH_ESCAPE ]
       },
       { // eats variables
-        begin: '[\\$\\%\\@](\\^\\w\\b|#\\w+|[^\\s\\w{]|{\\w+}|\\w+)'
+        begin: /[$%@](\^\w\b|#\w+|[^\s\w{]|\{\w+\}|\w+)/
       },
       hljs.C_LINE_COMMENT_MODE,
       hljs.C_BLOCK_COMMENT_MODE

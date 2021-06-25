@@ -17,12 +17,12 @@ Description:
 */
 
 export default function(hljs) {
-  var COMMENT_MODE = hljs.COMMENT('--', '$');
-  var UNQUOTED_IDENT = '[a-zA-Z_][a-zA-Z_0-9$]*';
-  var DOLLAR_STRING = '\\$([a-zA-Z_]?|[a-zA-Z_][a-zA-Z_0-9]*)\\$';
-  var LABEL = '<<\\s*' + UNQUOTED_IDENT + '\\s*>>';
+  const COMMENT_MODE = hljs.COMMENT('--', '$');
+  const UNQUOTED_IDENT = '[a-zA-Z_][a-zA-Z_0-9$]*';
+  const DOLLAR_STRING = '\\$([a-zA-Z_]?|[a-zA-Z_][a-zA-Z_0-9]*)\\$';
+  const LABEL = '<<\\s*' + UNQUOTED_IDENT + '\\s*>>';
 
-  var SQL_KW =
+  const SQL_KW =
     // https://www.postgresql.org/docs/11/static/sql-keywords-appendix.html
     // https://www.postgresql.org/docs/11/static/sql-commands.html
     // SQL commands (starting words)
@@ -68,16 +68,16 @@ export default function(hljs) {
     // actually literals, but look better this way (due to IS TRUE, IS FALSE, ISNULL etc)
     'TRUE FALSE NAN INFINITY ';
 
-  var ROLE_ATTRS = // only those not in keywrods already
+  const ROLE_ATTRS = // only those not in keywrods already
     'SUPERUSER NOSUPERUSER CREATEDB NOCREATEDB CREATEROLE NOCREATEROLE INHERIT NOINHERIT ' +
     'LOGIN NOLOGIN REPLICATION NOREPLICATION BYPASSRLS NOBYPASSRLS ';
 
-  var PLPGSQL_KW =
+  const PLPGSQL_KW =
     'ALIAS BEGIN CONSTANT DECLARE END EXCEPTION RETURN PERFORM|10 RAISE GET DIAGNOSTICS ' +
     'STACKED|10 FOREACH LOOP ELSIF EXIT WHILE REVERSE SLICE DEBUG LOG INFO NOTICE WARNING ASSERT ' +
     'OPEN ';
 
-  var TYPES =
+  const TYPES =
     // https://www.postgresql.org/docs/11/static/datatype.html
     'BIGINT INT8 BIGSERIAL SERIAL8 BIT VARYING VARBIT BOOLEAN BOOL BOX BYTEA CHARACTER CHAR VARCHAR ' +
     'CIDR CIRCLE DATE DOUBLE PRECISION FLOAT8 FLOAT INET INTEGER INT INT4 INTERVAL JSON JSONB LINE LSEG|10 ' +
@@ -92,23 +92,21 @@ export default function(hljs) {
     'NAME ' +
     // OID-types
     'OID REGPROC|10 REGPROCEDURE|10 REGOPER|10 REGOPERATOR|10 REGCLASS|10 REGTYPE|10 REGROLE|10 ' +
-    'REGNAMESPACE|10 REGCONFIG|10 REGDICTIONARY|10 '; // +
+    'REGNAMESPACE|10 REGCONFIG|10 REGDICTIONARY|10 ';// +
   // some types from standard extensions
   'HSTORE|10 LO LTREE|10 ';
 
-  var TYPES_RE =
+  const TYPES_RE =
     TYPES.trim()
-    .split(' ')
-    .map(function(val) {
-      return val.split('|')[0];
-    })
-    .join('|');
+      .split(' ')
+      .map(function(val) { return val.split('|')[0]; })
+      .join('|');
 
-  var SQL_BI =
+  const SQL_BI =
     'CURRENT_TIME CURRENT_TIMESTAMP CURRENT_USER CURRENT_CATALOG|10 CURRENT_DATE LOCALTIME LOCALTIMESTAMP ' +
     'CURRENT_ROLE|10 CURRENT_SCHEMA|10 SESSION_USER PUBLIC ';
 
-  var PLPGSQL_BI =
+  const PLPGSQL_BI =
     'FOUND NEW OLD TG_NAME|10 TG_WHEN|10 TG_LEVEL|10 TG_OP|10 TG_RELID|10 TG_RELNAME|10 ' +
     'TG_TABLE_NAME|10 TG_TABLE_SCHEMA|10 TG_NARGS|10 TG_ARGV|10 TG_EVENT|10 TG_TAG|10 ' +
     // get diagnostics
@@ -116,7 +114,7 @@ export default function(hljs) {
     'PG_DATATYPE_NAME|10 MESSAGE_TEXT TABLE_NAME SCHEMA_NAME PG_EXCEPTION_DETAIL|10 ' +
     'PG_EXCEPTION_HINT|10 PG_EXCEPTION_CONTEXT|10 ';
 
-  var PLPGSQL_EXCEPTIONS =
+  const PLPGSQL_EXCEPTIONS =
     // exceptions https://www.postgresql.org/docs/current/static/errcodes-appendix.html
     'SQLSTATE SQLERRM|10 ' +
     'SUCCESSFUL_COMPLETION WARNING DYNAMIC_RESULT_SETS_RETURNED IMPLICIT_ZERO_BIT_PADDING ' +
@@ -194,7 +192,7 @@ export default function(hljs) {
     'RAISE_EXCEPTION NO_DATA_FOUND TOO_MANY_ROWS ASSERT_FAILURE INTERNAL_ERROR DATA_CORRUPTED ' +
     'INDEX_CORRUPTED ';
 
-  var FUNCTIONS =
+  const FUNCTIONS =
     // https://www.postgresql.org/docs/11/static/functions-aggregate.html
     'ARRAY_AGG AVG BIT_AND BIT_OR BOOL_AND BOOL_OR COUNT EVERY JSON_AGG JSONB_AGG JSON_OBJECT_AGG ' +
     'JSONB_OBJECT_AGG MAX MIN MODE STRING_AGG SUM XMLAGG ' +
@@ -285,30 +283,35 @@ export default function(hljs) {
     //
     'GROUPING CAST ';
 
-  var FUNCTIONS_RE =
-    FUNCTIONS.trim()
-    .split(' ')
-    .map(function(val) {
-      return val.split('|')[0];
-    })
-    .join('|');
+  const FUNCTIONS_RE =
+      FUNCTIONS.trim()
+        .split(' ')
+        .map(function(val) { return val.split('|')[0]; })
+        .join('|');
 
   return {
     name: 'PostgreSQL',
-    aliases: ['postgres', 'postgresql'],
+    aliases: [
+      'postgres',
+      'postgresql'
+    ],
+    supersetOf: "sql",
     case_insensitive: true,
     keywords: {
-      keyword: SQL_KW + PLPGSQL_KW + ROLE_ATTRS,
-      built_in: SQL_BI + PLPGSQL_BI + PLPGSQL_EXCEPTIONS,
+      keyword:
+            SQL_KW + PLPGSQL_KW + ROLE_ATTRS,
+      built_in:
+            SQL_BI + PLPGSQL_BI + PLPGSQL_EXCEPTIONS
     },
     // Forbid some cunstructs from other languages to improve autodetect. In fact
     // "[a-z]:" is legal (as part of array slice), but improbabal.
-    illegal: /:==|\W\s*\(\*|(^|\s)\$[a-z]|{{|[a-z]:\s*$|\.\.\.|TO:|DO:/,
+    illegal: /:==|\W\s*\(\*|(^|\s)\$[a-z]|\{\{|[a-z]:\s*$|\.\.\.|TO:|DO:/,
     contains: [
       // special handling of some words, which are reserved only in some contexts
       {
         className: 'keyword',
-        variants: [{
+        variants: [
+          {
             begin: /\bTEXT\s*SEARCH\b/
           },
           {
@@ -438,8 +441,8 @@ export default function(hljs) {
       },
       // functions named as keywords, followed by '('
       {
-        begin: /\b(FORMAT|FAMILY|VERSION)\s*\(/,
-        //keywords: { built_in: 'FORMAT FAMILY VERSION' }
+        begin: /\b(FORMAT|FAMILY|VERSION)\s*\(/
+        // keywords: { built_in: 'FORMAT FAMILY VERSION' }
       },
       // INCLUDE ( ... ) in index_parameters in CREATE TABLE
       {
@@ -457,7 +460,7 @@ export default function(hljs) {
       },
       // PG_smth; HAS_some_PRIVILEGE
       {
-        //className: 'built_in',
+        // className: 'built_in',
         begin: /\b(PG_\w+?|HAS_[A-Z_]+_PRIVILEGE)\b/,
         relevance: 10
       },
@@ -467,17 +470,17 @@ export default function(hljs) {
         end: /\bFROM\b/,
         returnEnd: true,
         keywords: {
-          //built_in: 'EXTRACT',
+          // built_in: 'EXTRACT',
           type: 'CENTURY DAY DECADE DOW DOY EPOCH HOUR ISODOW ISOYEAR MICROSECONDS ' +
-            'MILLENNIUM MILLISECONDS MINUTE MONTH QUARTER SECOND TIMEZONE TIMEZONE_HOUR ' +
-            'TIMEZONE_MINUTE WEEK YEAR'
+                        'MILLENNIUM MILLISECONDS MINUTE MONTH QUARTER SECOND TIMEZONE TIMEZONE_HOUR ' +
+                        'TIMEZONE_MINUTE WEEK YEAR'
         }
       },
       // xmlelement, xmlpi - special NAME
       {
         begin: /\b(XMLELEMENT|XMLPI)\s*\(\s*NAME/,
         keywords: {
-          //built_in: 'XMLELEMENT XMLPI',
+          // built_in: 'XMLELEMENT XMLPI',
           keyword: 'NAME'
         }
       },
@@ -485,7 +488,7 @@ export default function(hljs) {
       {
         begin: /\b(XMLPARSE|XMLSERIALIZE)\s*\(\s*(DOCUMENT|CONTENT)/,
         keywords: {
-          //built_in: 'XMLPARSE XMLSERIALIZE',
+          // built_in: 'XMLPARSE XMLSERIALIZE',
           keyword: 'DOCUMENT CONTENT'
         }
       },
@@ -519,7 +522,7 @@ export default function(hljs) {
       // Known functions - only when followed by '('
       {
         begin: '\\b(' + FUNCTIONS_RE + ')\\s*\\('
-        //keywords: { built_in: FUNCTIONS }
+        // keywords: { built_in: FUNCTIONS }
       },
       // Types
       {
@@ -541,36 +544,58 @@ export default function(hljs) {
         className: 'string',
         begin: '\'',
         end: '\'',
-        contains: [{
-          begin: '\'\''
-        }]
+        contains: [
+          {
+            begin: '\'\''
+          }
+        ]
       },
       {
         className: 'string',
         begin: '(e|E|u&|U&)\'',
         end: '\'',
-        contains: [{
-          begin: '\\\\.'
-        }],
+        contains: [
+          {
+            begin: '\\\\.'
+          }
+        ],
         relevance: 10
       },
       hljs.END_SAME_AS_BEGIN({
         begin: DOLLAR_STRING,
         end: DOLLAR_STRING,
-        contains: [{
-          // actually we want them all except SQL; listed are those with known implementations
-          // and XML + JSON just in case
-          subLanguage: ['pgsql', 'perl', 'python', 'tcl', 'r', 'lua', 'java', 'php', 'ruby', 'bash', 'scheme', 'xml', 'json'],
-          endsWithParent: true
-        }]
+        contains: [
+          {
+            // actually we want them all except SQL; listed are those with known implementations
+            // and XML + JSON just in case
+            subLanguage: [
+              'pgsql',
+              'perl',
+              'python',
+              'tcl',
+              'r',
+              'lua',
+              'java',
+              'php',
+              'ruby',
+              'bash',
+              'scheme',
+              'xml',
+              'json'
+            ],
+            endsWithParent: true
+          }
+        ]
       }),
       // identifiers in quotes
       {
         begin: '"',
         end: '"',
-        contains: [{
-          begin: '""'
-        }]
+        contains: [
+          {
+            begin: '""'
+          }
+        ]
       },
       // numbers
       hljs.C_NUMBER_MODE,
@@ -581,17 +606,18 @@ export default function(hljs) {
       // %ROWTYPE, %TYPE, $n
       {
         className: 'meta',
-        variants: [{
+        variants: [
+          { // %TYPE, %ROWTYPE
             begin: '%(ROW)?TYPE',
             relevance: 10
-          }, // %TYPE, %ROWTYPE
-          {
+          },
+          { // $n
             begin: '\\$\\d+'
-          }, // $n
-          {
+          },
+          { // #compiler option
             begin: '^#\\w',
             end: '$'
-          } // #compiler option
+          }
         ]
       },
       // <<labeles>>

@@ -15,17 +15,18 @@ export default function(hljs) {
       // version of format and total amount of testcases
       {
         className: 'meta',
-        variants: [{
+        variants: [
+          {
             begin: '^TAP version (\\d+)$'
           },
           {
             begin: '^1\\.\\.(\\d+)$'
           }
-        ],
+        ]
       },
       // YAML block
       {
-        begin: '(\s+)?---$',
+        begin: /---$/,
         end: '\\.\\.\\.$',
         subLanguage: 'yaml',
         relevance: 0
@@ -38,14 +39,15 @@ export default function(hljs) {
       // testcase status and description
       {
         className: 'symbol',
-        variants: [{
+        variants: [
+          {
             begin: '^ok'
           },
           {
             begin: '^not ok'
           }
-        ],
-      },
+        ]
+      }
     ]
   };
 }

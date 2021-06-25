@@ -6,8 +6,8 @@ Website: http://inform7.com
 */
 
 export default function(hljs) {
-  var START_BRACKET = '\\[';
-  var END_BRACKET = '\\]';
+  const START_BRACKET = '\\[';
+  const END_BRACKET = '\\]';
   return {
     name: 'Inform 7',
     aliases: ['i7'],
@@ -25,16 +25,19 @@ export default function(hljs) {
         // misc keyword:
         'kind of rule'
     },
-    contains: [{
+    contains: [
+      {
         className: 'string',
         begin: '"',
         end: '"',
         relevance: 0,
-        contains: [{
-          className: 'subst',
-          begin: START_BRACKET,
-          end: END_BRACKET
-        }]
+        contains: [
+          {
+            className: 'subst',
+            begin: START_BRACKET,
+            end: END_BRACKET
+          }
+        ]
       },
       {
         className: 'section',
@@ -46,11 +49,13 @@ export default function(hljs) {
         // This is here for relevance.
         begin: /^(Check|Carry out|Report|Instead of|To|Rule|When|Before|After)\b/,
         end: ':',
-        contains: [{
-          //Rule name
-          begin: '\\(This',
-          end: '\\)'
-        }]
+        contains: [
+          {
+            // Rule name
+            begin: '\\(This',
+            end: '\\)'
+          }
+        ]
       },
       {
         className: 'comment',
