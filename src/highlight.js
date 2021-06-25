@@ -707,7 +707,7 @@ const HLJS = function(hljs) {
     lang.rawDefinition = language.bind(null, hljs);
 
     if (lang.aliases) {
-      lang.aliases.forEach(function(alias) { aliases[alias] = name; });
+      registerAliases(lang.aliases, { languageName: name });
     }
   }
 
@@ -734,14 +734,11 @@ const HLJS = function(hljs) {
     return languages[name] || languages[aliases[name]];
   }
 
-  function registerAlias(alias, { languageName }) {
-    let list = alias;
-    if (typeof list === 'string') {
-      list = [alias];
+  function registerAliases(aliasList, {languageName}) {
+    if (typeof aliasList === 'string') {
+      aliasList = [aliasList];
     }
-    list.forEach(alias => {
-      aliases[alias] = languageName;
-    });
+    aliasList.forEach(alias => aliases[alias] = languageName);
   }
 
   function autoDetection(name) {
@@ -776,7 +773,7 @@ const HLJS = function(hljs) {
     registerLanguage,
     listLanguages,
     getLanguage,
-    registerAlias,
+    registerAliases,
     requireLanguage,
     autoDetection,
     inherit,

@@ -2,9 +2,9 @@
 
 const hljs = require('../../build');
 
-describe('.registerAlias()', () => {
+describe('.registerAliases()', () => {
   it('should get an existing language by alias', () => {
-    hljs.registerAlias('jquery', {
+    hljs.registerAliases('jquery', {
       languageName: 'javascript'
     });
     const result = hljs.getLanguage('jquery');
@@ -13,7 +13,7 @@ describe('.registerAlias()', () => {
   });
 
   it('should get an existing language by aliases', () => {
-    hljs.registerAlias(['jquery', 'jqueryui'], {
+    hljs.registerAliases(['jquery', 'jqueryui'], {
       languageName: 'javascript'
     });
     const result = hljs.getLanguage('jquery');

@@ -156,8 +156,8 @@ Adds new language to the library under the specified name. Used mostly internall
   to use common regular expressions defined within it.
 
 
-``registerAlias(alias|aliases, {languageName})``
-------------------------------------------------
+``registerAliases(alias|aliases, {languageName})``
+--------------------------------------------------
 
 Adds new language alias or aliases to the library for the specified language name defined under ``languageName`` key.
 

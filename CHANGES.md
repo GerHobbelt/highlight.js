@@ -4,7 +4,7 @@ Parser Engine:
 
 - (parser) Adds `keywords.$pattern` key to grammar definitions (#2519) [Josh Goebel][]
 - (parser) Adds SHEBANG utility mode [Josh Goebel][]
-- (parser) Adds `registerAlias` method (#2540) [Taufik Nurrohman][]
+- (parser) Adds `registerAliases` method (#2540) [Taufik Nurrohman][]
 - (enh) Added `on:begin` callback for modes (#2261) [Josh Goebel][]
 - (enh) Added `on:end` callback for modes (#2261) [Josh Goebel][]
 - (enh) Added ability to programatically ignore begin and end matches (#2261) [Josh Goebel][]
@@ -31,12 +31,14 @@ Language Improvements:
 - fix(javascript) `=>` function with nested `()` in params now works (#2502) [Josh Goebel][]
 - fix(typescript) `=>` function with nested `()` in params now works (#2502) [Josh Goebel][]
 - fix(yaml) Fix tags to include non-word characters (#2486) [Peter Plantinga][]
+- fix(swift) `@objcMembers` was being partially highlighted (#2543) [Nick Randall][]
 
 [Josh Goebel]: https://github.com/yyyc514
 [Peter Plantinga]: https://github.com/pplantinga
 [David Benjamin]: https://github.com/davidben
 [Vania Kucher]: https://github.com/qWici
 [Hankun Lin]: https://github.com/Linhk1606
+[Nick Randall]: https://github.com/nicked
 
 
 ## Version 10.0.2
