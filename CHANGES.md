@@ -1,3 +1,33 @@
+## Version 11.1.0 (pending)
+
+Grammars:
+
+- fix(csharp) add missing `catch` keyword (#3251) [Konrad Rudolph][]
+- add additional keywords to csp.js (#3244) [Elijah Conners][]
+- feat(css) handle css variables syntax (#3239) [Thanos Karagiannis][]
+- fix(markdown) Images with empty alt or links with empty text (#3233) [Josh Goebel][]
+- enh(powershell) added `pwsh` alias (#3236) [tebeco][]
+- fix(r) fix bug highlighting examples in doc comments [Konrad Rudolph][]
+- fix(python) identifiers starting with underscore not highlighted (#3221) [Antoine Lambert][]
+- enh(clojure) added `edn` alias (#3213) [Stel Abrego][]
+- enh(elixir) much improved regular expression sigil support (#3207) [Josh Goebel][]
+- enh(elixir) updated list of keywords (#3212) [Angelika Tyborska][]
+- fix(elixir) fixed number detection when numbers start with a zero (#3212) [Angelika Tyborska][]
+- fix(ps1) Flag highlighted incorrectly (#3167) [Pankaj Patil][]
+- fix(latex) Allow wider syntax for magic comments (#3243) [Benedikt Wilde][]
+
+[Stel Abrego]: https://github.com/stelcodes
+[Josh Goebel]: https://github.com/joshgoebel
+[Antoine Lambert]: https://github.com/anlambert
+[Elijah Conners]: https://github.com/elijahepepe
+[Angelika Tyborska]: https://github.com/angelikatyborska
+[Konrad Rudolph]: https://github.com/klmr
+[tebeco]: https://github.com/tebeco
+[Pankaj Patil]: https://github.com/patil2099
+[Benedikt Wilde]: https://github.com/schtandard
+[Thanos Karagiannis]: https://github.com/thanoskrg
+
+
 ## Version 11.0.0
 
 **This is a major release.**  As such it contains breaking changes which may require action from users.  Please read [VERSION_11_UPGRADE.md](https://github.com/highlightjs/highlight.js/blob/main/VERSION_11_UPGRADE.md) for a detailed summary of all breaking changes.

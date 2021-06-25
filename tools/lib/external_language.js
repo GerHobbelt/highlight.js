@@ -15,7 +15,7 @@ class LanguagePackage {
     const dir = path.join(this.dir, "src/languages/*");
     const languages = await glob(dir);
     if (languages.length > 0) {
-      this.files = languages.map(fn => path.join(process.cwd(), fn));
+      this.files = languages.map(fn => `./${fn}`);
       this.names = this.files.map(fn => path.basename(fn, ".js"));
       this._bundle = true;
       this._valid = true;
@@ -71,11 +71,11 @@ class LanguagePackage {
     // any bundle with files in ROOT/src/languages/ will be considered a potential
     // multi language bundle and any files in that directy will be considered to be
     // language modules
-    await this.trySrcLanguages() ||
+    await this.trySrcLanguages()
       // otherwise we fall back to looking for a package.json and whatever it's
       // `main` entry point is that is the file we assume the language module is
       // defined in
-      await this.tryPackageJSON();
+      || await this.tryPackageJSON();
     this._detected = true;
   }
 
