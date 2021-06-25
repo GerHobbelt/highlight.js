@@ -125,7 +125,7 @@ async function buildLanguages(languages, options) {
 }
 
 const CORE_FILES = [
-  "LICENSE",
+  "LICENSE.md",
   "README.md",
   "VERSION_10_UPGRADE.md",
   "VERSION_11_UPGRADE.md",

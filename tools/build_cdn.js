@@ -28,7 +28,7 @@ async function installPackageJSON(options) {
 let shas = {};
 
 async function buildCDN(options) {
-  install("./LICENSE", "LICENSE");
+  install("./LICENSE.md", "LICENSE.md");
   install("./README.CDN.md", "README.md");
   installPackageJSON(options);
 
